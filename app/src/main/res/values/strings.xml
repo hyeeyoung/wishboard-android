@@ -1,3 +1,69 @@
 <resources>
     <string name="app_name">Wishboard</string>
+    <string name="logo_text">Wish Board</string>
+
+    <!-- Global -->
+    <string name="cancel">취소</string>
+    <string name="confirm">확인</string>
+    <string name="save">저장</string>
+    <string name="complete">완료</string>
+    <string name="next">다음</string>
+    <string name="colon">:</string>
+
+    <!-- Sign -->
+    <string name="sign_up">가입하기</string>
+    <string name="first_visit_detail">위시보드가 처음이신가요?</string>
+    <string name="login_btn_text">로그인</string>
+    <string name="welcome_text">Wishboard로 간편하게\n흩어져있는 위시리스트를 통합 관리해보세요!</string>
+    <string name="email_input_text">이메일을 입력해주세요.</string>
+    <string name="password_input_text">8자리 이상의 영문자, 숫자, 특수 문자 조합</string>
+
+    <!-- Cart -->
+    <string name="cart_title">장바구니</string>
+    <string name="won">원</string>
+    <string name="cart">Cart</string>
+
+    <!-- Folder -->
+    <string name="folder">폴더</string>
+    <string name="folder_list_title">폴더 목록</string>
+    <string name="folder_delete_dialog_title">정말 삭제하시겠습니까?</string>
+    <string name="folder_delete_dialog_detail">해당 폴더에 담긴 모든 아이템이 사라질 수 있어요!</string>
+    <string name="folder_delete">폴더 삭제</string>
+    <string name="folder_name_edit">폴더명 수정</string>
+
+    <!-- Item Registration -->
+    <string name="item_registration_title">새 아이템</string>
+    <string name="wishlist_registration_btn_text">위시리스트에 추가</string>
+    <string name="item_name">상품명</string>
+    <string name="item_name_input_text">상품명을 입력해주세요.</string>
+    <string name="price">가격</string>
+    <string name="price_input_text">가격을 입력해주세요.</string>
+    <string name="shop_link">쇼핑몰 링크</string>
+    <string name="shop_link_input_text">쇼핑몰 링크를 입력해주세요.</string>
+    <string name="item_schedule_notification">상품 일정 알림</string>
+    <string name="memo">메모</string>
+    <string name="memo_input_text">메모를 작성해 보세요.</string>
+
+    <!-- Detail -->
+    <string name="go_to_shop_btn_text">쇼핑몰로 이동하기</string>
+
+    <!-- Notification -->
+    <string name="noti_title">알림</string>
+    <string name="item_schedule_notification_setting_title">상품 알림 설정</string>
+
+    <string name="select_notification_type">알림 유형 선택</string>
+    <string name="restock">재입고</string>
+    <string name="open_day">오픈일</string>
+    <string name="preorder_closed">프리오더 마감</string>
+    <string name="sale_start">세일 시작</string>
+    <string name="sale_closing">세일 마감</string>
+
+    <!-- My -->
+    <string name="my_title">마이페이지</string>
+    <string name="my_faq_btn_text">FAQ</string>
+    <string name="my_version_info_btn_text">버전정보</string>
+    <string name="my_terms_btn_text">이용약관</string>
+    <string name="my_logout_btn_text">로그아웃</string>
+    <string name="my_exit_btn_text">탈퇴하기</string>
+
 </resources>
