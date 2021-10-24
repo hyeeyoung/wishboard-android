@@ -12,6 +12,10 @@ android {
         targetCompatibility 1.8
     }
 
+    lintOptions {
+        abortOnError false
+    }
+
     defaultConfig {
         applicationId "com.hyeeyoung.wishboard"
         minSdkVersion 22
