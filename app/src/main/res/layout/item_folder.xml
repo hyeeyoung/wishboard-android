@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="10dp">
+
+        <!-- @brief : 폴더화면 아이템 리스트 중 아이템 하나의 뷰 -->
+        <ImageView
+            android:id="@+id/folder_item"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/sample"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/folder_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="2dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/nanum_square_eb"
+            android:textColor="@color/gray_700"
+            android:textSize="13dp"
+            app:layout_constraintStart_toStartOf="@id/folder_item"
+            app:layout_constraintTop_toBottomOf="@id/folder_item"
+            tools:text="폴더명" />
+
+        <TextView
+            android:id="@+id/item_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="@font/nanum_square_b"
+            android:textColor="@color/gray_200"
+            android:textSize="13dp"
+            app:layout_constraintStart_toStartOf="@id/folder_name"
+            app:layout_constraintTop_toBottomOf="@id/folder_name"
+            tools:text="10" />
+
+        <ImageButton
+            android:id="@+id/more_folder"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="2dp"
+            android:background="@android:color/transparent"
+            android:onClick="onClick"
+            android:paddingBottom="15dp"
+            android:src="@drawable/ic_folder_more"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/folder_name" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
