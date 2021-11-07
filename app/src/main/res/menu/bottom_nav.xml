@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/home"
+        android:id="@+id/homeFragment"
         android:icon="@drawable/selector_nav_icon_home"
         android:state_selected="false"
         android:title="home" />
     <item
-        android:id="@+id/new_item"
+        android:id="@+id/wishFragment"
         android:icon="@drawable/selector_nav_icon_item_registration"
         android:state_selected="false"
         android:title="new_item" />
     <item
-        android:id="@+id/folder"
+        android:id="@+id/folderFragment"
         android:icon="@drawable/selector_nav_icon_folder"
         android:state_selected="false"
         android:title="folder" />
     <item
-        android:id="@+id/noti"
+        android:id="@+id/notiFragment"
         android:icon="@drawable/selector_nav_icon_noti"
         android:state_selected="false"
         android:title="notification" />
     <item
-        android:id="@+id/my"
+        android:id="@+id/myFragment"
         android:icon="@drawable/selector_nav_icon_my"
         android:state_selected="false"
         android:title="my" />
