@@ -1,36 +1,33 @@
 package com.hyeeyoung.wishboard.view.sign
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import com.hyeeyoung.wishboard.MainActivity
-import com.hyeeyoung.wishboard.databinding.FragmentSignUpPasswordBinding
+import com.hyeeyoung.wishboard.databinding.FragmentSignInBinding
 import com.hyeeyoung.wishboard.viewmodel.SignViewModel
 
-class SignUpPasswordFragment : Fragment() {
-    private lateinit var binding: FragmentSignUpPasswordBinding
+class SignInFragment : Fragment() {
+    private lateinit var binding: FragmentSignInBinding
     private val viewModel: SignViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentSignUpPasswordBinding.inflate(inflater, container, false)
+        binding = FragmentSignInBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-
-        init()
 
         return binding.root
     }
 
-    private fun init() {
-        startActivity(Intent(requireContext(), MainActivity::class.java))
-        requireActivity().finish()
-    }
+    companion object {
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+            SignInFragment().apply {
 
+            }
+    }
 }

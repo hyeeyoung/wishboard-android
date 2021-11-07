@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/signInFragment">
+
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.hyeeyoung.wishboard.view.sign.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/action_login_to_email"
+            app:destination="@id/signUpEmailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpEmailFragment"
+        android:name="com.hyeeyoung.wishboard.view.sign.SignUpEmailFragment"
+        android:label="fragment_sign_up_email"
+        tools:layout="@layout/fragment_sign_up_email">
+        <action
+            android:id="@+id/action_email_to_password"
+            app:destination="@id/signUpPasswordFragment" />
+        <action
+            android:id="@+id/action_email_to_sign_in"
+            app:destination="@id/signInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpPasswordFragment"
+        android:name="com.hyeeyoung.wishboard.view.sign.SignUpPasswordFragment"
+        android:label="fragment_sign_up_password"
+        tools:layout="@layout/fragment_sign_up_password">
+        <action
+            android:id="@+id/action_password_to_email"
+            app:destination="@id/signUpEmailFragment" />
+    </fragment>
+
+</navigation>
