@@ -8,7 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.hyeeyoung.wishboard.databinding.FragmentSignInBinding
 import com.hyeeyoung.wishboard.viewmodel.SignViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignInFragment : Fragment() {
     private lateinit var binding: FragmentSignInBinding
     private val viewModel: SignViewModel by activityViewModels()
@@ -21,13 +23,5 @@ class SignInFragment : Fragment() {
         binding.viewModel = viewModel
 
         return binding.root
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            SignInFragment().apply {
-
-            }
     }
 }

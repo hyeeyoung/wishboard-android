@@ -2,7 +2,6 @@ package com.hyeeyoung.wishboard.view.sign
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,9 @@ import androidx.fragment.app.activityViewModels
 import com.hyeeyoung.wishboard.MainActivity
 import com.hyeeyoung.wishboard.databinding.FragmentSignUpPasswordBinding
 import com.hyeeyoung.wishboard.viewmodel.SignViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SignUpPasswordFragment : Fragment() {
     private lateinit var binding: FragmentSignUpPasswordBinding
     private val viewModel: SignViewModel by activityViewModels()
@@ -23,14 +24,23 @@ class SignUpPasswordFragment : Fragment() {
         binding = FragmentSignUpPasswordBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
 
-        init()
+        setListener()
 
         return binding.root
     }
 
-    private fun init() {
-        startActivity(Intent(requireContext(), MainActivity::class.java))
-        requireActivity().finish()
+    private fun setListener() {
+        viewModel.getValidPasswordFormat().observe(viewLifecycleOwner) {
+            binding.next.isEnabled = it
+        }
+        binding.next.setOnClickListener {
+            viewModel.signUp()
+        }
+        viewModel.getCompletedSignUp().observe(viewLifecycleOwner) { isCompleted ->
+            if (isCompleted) {
+                startActivity(Intent(requireContext(), MainActivity::class.java))
+                requireActivity().finish()
+            }
+        }
     }
-
 }
