@@ -80,7 +80,7 @@
                 android:hint="@string/email_input_text"
                 android:includeFontPadding="false"
                 android:inputType="textEmailAddress"
-                android:onTextChanged="@{viewModel::onEmailTextChanged}"
+                android:onTextChanged="@{viewModel.onEmailTextChanged}"
                 android:text="@{viewModel.userEmail}"
                 android:textSize="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
