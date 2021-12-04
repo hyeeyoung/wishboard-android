@@ -3,6 +3,7 @@ package com.hyeeyoung.wishboard.repository.sign
 import android.util.Log
 import com.hyeeyoung.wishboard.model.SignInfo
 import com.hyeeyoung.wishboard.remote.RemoteService
+import com.hyeeyoung.wishboard.util.prefs
 
 class SignRepositoryImpl : SignRepository {
     private val api = RemoteService.api
@@ -12,6 +13,8 @@ class SignRepositoryImpl : SignRepository {
         //TODO 네트워크에 연결되지 않은 경우 예외처리 필요
         if (response.isSuccessful) {
             Log.d(TAG, "회원가입 성공")
+            // TODO 유저 정보 저장하기
+            prefs?.setUserEmail(email)
         } else {
             Log.e("TAG", "회원가입 실페: ${response.code()}")
         }
