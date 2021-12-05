@@ -1,7 +1,6 @@
 package com.hyeeyoung.wishboard.remote
 
 import com.hyeeyoung.wishboard.model.SignInfo
-import com.hyeeyoung.wishboard.model.UserInfo
 import com.hyeeyoung.wishboard.model.WishItem
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -16,8 +15,10 @@ interface RemoteService {
         @Body signInfo: SignInfo
     ): Response<ResponseBody>
 
-    @POST("user/signup")
-    suspend fun signInUser(@Body userItem: UserInfo): Response<UserInfo>?
+    @POST("user/signin")
+    suspend fun signInUser(
+        @Body signInfo: SignInfo
+    ): Response<ResponseBody>
 
     companion object {
         private const val BASE_URL = "http://13.124.4.46/"

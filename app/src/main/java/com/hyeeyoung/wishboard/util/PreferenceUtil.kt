@@ -23,7 +23,7 @@ class PreferenceUtil(context: Context) {
         return prefs.getString(PREF_USER_EMAIL, null)
     }
 
-    fun clearUser() {
+    fun clearUserInfo() {
         prefs.edit().clear().apply()
     }
 }

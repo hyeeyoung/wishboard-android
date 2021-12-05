@@ -16,7 +16,18 @@ class SignRepositoryImpl : SignRepository {
             // TODO 유저 정보 저장하기
             prefs?.setUserEmail(email)
         } else {
-            Log.e("TAG", "회원가입 실페: ${response.code()}")
+            Log.e(TAG, "회원가입 실패: ${response.code()}")
+        }
+        return response.isSuccessful
+    }
+
+    override suspend fun signIn(email: String, password: String): Boolean {
+        val response = api.signInUser(SignInfo(email, password))
+        if (response.isSuccessful) {
+            Log.d(TAG, "로그인 성공")
+            prefs?.setUserEmail(email)
+        } else {
+            Log.e(TAG, "로그인 실패: ${response.code()}")
         }
         return response.isSuccessful
     }

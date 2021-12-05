@@ -21,12 +21,12 @@ class SignUpEmailFragment : Fragment() {
         binding = FragmentSignUpEmailBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
 
-        setListener()
+        setListeners()
 
         return binding.root
     }
 
-    private fun setListener() {
+    private fun setListeners() {
         viewModel.getValidEmailFormat().observe(viewLifecycleOwner) {
             binding.next.isEnabled = it
         }

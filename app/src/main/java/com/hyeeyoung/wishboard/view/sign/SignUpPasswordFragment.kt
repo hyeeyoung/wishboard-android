@@ -24,18 +24,19 @@ class SignUpPasswordFragment : Fragment() {
         binding = FragmentSignUpPasswordBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
 
-        setListener()
+        setListeners()
+        setObservers()
 
         return binding.root
     }
 
-    private fun setListener() {
+    private fun setListeners() {
         viewModel.getValidPasswordFormat().observe(viewLifecycleOwner) {
             binding.next.isEnabled = it
         }
-        binding.next.setOnClickListener {
-            viewModel.signUp()
-        }
+    }
+
+    private fun setObservers() {
         viewModel.getCompletedSignUp().observe(viewLifecycleOwner) { isCompleted ->
             if (isCompleted) {
                 startActivity(Intent(requireContext(), MainActivity::class.java))
