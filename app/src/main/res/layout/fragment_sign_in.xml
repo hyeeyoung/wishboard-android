@@ -18,6 +18,7 @@
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:padding="20dp">
@@ -77,6 +78,7 @@
                     android:hint="@string/email_input_text"
                     android:includeFontPadding="false"
                     android:inputType="textEmailAddress"
+                    android:onTextChanged="@{viewModel::onLoginEmailTextChanged}"
                     android:textSize="15dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/email_icon"
@@ -115,7 +117,8 @@
                     android:background="@android:color/transparent"
                     android:hint="@string/password_input_text"
                     android:includeFontPadding="false"
-                    android:inputType="textEmailAddress"
+                    android:inputType="textPassword"
+                    android:onTextChanged="@{viewModel::onLoginPasswordTextChanged}"
                     android:textSize="15dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toEndOf="@id/password_icon"
@@ -130,11 +133,12 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <Button
-                android:id="@+id/btn_signin"
+                android:id="@+id/signin_btn"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@drawable/background_button_green"
                 android:fontFamily="@font/nanum_square_eb"
+                android:onClick="@{() -> viewModel.signIn()}"
                 android:outlineProvider="none"
                 android:text="@string/login_btn_text"
                 android:textColor="@color/gray_700"
