@@ -61,6 +61,7 @@
 
     <!-- My -->
     <string name="my_title">마이페이지</string>
+    <string name="my_nickname_format_for_users_without_nickname">#%s</string>
     <string name="my_faq_btn_text">FAQ</string>
     <string name="my_version_info_btn_text">버전정보</string>
     <string name="my_terms_btn_text">이용약관</string>
