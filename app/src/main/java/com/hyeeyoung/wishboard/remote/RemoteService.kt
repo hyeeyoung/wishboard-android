@@ -1,6 +1,5 @@
 package com.hyeeyoung.wishboard.remote
 
-import com.hyeeyoung.wishboard.model.WishItem
 import com.hyeeyoung.wishboard.model.*
 import okhttp3.ResponseBody
 import retrofit2.Response
@@ -22,6 +21,10 @@ interface RemoteService {
 
     @GET("item/home")
     suspend fun fetchItems(@Header("token") token: String): Response<List<WishItem>>?
+
+    @GET("item/detail/{item_id}")
+    suspend fun fetchItemDetail(@Header("token") token: String, @Path("item_id") itemId: Int): Response<List<WishItemInfo>>?
+
     ): Response<ResponseBody>
 
     companion object {
