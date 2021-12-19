@@ -3,6 +3,7 @@ package com.hyeeyoung.wishboard
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.hyeeyoung.wishboard.databinding.ActivitySplashBinding
@@ -31,8 +32,9 @@ class SplashActivity : AppCompatActivity() {
 
     private fun moveToNext() {
         // TODO 유저 정보 가져오기
-        val email = prefs?.getUserEmail()
-        if (email == null) {
+        val token = prefs?.getUserToken()
+        Log.d(TAG, "token : $token")
+        if (token == null) {
             startActivity(Intent(this@SplashActivity, SignActivity::class.java))
         } else {
             startActivity(Intent(this@SplashActivity, MainActivity::class.java))
@@ -42,5 +44,9 @@ class SplashActivity : AppCompatActivity() {
     override fun onPause() {
         job?.cancel()
         super.onPause()
+    }
+
+    companion object {
+        private const val TAG = "SplashActivity"
     }
 }

@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.repository.sign.SignRepository
-import com.hyeeyoung.wishboard.util.prefs
 import com.hyeeyoung.wishboard.util.safeLet
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -69,10 +68,6 @@ class SignViewModel @Inject constructor(
                 isCompletedSignIn.value = signRepository.signIn(email, password)
             }
         }
-    }
-
-    fun signOut() {
-        prefs?.clearUserInfo()
     }
 
     fun getRegistrationEmail(): LiveData<String> = registrationEmail
