@@ -25,7 +25,14 @@ interface RemoteService {
     @GET("item/detail/{item_id}")
     suspend fun fetchItemDetail(@Header("token") token: String, @Path("item_id") itemId: Int): Response<List<WishItemInfo>>?
 
+    @POST("cart")
+    suspend fun addToCart(
+        @Header("token") token: String,
+        @Body item_id: Int
     ): Response<ResponseBody>
+
+    @GET("cart")
+    suspend fun fetchCart(@Header("token") token: String): Response<ArrayList<CartItem>>?
 
     companion object {
         private const val BASE_URL = "http://ec2-54-180-126-188.ap-northeast-2.compute.amazonaws.com"

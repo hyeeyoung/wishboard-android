@@ -4,7 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="">
 
+    <data>
+
+        <variable
+            name="item"
+            type="com.hyeeyoung.wishboard.model.CartItem" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -37,16 +45,17 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/nanum_square_b"
                 android:maxLines="1"
+                android:text="@{item.name}"
                 tools:text="ITEM NAME"
                 android:textColor="@color/gray_700"
                 android:textSize="15dp" />
 
+            <!-- TODO Padding 조정 필요-->
             <ImageView
                 android:id="@+id/x"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 android:background="@android:color/transparent"
-                android:onClick="onClick"
                 android:src="@drawable/ic_delete" />
 
         </LinearLayout>
@@ -77,6 +86,7 @@
                 android:layout_marginHorizontal="15dp"
                 android:fontFamily="@font/nanum_square_r"
                 tools:text="1"
+                android:text="@{item.count}"
                 android:textColor="@color/gray_700"
                 android:textSize="15dp" />
 
@@ -104,6 +114,7 @@
                 android:layout_toLeftOf="@id/won"
                 android:fontFamily="@font/nanum_square_eb"
                 tools:text="238,000"
+                android:text="@{item.price}"
                 android:textColor="@color/gray_700"
                 android:textSize="17dp" />
 
