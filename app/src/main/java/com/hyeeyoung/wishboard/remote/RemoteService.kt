@@ -20,6 +20,8 @@ interface RemoteService {
         @Body signInfo: SignInfo
     ): Response<RequestResult>
 
+    @GET("item/home")
+    suspend fun fetchItems(@Header("token") token: String): Response<List<WishItem>>?
     ): Response<ResponseBody>
 
     companion object {
