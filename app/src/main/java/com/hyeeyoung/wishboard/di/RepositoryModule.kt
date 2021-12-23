@@ -1,5 +1,7 @@
 package com.hyeeyoung.wishboard.di
 
+import com.hyeeyoung.wishboard.repository.cart.CartRepository
+import com.hyeeyoung.wishboard.repository.cart.CartRepositoryImpl
 import com.hyeeyoung.wishboard.repository.home.WishRepository
 import com.hyeeyoung.wishboard.repository.home.WishRepositoryImpl
 import com.hyeeyoung.wishboard.repository.sign.SignRepository
@@ -23,5 +25,11 @@ object RepositoryModule {
     @Provides
     fun provideWishRepository(): WishRepository {
         return WishRepositoryImpl()
+    }
+
+    @Singleton
+    @Provides
+    fun provideCartRepository(): CartRepository {
+        return CartRepositoryImpl()
     }
 }
