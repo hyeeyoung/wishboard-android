@@ -5,11 +5,32 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
 
+    <include app:graph="@navigation/wish_item_nav_graph" />
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.hyeeyoung.wishboard.view.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home">
+        <argument
+            android:name="itemId"
+            app:argType="integer"
+            app:nullable="false" />
+        <action
+            android:id="@+id/action_home_to_cart"
+            app:destination="@id/cartFragment" />
+        <action
+            android:id="@+id/action_home_to_wish_item_detail"
+            app:destination="@id/wish_item_nav_graph" />
+    </fragment>
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.hyeeyoung.wishboard.view.cart.CartFragment"
+        android:label="fragment_sign_up_email"
+        tools:layout="@layout/fragment_sign_up_email">
+        <action
+            android:id="@+id/action_home_to_wish_item_detail"
+            app:destination="@id/wish_item_nav_graph" />
+    </fragment>
     <fragment
         android:id="@+id/wishFragment"
         android:name="com.hyeeyoung.wishboard.view.wish.WishFragment"
@@ -24,11 +45,14 @@
         android:id="@+id/notiFragment"
         android:name="com.hyeeyoung.wishboard.view.noti.NotiFragment"
         android:label="fragment_noti"
-        tools:layout="@layout/fragment_noti" />
+        tools:layout="@layout/fragment_noti">
+        <action
+            android:id="@+id/action_noti_to_wish_item_detail"
+            app:destination="@id/wishItemDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/myFragment"
         android:name="com.hyeeyoung.wishboard.view.my.MyFragment"
         android:label="fragment_my"
         tools:layout="@layout/fragment_my" />
-
 </navigation>
