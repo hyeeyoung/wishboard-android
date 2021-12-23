@@ -9,19 +9,21 @@ import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.hyeeyoung.wishboard.databinding.FragmentMyBinding
 import com.hyeeyoung.wishboard.view.sign.SignActivity
-import com.hyeeyoung.wishboard.viewmodel.SignViewModel
+import com.hyeeyoung.wishboard.viewmodel.MyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MyFragment : Fragment() {
     private lateinit var binding: FragmentMyBinding
-    private val viewModel: SignViewModel by activityViewModels()
+    private val viewModel: MyViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentMyBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this@MyFragment
 
         setListeners()
 
