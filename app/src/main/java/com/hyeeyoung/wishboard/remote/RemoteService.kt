@@ -1,5 +1,6 @@
 package com.hyeeyoung.wishboard.remote
 
+import com.hyeeyoung.wishboard.model.WishItem
 import com.hyeeyoung.wishboard.model.*
 import okhttp3.ResponseBody
 import retrofit2.Response
