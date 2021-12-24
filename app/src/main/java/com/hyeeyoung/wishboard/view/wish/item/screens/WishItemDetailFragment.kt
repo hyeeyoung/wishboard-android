@@ -29,7 +29,7 @@ class WishItemDetailFragment : Fragment() {
 
         arguments?.let {
             it[ARG_ITEM_ID]?.let { itemId ->
-                viewModel.fetchItemDetail(itemId as Int)
+                viewModel.fetchWishItem(itemId as Int)
             }
         }
 

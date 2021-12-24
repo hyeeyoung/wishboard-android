@@ -1,8 +1,8 @@
-package com.hyeeyoung.wishboard.model
+package com.hyeeyoung.wishboard.model.wish
 
 import com.google.gson.annotations.SerializedName
 
-data class CartItem (
+data class WishItem (
     @SerializedName("item_id")
     val itemId: Int,
     @SerializedName("item_img")
@@ -11,6 +11,6 @@ data class CartItem (
     val name: String,
     @SerializedName("item_price")
     val price: String,
-    @SerializedName("item_count")
-    val count: String,
+    @SerializedName("cart_item_id")
+    val cartId: String?,
 )
