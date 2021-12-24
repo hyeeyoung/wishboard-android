@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hyeeyoung.wishboard.model.CartItem
+import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.repository.cart.CartRepository
 import com.hyeeyoung.wishboard.util.prefs
 import dagger.hilt.android.lifecycle.HiltViewModel

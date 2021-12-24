@@ -1,7 +1,10 @@
 package com.hyeeyoung.wishboard.remote
 
-import com.hyeeyoung.wishboard.model.WishItem
+import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.model.*
+import com.hyeeyoung.wishboard.model.cart.CartItem
+import com.hyeeyoung.wishboard.model.sign.SignInfo
+import com.hyeeyoung.wishboard.model.wish.WishItemInfo
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -10,6 +13,7 @@ import retrofit2.http.*
 import java.util.*
 
 interface RemoteService {
+    // 회원가입 및 로그인
     @POST("auth/signup")
     suspend fun signUpUser(
         @Body signInfo: SignInfo
@@ -20,12 +24,14 @@ interface RemoteService {
         @Body signInfo: SignInfo
     ): Response<RequestResult>
 
+    // 위시리스트 및 아이템
     @GET("item/home")
-    suspend fun fetchItems(@Header("token") token: String): Response<List<WishItem>>?
+    suspend fun fetchWishList(@Header("token") token: String): Response<List<WishItem>>?
 
     @GET("item/detail/{item_id}")
-    suspend fun fetchItemDetail(@Header("token") token: String, @Path("item_id") itemId: Int): Response<List<WishItemInfo>>?
+    suspend fun fetchWishItem(@Header("token") token: String, @Path("item_id") itemId: Int): Response<List<WishItemInfo>>?
 
+    // 장바구니
     @POST("cart")
     suspend fun addToCart(
         @Header("token") token: String,

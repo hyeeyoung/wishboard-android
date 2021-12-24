@@ -11,7 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentHomeBinding
-import com.hyeeyoung.wishboard.model.WishItem
+import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.view.wish.item.screens.WishItemDetailFragment.Companion.ARG_ITEM_ID
 import com.hyeeyoung.wishboard.view.wish.list.adapters.WishItemListAdapter

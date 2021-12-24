@@ -2,8 +2,8 @@ package com.hyeeyoung.wishboard.di
 
 import com.hyeeyoung.wishboard.repository.cart.CartRepository
 import com.hyeeyoung.wishboard.repository.cart.CartRepositoryImpl
-import com.hyeeyoung.wishboard.repository.home.WishRepository
-import com.hyeeyoung.wishboard.repository.home.WishRepositoryImpl
+import com.hyeeyoung.wishboard.repository.wish.WishRepository
+import com.hyeeyoung.wishboard.repository.wish.WishRepositoryImpl
 import com.hyeeyoung.wishboard.repository.sign.SignRepository
 import com.hyeeyoung.wishboard.repository.sign.SignRepositoryImpl
 import dagger.Module
