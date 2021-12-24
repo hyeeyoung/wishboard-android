@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.view.cart
+package com.hyeeyoung.wishboard.view.cart.screens
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hyeeyoung.wishboard.databinding.FragmentCartBinding
 import com.hyeeyoung.wishboard.view.cart.adapters.CartItemListAdapter
-import com.hyeeyoung.wishboard.view.wish.WishItemListAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

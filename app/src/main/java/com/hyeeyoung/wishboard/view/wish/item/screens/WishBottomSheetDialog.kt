@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.view.wish
+package com.hyeeyoung.wishboard.view.wish.item.screens
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

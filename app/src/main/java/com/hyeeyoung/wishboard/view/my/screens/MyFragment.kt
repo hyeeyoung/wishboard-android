@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.view.my
+package com.hyeeyoung.wishboard.view.my.screens
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.hyeeyoung.wishboard.databinding.FragmentMyBinding
-import com.hyeeyoung.wishboard.view.sign.SignActivity
+import com.hyeeyoung.wishboard.view.sign.screens.SignActivity
 import com.hyeeyoung.wishboard.viewmodel.MyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
