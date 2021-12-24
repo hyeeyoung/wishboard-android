@@ -3,7 +3,7 @@ package com.hyeeyoung.wishboard.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.hyeeyoung.wishboard.repository.home.WishRepository
+import com.hyeeyoung.wishboard.repository.wish.WishRepository
 import com.hyeeyoung.wishboard.util.prefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

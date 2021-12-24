@@ -5,9 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hyeeyoung.wishboard.model.WishItem
-import com.hyeeyoung.wishboard.model.WishItemInfo
-import com.hyeeyoung.wishboard.repository.home.WishRepository
+import com.hyeeyoung.wishboard.model.wish.WishItem
+import com.hyeeyoung.wishboard.model.wish.WishItemInfo
+import com.hyeeyoung.wishboard.repository.wish.WishRepository
 import com.hyeeyoung.wishboard.util.prefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -22,22 +22,23 @@ class WishViewModel @Inject constructor(
     private val token = prefs?.getUserToken()
 
     init {
-        fetchItems()
+        fetchWishList()
     }
 
-    private fun fetchItems() {
-        Log.i(TAG, "fetchItems: $token")
+    private fun fetchWishList() {
+        Log.d(TAG, "fetchWishList: $token")
         if (token == null) return
         viewModelScope.launch {
-            val items = wishRepository.fetchItems(token)
+            val items = wishRepository.fetchWishList(token)
             wishItems.postValue(items)
         }
     }
 
-    fun fetchItemDetail(itemId: Int) {
+    fun fetchWishItem(itemId: Int) {
+        Log.d(TAG, "fetchWishItem: $token")
         if (token == null) return
         viewModelScope.launch {
-            val item = wishRepository.fetchItemDetail(token, itemId)
+            val item = wishRepository.fetchWishItem(token, itemId)
             wishItem.postValue(item)
         }
     }

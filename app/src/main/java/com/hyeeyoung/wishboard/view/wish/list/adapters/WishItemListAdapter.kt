@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.databinding.ItemWishBinding
-import com.hyeeyoung.wishboard.model.WishItem
+import com.hyeeyoung.wishboard.model.wish.WishItem
 
 class WishItemListAdapter(
     private val context: Context

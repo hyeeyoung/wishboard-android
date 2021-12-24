@@ -1,7 +1,7 @@
 package com.hyeeyoung.wishboard.repository.cart
 
 import android.util.Log
-import com.hyeeyoung.wishboard.model.CartItem
+import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.remote.RemoteService
 
 class CartRepositoryImpl : CartRepository {

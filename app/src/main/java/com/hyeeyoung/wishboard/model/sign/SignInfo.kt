@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.model
+package com.hyeeyoung.wishboard.model.sign
 
 data class SignInfo(
     var email: String,
