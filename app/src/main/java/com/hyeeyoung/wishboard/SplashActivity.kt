@@ -9,7 +9,7 @@ import androidx.lifecycle.lifecycleScope
 import com.hyeeyoung.wishboard.databinding.ActivitySplashBinding
 import com.hyeeyoung.wishboard.util.PreferenceUtil
 import com.hyeeyoung.wishboard.util.prefs
-import com.hyeeyoung.wishboard.view.sign.SignActivity
+import com.hyeeyoung.wishboard.view.sign.screens.SignActivity
 import kotlinx.coroutines.*
 
 class SplashActivity : AppCompatActivity() {

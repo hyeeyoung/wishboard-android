@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.view.home
+package com.hyeeyoung.wishboard.view.wish.list.screens
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,8 +13,8 @@ import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentHomeBinding
 import com.hyeeyoung.wishboard.model.WishItem
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
-import com.hyeeyoung.wishboard.view.home.wishitem.WishItemDetailFragment.Companion.ARG_ITEM_ID
-import com.hyeeyoung.wishboard.view.wish.WishItemListAdapter
+import com.hyeeyoung.wishboard.view.wish.item.screens.WishItemDetailFragment.Companion.ARG_ITEM_ID
+import com.hyeeyoung.wishboard.view.wish.list.adapters.WishItemListAdapter
 import com.hyeeyoung.wishboard.viewmodel.WishViewModel
 
 class HomeFragment : Fragment(), WishItemListAdapter.OnItemClickListener {

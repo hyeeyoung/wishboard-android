@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/wishItemDetailFragment"
-        android:name="com.hyeeyoung.wishboard.view.home.wishitem.WishItemDetailFragment"
+        android:name="com.hyeeyoung.wishboard.view.wish.item.screens.WishItemDetailFragment"
         android:label="fragment_wish_item_detail"
         tools:layout="@layout/fragment_wish_item_detail" />
 </navigation>

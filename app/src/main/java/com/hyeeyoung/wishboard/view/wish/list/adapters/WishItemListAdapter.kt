@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.view.wish
+package com.hyeeyoung.wishboard.view.wish.list.adapters
 
 import android.content.Context
 import android.view.LayoutInflater

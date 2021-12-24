@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.view.sign
+package com.hyeeyoung.wishboard.view.sign.screens
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
