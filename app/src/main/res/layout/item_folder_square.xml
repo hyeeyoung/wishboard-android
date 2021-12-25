@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hyeeyoung.wishboard.model.folder.FolderItem" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/item"
+        android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
@@ -13,15 +19,15 @@
 
         <!-- @brief : 폴더화면 아이템 리스트 중 아이템 하나의 뷰 -->
         <ImageView
-            android:id="@+id/folder_item"
+            android:id="@+id/folder_image"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/sample"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/sample" />
 
         <TextView
             android:id="@+id/folder_name"
@@ -30,10 +36,11 @@
             android:layout_marginLeft="2dp"
             android:layout_marginTop="10dp"
             android:fontFamily="@font/nanum_square_eb"
+            android:text="@{item.name}"
             android:textColor="@color/gray_700"
             android:textSize="13dp"
-            app:layout_constraintStart_toStartOf="@id/folder_item"
-            app:layout_constraintTop_toBottomOf="@id/folder_item"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="parent"
             tools:text="폴더명" />
 
         <TextView
