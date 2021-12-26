@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.model.wish.WishItemInfo
+import com.hyeeyoung.wishboard.repository.cart.CartRepository
 import com.hyeeyoung.wishboard.repository.wish.WishRepository
 import com.hyeeyoung.wishboard.util.prefs
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,8 +17,9 @@ import javax.inject.Inject
 @HiltViewModel
 class WishViewModel @Inject constructor(
     private val wishRepository: WishRepository,
-): ViewModel() {
-    private var wishItems = MutableLiveData<List<WishItem>>(arrayListOf())
+    private val cartRepository: CartRepository,
+) : ViewModel() {
+    private var wishList = MutableLiveData<List<WishItem>>(arrayListOf())
     private var wishItem = MutableLiveData<WishItemInfo>()
     private val token = prefs?.getUserToken()
 
@@ -26,24 +28,37 @@ class WishViewModel @Inject constructor(
     }
 
     private fun fetchWishList() {
-        Log.d(TAG, "fetchWishList: $token")
         if (token == null) return
+        Log.d(TAG, "token: $token")
         viewModelScope.launch {
             val items = wishRepository.fetchWishList(token)
-            wishItems.postValue(items)
+            wishList.postValue(items)
         }
     }
 
     fun fetchWishItem(itemId: Int) {
-        Log.d(TAG, "fetchWishItem: $token")
         if (token == null) return
         viewModelScope.launch {
-            val item = wishRepository.fetchWishItem(token, itemId)
+            val item = wishRepository.fetchWishItem(itemId)
             wishItem.postValue(item)
         }
     }
 
-    fun getWishItems(): LiveData<List<WishItem>?> = wishItems
+    fun addToCart(itemId: Int) {
+        if (token == null) return
+        viewModelScope.launch {
+            cartRepository.addToCart(token, itemId)
+        }
+    }
+
+    fun removeToCart(itemId: Int) {
+        if (token == null) return
+        viewModelScope.launch {
+            cartRepository.removeToCart(token, itemId)
+        }
+    }
+
+    fun getWishList(): LiveData<List<WishItem>?> = wishList
     fun getWishItem(): LiveData<WishItemInfo?> = wishItem
 
     companion object {

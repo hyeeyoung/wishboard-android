@@ -14,7 +14,7 @@ class PreferenceUtil(context: Context) {
         context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
 
     fun setUserInfo(token: String, email: String) {
-        prefs.edit().putString(PREF_USER_TOKEN, token).apply()
+        prefs.edit().putString(PREF_USER_TOKEN, "Bearer $token").apply()
         prefs.edit().putString(PREF_USER_EMAIL, email).apply()
     }
 

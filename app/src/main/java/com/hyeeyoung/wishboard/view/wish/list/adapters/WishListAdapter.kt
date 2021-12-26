@@ -8,7 +8,7 @@ import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.databinding.ItemWishBinding
 import com.hyeeyoung.wishboard.model.wish.WishItem
 
-class WishItemListAdapter(
+class WishListAdapter(
     private val context: Context
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val dataSet = arrayListOf<WishItem>()
@@ -32,9 +32,19 @@ class WishItemListAdapter(
             with(binding) {
                 this.item = item
                 Glide.with(context).load(item.image).into(itemImage)
+
+                if (item.cartId == null) {
+                    binding.cart.isSelected = false
+                    selectedCartButtons[position] = false
+                } else {
+                    binding.cart.isSelected = true
+                    selectedCartButtons[position] = true
+                }
+
                 container.setOnClickListener {
                     listener.onItemClick(item)
                 }
+
                 cart.setOnClickListener {
                     it.isSelected = !it.isSelected
                     selectedCartButtons[position] = !selectedCartButtons[position]
@@ -66,5 +76,6 @@ class WishItemListAdapter(
         dataSet.clear()
         dataSet.addAll(items)
         selectedCartButtons = Array(dataSet.size) { false }
+        notifyDataSetChanged()
     }
 }

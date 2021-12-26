@@ -5,5 +5,5 @@ import com.hyeeyoung.wishboard.model.wish.WishItemInfo
 
 interface WishRepository {
     suspend fun fetchWishList(token: String): List<WishItem>?
-    suspend fun fetchWishItem(token: String, itemId: Int): WishItemInfo?
+    suspend fun fetchWishItem(itemId: Int): WishItemInfo?
 }
