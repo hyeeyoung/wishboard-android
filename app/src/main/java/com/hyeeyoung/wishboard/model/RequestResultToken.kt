@@ -1,6 +1,7 @@
 package com.hyeeyoung.wishboard.model
 
-data class RequestResult(
+data class RequestResultToken(
     val success: Boolean,
     val message: String,
+    val token: String,
 )

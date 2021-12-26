@@ -52,7 +52,7 @@
 
             <!-- TODO Padding 조정 필요-->
             <ImageView
-                android:id="@+id/x"
+                android:id="@+id/delete"
                 android:layout_width="12dp"
                 android:layout_height="12dp"
                 android:background="@android:color/transparent"

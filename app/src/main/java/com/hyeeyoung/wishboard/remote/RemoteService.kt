@@ -17,29 +17,35 @@ interface RemoteService {
     @POST("auth/signup")
     suspend fun signUpUser(
         @Body signInfo: SignInfo
-    ): Response<RequestResult>
+    ): Response<RequestResultToken>
 
     @POST("auth/signin")
     suspend fun signInUser(
         @Body signInfo: SignInfo
-    ): Response<RequestResult>
+    ): Response<RequestResultToken>
 
     // 위시리스트 및 아이템
     @GET("item/home")
-    suspend fun fetchWishList(@Header("token") token: String): Response<List<WishItem>>?
+    suspend fun fetchWishList(@Header("Authorization") token: String): Response<List<WishItem>>?
 
     @GET("item/detail/{item_id}")
-    suspend fun fetchWishItem(@Header("token") token: String, @Path("item_id") itemId: Int): Response<List<WishItemInfo>>?
+    suspend fun fetchWishItem(@Path("item_id") itemId: Int): Response<List<WishItemInfo>>?
+
+    @GET("cart")
+    suspend fun fetchCart(@Header("Authorization") token: String): Response<List<CartItem>>?
 
     // 장바구니
     @POST("cart")
     suspend fun addToCart(
-        @Header("token") token: String,
+        @Header("Authorization") token: String,
         @Body item_id: Int
-    ): Response<ResponseBody>
+    ): Response<RequestResult>
 
-    @GET("cart")
-    suspend fun fetchCart(@Header("token") token: String): Response<ArrayList<CartItem>>?
+    @HTTP(method = "DELETE", path = "cart", hasBody = true)
+    suspend fun removeToCart(
+        @Header("Authorization") token: String,
+        @Body item_id: Int
+    ): Response<RequestResult>
 
     companion object {
         private const val BASE_URL = "http://ec2-54-180-126-188.ap-northeast-2.compute.amazonaws.com"

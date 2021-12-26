@@ -16,28 +16,28 @@ class CartViewModel @Inject constructor(
     private val cartRepository: CartRepository,
 ): ViewModel() {
     private val token = prefs?.getUserToken()
-    private var cartItems = MutableLiveData<ArrayList<CartItem>>(arrayListOf())
+    private var cartList = MutableLiveData<List<CartItem>>(arrayListOf())
 
     init {
-        fetchCart()
+        fetchCartList()
     }
 
-    private fun fetchCart() {
+    private fun fetchCartList() {
         if (token == null) return
         viewModelScope.launch {
-            val items = cartRepository.fetchCart(token) // TODO userId 가져오기
-            cartItems.postValue(items)
+            val items = cartRepository.fetchCartList(token)
+            cartList.postValue(items)
         }
     }
 
-    fun addToCart(itemId: Int) {
+    fun removeToCart(itemId: Int) {
         if (token == null) return
         viewModelScope.launch {
-            cartRepository.addToCart(token, itemId)
+            cartRepository.removeToCart(token, itemId)
         }
     }
 
-    fun getCartItems(): LiveData<ArrayList<CartItem>?> = cartItems
+    fun getCartList(): LiveData<List<CartItem>?> = cartList
 
     companion object {
         private val TAG = "WishViewModel"
