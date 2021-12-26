@@ -14,7 +14,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/background_diaolg"
+            android:background="@drawable/background_dialog"
             android:paddingLeft="20dp"
             android:paddingBottom="20dp"
             android:layout_marginHorizontal="20dp"
