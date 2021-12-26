@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.databinding.ItemFolderHorizontalBinding
 import com.hyeeyoung.wishboard.databinding.ItemFolderSquareBinding
-import com.hyeeyoung.wishboard.model.Folder.FolderItem
-import com.hyeeyoung.wishboard.model.Folder.FolderListViewType
+import com.hyeeyoung.wishboard.model.folder.FolderItem
+import com.hyeeyoung.wishboard.model.folder.FolderListViewType
 
 class FolderListAdapter(
     private val context: Context,
