@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.model.Folder
+package com.hyeeyoung.wishboard.model.folder
 
 import com.google.gson.annotations.SerializedName
 

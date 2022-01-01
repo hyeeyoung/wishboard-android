@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.model.Folder
+package com.hyeeyoung.wishboard.model.folder
 
 enum class FolderListViewType {
     SQUARE_VIEW_TYPE,
