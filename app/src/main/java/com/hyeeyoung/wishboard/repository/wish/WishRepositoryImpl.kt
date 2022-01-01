@@ -19,8 +19,8 @@ class WishRepositoryImpl : WishRepository {
         return response.body()
     }
 
-    override suspend fun fetchWishItem(token: String, itemId: Int): WishItemInfo? {
-        val response = api.fetchWishItem(token, itemId) ?: return null
+    override suspend fun fetchWishItem(itemId: Int): WishItemInfo? {
+        val response = api.fetchWishItem(itemId) ?: return null
 
         if (response.isSuccessful) {
             Log.d(TAG, "아이템 상세정보 가져오기 성공")

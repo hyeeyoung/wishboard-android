@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 
 data class WishItemInfo (
     @SerializedName("folder_id")
-    val folderId: Int,
+    val folderId: Int?,
     @SerializedName("folder_name")
-    val folderName: String,
+    val folderName: String?,
     @SerializedName("item_img")
     val image: String,
     @SerializedName("item_name")

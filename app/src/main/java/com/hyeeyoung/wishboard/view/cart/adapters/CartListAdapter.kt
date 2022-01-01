@@ -4,17 +4,20 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.databinding.ItemCartBinding
 import com.hyeeyoung.wishboard.model.cart.CartItem
+import com.hyeeyoung.wishboard.view.cart.screens.CartFragment.Companion.VIEW_TYPE_CONTAINER
 
-class CartItemListAdapter(
+class CartListAdapter(
     private val context: Context
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val dataSet = arrayListOf<CartItem>()
     private lateinit var listener: OnItemClickListener
 
     interface OnItemClickListener {
-        fun onItemClick(item: CartItem)
+        fun onItemDeleteButtonClick(item: CartItem, isSelected: Boolean)
+        fun onItemClick(item: CartItem, viewType: String)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -29,8 +32,12 @@ class CartItemListAdapter(
             with(binding) {
                 this.item = item
                 Glide.with(context).load(item.image).into(itemImage)
+                delete.setOnClickListener {
+                    listener.onItemDeleteButtonClick(item, it.isSelected)
+                    removeItem(position)
+                }
                 container.setOnClickListener {
-                    listener.onItemClick(item)
+                    listener.onItemClick(item, VIEW_TYPE_CONTAINER)
                 }
             }
         }
@@ -57,6 +64,12 @@ class CartItemListAdapter(
     fun setData(items: List<CartItem>) {
         dataSet.clear()
         dataSet.addAll(items)
+        notifyDataSetChanged()
 //        selectedCartButtons = Array(dataSet.size) { false }
+    }
+
+    fun removeItem(position: Int) {
+        dataSet.removeAt(position)
+        notifyItemChanged(position)
     }
 }
