@@ -3,8 +3,6 @@ package com.hyeeyoung.wishboard.model.sign
 import com.google.gson.annotations.SerializedName
 
 data class UserInfo(
-    @SerializedName("user_id")
-    var userId: String?,
     var email: String,
     var nickname: String?,
     @SerializedName("profile_img")

@@ -10,5 +10,5 @@ data class FolderItem (
     @SerializedName("folder_img")
     val image: String,
     @SerializedName("folder_item_count")
-    val itemCount: String,
+    val itemCount: Int,
 )
