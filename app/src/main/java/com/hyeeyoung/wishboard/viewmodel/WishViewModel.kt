@@ -27,7 +27,7 @@ class WishViewModel @Inject constructor(
         fetchWishList()
     }
 
-    private fun fetchWishList() {
+    fun fetchWishList() {
         if (token == null) return
         Log.d(TAG, "token: $token")
         viewModelScope.launch {

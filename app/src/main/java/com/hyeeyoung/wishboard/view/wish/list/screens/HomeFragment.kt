@@ -1,11 +1,11 @@
 package com.hyeeyoung.wishboard.view.wish.list.screens
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -45,6 +45,10 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
     private fun addListeners() {
         binding.cart.setOnClickListener {
             findNavController().navigateSafe(R.id.action_home_to_cart)
+        }
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.fetchWishList()
+            binding.swipeRefresh.isRefreshing = false
         }
     }
 
