@@ -29,13 +29,18 @@ class WishLinkSharingViewModel @Inject constructor(
 
     suspend fun uploadWishList() {
         if (token == null) return
-        // itemImage 없어도 업로드 되도록 수정
+        // TODO itemImage 없어도 업로드 되도록 수정
+        // TODO 가격 데이터에 ',' 있는 경우 문자열 처리 필요
+        val price = if (itemPrice.value?.isDigitsOnly() == true) {
+            itemPrice.value!!.toInt()
+        } else {
+            null
+        }
         safeLet(itemName.value, itemImage.value, itemUrl.value) { name, image, url ->
             val wishItemRegistrationInfo =
-                WishItemRegistrationInfo(name, image, itemPrice.value ?: "0", url, itemMemo.value)
+                WishItemRegistrationInfo(name, image, price, url, itemMemo.value)
             val isComplete = wishRepository.uploadWishItem(token, wishItemRegistrationInfo)
             isCompleteUpload.postValue(isComplete)
-            // TODO 예외처리
         }
     }
 
