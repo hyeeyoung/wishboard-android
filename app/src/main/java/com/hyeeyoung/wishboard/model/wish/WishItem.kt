@@ -12,5 +12,5 @@ data class WishItem (
     @SerializedName("item_price")
     val price: String,
     @SerializedName("cart_item_id")
-    val cartId: String?,
+    val cartId: Int?,
 )
