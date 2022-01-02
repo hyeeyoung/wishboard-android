@@ -46,6 +46,7 @@
     <string name="item_schedule_notification">상품 일정 알림</string>
     <string name="memo">메모</string>
     <string name="memo_input_text">메모를 작성해 보세요.</string>
+    <string name="wish_item_registration_toast_text">위시리스트에 추가되었습니다</string>
 
     <!-- Detail -->
     <string name="go_to_shop_btn_text">쇼핑몰로 이동하기</string>
@@ -70,5 +71,8 @@
     <string name="my_terms_btn_text">이용약관</string>
     <string name="my_logout_btn_text">로그아웃</string>
     <string name="my_exit_btn_text">탈퇴하기</string>
+    <string name="wish_list_registration">위시리스트에 추가</string>
+    <string name="wish_list_registration_memo_hint">메모를 입력해보세요.</string>
+    <string name="wish_registration_price_hint">가격을 입력해주세요.</string>
 
 </resources>
