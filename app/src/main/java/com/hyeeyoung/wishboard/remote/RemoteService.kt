@@ -5,6 +5,7 @@ import com.hyeeyoung.wishboard.model.*
 import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.sign.SignInfo
 import com.hyeeyoung.wishboard.model.wish.WishItemInfo
+import com.hyeeyoung.wishboard.model.wish.WishItemRegistrationInfo
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -33,6 +34,9 @@ interface RemoteService {
 
     @GET("cart")
     suspend fun fetchCart(@Header("Authorization") token: String): Response<List<CartItem>>?
+
+    @POST("item")
+    suspend fun uploadWishItem(@Header("Authorization") token: String, @Body wishItem: WishItemRegistrationInfo): Response<RequestResult>
 
     // 장바구니
     @POST("cart")
