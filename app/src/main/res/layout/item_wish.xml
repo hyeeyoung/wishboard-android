@@ -47,7 +47,7 @@
             android:fontFamily="@font/nanum_square_b"
             android:textColor="@color/gray_700"
             android:textSize="13dp"
-            android:text="@{item.price}"
+            app:priceFormat="@{item.price}"
             app:layout_constraintStart_toStartOf="@id/item_name"
             app:layout_constraintTop_toBottomOf="@id/item_name"
             tools:text="price" />
