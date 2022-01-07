@@ -7,7 +7,7 @@ import com.hyeeyoung.wishboard.remote.RemoteService
 class CartRepositoryImpl : CartRepository {
     private val api = RemoteService.api
 
-    override suspend fun addToCart(token: String, itemId: Int): Boolean {
+    override suspend fun addToCart(token: String, itemId: Long): Boolean {
         val response = api.addToCart(token, itemId)
         if (response.isSuccessful) {
             Log.d(TAG, "장바구니에 추가 성공")
@@ -17,7 +17,7 @@ class CartRepositoryImpl : CartRepository {
         return response.isSuccessful
     }
 
-    override suspend fun removeToCart(token: String, itemId: Int): Boolean {
+    override suspend fun removeToCart(token: String, itemId: Long): Boolean {
         val response = api.removeToCart(token, itemId)
         if (response.isSuccessful) {
             Log.d(TAG, "장바구니에서 제거 성공")

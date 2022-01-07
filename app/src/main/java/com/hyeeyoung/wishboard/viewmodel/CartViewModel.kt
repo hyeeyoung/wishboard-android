@@ -30,7 +30,7 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    fun removeToCart(itemId: Int) {
+    fun removeToCart(itemId: Long) {
         if (token == null) return
         viewModelScope.launch {
             cartRepository.removeToCart(token, itemId)

@@ -1,10 +1,7 @@
 package com.hyeeyoung.wishboard.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.model.wish.WishItemInfo
 import com.hyeeyoung.wishboard.repository.cart.CartRepository
@@ -36,7 +33,7 @@ class WishViewModel @Inject constructor(
         }
     }
 
-    fun fetchWishItem(itemId: Int) {
+    fun fetchWishItem(itemId: Long) {
         if (token == null) return
         viewModelScope.launch {
             val item = wishRepository.fetchWishItem(itemId)
@@ -44,14 +41,14 @@ class WishViewModel @Inject constructor(
         }
     }
 
-    fun addToCart(itemId: Int) {
+    fun addToCart(itemId: Long) {
         if (token == null) return
         viewModelScope.launch {
             cartRepository.addToCart(token, itemId)
         }
     }
 
-    fun removeToCart(itemId: Int) {
+    fun removeToCart(itemId: Long) {
         if (token == null) return
         viewModelScope.launch {
             cartRepository.removeToCart(token, itemId)

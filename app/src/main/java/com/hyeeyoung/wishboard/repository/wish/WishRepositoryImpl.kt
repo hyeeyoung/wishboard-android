@@ -20,7 +20,7 @@ class WishRepositoryImpl : WishRepository {
         return response.body()
     }
 
-    override suspend fun fetchWishItem(itemId: Int): WishItemInfo? {
+    override suspend fun fetchWishItem(itemId: Long): WishItemInfo? {
         val response = api.fetchWishItem(itemId) ?: return null
 
         if (response.isSuccessful) {

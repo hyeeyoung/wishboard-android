@@ -67,7 +67,7 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
         )
     }
 
-    override fun onCartBtnClick(itemId: Int, isSelected: Boolean) {
+    override fun onCartBtnClick(itemId: Long, isSelected: Boolean) {
         if (isSelected) {
             viewModel.addToCart(itemId)
         } else {
