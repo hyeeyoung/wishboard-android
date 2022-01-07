@@ -10,7 +10,7 @@ data class WishItemRegistrationInfo ( // TODO WishItemInfo, WishItemRegistration
     @SerializedName("item_price")
     val price: Int?,
     @SerializedName("item_url")
-    val url: String,
+    val url: String?,
     @SerializedName("item_memo")
     val memo: String?,
 )
