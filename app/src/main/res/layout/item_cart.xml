@@ -114,7 +114,7 @@
                 android:layout_toLeftOf="@id/won"
                 android:fontFamily="@font/nanum_square_eb"
                 tools:text="238,000"
-                android:text="@{item.price}"
+                app:priceFormat="@{item.price}"
                 android:textColor="@color/gray_700"
                 android:textSize="17dp" />
 

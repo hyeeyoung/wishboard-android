@@ -30,7 +30,7 @@ interface RemoteService {
     suspend fun fetchWishList(@Header("Authorization") token: String): Response<List<WishItem>>?
 
     @GET("item/detail/{item_id}")
-    suspend fun fetchWishItem(@Path("item_id") itemId: Int): Response<List<WishItemInfo>>?
+    suspend fun fetchWishItem(@Path("item_id") itemId: Long): Response<List<WishItemInfo>>?
 
     @GET("cart")
     suspend fun fetchCart(@Header("Authorization") token: String): Response<List<CartItem>>?
@@ -42,13 +42,13 @@ interface RemoteService {
     @POST("cart")
     suspend fun addToCart(
         @Header("Authorization") token: String,
-        @Body item_id: Int
+        @Body item_id: Long
     ): Response<RequestResult>
 
     @HTTP(method = "DELETE", path = "cart", hasBody = true)
     suspend fun removeToCart(
         @Header("Authorization") token: String,
-        @Body item_id: Int
+        @Body item_id: Long
     ): Response<RequestResult>
 
     companion object {

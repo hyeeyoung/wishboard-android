@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class WishItemInfo (
     @SerializedName("folder_id")
-    val folderId: Int?,
+    val folderId: Long?,
     @SerializedName("folder_name")
     val folderName: String?,
     @SerializedName("item_img")
@@ -12,7 +12,7 @@ data class WishItemInfo (
     @SerializedName("item_name")
     val name: String,
     @SerializedName("item_price")
-    val price: String,
+    val price: Int?,
     @SerializedName("item_memo")
     val memo: String?,
     @SerializedName("item_url")

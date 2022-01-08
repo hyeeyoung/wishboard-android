@@ -36,7 +36,7 @@ class WishViewModel @Inject constructor(
         }
     }
 
-    fun fetchWishItem(itemId: Int) {
+    fun fetchWishItem(itemId: Long) {
         if (token == null) return
         viewModelScope.launch {
             val item = wishRepository.fetchWishItem(itemId)
@@ -44,14 +44,14 @@ class WishViewModel @Inject constructor(
         }
     }
 
-    fun addToCart(itemId: Int) {
+    fun addToCart(itemId: Long) {
         if (token == null) return
         viewModelScope.launch {
             cartRepository.addToCart(token, itemId)
         }
     }
 
-    fun removeToCart(itemId: Int) {
+    fun removeToCart(itemId: Long) {
         if (token == null) return
         viewModelScope.launch {
             cartRepository.removeToCart(token, itemId)

@@ -17,7 +17,7 @@ class WishListAdapter(
 
     interface OnItemClickListener {
         fun onItemClick(item: WishItem)
-        fun onCartBtnClick(itemId: Int, isAdded: Boolean)
+        fun onCartBtnClick(itemId: Long, isAdded: Boolean)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
