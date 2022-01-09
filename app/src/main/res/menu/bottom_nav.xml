@@ -5,8 +5,9 @@
         android:icon="@drawable/selector_nav_icon_home"
         android:state_selected="false"
         android:title="home" />
+    <!-- TODO id값 snake case로 통일 -->
     <item
-        android:id="@+id/wishFragment"
+        android:id="@+id/wish_item_registration_nav_graph"
         android:icon="@drawable/selector_nav_icon_item_registration"
         android:state_selected="false"
         android:title="new_item" />

@@ -6,6 +6,8 @@
     app:startDestination="@id/homeFragment">
 
     <include app:graph="@navigation/wish_item_nav_graph" />
+    <include app:graph="@navigation/wish_item_registration_nav_graph" />
+
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.hyeeyoung.wishboard.view.wish.list.screens.HomeFragment"
@@ -31,11 +33,6 @@
             android:id="@+id/action_home_to_wish_item_detail"
             app:destination="@id/wish_item_nav_graph" />
     </fragment>
-    <fragment
-        android:id="@+id/wishFragment"
-        android:name="com.hyeeyoung.wishboard.view.wish.item.screens.WishFragment"
-        android:label="fragment_wish"
-        tools:layout="@layout/fragment_wish" />
     <fragment
         android:id="@+id/folderFragment"
         android:name="com.hyeeyoung.wishboard.view.folder.screens.FolderFragment"
