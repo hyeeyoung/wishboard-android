@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spacing -->
+    <dimen name="spacing12">12dp</dimen>
+
+    <!-- Widget -->
+    <dimen name="widgetHeightBase">48dp</dimen>
+</resources>
