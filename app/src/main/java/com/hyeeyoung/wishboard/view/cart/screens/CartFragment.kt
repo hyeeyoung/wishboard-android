@@ -4,18 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentCartBinding
 import com.hyeeyoung.wishboard.model.cart.CartItem
-import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.view.cart.adapters.CartListAdapter
-import com.hyeeyoung.wishboard.view.wish.item.screens.WishItemDetailFragment
 import com.hyeeyoung.wishboard.viewmodel.CartViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -68,14 +63,13 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
 
     override fun onItemClick(item: CartItem, viewType: String) {
         when (viewType) {
-            VIEW_TYPE_CONTAINER -> {
-                findNavController().navigateSafe(
-                    R.id.action_home_to_wish_item_detail,
-                    bundleOf(WishItemDetailFragment.ARG_ITEM_ID to item.itemId)
-                )
-            }
             // TODO Not yet implemented
-        }
+//            VIEW_TYPE_CONTAINER -> {
+//                findNavController().navigateSafe(
+//                    R.id.action_home_to_wish_item_detail,
+//                    bundleOf(WishItemDetailFragment.ARG_ITEM_ID to item)
+//                )
+            }
     }
 
     companion object {

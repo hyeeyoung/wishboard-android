@@ -13,7 +13,6 @@ import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentHomeBinding
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
-import com.hyeeyoung.wishboard.view.wish.item.screens.WishItemDetailFragment.Companion.ARG_ITEM_ID
 import com.hyeeyoung.wishboard.view.wish.list.adapters.WishListAdapter
 import com.hyeeyoung.wishboard.viewmodel.WishViewModel
 
@@ -63,7 +62,7 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
     override fun onItemClick(item: WishItem) {
         findNavController().navigateSafe(
             R.id.action_home_to_wish_item_detail,
-            bundleOf(ARG_ITEM_ID to item.itemId)
+            bundleOf(ARG_WISH_ITEM to item)
         )
     }
 
@@ -76,7 +75,7 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
     }
 
     companion object {
-        const val ARG_WISH_ITEM = "wishItem"
         private const val TAG = "HomeFragment"
+        const val ARG_WISH_ITEM = "wishItem"
     }
 }

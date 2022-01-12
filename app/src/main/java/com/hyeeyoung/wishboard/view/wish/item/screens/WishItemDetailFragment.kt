@@ -11,6 +11,7 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentWishItemDetailBinding
+import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.viewmodel.WishViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,14 +23,15 @@ class WishItemDetailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentWishItemDetailBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this@WishItemDetailFragment
 
         arguments?.let {
-            it[ARG_ITEM_ID]?.let { itemId ->
-                viewModel.fetchWishItem(itemId as Long)
+            val wishItem = it[ARG_WISH_ITEM] as? WishItem
+            if (wishItem != null) {
+                viewModel.setWishItem(wishItem)
             }
         }
 
@@ -39,17 +41,16 @@ class WishItemDetailFragment : Fragment() {
     }
 
     private fun addObservers() {
-        // TODO 코드 변경 필요
-        viewModel.getWishItem().observe(viewLifecycleOwner) { itemInfo ->
-            if (itemInfo == null) return@observe
+        viewModel.getWishItem().observe(viewLifecycleOwner) { wishItem ->
+            if (wishItem == null) return@observe
             binding.goToShopBtn.setOnClickListener {
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(itemInfo.itemUrl)))
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(wishItem.url)))
             }
-            Glide.with(requireContext()).load(itemInfo.image).into(binding.itemImage)
+            Glide.with(requireContext()).load(wishItem.image).into(binding.itemImage)
         }
     }
 
     companion object {
-        const val ARG_ITEM_ID = "itemId"
+        const val ARG_WISH_ITEM = "wishItem"
     }
 }
