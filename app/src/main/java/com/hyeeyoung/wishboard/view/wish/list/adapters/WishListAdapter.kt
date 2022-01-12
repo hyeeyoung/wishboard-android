@@ -48,7 +48,7 @@ class WishListAdapter(
                 cart.setOnClickListener {
                     it.isSelected = !it.isSelected
                     selectedCartButtons[position] = !selectedCartButtons[position]
-                    listener.onCartBtnClick(item.itemId, selectedCartButtons[position])
+                    listener.onCartBtnClick(item.id ?: return@setOnClickListener, selectedCartButtons[position])
                 }
             }
         }
