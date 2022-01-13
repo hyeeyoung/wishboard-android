@@ -45,7 +45,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/nanum_square_b"
                 android:maxLines="1"
-                android:text="@{item.name}"
+                android:text="@{item.wishItem.name}"
                 tools:text="ITEM NAME"
                 android:textColor="@color/gray_700"
                 android:textSize="15dp" />
@@ -86,7 +86,7 @@
                 android:layout_marginHorizontal="15dp"
                 android:fontFamily="@font/nanum_square_r"
                 tools:text="1"
-                android:text="@{item.count}"
+                android:text="@{Integer.toString(item.cartItemInfo.count)}"
                 android:textColor="@color/gray_700"
                 android:textSize="15dp" />
 
@@ -114,7 +114,7 @@
                 android:layout_toLeftOf="@id/won"
                 android:fontFamily="@font/nanum_square_eb"
                 tools:text="238,000"
-                app:priceFormat="@{item.price}"
+                app:priceFormat="@{item.wishItem.price}"
                 android:textColor="@color/gray_700"
                 android:textSize="17dp" />
 

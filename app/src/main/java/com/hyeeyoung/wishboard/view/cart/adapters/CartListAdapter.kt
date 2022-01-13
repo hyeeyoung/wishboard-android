@@ -31,7 +31,7 @@ class CartListAdapter(
 
             with(binding) {
                 this.item = item
-                Glide.with(context).load(item.image).into(itemImage)
+                Glide.with(context).load(item.wishItem.image).into(itemImage)
                 delete.setOnClickListener {
                     listener.onItemDeleteButtonClick(item, it.isSelected)
                     removeItem(position)
