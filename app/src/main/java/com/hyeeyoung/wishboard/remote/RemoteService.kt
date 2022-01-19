@@ -1,5 +1,6 @@
 package com.hyeeyoung.wishboard.remote
 
+import com.hyeeyoung.wishboard.BuildConfig
 import com.hyeeyoung.wishboard.model.RequestResult
 import com.hyeeyoung.wishboard.model.RequestResultToken
 import com.hyeeyoung.wishboard.model.cart.CartItem
@@ -47,12 +48,8 @@ interface RemoteService {
     ): Response<RequestResult>
 
     companion object {
-        // TODO BASE_URL 숨기기
-        private const val BASE_URL = "http://ec2-3-35-13-182.ap-northeast-2.compute.amazonaws.com"
-        private const val IMAGE_URL = "https://wishboardbucket.s3.ap-northeast-2.amazonaws.com/wishboard/"
-
         val api = Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(BuildConfig.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(RemoteService::class.java)
