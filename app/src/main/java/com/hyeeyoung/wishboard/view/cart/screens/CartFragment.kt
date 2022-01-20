@@ -16,6 +16,7 @@ import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.view.cart.adapters.CartListAdapter
 import com.hyeeyoung.wishboard.viewmodel.CartViewModel
+import com.hyeeyoung.wishboard.model.cart.CartItemButtonType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -31,6 +32,7 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
         binding = FragmentCartBinding.inflate(inflater, container, false)
 
         initializeView()
+        addListeners()
         addObservers()
 
         return binding.root
@@ -51,6 +53,13 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
         }
     }
 
+    private fun addListeners() {
+        binding.back.setOnClickListener {
+            findNavController().popBackStack()
+//            viewModel.updateToCart() //TODO 서버 update api 호출 (arrayList<CartItem> 형태로 요청)
+        }
+    }
+
     private fun addObservers() {
         viewModel.getCartList().observe(viewLifecycleOwner) {
             it?.let {
@@ -59,28 +68,30 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
         }
     }
 
-    override fun onItemDeleteButtonClick(item: CartItem, isSelected: Boolean) {
-        if (!isSelected) {
-            viewModel.removeToCart(item.wishItem.id)
-        }
-    }
-
-    override fun onItemClick(item: CartItem, viewType: String) {
+    override fun onItemClick(item: CartItem, position: Int, viewType: CartItemButtonType) {
         when (viewType) {
-            VIEW_TYPE_CONTAINER -> {
+            CartItemButtonType.VIEW_TYPE_CONTAINER -> {
                 findNavController().navigateSafe(
                     R.id.action_home_to_wish_item_detail,
                     bundleOf(ARG_WISH_ITEM to item.wishItem)
                 )
+            }
+            CartItemButtonType.VIEW_TYPE_DELETION -> {
+                viewModel.removeToCart(item.wishItem.id!!)
+            }
+            CartItemButtonType.VIEW_TYPE_PLUS -> {
+                viewModel.changeCountControl(item, position, CartItemButtonType.VIEW_TYPE_PLUS)
+                cartAdapter.updateItem(position, item)
+            }
+            CartItemButtonType.VIEW_TYPE_MINUS -> {
+                viewModel.changeCountControl(item, position, CartItemButtonType.VIEW_TYPE_MINUS)
+                cartAdapter.updateItem(position, item)
             }
         }
     }
 
     companion object {
         private const val TAG = "CartFragment"
-        const val VIEW_TYPE_PLUS = "CartFragment"
-        const val VIEW_TYPE_MINUS = "CartFragment"
         const val ARG_WISH_ITEM = "wishItem"
-        const val VIEW_TYPE_CONTAINER = "CartFragment"
     }
 }

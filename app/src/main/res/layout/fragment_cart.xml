@@ -7,6 +7,10 @@
     <data>
 
         <import type="androidx.navigation.Navigation" />
+
+        <variable
+            name="viewModel"
+            type="com.hyeeyoung.wishboard.viewmodel.CartViewModel" />
     </data>
 
     <LinearLayout
@@ -25,9 +29,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:padding="12dp"
-                android:onClick="@{(v) -> Navigation.findNavController(v).popBackStack()}"
                 android:background="@android:color/transparent"
+                android:padding="12dp"
                 android:src="@drawable/ic_back"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -40,8 +43,8 @@
                 android:text="@string/cart_title"
                 android:textColor="@color/gray_700"
                 android:textSize="15dp"
-                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -70,41 +73,43 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/item_cnt"
+                android:id="@+id/total_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:fontFamily="@font/nanum_square_eb"
+                android:text="@{Integer.toString(viewModel.totalCount)}"
                 android:textColor="@color/gray_700"
                 android:textSize="17dp"
                 app:layout_constraintStart_toEndOf="@id/total_text"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="10" />
+                tools:text="0" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="2dp"
-                android:layout_toRightOf="@id/item_cnt"
+                android:layout_toRightOf="@id/total_count"
                 android:fontFamily="@font/nanum_square_eb"
                 android:text="개"
                 android:textColor="@color/gray_700"
                 android:textSize="17dp"
-                app:layout_constraintStart_toEndOf="@id/item_cnt"
+                app:layout_constraintStart_toEndOf="@id/total_count"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/total"
+                android:id="@+id/total_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="2dp"
                 android:layout_toLeftOf="@id/won"
                 android:fontFamily="@font/nanum_square_eb"
-                tools:text="238,000"
+                android:text="@{Integer.toString(viewModel.totalPrice)}"
                 android:textColor="@color/gray_700"
                 android:textSize="17dp"
                 app:layout_constraintEnd_toStartOf="@id/won"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="0" />
 
             <TextView
                 android:id="@+id/won"

@@ -10,9 +10,19 @@ class CartRepositoryImpl : CartRepository {
     override suspend fun addToCart(token: String, itemId: Long): Boolean {
         val response = api.addToCart(token, itemId)
         if (response.isSuccessful) {
-            Log.d(TAG, "장바구니에 추가 성공")
+            Log.d(TAG, "장바구니에서 추가 성공")
         } else {
-            Log.e(TAG, "장바구니에 추가 실패: ${response.code()}")
+            Log.e(TAG, "장바구니에서 추가 실패: ${response.code()}")
+        }
+        return response.isSuccessful
+    }
+
+    override suspend fun updateToCart(token: String, items: ArrayList<CartItem>): Boolean {
+        val response = api.updateToCart(token, items)
+        if (response.isSuccessful) {
+            Log.d(TAG, "장바구니 수정 성공")
+        } else {
+            Log.e(TAG, "장바구니 수정 실패: ${response.code()}")
         }
         return response.isSuccessful
     }
