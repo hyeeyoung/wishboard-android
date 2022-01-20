@@ -28,23 +28,34 @@ interface RemoteService {
     @GET("item")
     suspend fun fetchWishList(@Header("Authorization") token: String): Response<List<WishItem>>?
 
-    @GET("cart")
-    suspend fun fetchCart(@Header("Authorization") token: String): Response<List<CartItem>>?
-
     @POST("item")
-    suspend fun uploadWishItem(@Header("Authorization") token: String, @Body wishItem: WishItemRegistrationInfo): Response<RequestResult>
+    suspend fun uploadWishItem(
+        @Header("Authorization") token: String,
+        @Body wishItem: WishItemRegistrationInfo
+    ): Response<RequestResult>
 
     // 장바구니
+    @FormUrlEncoded
     @POST("cart")
     suspend fun addToCart(
         @Header("Authorization") token: String,
-        @Body item_id: Long
+        @Field("item_id") itemId: Long
     ): Response<RequestResult>
 
+    @GET("cart")
+    suspend fun fetchCart(@Header("Authorization") token: String): Response<List<CartItem>>?
+
+    @PUT("cart")
+    suspend fun updateToCart(
+        @Header("Authorization") token: String,
+        @Body cartItem: ArrayList<CartItem>
+    ): Response<RequestResult>
+
+    @FormUrlEncoded
     @HTTP(method = "DELETE", path = "cart", hasBody = true)
     suspend fun removeToCart(
         @Header("Authorization") token: String,
-        @Body item_id: Long
+        @Field("item_id") itemId: Long
     ): Response<RequestResult>
 
     companion object {

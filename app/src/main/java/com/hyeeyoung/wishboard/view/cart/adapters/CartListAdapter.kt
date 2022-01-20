@@ -1,13 +1,14 @@
 package com.hyeeyoung.wishboard.view.cart.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.databinding.ItemCartBinding
 import com.hyeeyoung.wishboard.model.cart.CartItem
-import com.hyeeyoung.wishboard.view.cart.screens.CartFragment.Companion.VIEW_TYPE_CONTAINER
+import com.hyeeyoung.wishboard.model.cart.CartItemButtonType
 
 class CartListAdapter(
     private val context: Context
@@ -16,8 +17,7 @@ class CartListAdapter(
     private lateinit var listener: OnItemClickListener
 
     interface OnItemClickListener {
-        fun onItemDeleteButtonClick(item: CartItem, isSelected: Boolean)
-        fun onItemClick(item: CartItem, viewType: String)
+        fun onItemClick(item: CartItem, position: Int, viewType: CartItemButtonType)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -33,11 +33,19 @@ class CartListAdapter(
                 this.item = item
                 Glide.with(context).load(item.wishItem.image).into(itemImage)
                 delete.setOnClickListener {
-                    listener.onItemDeleteButtonClick(item, it.isSelected)
+                    listener.onItemClick(item, position, CartItemButtonType.VIEW_TYPE_DELETION)
                     removeItem(position)
                 }
                 container.setOnClickListener {
-                    listener.onItemClick(item, VIEW_TYPE_CONTAINER)
+                    listener.onItemClick(item, position, CartItemButtonType.VIEW_TYPE_CONTAINER)
+                }
+                plus.setOnClickListener {
+                    listener.onItemClick(item, position, CartItemButtonType.VIEW_TYPE_PLUS)
+//                    updateItem(position, item) //TODO
+                }
+                minus.setOnClickListener {
+                    listener.onItemClick(item, position, CartItemButtonType.VIEW_TYPE_MINUS)
+//                    updateItem(position, item) //TODO
                 }
             }
         }
@@ -65,11 +73,16 @@ class CartListAdapter(
         dataSet.clear()
         dataSet.addAll(items)
         notifyDataSetChanged()
-//        selectedCartButtons = Array(dataSet.size) { false }
     }
 
     fun removeItem(position: Int) {
         dataSet.removeAt(position)
+        notifyItemRemoved(position)
+    }
+
+    //TODO 해당 코드 확인 필요
+    fun updateItem(position: Int, cartItem: CartItem) {
+        dataSet[position] = cartItem
         notifyItemChanged(position)
     }
 }

@@ -4,6 +4,7 @@ import com.hyeeyoung.wishboard.model.cart.CartItem
 
 interface CartRepository {
     suspend fun addToCart(token: String, itemId: Long): Boolean
+    suspend fun updateToCart(token: String, items: ArrayList<CartItem>): Boolean
     suspend fun removeToCart(token: String, itemId: Long): Boolean
     suspend fun fetchCartList(token: String): List<CartItem>?
 }
