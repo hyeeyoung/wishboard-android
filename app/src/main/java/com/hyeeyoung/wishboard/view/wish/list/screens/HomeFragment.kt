@@ -24,7 +24,7 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         initializeView()
@@ -35,7 +35,7 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
     }
 
     private fun initializeView() {
-        adapter = WishListAdapter(requireContext())
+        adapter = viewModel.getWishListAdapter()
         adapter.setOnItemClickListener(this)
         binding.wishList.adapter = adapter
         binding.wishList.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -66,11 +66,11 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
         )
     }
 
-    override fun onCartBtnClick(itemId: Long, isSelected: Boolean) {
-        if (isSelected) {
-            viewModel.addToCart(itemId)
+    override fun onCartBtnClick(position: Int, item: WishItem, isSelected: Boolean) {
+        if (!isSelected) {
+            viewModel.addToCart(position, item)
         } else {
-            viewModel.removeToCart(itemId)
+            viewModel.removeToCart(position, item)
         }
     }
 

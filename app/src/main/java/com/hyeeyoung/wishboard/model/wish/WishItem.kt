@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class WishItem (
+data class WishItem(
     @SerializedName("folder_id")
     val folderId: Long? = null,
     @SerializedName("folder_name")
@@ -19,7 +19,7 @@ data class WishItem (
     @SerializedName("item_price")
     val price: Int? = null,
     @SerializedName("item_url")
-    val url: String?= null,
+    val url: String? = null,
     @SerializedName("item_memo")
     val memo: String? = null,
     @SerializedName("create_at")
@@ -29,5 +29,5 @@ data class WishItem (
     @SerializedName("item_notification_date")
     val notiDate: String? = null,
     @SerializedName("cart_item_id")
-    val cartId: Long? = null,
-): Parcelable
+    var cartId: Long? = null, // TODO isAddedCart: Boolean 으로 변경 논의 필요
+) : Parcelable
