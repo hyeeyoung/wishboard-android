@@ -28,6 +28,7 @@ data class WishItem(
     val notiType: String? = null,
     @SerializedName("item_notification_date")
     val notiDate: String? = null,
-    @SerializedName("cart_item_id")
-    var cartId: Long? = null, // TODO isAddedCart: Boolean 으로 변경 논의 필요
+    /** cartState(1) : 장바구니에 존재, cartState(0) : 장바구니에 존재 X*/
+    @SerializedName("cart_state")
+    var cartState: Int? = null,
 ) : Parcelable

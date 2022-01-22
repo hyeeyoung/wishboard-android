@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.databinding.ItemWishBinding
+import com.hyeeyoung.wishboard.model.cart.CartStateType
 import com.hyeeyoung.wishboard.model.wish.WishItem
 
 class WishListAdapter(
@@ -16,7 +17,7 @@ class WishListAdapter(
 
     interface OnItemClickListener {
         fun onItemClick(item: WishItem)
-        fun onCartBtnClick(position: Int, item: WishItem, isSelected: Boolean)
+        fun onCartBtnClick(position: Int, item: WishItem)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -30,14 +31,14 @@ class WishListAdapter(
             with(binding) {
                 this.item = item
                 Glide.with(context).load(item.image).into(itemImage)
-                binding.cart.isSelected = item.cartId != null
+                binding.cart.isSelected = item.cartState == CartStateType.IN_CART.numValue
 
                 container.setOnClickListener {
                     listener.onItemClick(item)
                 }
 
                 cart.setOnClickListener {
-                    listener.onCartBtnClick(position, item, binding.cart.isSelected)
+                    listener.onCartBtnClick(position, item)
                 }
             }
         }
