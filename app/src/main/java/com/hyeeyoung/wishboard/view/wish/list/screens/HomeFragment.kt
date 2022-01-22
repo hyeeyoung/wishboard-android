@@ -51,6 +51,7 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
         }
     }
 
+    // TODO addObservers() 삭제 -> viewModel에서 adapter.setData() 호출
     private fun addObservers() {
         viewModel.getWishList().observe(viewLifecycleOwner) {
             it?.let {
@@ -66,12 +67,8 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
         )
     }
 
-    override fun onCartBtnClick(position: Int, item: WishItem, isSelected: Boolean) {
-        if (!isSelected) {
-            viewModel.addToCart(position, item)
-        } else {
-            viewModel.removeToCart(position, item)
-        }
+    override fun onCartBtnClick(position: Int, item: WishItem) {
+        viewModel.toggleCartState(position, item)
     }
 
     companion object {

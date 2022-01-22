@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hyeeyoung.wishboard.model.cart.CartStateType
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.repository.cart.CartRepository
 import com.hyeeyoung.wishboard.repository.wish.WishRepository
@@ -41,29 +42,31 @@ class WishViewModel @Inject constructor(
         }
     }
 
-    fun addToCart(position: Int, item: WishItem) {
+    fun toggleCartState(position: Int, item: WishItem) {
         if (token == null) return
         viewModelScope.launch {
-            val isSuccessful = cartRepository.addToCart(token, item.id ?: return@launch)
+            val isInCart = item.cartState == CartStateType.IN_CART.numValue
+            val isSuccessful =
+                if (isInCart) {
+                    cartRepository.removeToCart(token, item.id ?: return@launch)
+                } else {
+                    cartRepository.addToCart(token, item.id ?: return@launch)
+                }
             if (!isSuccessful) return@launch // TODO 네트워크 연결 실패, 그 외 나머지 예외 처리 -> 스낵바 띄우기
+
             item.also { wishItem ->
-                wishItem.cartId = wishItem.id
+                wishItem.cartState = toggleCartState(wishItem.cartState)
                 wishList.value?.set(position, wishItem)
                 wishListAdapter.updateData(position, wishItem)
             }
         }
     }
 
-    fun removeToCart(position: Int, item: WishItem) {
-        if (token == null) return
-        viewModelScope.launch {
-            val isSuccessful = cartRepository.removeToCart(token, item.id ?: return@launch)
-            if (!isSuccessful) return@launch // TODO 예외 처리 필요, 스낵바 띄우기
-            item.also { wishItem ->
-                wishItem.cartId = null // TODO 서버에서 cartId(-> isAddedCart) 값의 null 여부에 따라 0, 1(Boolean)로 수정할 수 있는지 논의 필요
-                wishList.value?.set(position, wishItem)
-                wishListAdapter.updateData(position, wishItem)
-            }
+    private fun toggleCartState(stateValue: Int?): Int {
+        return if (stateValue == CartStateType.IN_CART.numValue) {
+            CartStateType.NOT_IN_CART.numValue
+        } else {
+            CartStateType.IN_CART.numValue
         }
     }
 
