@@ -13,36 +13,35 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentCartBinding
 import com.hyeeyoung.wishboard.model.cart.CartItem
+import com.hyeeyoung.wishboard.model.cart.CartItemButtonType
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.view.cart.adapters.CartListAdapter
 import com.hyeeyoung.wishboard.viewmodel.CartViewModel
-import com.hyeeyoung.wishboard.model.cart.CartItemButtonType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
     private lateinit var binding: FragmentCartBinding
     private val viewModel: CartViewModel by viewModels()
-    private lateinit var cartAdapter: CartListAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentCartBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this@CartFragment
 
         initializeView()
-        addListeners()
-        addObservers()
 
         return binding.root
     }
 
     private fun initializeView() {
-        cartAdapter = CartListAdapter(requireContext())
-        cartAdapter.setOnItemClickListener(this)
+        val adapter = viewModel.getCartListAdapter()
+        adapter.setOnItemClickListener(this)
         binding.cartList.run {
-            adapter = cartAdapter
+            this.adapter = adapter
             layoutManager = LinearLayoutManager(requireContext())
             binding.cartList.addItemDecoration(
                 DividerItemDecoration(
@@ -50,21 +49,6 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
                     LinearLayoutManager(requireContext()).orientation
                 )
             )
-        }
-    }
-
-    private fun addListeners() {
-        binding.back.setOnClickListener {
-            findNavController().popBackStack()
-//            viewModel.updateToCart() //TODO 서버 update api 호출 (arrayList<CartItem> 형태로 요청)
-        }
-    }
-
-    private fun addObservers() {
-        viewModel.getCartList().observe(viewLifecycleOwner) {
-            it?.let {
-                cartAdapter.setData(it)
-            }
         }
     }
 
@@ -79,13 +63,8 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
             CartItemButtonType.VIEW_TYPE_DELETION -> {
                 viewModel.removeToCart(item.wishItem.id!!)
             }
-            CartItemButtonType.VIEW_TYPE_PLUS -> {
-                viewModel.changeCountControl(item, position, CartItemButtonType.VIEW_TYPE_PLUS)
-                cartAdapter.updateItem(position, item)
-            }
-            CartItemButtonType.VIEW_TYPE_MINUS -> {
-                viewModel.changeCountControl(item, position, CartItemButtonType.VIEW_TYPE_MINUS)
-                cartAdapter.updateItem(position, item)
+            CartItemButtonType.VIEW_TYPE_PLUS, CartItemButtonType.VIEW_TYPE_MINUS -> {
+                viewModel.controlItemCount(item, position, viewType)
             }
         }
     }

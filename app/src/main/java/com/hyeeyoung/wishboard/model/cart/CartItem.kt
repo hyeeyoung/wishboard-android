@@ -9,6 +9,6 @@ data class CartItem(
 ) {
     data class CartItemInfo(
         @SerializedName("item_count")
-        val count: Int
+        var count: Int
     )
 }

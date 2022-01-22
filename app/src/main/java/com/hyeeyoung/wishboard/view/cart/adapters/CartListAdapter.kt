@@ -1,7 +1,6 @@
 package com.hyeeyoung.wishboard.view.cart.adapters
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -41,11 +40,9 @@ class CartListAdapter(
                 }
                 plus.setOnClickListener {
                     listener.onItemClick(item, position, CartItemButtonType.VIEW_TYPE_PLUS)
-//                    updateItem(position, item) //TODO
                 }
                 minus.setOnClickListener {
                     listener.onItemClick(item, position, CartItemButtonType.VIEW_TYPE_MINUS)
-//                    updateItem(position, item) //TODO
                 }
             }
         }
