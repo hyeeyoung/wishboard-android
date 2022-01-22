@@ -35,6 +35,9 @@ interface RemoteService {
     ): Response<RequestResult>
 
     // 장바구니
+    @GET("cart")
+    suspend fun fetchCart(@Header("Authorization") token: String): Response<List<CartItem>>?
+
     @FormUrlEncoded
     @POST("cart")
     suspend fun addToCart(
@@ -42,20 +45,19 @@ interface RemoteService {
         @Field("item_id") itemId: Long
     ): Response<RequestResult>
 
-    @GET("cart")
-    suspend fun fetchCart(@Header("Authorization") token: String): Response<List<CartItem>>?
-
-    @PUT("cart")
-    suspend fun updateToCart(
-        @Header("Authorization") token: String,
-        @Body cartItem: ArrayList<CartItem>
-    ): Response<RequestResult>
-
     @FormUrlEncoded
     @HTTP(method = "DELETE", path = "cart", hasBody = true)
     suspend fun removeToCart(
         @Header("Authorization") token: String,
         @Field("item_id") itemId: Long
+    ): Response<RequestResult>
+
+    @FormUrlEncoded
+    @PUT("cart")
+    suspend fun updateToCart(
+        @Header("Authorization") token: String,
+        @Field("item_id") itemId: Long,
+        @Field("item_count") itemCount: Int
     ): Response<RequestResult>
 
     companion object {

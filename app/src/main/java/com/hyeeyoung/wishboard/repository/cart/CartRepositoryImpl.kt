@@ -17,8 +17,9 @@ class CartRepositoryImpl : CartRepository {
         return response.isSuccessful
     }
 
-    override suspend fun updateToCart(token: String, items: ArrayList<CartItem>): Boolean {
-        val response = api.updateToCart(token, items)
+    override suspend fun updateCartInfo(token: String, item: CartItem): Boolean {
+        if (item.wishItem.id == null) return false
+        val response = api.updateToCart(token, item.wishItem.id, item.cartItemInfo.count)
         if (response.isSuccessful) {
             Log.d(TAG, "장바구니 수정 성공")
         } else {
