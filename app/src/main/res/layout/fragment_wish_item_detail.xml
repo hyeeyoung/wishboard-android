@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.hyeeyoung.wishboard.viewmodel.WishViewModel" />
+            type="com.hyeeyoung.wishboard.viewmodel.WishListViewModel" />
 
         <import type="androidx.navigation.Navigation" />
 

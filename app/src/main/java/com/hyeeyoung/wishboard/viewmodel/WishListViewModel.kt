@@ -18,8 +18,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WishViewModel @Inject constructor(
-    // TODO WishListViewModel로 이름 변경
+class WishListViewModel @Inject constructor(
     private val application: Application,
     private val wishRepository: WishRepository,
     private val cartRepository: CartRepository,
@@ -86,6 +85,6 @@ class WishViewModel @Inject constructor(
     fun getWishListAdapter(): WishListAdapter = wishListAdapter
 
     companion object {
-        private val TAG = "WishViewModel"
+        private const val TAG = "WishListViewModel"
     }
 }

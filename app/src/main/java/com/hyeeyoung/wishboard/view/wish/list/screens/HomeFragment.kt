@@ -14,11 +14,11 @@ import com.hyeeyoung.wishboard.databinding.FragmentHomeBinding
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.view.wish.list.adapters.WishListAdapter
-import com.hyeeyoung.wishboard.viewmodel.WishViewModel
+import com.hyeeyoung.wishboard.viewmodel.WishListViewModel
 
 class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
     private lateinit var binding: FragmentHomeBinding
-    private val viewModel: WishViewModel by activityViewModels()
+    private val viewModel: WishListViewModel by activityViewModels()
     private lateinit var adapter: WishListAdapter
 
     override fun onCreateView(
