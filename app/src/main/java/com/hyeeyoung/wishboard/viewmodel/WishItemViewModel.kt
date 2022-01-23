@@ -15,7 +15,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.hyeeyoung.wishboard.model.wish.WishItemRegistrationInfo
+import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.remote.AWSS3Service
 import com.hyeeyoung.wishboard.repository.common.GalleryPagingDataSource
 import com.hyeeyoung.wishboard.repository.common.GalleryRepository
@@ -109,15 +109,15 @@ class WishItemViewModel @Inject constructor(
 
                 val isSuccessful = AWSS3Service().uploadFile(imageFile.name, imageFile)
                 if (!isSuccessful) return@withContext
-                val wishItemRegistrationInfo =
-                    WishItemRegistrationInfo(
-                        itemName,
-                        imageFile.name,
-                        itemPrice.value?.toIntOrNull() ?: 0,
-                        siteUrl,
-                        itemMemo.value?.trim()
-                    ) // TODO WishItem 으로 변경
-                val isComplete = wishRepository.uploadWishItem(token, wishItemRegistrationInfo)
+
+                val item = WishItem(
+                    name = itemName,
+                    image = imageFile.name,
+                    price = itemPrice.value?.toIntOrNull() ?: 0,
+                    url = siteUrl,
+                    memo = itemMemo.value?.trim()
+                )
+                val isComplete = wishRepository.uploadWishItem(token, item)
                 isCompleteUpload.postValue(isComplete)
             }
         }
@@ -131,15 +131,14 @@ class WishItemViewModel @Inject constructor(
                     cameraImageFile ?: copyImageToInternalStorage(imageUrl) ?: return@withContext
 
                 AWSS3Service().uploadFile(file.name, file)
-                val wishItemRegistrationInfo =
-                    WishItemRegistrationInfo(
-                        name,
-                        file.name,
-                        itemPrice.value?.toIntOrNull() ?: 0,
-                        itemUrl.value,
-                        itemMemo.value?.trim()
-                    )
-                val isComplete = wishRepository.uploadWishItem(token, wishItemRegistrationInfo)
+                val item = WishItem(
+                    name = name,
+                    image = file.name,
+                    price = itemPrice.value?.toIntOrNull() ?: 0,
+                    url = itemUrl.value,
+                    memo = itemMemo.value?.trim()
+                )
+                val isComplete = wishRepository.uploadWishItem(token, item)
                 isCompleteUpload.postValue(isComplete)
             }
         }
