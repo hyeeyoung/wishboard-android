@@ -9,4 +9,4 @@ assignees: youngjinc
 
 ## What happened? 🤷‍♀️
 
-## How to encounter/reproduce bug 🐛
+## How to encounter bug 🐛
