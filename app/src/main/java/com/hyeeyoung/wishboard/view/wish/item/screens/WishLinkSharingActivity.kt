@@ -11,14 +11,14 @@ import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ActivityWishLinkSharingBinding
 import com.hyeeyoung.wishboard.util.NumberPickerUtil
-import com.hyeeyoung.wishboard.viewmodel.WishItemViewModel
+import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class WishLinkSharingActivity : AppCompatActivity() {
-    private val viewModel: WishItemViewModel by viewModels()
+    private val viewModel: WishItemRegistrationViewModel by viewModels()
     private lateinit var binding: ActivityWishLinkSharingBinding
     /** 알림 type, date 설정 객체 */
     private var numberPickerUtil = NumberPickerUtil()

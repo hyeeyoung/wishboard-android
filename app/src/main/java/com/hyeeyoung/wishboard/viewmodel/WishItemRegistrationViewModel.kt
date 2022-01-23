@@ -38,7 +38,7 @@ import java.net.URL
 import javax.inject.Inject
 
 @HiltViewModel
-class WishItemViewModel @Inject constructor(
+class WishItemRegistrationViewModel @Inject constructor(
     private val application: Application,
     private val wishRepository: WishRepository,
     private val galleryRepository: GalleryRepository,
@@ -55,7 +55,6 @@ class WishItemViewModel @Inject constructor(
     private var cameraImageFile: File? = null
 
     private val token = prefs?.getUserToken()
-    private var wishItem = MutableLiveData<WishItem>()
 
     /** 오픈그래프 메타태그 파싱을 통해 아이템 정보 가져오기 */
     suspend fun getWishItemInfo(url: String) {
@@ -261,10 +260,6 @@ class WishItemViewModel @Inject constructor(
         isCompleteUpload.value = isCompleted
     }
 
-    fun setWishItem(wishItem: WishItem) {
-        this.wishItem.value = wishItem
-    }
-
     /*
      갤러리 이미지 선택 화면 진입 -> 아이템 등록 화면 복귀 -> 갤러리 이미지 선택 화면 재진입 concurrentmodificationexception 발생
      해당 예외 발생을 방지하고자 갤러리 이미지 선택 화면 진입 시 기존 이미지 clear
@@ -283,9 +278,7 @@ class WishItemViewModel @Inject constructor(
     fun getGalleryImageUris(): LiveData<PagingData<Uri>?> = galleryImageUris
     fun getSelectedGalleryImageUri(): LiveData<Uri?> = selectedGalleryImageUri
 
-    fun getWishItem(): LiveData<WishItem> = wishItem
-
     companion object {
-        private const val TAG = "WishItemViewModel"
+        private const val TAG = "WishItemRegistrationViewModel"
     }
 }
