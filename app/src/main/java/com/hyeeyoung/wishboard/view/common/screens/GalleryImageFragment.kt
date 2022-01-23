@@ -73,7 +73,7 @@ class GalleryImageFragment : Fragment(),
     }
 
     private fun takePicture() {
-        val imageFile = viewModel.createFile() ?: return
+        val imageFile = viewModel.createCameraImageFile() ?: return
         photoUri = FileProvider.getUriForFile(
             requireContext(),
             "$APPLICATION_ID.fileprovider",

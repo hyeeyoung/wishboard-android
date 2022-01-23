@@ -13,7 +13,7 @@ data class WishItem(
     @SerializedName("item_id")
     val id: Long? = null,
     @SerializedName("item_img")
-    val image: String,
+    val image: String, // TODO String?으로 타입 변경
     @SerializedName("item_name")
     val name: String,
     @SerializedName("item_price")
@@ -31,4 +31,36 @@ data class WishItem(
     /** cartState(1) : 장바구니에 존재, cartState(0) : 장바구니에 존재 X*/
     @SerializedName("cart_state")
     var cartState: Int? = null,
-) : Parcelable
+) : Parcelable {
+    companion object {
+        fun from(url: String, wishItem: WishItem): WishItem {
+            val folderId = wishItem.folderId
+            val folderName = wishItem.folderName
+            val id = wishItem.id
+            val image = url
+            val name = wishItem.name
+            val price = wishItem.price
+            val url = wishItem.url
+            val memo = wishItem.memo
+            val createAt = wishItem.createAt
+            val notiType = wishItem.notiType
+            val notiDate = wishItem.notiDate
+            var cartState = wishItem.cartState // TODO CartStateType으로 타입 변환 고려
+
+            return WishItem(
+                folderId = folderId,
+                folderName = folderName,
+                id = id,
+                image = image,
+                name = name,
+                price = price,
+                url = url,
+                memo = memo,
+                createAt = createAt,
+                notiType = notiType,
+                notiDate = notiDate,
+                cartState = cartState
+            )
+        }
+    }
+}

@@ -1,18 +1,19 @@
 package com.hyeeyoung.wishboard.viewmodel
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.model.cart.CartStateType
 import com.hyeeyoung.wishboard.model.wish.WishItem
+import com.hyeeyoung.wishboard.remote.AWSS3Service
 import com.hyeeyoung.wishboard.repository.cart.CartRepository
 import com.hyeeyoung.wishboard.repository.wish.WishRepository
 import com.hyeeyoung.wishboard.util.prefs
 import com.hyeeyoung.wishboard.view.wish.list.adapters.WishListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -35,10 +36,16 @@ class WishViewModel @Inject constructor(
 
     fun fetchWishList() {
         if (token == null) return
-        Log.d(TAG, "token: $token")
-        viewModelScope.launch {
-            val items = wishRepository.fetchWishList(token)
-            wishList.postValue(items?.toMutableList())
+        val wishItems = mutableListOf<WishItem>()
+        viewModelScope.launch(Dispatchers.IO) {
+            val items = wishRepository.fetchWishList(token) // TODO refactoring
+            items?.forEach { item ->
+                val imageUrl = AWSS3Service().getImageUrl(item.image)
+                imageUrl?.let { url ->
+                    wishItems.add(WishItem.from(url, item))
+                }
+            }
+            wishList.postValue(wishItems)
         }
     }
 

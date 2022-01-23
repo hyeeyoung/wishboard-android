@@ -11,18 +11,17 @@ import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ActivityWishLinkSharingBinding
 import com.hyeeyoung.wishboard.util.NumberPickerUtil
-import com.hyeeyoung.wishboard.viewmodel.WishLinkSharingViewModel
+import com.hyeeyoung.wishboard.viewmodel.WishItemViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class WishLinkSharingActivity : AppCompatActivity() {
-    private val viewModel: WishLinkSharingViewModel by viewModels()
+    private val viewModel: WishItemViewModel by viewModels()
     private lateinit var binding: ActivityWishLinkSharingBinding
-
-    // @param : 아이템 저장을 위한 아이템 및 알림 객체
-    var numberPickerUtil = NumberPickerUtil()
+    /** 알림 type, date 설정 객체 */
+    private var numberPickerUtil = NumberPickerUtil()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +65,7 @@ class WishLinkSharingActivity : AppCompatActivity() {
     private fun addListeners() {
         binding.add.setOnClickListener {
             lifecycleScope.launch {
-                viewModel.uploadWishList()
+                viewModel.uploadWishItemByLinkSharing()
             }
         }
         binding.cancel.setOnClickListener {
@@ -80,7 +79,7 @@ class WishLinkSharingActivity : AppCompatActivity() {
             Glide.with(this).load(image).into(binding.itemImage)
         }
         viewModel.isCompleteUpload().observe(this) { isComplete ->
-            if (isComplete) {
+            if (isComplete == true) {
                 Toast.makeText(
                     this,
                     getString(R.string.wish_item_registration_toast_text),
