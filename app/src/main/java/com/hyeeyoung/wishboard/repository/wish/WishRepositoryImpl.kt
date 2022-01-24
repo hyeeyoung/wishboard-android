@@ -29,6 +29,17 @@ class WishRepositoryImpl : WishRepository {
         return response.isSuccessful
     }
 
+    override suspend fun deleteWishItem(token: String, itemId: Long): Boolean {
+        val response = api.deleteWishItem(token, itemId)
+
+        if (response.isSuccessful) {
+            Log.d(TAG, "아이템 삭제 성공")
+        } else {
+            Log.e(TAG, "아이템 삭제 실패: ${response.code()}")
+        }
+        return response.isSuccessful
+    }
+
     companion object {
         private const val TAG = "WishRepositoryImpl"
     }

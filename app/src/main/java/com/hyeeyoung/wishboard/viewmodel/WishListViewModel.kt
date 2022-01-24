@@ -75,6 +75,11 @@ class WishListViewModel @Inject constructor(
         }
     }
 
+    fun deleteWishItem(position: Int, wishItem: WishItem) {
+        wishList.value?.remove(wishItem)
+        wishListAdapter.deleteData(position, wishItem)
+    }
+
     fun getWishList(): LiveData<MutableList<WishItem>?> = wishList
     fun getWishListAdapter(): WishListAdapter = wishListAdapter
 

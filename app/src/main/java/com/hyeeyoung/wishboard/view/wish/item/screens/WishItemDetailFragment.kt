@@ -6,8 +6,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentWishItemDetailBinding
@@ -19,6 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class WishItemDetailFragment : Fragment() {
     private lateinit var binding: FragmentWishItemDetailBinding
     private val viewModel: WishItemViewModel by hiltNavGraphViewModels(R.id.wish_item_nav_graph)
+    private var position: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,6 +34,8 @@ class WishItemDetailFragment : Fragment() {
 
         arguments?.let {
             val wishItem = it[ARG_WISH_ITEM] as? WishItem
+            position = it[ARG_WISH_ITEM_POSITION] as? Int
+
             if (wishItem != null) {
                 viewModel.setWishItem(wishItem)
             }
@@ -48,10 +54,33 @@ class WishItemDetailFragment : Fragment() {
             }
             Glide.with(requireContext()).load(wishItem.image).into(binding.itemImage)
         }
+
+        viewModel.getIsCompleteDeletion().observe(viewLifecycleOwner) { isComplete ->
+            if (isComplete == true) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.wish_item_deletion_toast_text),
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                moveToMain()
+            }
+        }
+    }
+
+    private fun moveToMain() {
+        val navController = findNavController()
+        navController.previousBackStackEntry?.savedStateHandle?.set(ARG_WISH_ITEM_INFO, bundleOf(
+            ARG_WISH_ITEM to viewModel.getWishItem().value,
+            ARG_WISH_ITEM_POSITION to position
+        ))
+        navController.popBackStack()
     }
 
     companion object {
         private const val TAG = "WishItemDetailFragment"
         private const val ARG_WISH_ITEM = "wishItem"
+        private const val ARG_WISH_ITEM_POSITION = "position"
+        private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
     }
 }

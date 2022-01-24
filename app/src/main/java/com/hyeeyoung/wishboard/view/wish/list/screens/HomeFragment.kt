@@ -13,6 +13,7 @@ import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentHomeBinding
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
+import com.hyeeyoung.wishboard.util.safeLet
 import com.hyeeyoung.wishboard.view.wish.list.adapters.WishListAdapter
 import com.hyeeyoung.wishboard.viewmodel.WishListViewModel
 
@@ -58,12 +59,27 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
                 adapter.setData(it)
             }
         }
+
+        // 상세조회에서 아이템 삭제 완료 후 홈으로 복귀했을 때 해당 아이템 정보를 전달받고, ui를 업데이트
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
+            ARG_WISH_ITEM_INFO
+        )?.observe(viewLifecycleOwner) {
+            safeLet(
+                it[ARG_WISH_ITEM_POSITION] as? Int,
+                it[ARG_WISH_ITEM] as? WishItem
+            ) { position, withITem ->
+                viewModel.deleteWishItem(position, withITem)
+            }
+        }
     }
 
-    override fun onItemClick(item: WishItem) {
+    override fun onItemClick(position: Int, item: WishItem) {
         findNavController().navigateSafe(
             R.id.action_home_to_wish_item_detail,
-            bundleOf(ARG_WISH_ITEM to item)
+            bundleOf(
+                ARG_WISH_ITEM_POSITION to position,
+                ARG_WISH_ITEM to item,
+            )
         )
     }
 
@@ -73,6 +89,8 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
 
     companion object {
         private const val TAG = "HomeFragment"
-        const val ARG_WISH_ITEM = "wishItem"
+        private const val ARG_WISH_ITEM = "wishItem"
+        private const val ARG_WISH_ITEM_POSITION = "position"
+        private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
     }
 }
