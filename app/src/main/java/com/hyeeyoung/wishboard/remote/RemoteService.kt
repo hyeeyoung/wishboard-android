@@ -33,11 +33,10 @@ interface RemoteService {
         @Body wishItem: WishItem
     ): Response<RequestResult>
 
-    @FormUrlEncoded
-    @HTTP(method = "DELETE", path = "item", hasBody = true)
+    @DELETE("item/{item_id}")
     suspend fun deleteWishItem(
         @Header("Authorization") token: String,
-        @Field("item_id") itemId: Long
+        @Path("item_id") itemId: Long
     ): Response<RequestResult>
 
     // 장바구니
