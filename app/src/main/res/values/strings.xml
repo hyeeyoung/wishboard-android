@@ -51,6 +51,7 @@
 
     <!-- Detail -->
     <string name="go_to_shop_btn_text">쇼핑몰로 이동하기</string>
+    <string name="wish_item_deletion_toast_text">위시리스트에서 삭제되었습니다</string>
 
     <!-- Notification -->
     <string name="noti_title">알림</string>

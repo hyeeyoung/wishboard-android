@@ -16,7 +16,7 @@ class WishListAdapter(
     private lateinit var listener: OnItemClickListener
 
     interface OnItemClickListener {
-        fun onItemClick(item: WishItem)
+        fun onItemClick(position: Int, item: WishItem)
         fun onCartBtnClick(position: Int, item: WishItem)
     }
 
@@ -34,7 +34,7 @@ class WishListAdapter(
                 binding.cart.isSelected = item.cartState == CartStateType.IN_CART.numValue
 
                 container.setOnClickListener {
-                    listener.onItemClick(item)
+                    listener.onItemClick(position, item)
                 }
 
                 cart.setOnClickListener {
@@ -66,6 +66,11 @@ class WishListAdapter(
     fun updateData(position: Int, wishItem: WishItem) {
         dataSet[position] = wishItem
         notifyItemChanged(position)
+    }
+
+    fun deleteData(position: Int, wishItem: WishItem) {
+        dataSet.remove(wishItem)
+        notifyItemRemoved(position)
     }
 
     fun setData(items: List<WishItem>) {
