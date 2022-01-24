@@ -52,14 +52,7 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
         }
     }
 
-    // TODO addObservers() 삭제 -> viewModel에서 adapter.setData() 호출
     private fun addObservers() {
-        viewModel.getWishList().observe(viewLifecycleOwner) {
-            it?.let {
-                adapter.setData(it)
-            }
-        }
-
         // 상세조회에서 아이템 삭제 완료 후 홈으로 복귀했을 때 해당 아이템 정보를 전달받고, ui를 업데이트
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
             ARG_WISH_ITEM_INFO

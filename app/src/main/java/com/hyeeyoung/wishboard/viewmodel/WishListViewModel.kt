@@ -1,7 +1,6 @@
 package com.hyeeyoung.wishboard.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,6 +14,7 @@ import com.hyeeyoung.wishboard.view.wish.list.adapters.WishListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,7 +23,6 @@ class WishListViewModel @Inject constructor(
     private val wishRepository: WishRepository,
     private val cartRepository: CartRepository,
 ) : ViewModel() {
-    private var wishList = MutableLiveData<MutableList<WishItem>>(mutableListOf())
     private val wishListAdapter = WishListAdapter(application)
 
     private val token = prefs?.getUserToken()
@@ -35,15 +34,20 @@ class WishListViewModel @Inject constructor(
     fun fetchWishList() {
         if (token == null) return
         val wishItems = mutableListOf<WishItem>()
-        viewModelScope.launch(Dispatchers.IO) {
-            val items = wishRepository.fetchWishList(token) // TODO refactoring
-            items?.forEach { item ->
-                val imageUrl = AWSS3Service().getImageUrl(item.image)
-                imageUrl?.let { url ->
-                    wishItems.add(WishItem.from(url, item))
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val items = wishRepository.fetchWishList(token) // TODO refactoring
+                items?.forEach { item ->
+                    item.image?.let { imageName ->
+                        AWSS3Service().getImageUrl(imageName)?.let { imageUrl ->
+                            wishItems.add(WishItem.from(imageUrl, item))
+                        }
+                    }
                 }
             }
-            wishList.postValue(wishItems)
+            withContext(Dispatchers.Main) {
+                wishListAdapter.setData(wishItems)
+            }
         }
     }
 
@@ -61,7 +65,6 @@ class WishListViewModel @Inject constructor(
 
             item.also { wishItem ->
                 wishItem.cartState = toggleCartState(wishItem.cartState)
-                wishList.value?.set(position, wishItem)
                 wishListAdapter.updateData(position, wishItem)
             }
         }
@@ -76,11 +79,9 @@ class WishListViewModel @Inject constructor(
     }
 
     fun deleteWishItem(position: Int, wishItem: WishItem) {
-        wishList.value?.remove(wishItem)
         wishListAdapter.deleteData(position, wishItem)
     }
 
-    fun getWishList(): LiveData<MutableList<WishItem>?> = wishList
     fun getWishListAdapter(): WishListAdapter = wishListAdapter
 
     companion object {
