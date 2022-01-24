@@ -2,7 +2,6 @@ package com.hyeeyoung.wishboard.repository.wish
 
 import android.util.Log
 import com.hyeeyoung.wishboard.model.wish.WishItem
-import com.hyeeyoung.wishboard.model.wish.WishItemRegistrationInfo
 import com.hyeeyoung.wishboard.remote.RemoteService
 
 class WishRepositoryImpl : WishRepository {
@@ -19,7 +18,7 @@ class WishRepositoryImpl : WishRepository {
         return response.body()
     }
 
-    override suspend fun uploadWishItem(token: String, wishItem: WishItemRegistrationInfo): Boolean {
+    override suspend fun uploadWishItem(token: String, wishItem: WishItem): Boolean {
         val response = api.uploadWishItem(token, wishItem)
 
         if (response.isSuccessful) {

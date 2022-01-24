@@ -12,13 +12,13 @@ import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentWishItemDetailBinding
 import com.hyeeyoung.wishboard.model.wish.WishItem
-import com.hyeeyoung.wishboard.viewmodel.WishViewModel
+import com.hyeeyoung.wishboard.viewmodel.WishItemViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class WishItemDetailFragment : Fragment() {
     private lateinit var binding: FragmentWishItemDetailBinding
-    private val viewModel: WishViewModel by hiltNavGraphViewModels(R.id.wish_item_nav_graph)
+    private val viewModel: WishItemViewModel by hiltNavGraphViewModels(R.id.wish_item_nav_graph)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,6 +51,7 @@ class WishItemDetailFragment : Fragment() {
     }
 
     companion object {
-        const val ARG_WISH_ITEM = "wishItem"
+        private const val TAG = "WishItemDetailFragment"
+        private const val ARG_WISH_ITEM = "wishItem"
     }
 }

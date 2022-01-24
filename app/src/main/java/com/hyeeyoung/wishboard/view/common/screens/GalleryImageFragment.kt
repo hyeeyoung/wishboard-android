@@ -17,7 +17,7 @@ import com.hyeeyoung.wishboard.BuildConfig.APPLICATION_ID
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentGalleryImageBinding
 import com.hyeeyoung.wishboard.view.common.adapters.GalleryPagingAdapter
-import com.hyeeyoung.wishboard.viewmodel.WishItemViewModel
+import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -26,7 +26,7 @@ class GalleryImageFragment : Fragment(),
     GalleryPagingAdapter.OnItemClickListener {
     private lateinit var binding: FragmentGalleryImageBinding
     private lateinit var adapter: GalleryPagingAdapter
-    private val viewModel: WishItemViewModel by hiltNavGraphViewModels(R.id.wish_item_registration_nav_graph)
+    private val viewModel: WishItemRegistrationViewModel by hiltNavGraphViewModels(R.id.wish_item_registration_nav_graph)
     private var photoUri: Uri? = null
 
     override fun onCreateView(

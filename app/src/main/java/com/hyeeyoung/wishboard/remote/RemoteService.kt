@@ -6,7 +6,6 @@ import com.hyeeyoung.wishboard.model.RequestResultToken
 import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.sign.SignInfo
 import com.hyeeyoung.wishboard.model.wish.WishItem
-import com.hyeeyoung.wishboard.model.wish.WishItemRegistrationInfo
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -31,7 +30,7 @@ interface RemoteService {
     @POST("item")
     suspend fun uploadWishItem(
         @Header("Authorization") token: String,
-        @Body wishItem: WishItemRegistrationInfo
+        @Body wishItem: WishItem
     ): Response<RequestResult>
 
     // 장바구니

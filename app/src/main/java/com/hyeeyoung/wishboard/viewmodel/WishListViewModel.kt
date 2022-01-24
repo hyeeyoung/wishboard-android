@@ -18,14 +18,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WishViewModel @Inject constructor(
-    // TODO WishListViewModel로 이름 변경
+class WishListViewModel @Inject constructor(
     private val application: Application,
     private val wishRepository: WishRepository,
     private val cartRepository: CartRepository,
 ) : ViewModel() {
     private var wishList = MutableLiveData<MutableList<WishItem>>(mutableListOf())
-    private var wishItem = MutableLiveData<WishItem>()
     private val wishListAdapter = WishListAdapter(application)
 
     private val token = prefs?.getUserToken()
@@ -77,15 +75,10 @@ class WishViewModel @Inject constructor(
         }
     }
 
-    fun setWishItem(wishItem: WishItem) { // TODO WishItemViewModel로 이동
-        this.wishItem.value = wishItem
-    }
-
     fun getWishList(): LiveData<MutableList<WishItem>?> = wishList
-    fun getWishItem(): LiveData<WishItem> = wishItem
     fun getWishListAdapter(): WishListAdapter = wishListAdapter
 
     companion object {
-        private val TAG = "WishViewModel"
+        private const val TAG = "WishListViewModel"
     }
 }
