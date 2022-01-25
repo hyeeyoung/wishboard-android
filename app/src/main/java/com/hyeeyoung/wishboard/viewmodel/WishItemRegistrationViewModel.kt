@@ -52,7 +52,7 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     private val galleryImageUris = MutableLiveData<PagingData<Uri>>()
     private var selectedGalleryImageUri = MutableLiveData<Uri?>()
-    private var cameraImageFile: File? = null
+    private var imageFile: File? = null
 
     private val token = prefs?.getUserToken()
 
@@ -99,14 +99,14 @@ class WishItemRegistrationViewModel @Inject constructor(
             withContext(Dispatchers.IO) {
                 itemImage.value?.let { imageUrl ->
                     val bitmap = getBitmapFromURL(imageUrl) ?: return@let
-                    cameraImageFile = saveBitmapToInternalStorage(bitmap) ?: return@let
-                    val isSuccessful = AWSS3Service().uploadFile(cameraImageFile!!.name, cameraImageFile!!)
+                    imageFile = saveBitmapToInternalStorage(bitmap) ?: return@let
+                    val isSuccessful = AWSS3Service().uploadFile(imageFile!!.name, imageFile!!)
                     if (!isSuccessful) return@withContext // TODO 업로드 실패 예외 처리 필요
                 }
 
                 val item = WishItem(
                     name = name,
-                    image = cameraImageFile?.name,
+                    image = imageFile?.name,
                     price = itemPrice.value?.toIntOrNull(),
                     url = siteUrl,
                     memo = itemMemo.value?.trim()
@@ -121,7 +121,7 @@ class WishItemRegistrationViewModel @Inject constructor(
         if (token == null) return
         safeLet(itemName.value?.trim(), selectedGalleryImageUri.value) { name, imageUri ->
             withContext(Dispatchers.IO) {
-                val file = cameraImageFile ?: copyImageToInternalStorage(imageUri) ?: return@withContext
+                val file = imageFile ?: copyImageToInternalStorage(imageUri) ?: return@withContext
                 val isSuccessful = AWSS3Service().uploadFile(file.name, file)
                 if (!isSuccessful) return@withContext
 
@@ -156,8 +156,8 @@ class WishItemRegistrationViewModel @Inject constructor(
         }
 
         val fileName = makePhotoFileName()
-        cameraImageFile = File(file.absoluteFile, fileName)
-        return cameraImageFile
+        imageFile = File(file.absoluteFile, fileName)
+        return imageFile
     }
 
     /** 이미지 파일명 생성하는 함수로 해당 함수 호출 전 반드시 token null 체크해야함 */
@@ -186,20 +186,14 @@ class WishItemRegistrationViewModel @Inject constructor(
         val fileName = makePhotoFileName()
         val file = File(application.cacheDir, fileName)
 
-        var fileStream: FileOutputStream? = null
         try {
-            fileStream = FileOutputStream(file)
+            val fileStream = FileOutputStream(file)
             bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fileStream)
+            file.deleteOnExit()
+            fileStream.close()
         } catch (e: Exception) {
             e.printStackTrace()
             return null
-        } finally {
-            try {
-                file.deleteOnExit()
-                fileStream!!.close()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
         }
         return file
     }
