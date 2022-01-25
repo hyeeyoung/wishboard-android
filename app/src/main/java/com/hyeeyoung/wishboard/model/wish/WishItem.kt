@@ -13,7 +13,7 @@ data class WishItem(
     @SerializedName("item_id")
     val id: Long? = null,
     @SerializedName("item_img")
-    val image: String, // TODO String?으로 타입 변경
+    val image: String? = null,
     @SerializedName("item_name")
     val name: String,
     @SerializedName("item_price")

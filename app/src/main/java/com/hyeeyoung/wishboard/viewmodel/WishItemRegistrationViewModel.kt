@@ -52,7 +52,7 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     private val galleryImageUris = MutableLiveData<PagingData<Uri>>()
     private var selectedGalleryImageUri = MutableLiveData<Uri?>()
-    private var cameraImageFile: File? = null
+    private var imageFile: File? = null
 
     private val token = prefs?.getUserToken()
 
@@ -94,26 +94,20 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     suspend fun uploadWishItemByLinkSharing() {
         if (token == null) return
-        /* TODO 가격 데이터에 천단위 구분자 ',' 있는 경우 문자열 처리 필요
-            itemImage 없어도 업로드 되도록 수정, image 파싱 못하는 경우, image null로 저장(not null -> null 허용), 불러올 때 기본 아이콘 보여주기
-            itemImage -> itemImageUrl로 구체적인 변수명으로 변경 및 notiInfo 추가 */
-        safeLet(
-            itemName.value?.trim(),
-            itemImage.value,
-            itemUrl.value
-        ) { itemName, imageUrl, siteUrl ->
+        // TODO 가격 데이터에 천단위 구분자 ',' 있는 경우 문자열 처리 필요
+        safeLet(itemName.value?.trim(), itemUrl.value) { name, siteUrl ->
             withContext(Dispatchers.IO) {
-                val bitmap =
-                    getBitmapFromURL(imageUrl) ?: return@withContext // TODO 업로드 실패 예외 처리 필요
-                val imageFile = saveBitmapToInternalStorage(bitmap) ?: return@withContext
-
-                val isSuccessful = AWSS3Service().uploadFile(imageFile.name, imageFile)
-                if (!isSuccessful) return@withContext
+                itemImage.value?.let { imageUrl ->
+                    val bitmap = getBitmapFromURL(imageUrl) ?: return@let
+                    imageFile = saveBitmapToInternalStorage(bitmap) ?: return@let
+                    val isSuccessful = AWSS3Service().uploadFile(imageFile!!.name, imageFile!!)
+                    if (!isSuccessful) return@withContext // TODO 업로드 실패 예외 처리 필요
+                }
 
                 val item = WishItem(
-                    name = itemName,
-                    image = imageFile.name,
-                    price = itemPrice.value?.toIntOrNull() ?: 0,
+                    name = name,
+                    image = imageFile?.name,
+                    price = itemPrice.value?.toIntOrNull(),
                     url = siteUrl,
                     memo = itemMemo.value?.trim()
                 )
@@ -125,16 +119,16 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     suspend fun uploadWishItemByBasics() {
         if (token == null) return
-        safeLet(itemName.value?.trim(), selectedGalleryImageUri.value) { name, imageUrl ->
+        safeLet(itemName.value?.trim(), selectedGalleryImageUri.value) { name, imageUri ->
             withContext(Dispatchers.IO) {
-                val file =
-                    cameraImageFile ?: copyImageToInternalStorage(imageUrl) ?: return@withContext
+                val file = imageFile ?: copyImageToInternalStorage(imageUri) ?: return@withContext
+                val isSuccessful = AWSS3Service().uploadFile(file.name, file)
+                if (!isSuccessful) return@withContext
 
-                AWSS3Service().uploadFile(file.name, file)
                 val item = WishItem(
                     name = name,
                     image = file.name,
-                    price = itemPrice.value?.toIntOrNull() ?: 0,
+                    price = itemPrice.value?.toIntOrNull(),
                     url = itemUrl.value,
                     memo = itemMemo.value?.trim()
                 )
@@ -162,8 +156,8 @@ class WishItemRegistrationViewModel @Inject constructor(
         }
 
         val fileName = makePhotoFileName()
-        cameraImageFile = File(file.absoluteFile, fileName)
-        return cameraImageFile
+        imageFile = File(file.absoluteFile, fileName)
+        return imageFile
     }
 
     /** 이미지 파일명 생성하는 함수로 해당 함수 호출 전 반드시 token null 체크해야함 */
@@ -192,20 +186,14 @@ class WishItemRegistrationViewModel @Inject constructor(
         val fileName = makePhotoFileName()
         val file = File(application.cacheDir, fileName)
 
-        var fileStream: FileOutputStream? = null
         try {
-            fileStream = FileOutputStream(file)
+            val fileStream = FileOutputStream(file)
             bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fileStream)
+            file.deleteOnExit()
+            fileStream.close()
         } catch (e: Exception) {
             e.printStackTrace()
             return null
-        } finally {
-            try {
-                file.deleteOnExit()
-                fileStream!!.close()
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
         }
         return file
     }
