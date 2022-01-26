@@ -29,6 +29,17 @@ class WishRepositoryImpl : WishRepository {
         return response.isSuccessful
     }
 
+    override suspend fun updateWishItem(token: String, itemId: Long, wishItem: WishItem): Boolean {
+        val response = api.updateToWishItem(token, itemId, wishItem)
+
+        if (response.isSuccessful) {
+            Log.d(TAG, "아이템 수정 성공")
+        } else {
+            Log.e(TAG, "아이템 수정 실패: ${response.code()}")
+        }
+        return response.isSuccessful
+    }
+
     override suspend fun deleteWishItem(token: String, itemId: Long): Boolean {
         val response = api.deleteWishItem(token, itemId)
 

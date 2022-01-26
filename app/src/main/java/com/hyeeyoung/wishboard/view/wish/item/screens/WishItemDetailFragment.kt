@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentWishItemDetailBinding
 import com.hyeeyoung.wishboard.model.wish.WishItem
+import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.viewmodel.WishItemViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,9 +42,19 @@ class WishItemDetailFragment : Fragment() {
             }
         }
 
+        addListeners()
         addObservers()
 
         return binding.root
+    }
+
+    private fun addListeners() {
+        binding.edit.setOnClickListener {
+            findNavController().navigateSafe(R.id.action_detail_to_registration, bundleOf(
+                ARG_WISH_ITEM to viewModel.getWishItem().value,
+                ARG_IS_EDIT_MODE to true
+            ))
+        }
     }
 
     private fun addObservers() {
@@ -82,5 +93,6 @@ class WishItemDetailFragment : Fragment() {
         private const val ARG_WISH_ITEM = "wishItem"
         private const val ARG_WISH_ITEM_POSITION = "position"
         private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
+        private const val ARG_IS_EDIT_MODE = "isEditMode"
     }
 }

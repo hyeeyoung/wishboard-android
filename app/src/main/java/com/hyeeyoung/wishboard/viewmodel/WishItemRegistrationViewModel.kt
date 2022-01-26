@@ -43,6 +43,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private val wishRepository: WishRepository,
     private val galleryRepository: GalleryRepository,
 ) : ViewModel() {
+    private var itemId: Long? = null
     private var itemName = MutableLiveData<String>()
     private var itemPrice = MutableLiveData<String>()
     private var itemImage = MutableLiveData<String>()
@@ -138,6 +139,29 @@ class WishItemRegistrationViewModel @Inject constructor(
         }
     }
 
+    suspend fun updateWishItem() {
+        if (itemId == null || token == null) return
+        val itemName = itemName.value?.trim() ?: return // TODO 상품명 필수 입력 토스트 띄우기
+
+        withContext(Dispatchers.IO) {
+            val file = imageFile ?: copyImageToInternalStorage(selectedGalleryImageUri.value)
+            file?.let {
+                val isSuccessful = AWSS3Service().uploadFile(it.name, it)
+                if (!isSuccessful) return@withContext
+            }
+
+            val item = WishItem(
+                name = itemName,
+                image = file?.name,
+                price = itemPrice.value?.toIntOrNull(),
+                url = itemUrl.value,
+                memo = itemMemo.value?.trim()
+            )
+            val isComplete = wishRepository.updateWishItem(token, itemId!!, item)
+            isCompleteUpload.postValue(isComplete)
+        }
+    }
+
     fun fetchGalleryImageUris(contentResolver: ContentResolver) {
         viewModelScope.launch {
             Pager(PagingConfig(pageSize = 10)) {
@@ -199,7 +223,8 @@ class WishItemRegistrationViewModel @Inject constructor(
     }
 
     /** 갤러리 이미지를 내부저장소에 복사 */
-    private fun copyImageToInternalStorage(uri: Uri): File? {
+    private fun copyImageToInternalStorage(uri: Uri?): File? {
+        if (uri == null) return null
         val fileName = makePhotoFileName()
         val file = File(application.cacheDir, fileName)
 
@@ -218,6 +243,15 @@ class WishItemRegistrationViewModel @Inject constructor(
             return null
         }
         return file
+    }
+
+    fun setWishItemInfo(wishItem: WishItem) {
+        itemId = wishItem.id
+        itemName.value = wishItem.name
+        itemImage.value = wishItem.image
+        itemPrice.value = wishItem.price.toString()
+        itemMemo.value = wishItem.memo
+        itemUrl.value = wishItem.url
     }
 
     fun onItemNameTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
