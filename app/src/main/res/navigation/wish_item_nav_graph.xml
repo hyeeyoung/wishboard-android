@@ -5,25 +5,15 @@
     android:id="@+id/wish_item_nav_graph"
     app:startDestination="@id/wishItemDetailFragment">
 
+    <include app:graph="@navigation/wish_item_registration_nav_graph" />
+
     <fragment
         android:id="@+id/wishItemDetailFragment"
         android:name="com.hyeeyoung.wishboard.view.wish.item.screens.WishItemDetailFragment"
         android:label="fragment_wish_item_detail"
-        tools:layout="@layout/fragment_wish_item_detail" />
-
-    <fragment
-        android:id="@+id/wishFragment"
-        android:name="com.hyeeyoung.wishboard.view.wish.item.screens.WishFragment"
-        android:label="fragment_wish"
-        tools:layout="@layout/fragment_wish">
+        tools:layout="@layout/fragment_wish_item_detail">
         <action
-            android:id="@+id/action_wish_to_gallery_image"
-            app:destination="@id/galleryImageFragment" />
+            android:id="@+id/action_detail_to_registration"
+            app:destination="@id/wish_item_registration_nav_graph" />
     </fragment>
-
-    <fragment
-        android:id="@+id/galleryImageFragment"
-        android:name="com.hyeeyoung.wishboard.view.common.screens.GalleryImageFragment"
-        android:label="fragment_gallery_image"
-        tools:layout="@layout/fragment_gallery_image" />
 </navigation>
