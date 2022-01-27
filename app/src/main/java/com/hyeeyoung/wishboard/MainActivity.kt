@@ -28,6 +28,7 @@ class MainActivity : AppCompatActivity() {
             it.navController.addOnDestinationChangedListener { _, destination, _ ->
                 when (destination.id) {
                     R.id.cartFragment,
+                    R.id.wishFragment,
                     R.id.wishItemDetailFragment,
                     R.id.galleryImageFragment
                     -> binding.bottomNav.visibility = View.GONE
