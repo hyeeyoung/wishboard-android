@@ -48,6 +48,8 @@
     <string name="memo_input_text">메모를 작성해 보세요.</string>
     <string name="wish_item_registration_toast_text">위시리스트에 추가되었습니다</string>
     <string name="wish_item_registration_gallery_image_title">사진 선택하기</string>
+    <string name="wish_item_update_toast_text">상품 수정이 완료되었습니다.</string>
+    <string name="wish_item_upload_toast_text">상품 등록이 완료되었습니다.</string>
 
     <!-- Detail -->
     <string name="go_to_shop_btn_text">쇼핑몰로 이동하기</string>
