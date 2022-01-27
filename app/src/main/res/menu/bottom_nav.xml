@@ -7,15 +7,15 @@
         android:title="home" />
     <!-- TODO id값 snake case로 통일 -->
     <item
-        android:id="@+id/wish_item_registration_nav_graph"
-        android:icon="@drawable/selector_nav_icon_item_registration"
-        android:state_selected="false"
-        android:title="new_item" />
-    <item
         android:id="@+id/folderFragment"
         android:icon="@drawable/selector_nav_icon_folder"
         android:state_selected="false"
         android:title="folder" />
+    <item
+        android:id="@+id/wish_item_registration_nav_graph"
+        android:icon="@drawable/selector_nav_icon_item_registration"
+        android:state_selected="false"
+        android:title="new_item" />
     <item
         android:id="@+id/notiFragment"
         android:icon="@drawable/selector_nav_icon_noti"

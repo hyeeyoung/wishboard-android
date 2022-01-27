@@ -33,6 +33,13 @@ interface RemoteService {
         @Body wishItem: WishItem
     ): Response<RequestResult>
 
+    @PUT("item/{item_id}")
+    suspend fun updateToWishItem(
+        @Header("Authorization") token: String,
+        @Path("item_id") itemId: Long,
+        @Body wishItem: WishItem
+    ): Response<RequestResult>
+
     @DELETE("item/{item_id}")
     suspend fun deleteWishItem(
         @Header("Authorization") token: String,
