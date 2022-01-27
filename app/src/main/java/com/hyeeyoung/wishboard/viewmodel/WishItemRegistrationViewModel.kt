@@ -43,6 +43,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private val wishRepository: WishRepository,
     private val galleryRepository: GalleryRepository,
 ) : ViewModel() {
+    private var wishItem: WishItem? = null
     private var itemId: Long? = null
     private var itemName = MutableLiveData<String>()
     private var itemPrice = MutableLiveData<String>()
@@ -150,14 +151,30 @@ class WishItemRegistrationViewModel @Inject constructor(
                 if (!isSuccessful) return@withContext
             }
 
-            val item = WishItem(
-                name = itemName,
-                image = file?.name,
-                price = itemPrice.value?.toIntOrNull(),
-                url = itemUrl.value,
-                memo = itemMemo.value?.trim()
-            )
+            val item =
+                WishItem( // TODO 수정된 folder, noti 데이터로 초기화
+                    id = itemId,
+                    createAt = wishItem?.createAt,
+                    name = itemName,
+                    image = file?.name, // TODO file?.name ?: wishItem?.image로 수정
+                    price = itemPrice.value?.toIntOrNull(),
+                    url = itemUrl.value,
+                    memo = itemMemo.value?.trim(),
+                    folderId = wishItem?.folderId,
+                    folderName = wishItem?.folderName,
+                    notiDate = wishItem?.notiDate,
+                    notiType = wishItem?.notiType
+                )
+
             val isComplete = wishRepository.updateWishItem(token, itemId!!, item)
+            // 서버에는 s3 baseurl을 제외한 이미지 이름만 저장되는데,
+            // 홈 -> 상세조회 -> 수동등록으로 진입했고, 이미지를 변경하지 않은 경우 http~ 로 시작하는 이미지 url을 가지고 있음.
+            // 따라서 이미지를 서버에 저장하면 안되므로, 서버에 item을 저장한 후, item에 기존 이미지를 적용해서 상세조회로 전달할 wishItem 초기화
+            // 추후 리팩토링하면서 해당 코드 삭제될 예정
+            if (item.image == null) { // TODO refactoring
+                item.image = wishItem?.image
+            }
+            wishItem = item
             isCompleteUpload.postValue(isComplete)
         }
     }
@@ -245,13 +262,21 @@ class WishItemRegistrationViewModel @Inject constructor(
         return file
     }
 
-    fun setWishItemInfo(wishItem: WishItem) {
-        itemId = wishItem.id
-        itemName.value = wishItem.name
-        itemImage.value = wishItem.image
-        itemPrice.value = wishItem.price.toString()
-        itemMemo.value = wishItem.memo
-        itemUrl.value = wishItem.url
+    fun setWishItem(wishItem: WishItem) {
+        this.wishItem = wishItem
+        setWishItemInfo()
+    }
+
+    /** UI에 보여질 데이터값 설정 */
+    private fun setWishItemInfo() {
+        wishItem?.let { item ->
+            itemId = item.id
+            itemName.value = item.name
+            itemImage.value = item.image
+            itemPrice.value = item.price.toString()
+            itemMemo.value = item.memo
+            itemUrl.value = item.url
+        }
     }
 
     fun onItemNameTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -299,6 +324,7 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     fun getGalleryImageUris(): LiveData<PagingData<Uri>?> = galleryImageUris
     fun getSelectedGalleryImageUri(): LiveData<Uri?> = selectedGalleryImageUri
+    fun getWishItem(): WishItem? = wishItem
 
     companion object {
         private const val TAG = "WishItemRegistrationViewModel"
