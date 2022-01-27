@@ -1,5 +1,11 @@
 package com.hyeeyoung.wishboard.util
 
+import android.content.Context
+import android.widget.ImageView
+import androidx.lifecycle.LifecycleCoroutineScope
+import com.bumptech.glide.Glide
+import com.hyeeyoung.wishboard.remote.AWSS3Service
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -24,4 +30,18 @@ fun getTimestamp(): String {
     val dateFormat = SimpleDateFormat(pattern, Locale.getDefault())
     dateFormat.timeZone = timeZone
     return dateFormat.format(Date())
+}
+
+/** S3에서 다운로드 받은 이미지를 ImageView에 디스플레이 */
+fun loadImage(
+    lifecycleScope: LifecycleCoroutineScope,
+    context: Context,
+    imageUrl: String,
+    imageView: ImageView
+) {
+    lifecycleScope.launch {
+        AWSS3Service().getImageUrl(imageUrl)?.let { imageUrl ->
+            Glide.with(context).load(imageUrl).into(imageView)
+        }
+    }
 }
