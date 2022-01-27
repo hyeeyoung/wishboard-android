@@ -10,14 +10,17 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentWishItemDetailBinding
 import com.hyeeyoung.wishboard.model.wish.WishItem
+import com.hyeeyoung.wishboard.remote.AWSS3Service
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.viewmodel.WishItemViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class WishItemDetailFragment : Fragment() {
@@ -75,6 +78,26 @@ class WishItemDetailFragment : Fragment() {
                 ).show()
 
                 moveToMain()
+            }
+        }
+
+        // 아이템 수정에서 수정 완료 후 상세조회로 복귀했을 때 해당 아이템 정보를 전달받고, ui 업데이트
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<WishItem>(
+            ARG_WISH_ITEM
+        )?.observe(viewLifecycleOwner) { item ->
+            // TODO 이미지가 업데이트 된 경우, 해당 이미지 이름으로 S3에서 이미지 다운로드 받아야함.
+            //  매번 다운로드받기 번거롭기 때문에 다운로드 없이 이미지를 로드하는 방법을 고민하고 있음.
+            viewModel.setWishItem(item)
+
+            lifecycleScope.launch {
+                if (item.image == null) return@launch
+                if (item.image!!.startsWith("http")) { // TODO refactoring, WishFragment.kt "http" 검색 -> 주석 참고
+                    Glide.with(requireContext()).load(item.image).into(binding.itemImage)
+                } else {
+                    AWSS3Service().getImageUrl(item.image!!)?.let { imageUrl ->
+                        Glide.with(requireContext()).load(imageUrl).into(binding.itemImage)
+                    }
+                }
             }
         }
     }
