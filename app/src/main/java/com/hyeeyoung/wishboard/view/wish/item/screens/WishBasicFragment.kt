@@ -24,7 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class WishFragment : Fragment(), ImageLoader { // TODO rename class name
+class WishBasicFragment : Fragment(), ImageLoader {
     private lateinit var binding: FragmentWishBinding
     private val viewModel: WishItemRegistrationViewModel by hiltNavGraphViewModels(R.id.wish_item_registration_nav_graph)
 
@@ -138,7 +138,7 @@ class WishFragment : Fragment(), ImageLoader { // TODO rename class name
     }
 
     companion object {
-        private const val TAG = "WishFragment"
+        private const val TAG = "WishBasicFragment"
         private const val ARG_WISH_ITEM = "wishItem"
         private const val ARG_IS_EDIT_MODE = "isEditMode"
     }
