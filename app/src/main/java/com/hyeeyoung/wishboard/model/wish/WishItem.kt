@@ -13,7 +13,7 @@ data class WishItem(
     @SerializedName("item_id")
     val id: Long? = null,
     @SerializedName("item_img")
-    var image: String? = null, // TODO 추후 val로 다시 변경 예정.
+    val image: String? = null,
     @SerializedName("item_name")
     val name: String,
     @SerializedName("item_price")
@@ -33,11 +33,11 @@ data class WishItem(
     var cartState: Int? = null,
 ) : Parcelable {
     companion object {
-        fun from(url: String, wishItem: WishItem): WishItem {
+        fun from(wishItem: WishItem): WishItem {
             val folderId = wishItem.folderId
             val folderName = wishItem.folderName
             val id = wishItem.id
-            val image = url
+            val image = wishItem.image
             val name = wishItem.name
             val price = wishItem.price
             val url = wishItem.url
