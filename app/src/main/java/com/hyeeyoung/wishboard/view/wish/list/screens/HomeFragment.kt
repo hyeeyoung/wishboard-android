@@ -4,20 +4,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentHomeBinding
 import com.hyeeyoung.wishboard.model.wish.WishItem
+import com.hyeeyoung.wishboard.util.ImageLoader
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
+import com.hyeeyoung.wishboard.util.loadImage
 import com.hyeeyoung.wishboard.util.safeLet
 import com.hyeeyoung.wishboard.view.wish.list.adapters.WishListAdapter
 import com.hyeeyoung.wishboard.viewmodel.WishListViewModel
 
-class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
+class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener, ImageLoader {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: WishListViewModel by activityViewModels()
     private lateinit var adapter: WishListAdapter
@@ -38,6 +42,7 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
     private fun initializeView() {
         adapter = viewModel.getWishListAdapter()
         adapter.setOnItemClickListener(this)
+        adapter.setImageLoader(this)
         binding.wishList.adapter = adapter
         binding.wishList.layoutManager = GridLayoutManager(requireContext(), 2)
     }
@@ -78,6 +83,10 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
 
     override fun onCartBtnClick(position: Int, item: WishItem) {
         viewModel.toggleCartState(position, item)
+    }
+
+    override fun loadImage(imageUrl: String, imageView: ImageView) {
+        loadImage(lifecycleScope, requireContext(), imageUrl, imageView)
     }
 
     companion object {

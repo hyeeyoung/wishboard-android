@@ -1,12 +1,10 @@
 package com.hyeeyoung.wishboard.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.model.cart.CartStateType
 import com.hyeeyoung.wishboard.model.wish.WishItem
-import com.hyeeyoung.wishboard.remote.AWSS3Service
 import com.hyeeyoung.wishboard.repository.cart.CartRepository
 import com.hyeeyoung.wishboard.repository.wish.WishRepository
 import com.hyeeyoung.wishboard.util.prefs
@@ -33,20 +31,13 @@ class WishListViewModel @Inject constructor(
 
     fun fetchWishList() {
         if (token == null) return
-        val wishItems = mutableListOf<WishItem>()
         viewModelScope.launch {
+            var items: List<WishItem>?
             withContext(Dispatchers.IO) {
-                val items = wishRepository.fetchWishList(token) // TODO refactoring
-                items?.forEach { item ->
-                    item.image?.let { imageName ->
-                        AWSS3Service().getImageUrl(imageName)?.let { imageUrl ->
-                            wishItems.add(WishItem.from(imageUrl, item))
-                        }
-                    }
-                }
+                items = wishRepository.fetchWishList(token)
             }
             withContext(Dispatchers.Main) {
-                wishListAdapter.setData(wishItems)
+                wishListAdapter.setData(items ?: return@withContext)
             }
         }
     }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -16,14 +17,14 @@ import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentWishItemDetailBinding
 import com.hyeeyoung.wishboard.model.wish.WishItem
-import com.hyeeyoung.wishboard.remote.AWSS3Service
+import com.hyeeyoung.wishboard.util.ImageLoader
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
+import com.hyeeyoung.wishboard.util.loadImage
 import com.hyeeyoung.wishboard.viewmodel.WishItemViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class WishItemDetailFragment : Fragment() {
+class WishItemDetailFragment : Fragment(), ImageLoader {
     private lateinit var binding: FragmentWishItemDetailBinding
     private val viewModel: WishItemViewModel by hiltNavGraphViewModels(R.id.wish_item_nav_graph)
     private var position: Int? = null
@@ -42,6 +43,7 @@ class WishItemDetailFragment : Fragment() {
 
             if (wishItem != null) {
                 viewModel.setWishItem(wishItem)
+                loadImage(wishItem.image ?: return@let, binding.itemImage)
             }
         }
 
@@ -88,17 +90,7 @@ class WishItemDetailFragment : Fragment() {
             // TODO 이미지가 업데이트 된 경우, 해당 이미지 이름으로 S3에서 이미지 다운로드 받아야함.
             //  매번 다운로드받기 번거롭기 때문에 다운로드 없이 이미지를 로드하는 방법을 고민하고 있음.
             viewModel.setWishItem(item)
-
-            lifecycleScope.launch {
-                if (item.image == null) return@launch
-                if (item.image!!.startsWith("http")) { // TODO refactoring, WishFragment.kt "http" 검색 -> 주석 참고
-                    Glide.with(requireContext()).load(item.image).into(binding.itemImage)
-                } else {
-                    AWSS3Service().getImageUrl(item.image!!)?.let { imageUrl ->
-                        Glide.with(requireContext()).load(imageUrl).into(binding.itemImage)
-                    }
-                }
-            }
+            loadImage(item.image ?: return@observe, binding.itemImage)
         }
     }
 
@@ -109,6 +101,10 @@ class WishItemDetailFragment : Fragment() {
             ARG_WISH_ITEM_POSITION to position
         ))
         navController.popBackStack()
+    }
+
+    override fun loadImage(imageUrl: String, imageView: ImageView) {
+        loadImage(lifecycleScope, requireContext(), imageUrl, imageView)
     }
 
     companion object {
