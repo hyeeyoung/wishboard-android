@@ -4,6 +4,7 @@ import com.hyeeyoung.wishboard.BuildConfig
 import com.hyeeyoung.wishboard.model.RequestResult
 import com.hyeeyoung.wishboard.model.RequestResultToken
 import com.hyeeyoung.wishboard.model.cart.CartItem
+import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.sign.SignInfo
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import retrofit2.Response
@@ -70,6 +71,13 @@ interface RemoteService {
         @Header("Authorization") token: String,
         @Field("item_id") itemId: Long,
         @Field("item_count") itemCount: Int
+    ): Response<RequestResult>
+
+    // 폴더
+    @POST("folder")
+    suspend fun createNewFolder(
+        @Header("Authorization") token: String,
+        @Body folderItem: FolderItem
     ): Response<RequestResult>
 
     companion object {

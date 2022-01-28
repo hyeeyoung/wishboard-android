@@ -4,6 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".view.folder.screens.FolderAddDialogFragment">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hyeeyoung.wishboard.viewmodel.FolderAddDialogViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -73,6 +80,9 @@
                     android:fontFamily="@font/nanum_square_b"
                     android:hint="@string/folder_add_dialog_detail"
                     android:maxLength="10"
+                    android:onTextChanged="@{viewModel::onFolderNameTextChanged}"
+                    android:paddingVertical="@dimen/spacing12"
+                    android:text="@{viewModel.folderName}"
                     android:textColor="@color/gray_700"
                     android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -86,10 +96,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nanum_square_r"
-                    android:text="@string/folder_add_dialog_folder_name_length_format"
                     android:maxLength="10"
+                    android:text="@{String.format(@string/folder_add_dialog_folder_name_length_format, viewModel.folderName.length())}"
                     android:textColor="@color/gray_700"
-                    android:textSize="15dp"
+                    android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -107,13 +117,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginRight="20dp"
+                android:layout_marginEnd="20dp"
                 android:background="@drawable/selector_dialog_yes_button_background"
+                android:enabled="@{viewModel.folderName.length() > 0}"
                 android:fontFamily="@font/nanum_square_eb"
+                android:onClick="@{() -> viewModel.createNewFolder()}"
                 android:outlineProvider="none"
                 android:text="@string/add"
                 android:textColor="@color/selector_dialog_yes_button_text_color"
-                android:textSize="15dp"
+                android:textSize="15sp"
                 app:layout_constraintTop_toBottomOf="@id/new_folder_container" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

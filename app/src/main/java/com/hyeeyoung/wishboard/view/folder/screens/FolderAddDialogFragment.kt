@@ -1,17 +1,22 @@
 package com.hyeeyoung.wishboard.view.folder.screens
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.databinding.DialogNewFolderAddBinding
-import com.hyeeyoung.wishboard.model.cart.CartItem
+import com.hyeeyoung.wishboard.viewmodel.FolderAddDialogViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class FolderAddDialogFragment : DialogFragment() {
     private lateinit var binding: DialogNewFolderAddBinding
-    private lateinit var listener: DialogListener
+    private val viewModel: FolderAddDialogViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -19,31 +24,45 @@ class FolderAddDialogFragment : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DialogNewFolderAddBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this@FolderAddDialogFragment
 
         addListeners()
+        addObservers()
 
         return binding.root
     }
 
+    private fun addListeners() {
+        binding.close.setOnClickListener {
+            dialog?.dismiss()
+        }
+    }
+
+    private fun addObservers() {
+        viewModel.getIsCompleteAddition().observe(viewLifecycleOwner) {
+            findNavController().apply {
+                previousBackStackEntry?.savedStateHandle?.set(
+                    ARG_FOLDER_ITEM,
+                    viewModel.getFolderItem()
+                )
+                popBackStack()
+            }
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        dialog?.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-        dialog?.window?.clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
-    }
+        dialog?.window?.setLayout(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
 
-    private fun addListeners() {
-        // TODO not yet implemented
-    }
-
-    fun setListener(listener: DialogListener) {
-        this.listener = listener
-    }
-
-    interface DialogListener {
-        fun onClickButton(item: CartItem)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     companion object {
-        const val TAG = "FolderAddDialogFragment"
+        private const val TAG = "FolderAdditionDialogFragment"
+        private const val ARG_FOLDER_ITEM = "folderItem"
     }
 }
