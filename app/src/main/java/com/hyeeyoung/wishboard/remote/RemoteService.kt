@@ -58,18 +58,17 @@ interface RemoteService {
         @Field("item_id") itemId: Long
     ): Response<RequestResult>
 
-    @FormUrlEncoded
-    @HTTP(method = "DELETE", path = "cart", hasBody = true)
+    @DELETE("cart/{item_id}")
     suspend fun removeToCart(
         @Header("Authorization") token: String,
-        @Field("item_id") itemId: Long
+        @Path("item_id") itemId: Long
     ): Response<RequestResult>
 
     @FormUrlEncoded
-    @PUT("cart")
+    @PUT("cart/{item_id}")
     suspend fun updateToCart(
         @Header("Authorization") token: String,
-        @Field("item_id") itemId: Long,
+        @Path("item_id") itemId: Long,
         @Field("item_count") itemCount: Int
     ): Response<RequestResult>
 
