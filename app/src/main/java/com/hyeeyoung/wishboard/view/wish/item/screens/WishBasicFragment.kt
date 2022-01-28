@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -15,19 +16,23 @@ import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentWishBinding
 import com.hyeeyoung.wishboard.model.wish.WishItem
-import com.hyeeyoung.wishboard.remote.AWSS3Service
+import com.hyeeyoung.wishboard.util.ImageLoader
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
+import com.hyeeyoung.wishboard.util.loadImage
 import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class WishFragment : Fragment() { // TODO rename class name
+class WishBasicFragment : Fragment(), ImageLoader {
     private lateinit var binding: FragmentWishBinding
     private val viewModel: WishItemRegistrationViewModel by hiltNavGraphViewModels(R.id.wish_item_registration_nav_graph)
 
     /** 아이템 수정 여부에 따라 아이템을 update 또는 upload를 진행 (등록 및 수정 시 동일한 뷰를 사용하고 있기 때문) */
     private var isEditMode = false
+
+    /** 해당 화면을 방문 여부를 구분하기 위한 변수 */
+    private var isVisited = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,25 +41,19 @@ class WishFragment : Fragment() { // TODO rename class name
         binding = FragmentWishBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
 
-        arguments?.let {
-            (it[ARG_IS_EDIT_MODE] as? Boolean)?.let { isEditable ->
-                isEditMode = isEditable
-            }
-            (it[ARG_WISH_ITEM] as? WishItem)?.let { item ->
-                viewModel.setWishItem(item)
-                item.image?.let { image ->
-                    // 홈 -> 상세조회 -> 수동등록으로 진입했고, 이미지를 변경하지 않은 경우 http~ 로 시작하는 이미지 url을 가지고 있기 때문에 S3에서 이미지 url을 다운로드 받지 않아도 됨
-                    // 그렇지 않은 경우, S3에서 이미지 파일명으로 이미지 다운로드 받아야함
-                    // 추후 분기처리하지 않도록 image 값을 후자로 통일할 예정.
-                    if (image.startsWith("http")) { // TODO refactoring
-                        Glide.with(requireContext()).load(image).into(binding.itemImage)
-                    } else {
-                        lifecycleScope.launch {
-                            AWSS3Service().getImageUrl(image)?.let { imageUrl ->
-                                Glide.with(requireContext()).load(imageUrl).into(binding.itemImage)
-                            }
-                        }
-                    }
+
+        // 갤러리 이미지 선택 화면으로 전환 -> 해당 화면 복귀할 경우, 생명주기상 onCreateView를 재호출되고,
+        // if문 내 코드를 실행하면서 입력된 정보가 reset되는 문제가 있음
+        // 입력된 데이터가 reset되는 것을 방지하기 위해 방문한 적이 있는 경우 아래 코드를 실행하지 않도록 함
+        if (!isVisited) {
+            isVisited = true
+            arguments?.let {
+                (it[ARG_IS_EDIT_MODE] as? Boolean)?.let { isEditable ->
+                    isEditMode = isEditable
+                }
+                (it[ARG_WISH_ITEM] as? WishItem)?.let { item ->
+                    viewModel.setWishItem(item)
+                    loadImage(item.image ?: return@let, binding.itemImage)
                 }
             }
         }
@@ -134,8 +133,12 @@ class WishFragment : Fragment() { // TODO rename class name
             }
         }
 
+    override fun loadImage(imageUrl: String, imageView: ImageView) {
+        loadImage(lifecycleScope, requireContext(), imageUrl, imageView)
+    }
+
     companion object {
-        private const val TAG = "WishFragment"
+        private const val TAG = "WishBasicFragment"
         private const val ARG_WISH_ITEM = "wishItem"
         private const val ARG_IS_EDIT_MODE = "isEditMode"
     }
