@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,13 +16,15 @@ import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentCartBinding
 import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.cart.CartItemButtonType
+import com.hyeeyoung.wishboard.util.ImageLoader
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
+import com.hyeeyoung.wishboard.util.loadImage
 import com.hyeeyoung.wishboard.view.cart.adapters.CartListAdapter
 import com.hyeeyoung.wishboard.viewmodel.CartViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
+class CartFragment : Fragment(), CartListAdapter.OnItemClickListener, ImageLoader {
     private lateinit var binding: FragmentCartBinding
     private val viewModel: CartViewModel by viewModels()
 
@@ -40,6 +44,7 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
     private fun initializeView() {
         val adapter = viewModel.getCartListAdapter()
         adapter.setOnItemClickListener(this)
+        adapter.setImageLoader(this)
         binding.cartList.run {
             this.adapter = adapter
             layoutManager = LinearLayoutManager(requireContext())
@@ -67,6 +72,10 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
                 viewModel.controlItemCount(item, position, viewType)
             }
         }
+    }
+
+    override fun loadImage(imageUrl: String, imageView: ImageView) {
+        loadImage(lifecycleScope, requireContext(), imageUrl, imageView)
     }
 
     companion object {
