@@ -4,16 +4,17 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.databinding.ItemCartBinding
 import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.cart.CartItemButtonType
+import com.hyeeyoung.wishboard.util.ImageLoader
 
 class CartListAdapter(
     private val context: Context
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val dataSet = arrayListOf<CartItem>()
     private lateinit var listener: OnItemClickListener
+    private lateinit var imageLoader: ImageLoader
 
     interface OnItemClickListener {
         fun onItemClick(item: CartItem, position: Int, viewType: CartItemButtonType)
@@ -23,6 +24,10 @@ class CartListAdapter(
         this.listener = listener
     }
 
+    fun setImageLoader(imageLoader: ImageLoader) {
+        this.imageLoader = imageLoader
+    }
+
     inner class ViewHolder(private val binding: ItemCartBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
@@ -30,7 +35,8 @@ class CartListAdapter(
 
             with(binding) {
                 this.item = item
-                Glide.with(context).load(item.wishItem.image).into(itemImage)
+                item.wishItem.image?.let { imageLoader.loadImage(it, binding.itemImage) }
+
                 delete.setOnClickListener {
                     listener.onItemClick(item, position, CartItemButtonType.VIEW_TYPE_DELETION)
                     removeItem(position)
