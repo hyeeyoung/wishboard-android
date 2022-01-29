@@ -19,6 +19,17 @@ class FolderRepositoryImpl : FolderRepository {
         return response.body()
     }
 
+    override suspend fun fetchFolderListSummary(token: String): List<FolderItem>? {
+        val response = api.fetchFolderListSummary(token) ?: return null
+
+        if (response.isSuccessful) {
+            Log.d(TAG, "폴더 요약본 가져오기 성공")
+        } else {
+            Log.e(TAG, "폴더 요약본 가져오기 실패: ${response.code()}")
+        }
+        return response.body()
+    }
+
     override suspend fun fetchItemsInFolder(token: String, folderId: Long): List<WishItem>? {
         val response = api.fetchItemsInFolder(token, folderId) ?: return null
 

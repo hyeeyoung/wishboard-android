@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_wish_to_gallery_image"
             app:destination="@id/galleryImageFragment" />
+        <action
+            android:id="@+id/action_wish_to_folder_list"
+            app:destination="@id/folderListFragment" />
     </fragment>
 
     <fragment
@@ -20,4 +23,10 @@
         android:name="com.hyeeyoung.wishboard.view.common.screens.GalleryImageFragment"
         android:label="fragment_gallery_image"
         tools:layout="@layout/fragment_gallery_image"/>
+
+    <fragment
+        android:id="@+id/folderListFragment"
+        android:name="com.hyeeyoung.wishboard.view.folder.screens.FolderListFragment"
+        android:label="fragment_folder_list"
+        tools:layout="@layout/fragment_folder_list"/>
 </navigation>

@@ -114,7 +114,7 @@
                     app:layout_constraintTop_toBottomOf="@id/item_image_layout">
 
                     <LinearLayout
-                        android:id="@+id/btn_folder"
+                        android:id="@+id/folder_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
@@ -133,6 +133,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginHorizontal="5dp"
+                            android:text="@{viewModel.folderItem.name == null ? viewModel.wishItem.folderName : viewModel.folderItem.name}"
                             android:fontFamily="@font/nanum_square_b"
                             android:textColor="@color/gray_700"
                             android:textSize="13dp" />

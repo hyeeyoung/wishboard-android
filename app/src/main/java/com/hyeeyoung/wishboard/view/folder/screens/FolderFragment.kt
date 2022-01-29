@@ -29,6 +29,8 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener {
         binding = FragmentFolderBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
 
+        viewModel.fetchFolderList()
+
         initializeView()
         addListeners()
         addObservers()
