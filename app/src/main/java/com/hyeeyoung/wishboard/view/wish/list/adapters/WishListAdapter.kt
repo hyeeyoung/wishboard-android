@@ -35,7 +35,7 @@ class WishListAdapter(
             val item = dataSet[position]
             with(binding) {
                 this.item = item
-                imageLoader.loadImage(item.image ?: return@with, binding.itemImage)
+                item.image?.let { imageLoader.loadImage(it, binding.itemImage) }
                 binding.cart.isSelected = item.cartState == CartStateType.IN_CART.numValue
 
                 container.setOnClickListener {
