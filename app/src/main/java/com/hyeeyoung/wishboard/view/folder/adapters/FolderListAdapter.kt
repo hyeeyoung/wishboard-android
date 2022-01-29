@@ -32,7 +32,7 @@ class FolderListAdapter(
 
             with(binding) {
                 this.item = item
-                Glide.with(context).load(item.image).into(folderImage)
+                Glide.with(context).load(item.thumbnail).into(folderImage)
                 container.setOnClickListener {
                     listener.onItemClick(item)
                 }
@@ -47,7 +47,7 @@ class FolderListAdapter(
 
             with(binding) {
                 this.item = item
-                Glide.with(context).load(item.image).into(folderImage)
+                Glide.with(context).load(item.thumbnail).into(folderImage)
                 container.setOnClickListener {
                     listener.onItemClick(item)
                 }
