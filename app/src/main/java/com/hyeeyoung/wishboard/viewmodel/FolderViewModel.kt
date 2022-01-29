@@ -20,10 +20,8 @@ class FolderViewModel @Inject constructor(
 
     private val folderListAdapter =
         FolderListAdapter(application, FolderListViewType.SQUARE_VIEW_TYPE)
-
-    init {
-        fetchFolderList()
-    }
+    private val folderListSummaryAdapter =
+        FolderListAdapter(application, FolderListViewType.HORIZONTAL_VIEW_TYPE)
 
     fun fetchFolderList() {
         if (token == null) return
@@ -32,7 +30,17 @@ class FolderViewModel @Inject constructor(
         }
     }
 
+    fun fetchFolderListSummary() {
+        if (token == null) return
+        viewModelScope.launch {
+            folderListSummaryAdapter.setData(
+                folderRepository.fetchFolderListSummary(token) ?: return@launch
+            )
+        }
+    }
+
     fun getFolderListAdapter(): FolderListAdapter = folderListAdapter
+    fun getFolderListSummaryAdapter(): FolderListAdapter = folderListSummaryAdapter
 
     companion object {
         private const val TAG = "FolderViewModel"
