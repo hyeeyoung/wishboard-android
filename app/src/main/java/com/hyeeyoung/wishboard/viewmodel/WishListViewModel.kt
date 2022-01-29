@@ -4,8 +4,10 @@ import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.model.cart.CartStateType
+import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.repository.cart.CartRepository
+import com.hyeeyoung.wishboard.repository.folder.FolderRepository
 import com.hyeeyoung.wishboard.repository.wish.WishRepository
 import com.hyeeyoung.wishboard.util.prefs
 import com.hyeeyoung.wishboard.view.wish.list.adapters.WishListAdapter
@@ -20,14 +22,12 @@ class WishListViewModel @Inject constructor(
     private val application: Application,
     private val wishRepository: WishRepository,
     private val cartRepository: CartRepository,
+    private val folderRepository: FolderRepository,
 ) : ViewModel() {
-    private val wishListAdapter = WishListAdapter(application)
-
     private val token = prefs?.getUserToken()
 
-    init {
-        fetchWishList()
-    }
+    private val wishListAdapter = WishListAdapter(application)
+    private var folderItem: FolderItem? = null
 
     fun fetchWishList() {
         if (token == null) return
@@ -39,6 +39,13 @@ class WishListViewModel @Inject constructor(
             withContext(Dispatchers.Main) {
                 wishListAdapter.setData(items ?: return@withContext)
             }
+        }
+    }
+
+    fun fetchFolderItems(folderId: Long?) {
+        if (token == null || folderId == null) return
+        viewModelScope.launch {
+            wishListAdapter.setData(folderRepository.fetchItemsInFolder(token, folderId) ?: return@launch)
         }
     }
 
@@ -73,7 +80,12 @@ class WishListViewModel @Inject constructor(
         wishListAdapter.deleteData(position, wishItem)
     }
 
+    fun setFolderItem(folderItem: FolderItem) {
+        this.folderItem = folderItem
+    }
+
     fun getWishListAdapter(): WishListAdapter = wishListAdapter
+    fun getFolderItem(): FolderItem? = folderItem
 
     companion object {
         private const val TAG = "WishListViewModel"

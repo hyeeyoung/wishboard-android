@@ -7,7 +7,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class FolderItem(
     @SerializedName("folder_id")
-    val folderId: Long? = null,
+    val id: Long? = null,
     @SerializedName("folder_name")
     val name: String,
     @SerializedName("folder_img")
