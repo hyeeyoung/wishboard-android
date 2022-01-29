@@ -41,6 +41,9 @@
         <action
             android:id="@+id/action_folder_to_folder_add_dialog"
             app:destination="@id/folderAddDialog" />
+        <action
+            android:id="@+id/action_folder_to_folder_detail"
+            app:destination="@id/folderDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/notiFragment"
@@ -56,6 +59,15 @@
         android:name="com.hyeeyoung.wishboard.view.my.screens.MyFragment"
         android:label="fragment_my"
         tools:layout="@layout/fragment_my" />
+    <fragment
+        android:id="@+id/folderDetailFragment"
+        android:name="com.hyeeyoung.wishboard.view.folder.screens.FolderDetailFragment"
+        android:label="fragment_folder_detail"
+        tools:layout="@layout/fragment_folder_detail" >
+        <action
+            android:id="@+id/action_folder_detail_to_wish_item_detail"
+            app:destination="@id/wish_item_nav_graph" />
+    </fragment>
 
     <!-- TODO id -> snake_case, label -> camelCase로 변경하기 -->
     <dialog

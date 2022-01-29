@@ -73,6 +73,17 @@ interface RemoteService {
     ): Response<RequestResult>
 
     // 폴더
+    @GET("folder")
+    suspend fun fetchFolderList(
+        @Header("Authorization") token: String
+    ): Response<List<FolderItem>>?
+
+    @GET("folder/item/{folder_id}")
+    suspend fun fetchItemsInFolder(
+        @Header("Authorization") token: String,
+        @Path("folder_id") folderId: Long
+    ): Response<List<WishItem>>?
+
     @POST("folder")
     suspend fun createNewFolder(
         @Header("Authorization") token: String,
