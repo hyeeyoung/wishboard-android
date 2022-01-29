@@ -5,17 +5,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hyeeyoung.wishboard.databinding.FragmentFolderListBinding
 import com.hyeeyoung.wishboard.model.folder.FolderItem
+import com.hyeeyoung.wishboard.util.ImageLoader
+import com.hyeeyoung.wishboard.util.loadImage
 import com.hyeeyoung.wishboard.view.folder.adapters.FolderListAdapter
 import com.hyeeyoung.wishboard.viewmodel.FolderViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FolderListFragment : Fragment(), FolderListAdapter.OnItemClickListener {
+class FolderListFragment : Fragment(), FolderListAdapter.OnItemClickListener, ImageLoader {
     private lateinit var binding: FragmentFolderListBinding
     private val viewModel: FolderViewModel by viewModels()
 
@@ -36,6 +40,7 @@ class FolderListFragment : Fragment(), FolderListAdapter.OnItemClickListener {
     private fun initializeView() {
         val adapter = viewModel.getFolderListSummaryAdapter()
         adapter.setOnItemClickListener(this)
+        adapter.setImageLoader(this)
         binding.folderList.adapter = adapter
         binding.folderList.layoutManager = LinearLayoutManager(requireContext())
     }
@@ -45,6 +50,10 @@ class FolderListFragment : Fragment(), FolderListAdapter.OnItemClickListener {
             previousBackStackEntry?.savedStateHandle?.set(ARG_FOLDER_ITEM, item)
             popBackStack()
         }
+    }
+
+    override fun loadImage(imageUrl: String, imageView: ImageView) {
+        loadImage(lifecycleScope, requireContext(), imageUrl, imageView)
     }
 
     companion object {

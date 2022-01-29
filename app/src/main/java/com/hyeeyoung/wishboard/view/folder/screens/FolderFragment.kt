@@ -4,21 +4,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentFolderBinding
 import com.hyeeyoung.wishboard.model.folder.FolderItem
+import com.hyeeyoung.wishboard.util.ImageLoader
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
+import com.hyeeyoung.wishboard.util.loadImage
 import com.hyeeyoung.wishboard.view.folder.adapters.FolderListAdapter
 import com.hyeeyoung.wishboard.viewmodel.FolderViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.newFixedThreadPoolContext
 
 @AndroidEntryPoint
-class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener {
+class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener, ImageLoader {
     private lateinit var binding: FragmentFolderBinding
     private val viewModel: FolderViewModel by viewModels()
 
@@ -41,6 +46,7 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener {
     private fun initializeView() {
         val adapter = viewModel.getFolderListAdapter()
         adapter.setOnItemClickListener(this)
+        adapter.setImageLoader(this)
         binding.folderList.adapter = adapter
         binding.folderList.layoutManager = GridLayoutManager(requireContext(), 2)
 
@@ -68,6 +74,10 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener {
             R.id.action_folder_to_folder_detail,
             bundleOf(ARG_FOLDER_ITEM to item)
         )
+    }
+
+    override fun loadImage(imageUrl: String, imageView: ImageView) {
+        loadImage(lifecycleScope, requireContext(), imageUrl, imageView)
     }
 
     companion object {
