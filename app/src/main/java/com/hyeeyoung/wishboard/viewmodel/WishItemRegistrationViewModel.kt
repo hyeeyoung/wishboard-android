@@ -15,6 +15,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.remote.AWSS3Service
 import com.hyeeyoung.wishboard.repository.common.GalleryPagingDataSource
@@ -50,6 +51,8 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var itemImage = MutableLiveData<String>()
     private var itemMemo = MutableLiveData<String>()
     private var itemUrl = MutableLiveData<String>()
+    private var folderItem: FolderItem? = null
+
     private var isCompleteUpload = MutableLiveData<Boolean?>()
 
     private val galleryImageUris = MutableLiveData<PagingData<Uri>>()
@@ -132,7 +135,9 @@ class WishItemRegistrationViewModel @Inject constructor(
                     image = file.name,
                     price = itemPrice.value?.toIntOrNull(),
                     url = itemUrl.value,
-                    memo = itemMemo.value?.trim()
+                    memo = itemMemo.value?.trim(),
+                    folderId = folderItem?.id,
+                    folderName = folderItem?.name // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
                 )
                 val isComplete = wishRepository.uploadWishItem(token, item)
                 isCompleteUpload.postValue(isComplete)
@@ -159,8 +164,8 @@ class WishItemRegistrationViewModel @Inject constructor(
                 price = itemPrice.value?.toIntOrNull(),
                 url = itemUrl.value,
                 memo = itemMemo.value?.trim(),
-                folderId = wishItem?.folderId,
-                folderName = wishItem?.folderName,
+                folderId = folderItem?.id ?: wishItem?.folderId,
+                folderName = folderItem?.name ?: wishItem?.folderName, // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
                 notiDate = wishItem?.notiDate,
                 notiType = wishItem?.notiType
             )
@@ -286,6 +291,10 @@ class WishItemRegistrationViewModel @Inject constructor(
         itemMemo.value = s.toString()
     }
 
+    fun setFolderItem(folder: FolderItem) {
+        folderItem = folder
+    }
+
     fun setItemUrl(url: String) {
         itemUrl.value = url
     }
@@ -311,6 +320,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun getItemPrice(): LiveData<String> = itemPrice
     fun getItemUrl(): LiveData<String> = itemUrl
     fun getItemMemo(): LiveData<String> = itemMemo
+    fun getFolderItem(): FolderItem? = folderItem
     fun isCompleteUpload(): LiveData<Boolean?> = isCompleteUpload
 
     fun getGalleryImageUris(): LiveData<PagingData<Uri>?> = galleryImageUris
