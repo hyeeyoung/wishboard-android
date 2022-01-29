@@ -4,11 +4,11 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.databinding.ItemFolderHorizontalBinding
 import com.hyeeyoung.wishboard.databinding.ItemFolderSquareBinding
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.folder.FolderListViewType
+import com.hyeeyoung.wishboard.util.ImageLoader
 
 class FolderListAdapter(
     private val context: Context,
@@ -16,6 +16,7 @@ class FolderListAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val dataSet = arrayListOf<FolderItem>()
     private lateinit var listener: OnItemClickListener
+    private lateinit var imageLoader: ImageLoader
 
     interface OnItemClickListener {
         fun onItemClick(item: FolderItem)
@@ -25,6 +26,10 @@ class FolderListAdapter(
         this.listener = listener
     }
 
+    fun setImageLoader(imageLoader: ImageLoader) {
+        this.imageLoader = imageLoader
+    }
+
     inner class SquareViewHolder(private val binding: ItemFolderSquareBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
@@ -32,7 +37,7 @@ class FolderListAdapter(
 
             with(binding) {
                 this.item = item
-                Glide.with(context).load(item.thumbnail).into(folderImage)
+                item.thumbnail?.let { imageLoader.loadImage(it, thumbnail) }
                 container.setOnClickListener {
                     listener.onItemClick(item)
                 }
@@ -47,7 +52,7 @@ class FolderListAdapter(
 
             with(binding) {
                 this.item = item
-                Glide.with(context).load(item.thumbnail).into(folderImage)
+                item.thumbnail?.let { imageLoader.loadImage(it, thumbnail) }
                 container.setOnClickListener {
                     listener.onItemClick(item)
                 }
