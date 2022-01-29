@@ -4,6 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".view.folder.screens.FolderFragment">
 
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hyeeyoung.wishboard.viewmodel.FolderViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -51,7 +58,6 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <!--    @brief : 밑으로 당겨서 refresh를 위해 추가 -->
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefresh"
             android:layout_width="match_parent"
@@ -60,7 +66,7 @@
             app:layout_constraintTop_toBottomOf="@id/title_container">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerview_folders_list"
+                android:id="@+id/folder_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="10dp"

@@ -89,5 +89,6 @@ class FolderListAdapter(
     fun setData(items: List<FolderItem>) {
         dataSet.clear()
         dataSet.addAll(items)
+        notifyDataSetChanged()
     }
 }

@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.view.wish.list.screens
+package com.hyeeyoung.wishboard.view.folder.screens
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,42 +7,48 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hyeeyoung.wishboard.R
-import com.hyeeyoung.wishboard.databinding.FragmentHomeBinding
+import com.hyeeyoung.wishboard.databinding.FragmentFolderDetailBinding
+import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.util.ImageLoader
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.loadImage
-import com.hyeeyoung.wishboard.util.safeLet
 import com.hyeeyoung.wishboard.view.wish.list.adapters.WishListAdapter
 import com.hyeeyoung.wishboard.viewmodel.WishListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener, ImageLoader {
-    private lateinit var binding: FragmentHomeBinding
-    private val viewModel: WishListViewModel by activityViewModels()
-    private lateinit var adapter: WishListAdapter
+@AndroidEntryPoint
+class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener, ImageLoader {
+    private lateinit var binding: FragmentFolderDetailBinding
+    private val viewModel: WishListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding = FragmentFolderDetailBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
 
-        viewModel.fetchWishList()
+        arguments?.let {
+            (it[ARG_FOLDER_ITEM] as? FolderItem)?.let { folder ->
+                viewModel.setFolderItem(folder)
+                viewModel.fetchFolderItems(folder.id)
+            }
+        }
 
         initializeView()
         addListeners()
-        addObservers()
 
         return binding.root
     }
 
     private fun initializeView() {
-        adapter = viewModel.getWishListAdapter()
+        val adapter = viewModel.getWishListAdapter()
         adapter.setOnItemClickListener(this)
         adapter.setImageLoader(this)
         binding.wishList.adapter = adapter
@@ -50,32 +56,14 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener, ImageLoade
     }
 
     private fun addListeners() {
-        binding.cart.setOnClickListener {
-            findNavController().navigateSafe(R.id.action_home_to_cart)
-        }
-        binding.swipeRefresh.setOnRefreshListener {
-            viewModel.fetchWishList()
-            binding.swipeRefresh.isRefreshing = false
-        }
-    }
-
-    private fun addObservers() {
-        // 상세조회에서 아이템 삭제 완료 후 홈으로 복귀했을 때 해당 아이템 정보를 전달받고, ui를 업데이트
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
-            ARG_WISH_ITEM_INFO
-        )?.observe(viewLifecycleOwner) {
-            safeLet(
-                it[ARG_WISH_ITEM_POSITION] as? Int,
-                it[ARG_WISH_ITEM] as? WishItem
-            ) { position, withITem ->
-                viewModel.deleteWishItem(position, withITem)
-            }
+        binding.more.setOnClickListener {
+            // TODO not yet implemented
         }
     }
 
     override fun onItemClick(position: Int, item: WishItem) {
         findNavController().navigateSafe(
-            R.id.action_home_to_wish_item_detail,
+            R.id.action_folder_detail_to_wish_item_detail,
             bundleOf(
                 ARG_WISH_ITEM_POSITION to position,
                 ARG_WISH_ITEM to item,
@@ -92,9 +80,9 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener, ImageLoade
     }
 
     companion object {
-        private const val TAG = "HomeFragment"
-        private const val ARG_WISH_ITEM = "wishItem"
+        private const val TAG = "WishItemDetailFragment"
+        private const val ARG_FOLDER_ITEM = "folderItem"
         private const val ARG_WISH_ITEM_POSITION = "position"
-        private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
+        private const val ARG_WISH_ITEM = "wishItem"
     }
 }

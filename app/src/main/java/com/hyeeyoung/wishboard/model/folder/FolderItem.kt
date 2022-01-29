@@ -12,6 +12,6 @@ data class FolderItem(
     val name: String,
     @SerializedName("folder_img")
     val image: String? = null, // TODO 논의 후 삭제 결정 및 썸네일 이미지(해당 폴더 내 최근 아이템) 추가
-    @SerializedName("folder_item_count")
+    @SerializedName("item_count")
     val itemCount: Int? = null,
 ): Parcelable
