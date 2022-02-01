@@ -9,7 +9,7 @@ data class FolderItem(
     @SerializedName("folder_id")
     val id: Long? = null,
     @SerializedName("folder_name")
-    val name: String,
+    var name: String,
     @SerializedName("folder_thumbnail")
     val thumbnail: String? = null,
     @SerializedName("item_count")

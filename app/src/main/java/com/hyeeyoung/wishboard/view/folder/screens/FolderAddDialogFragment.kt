@@ -6,17 +6,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
+import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.DialogNewFolderAddBinding
-import com.hyeeyoung.wishboard.viewmodel.FolderAddDialogViewModel
+import com.hyeeyoung.wishboard.model.folder.FolderItem
+import com.hyeeyoung.wishboard.viewmodel.FolderViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FolderAddDialogFragment : DialogFragment() {
     private lateinit var binding: DialogNewFolderAddBinding
-    private val viewModel: FolderAddDialogViewModel by viewModels()
+    private val viewModel: FolderViewModel by activityViewModels()
+    private var folderItem: FolderItem? = null
+    private var position: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -27,6 +32,15 @@ class FolderAddDialogFragment : DialogFragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this@FolderAddDialogFragment
 
+        arguments?.let {
+            viewModel.setEditMode(true)
+            (it[ARG_FOLDER_ITEM] as? FolderItem)?.let { folder ->
+                folderItem = folder
+                viewModel.setFolderName(folder.name)
+            }
+            (it[ARG_FOLDER_POSITION] as? Int)?.let { position -> this.position = position }
+        }
+
         addListeners()
         addObservers()
 
@@ -34,6 +48,13 @@ class FolderAddDialogFragment : DialogFragment() {
     }
 
     private fun addListeners() {
+        binding.add.setOnClickListener {
+            if (viewModel.getEditMode().value == true) {
+                viewModel.updateFolderName(folderItem, position)
+            } else {
+                viewModel.createNewFolder()
+            }
+        }
         binding.close.setOnClickListener {
             dialog?.dismiss()
         }
@@ -47,6 +68,17 @@ class FolderAddDialogFragment : DialogFragment() {
                     viewModel.getFolderItem()
                 )
                 popBackStack()
+            }
+        }
+        viewModel.getIsCompleteUpdate().observe(viewLifecycleOwner) { isComplete ->
+            if (isComplete) {
+                dismiss()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.folder_name_update_toast_text),
+                    Toast.LENGTH_SHORT
+                ).show()
+                viewModel.resetCompleteUpdate()
             }
         }
     }
@@ -64,5 +96,6 @@ class FolderAddDialogFragment : DialogFragment() {
     companion object {
         private const val TAG = "FolderAdditionDialogFragment"
         private const val ARG_FOLDER_ITEM = "folderItem"
+        private const val ARG_FOLDER_POSITION = "folderPosition"
     }
 }

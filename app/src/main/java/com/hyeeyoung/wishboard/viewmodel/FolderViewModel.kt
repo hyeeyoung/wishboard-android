@@ -25,7 +25,12 @@ class FolderViewModel @Inject constructor(
         FolderListAdapter(application, FolderListViewType.SQUARE_VIEW_TYPE)
     private val folderListSummaryAdapter =
         FolderListAdapter(application, FolderListViewType.HORIZONTAL_VIEW_TYPE)
+    private var folderName = MutableLiveData<String>()
+    private var folderItem: FolderItem? = null
+    private var isCompleteAddition = MutableLiveData<Boolean>()
+    private var isCompleteUpdate = MutableLiveData<Boolean>()
     private var isCompleteDeletion = MutableLiveData<Boolean>()
+    private var isEditMode = MutableLiveData<Boolean>()
 
     fun fetchFolderList() {
         if (token == null) return
@@ -43,6 +48,28 @@ class FolderViewModel @Inject constructor(
         }
     }
 
+    fun createNewFolder() {
+        val folderName = folderName.value?.trim()
+        if (token == null || folderName == null) return
+        val folderInfo = FolderItem(name = folderName)
+
+        viewModelScope.launch {
+            folderItem = folderInfo
+            isCompleteAddition.value = folderRepository.createNewFolder(token, folderInfo)
+        }
+    }
+
+    fun updateFolderName(folder: FolderItem?, position: Int?) {
+        val folderName = folderName.value?.trim()
+        if (token == null || folder?.id == null || folderName == null) return // TODO 수정 실패 예외처리 필요
+        viewModelScope.launch {
+            isCompleteUpdate.value = folderRepository.updateFolderName(token, folder.id, folderName)
+        }
+
+        folder.name = folderName
+        folderListAdapter.updateData(position ?: return, folder) // TODO 수정 완료 후 UI 업데이트
+    }
+
     fun deleteFolder(folder: FolderItem?, position: Int?) {
         if (token == null || folder?.id == null) return // TODO 삭제 실패 예외처리 필요
         viewModelScope.launch {
@@ -51,13 +78,34 @@ class FolderViewModel @Inject constructor(
         folderListAdapter.deleteData(position ?: return, folder)
     }
 
+    fun onFolderNameTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        folderName.value = s.toString()
+    }
+
+    fun resetCompleteUpdate() {
+        isCompleteUpdate.value = false
+    }
+
     fun resetCompleteDeletion() {
         isCompleteDeletion.value = false
     }
 
+    fun setFolderName(name: String) {
+        folderName.value = name
+    }
+
+    fun setEditMode(isEditable: Boolean) {
+        isEditMode.value = isEditable
+    }
+
     fun getFolderListAdapter(): FolderListAdapter = folderListAdapter
     fun getFolderListSummaryAdapter(): FolderListAdapter = folderListSummaryAdapter
+    fun getFolderName(): LiveData<String> = folderName
+    fun getFolderItem(): FolderItem? = folderItem
+    fun getIsCompleteAddition(): LiveData<Boolean> = isCompleteAddition
+    fun getIsCompleteUpdate(): LiveData<Boolean> = isCompleteUpdate
     fun getIsCompleteDeletion(): LiveData<Boolean> = isCompleteDeletion
+    fun getEditMode(): LiveData<Boolean> = isEditMode
 
     companion object {
         private const val TAG = "FolderViewModel"

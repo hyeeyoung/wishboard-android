@@ -9,6 +9,7 @@
     <string name="complete">완료</string>
     <string name="next">다음</string>
     <string name="add">추가</string>
+    <string name="edit">변경</string>
     <string name="colon">:</string>
 
     <!-- Sign -->
@@ -28,10 +29,12 @@
     <string name="folder">폴더</string>
     <string name="folder_list_title">폴더 목록</string>
     <string name="folder_add_dialog_title">새 폴더 추가</string>
+    <string name="folder_add_dialog_folder_name_edit_title">폴더명 수정</string>
     <string name="folder_add_dialog_detail">새 폴더명을 입력하세요.</string>
     <string name="folder_add_dialog_folder_name_length_format">(%d/10)</string>
     <string name="folder_delete_dialog_title">정말 삭제하시겠습니까?</string>
     <string name="folder_delete_dialog_detail">해당 폴더에 담긴 모든 아이템이 사라질 수 있어요!</string>
+    <string name="folder_name_update_toast_text">폴더명을 수정했습니다</string>
     <string name="folder_delete_toast_text">폴더를 삭제했습니다</string>
     <string name="folder_more_dialog_title">옵션 더보기</string>
     <string name="folder_delete">폴더 삭제</string>
