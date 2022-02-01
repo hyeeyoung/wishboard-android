@@ -33,8 +33,9 @@ class FolderAddDialogFragment : DialogFragment() {
         binding.lifecycleOwner = this@FolderAddDialogFragment
 
         arguments?.let {
-            viewModel.setEditMode(true)
+
             (it[ARG_FOLDER_ITEM] as? FolderItem)?.let { folder ->
+                viewModel.setEditMode(true)
                 folderItem = folder
                 viewModel.setFolderName(folder.name)
             }
