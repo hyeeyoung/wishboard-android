@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -20,12 +20,11 @@ import com.hyeeyoung.wishboard.util.loadImage
 import com.hyeeyoung.wishboard.view.folder.adapters.FolderListAdapter
 import com.hyeeyoung.wishboard.viewmodel.FolderViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.newFixedThreadPoolContext
 
 @AndroidEntryPoint
 class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener, ImageLoader {
     private lateinit var binding: FragmentFolderBinding
-    private val viewModel: FolderViewModel by viewModels()
+    private val viewModel: FolderViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

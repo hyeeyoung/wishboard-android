@@ -42,6 +42,9 @@
             android:id="@+id/action_folder_to_folder_add_dialog"
             app:destination="@id/folderAddDialog" />
         <action
+            android:id="@+id/action_folder_to_folder_more_dialog"
+            app:destination="@id/folderMoreDialog" />
+        <action
             android:id="@+id/action_folder_to_folder_detail"
             app:destination="@id/folderDetailFragment" />
     </fragment>
@@ -75,4 +78,18 @@
         android:name="com.hyeeyoung.wishboard.view.folder.screens.FolderAddDialogFragment"
         android:label="dialog_folder_add"
         tools:layout="@layout/dialog_new_folder_add" />
+    <dialog
+        android:id="@+id/folderMoreDialog"
+        android:name="com.hyeeyoung.wishboard.view.folder.screens.FolderMoreDialogFragment"
+        android:label="dialog_folder_more"
+        tools:layout="@layout/dialog_folder_more">
+        <action
+            android:id="@+id/action_folder_more_to_folder_delete_dialog"
+            app:destination="@id/folderDeleteDialog" />
+    </dialog>
+    <dialog
+        android:id="@+id/folderDeleteDialog"
+        android:name="com.hyeeyoung.wishboard.view.folder.screens.FolderDeleteDialogFragment"
+        android:label="dialog_folder_delete"
+        tools:layout="@layout/dialog_folder_delete" />
 </navigation>
