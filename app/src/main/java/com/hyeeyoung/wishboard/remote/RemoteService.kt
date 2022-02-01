@@ -95,6 +95,14 @@ interface RemoteService {
         @Body folderItem: FolderItem
     ): Response<RequestResult>
 
+    @FormUrlEncoded
+    @PUT("folder/{folder_id}")
+    suspend fun updateFolderName(
+        @Header("Authorization") token: String,
+        @Path("folder_id") folderId: Long,
+        @Field("folder_name") folderName: String
+    ): Response<RequestResult>
+
     @DELETE("folder/{folder_id}")
     suspend fun deleteFolder(
         @Header("Authorization") token: String,

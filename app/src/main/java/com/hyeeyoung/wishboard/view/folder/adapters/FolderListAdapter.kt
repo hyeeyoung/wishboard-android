@@ -101,6 +101,10 @@ class FolderListAdapter(
 
     override fun getItemCount(): Int = dataSet.size
 
+    fun updateData(position: Int, folderItem: FolderItem) {
+        dataSet[position] = folderItem
+        notifyItemChanged(position)
+    }
 
     fun deleteData(position: Int, folderItem: FolderItem) {
         dataSet.remove(folderItem)

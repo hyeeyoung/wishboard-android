@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.hyeeyoung.wishboard.viewmodel.FolderAddDialogViewModel" />
+            type="com.hyeeyoung.wishboard.viewmodel.FolderViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/nanum_square_eb"
-                android:text="@string/folder_add_dialog_title"
+                android:text="@{viewModel.editMode == true ? @string/folder_add_dialog_folder_name_edit_title : @string/folder_add_dialog_title}"
                 android:textColor="@color/gray_700"
                 android:textSize="15sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -121,9 +121,8 @@
                 android:background="@drawable/selector_dialog_yes_button_background"
                 android:enabled="@{viewModel.folderName.length() > 0}"
                 android:fontFamily="@font/nanum_square_eb"
-                android:onClick="@{() -> viewModel.createNewFolder()}"
                 android:outlineProvider="none"
-                android:text="@string/add"
+                android:text="@{viewModel.editMode == true ? @string/edit : @string/add}"
                 android:textColor="@color/selector_dialog_yes_button_text_color"
                 android:textSize="15sp"
                 app:layout_constraintTop_toBottomOf="@id/new_folder_container" />

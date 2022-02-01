@@ -38,7 +38,13 @@ class FolderMoreDialogFragment : BottomSheetDialogFragment() {
     private fun addListener() {
         binding.update.setOnClickListener {
             dismiss()
-            TODO("not yet implemented")
+            findNavController().navigateSafe(
+                R.id.action_folder_more_to_folder_add_dialog,
+                bundleOf(
+                    ARG_FOLDER_ITEM to folderItem,
+                    ARG_FOLDER_POSITION to position
+                )
+            )
         }
         binding.delete.setOnClickListener {
             dismiss()
