@@ -2,81 +2,91 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="">
+    tools:context="com.hyeeyoung.wishboard.view.folder.screens.FolderDeleteDialogFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/background_dialog"
-        android:padding="20dp">
+        android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/title_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="25dp"
+            android:layout_marginHorizontal="20dp"
+            android:background="@drawable/background_dialog"
+            android:padding="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/title_container"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/nanum_square_eb"
-                android:text="@string/folder_delete_dialog_title"
-                android:textColor="@color/gray_700"
-                android:textSize="15dp"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nanum_square_eb"
+                    android:text="@string/folder_delete_dialog_title"
+                    android:textColor="@color/gray_700"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                <!--        @TODO : 임의로 넣음 강조를 위해서. 워딩 수정 필요-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/nanum_square_r"
+                    android:text="@string/folder_delete_dialog_detail"
+                    android:textColor="@color/gray_300"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/title" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-            <!--        @TODO : 임의로 넣음 강조를 위해서. 워딩 수정 필요-->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/nanum_square_r"
-                android:text="@string/folder_delete_dialog_detail"
-                android:textColor="@color/gray_300"
-                android:textSize="15dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title" />
+                app:layout_constraintTop_toBottomOf="@id/title_container">
+
+                <Button
+                    android:id="@+id/no"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/background_button_line"
+                    android:fontFamily="@font/nanum_square_eb"
+                    android:outlineProvider="none"
+                    android:text="@string/cancel"
+                    android:textColor="@color/gray_700"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toStartOf="@id/yes"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/yes"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/background_solid_button"
+                    android:fontFamily="@font/nanum_square_eb"
+                    android:outlineProvider="none"
+                    android:text="@string/confirm"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/no"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:layout_constraintTop_toBottomOf="@id/title_container">
-
-            <Button
-                android:id="@+id/cancel"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_marginRight="20dp"
-                android:layout_weight="1"
-                android:background="@drawable/background_button_line"
-                android:fontFamily="@font/nanum_square_eb"
-                android:onClick="onClick"
-                android:outlineProvider="none"
-                android:text="@string/cancel"
-                android:textColor="@color/gray_700"
-                android:textSize="15dp" />
-
-            <Button
-                android:id="@+id/confirm"
-                android:layout_width="0dp"
-                android:layout_height="50dp"
-                android:layout_weight="1"
-                android:background="@drawable/background_button_green"
-                android:fontFamily="@font/nanum_square_eb"
-                android:onClick="onClick"
-                android:outlineProvider="none"
-                android:text="@string/confirm"
-                android:textColor="@color/gray_700"
-                android:textSize="15dp" />
-        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

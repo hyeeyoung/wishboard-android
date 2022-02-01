@@ -4,6 +4,7 @@ import android.util.Log
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.remote.RemoteService
+import com.hyeeyoung.wishboard.repository.wish.WishRepositoryImpl
 
 class FolderRepositoryImpl : FolderRepository {
     private val api = RemoteService.api
@@ -48,6 +49,17 @@ class FolderRepositoryImpl : FolderRepository {
             Log.d(TAG, "폴더 추가 성공")
         } else {
             Log.e(TAG, "폴더 추가 실패: ${response.code()}")
+        }
+        return response.isSuccessful
+    }
+
+    override suspend fun deleteFolder(token: String, folderId: Long): Boolean {
+        val response = api.deleteFolder(token, folderId)
+
+        if (response.isSuccessful) {
+            Log.d(TAG, "폴더 삭제 성공")
+        } else {
+            Log.e(TAG, "폴더 삭제 실패: ${response.code()}")
         }
         return response.isSuccessful
     }

@@ -3,12 +3,16 @@ package com.hyeeyoung.wishboard.view.folder.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ItemFolderHorizontalBinding
 import com.hyeeyoung.wishboard.databinding.ItemFolderSquareBinding
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.folder.FolderListViewType
 import com.hyeeyoung.wishboard.util.ImageLoader
+import com.hyeeyoung.wishboard.util.extension.navigateSafe
 
 class FolderListAdapter(
     private val context: Context,
@@ -40,6 +44,12 @@ class FolderListAdapter(
                 item.thumbnail?.let { imageLoader.loadImage(it, thumbnail) }
                 container.setOnClickListener {
                     listener.onItemClick(item)
+                }
+                moreFolder.setOnClickListener {
+                    it.findNavController().navigateSafe(R.id.action_folder_to_folder_more_dialog, bundleOf(
+                        ARG_FOLDER_ITEM to item,
+                        ARG_FOLDER_POSITION to position
+                    ))
                 }
             }
         }
@@ -91,9 +101,20 @@ class FolderListAdapter(
 
     override fun getItemCount(): Int = dataSet.size
 
+
+    fun deleteData(position: Int, folderItem: FolderItem) {
+        dataSet.remove(folderItem)
+        notifyItemRemoved(position)
+    }
+
     fun setData(items: List<FolderItem>) {
         dataSet.clear()
         dataSet.addAll(items)
         notifyDataSetChanged()
+    }
+
+    companion object {
+        private const val ARG_FOLDER_ITEM = "folderItem"
+        private const val ARG_FOLDER_POSITION = "folderPosition"
     }
 }
