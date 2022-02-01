@@ -95,6 +95,12 @@ interface RemoteService {
         @Body folderItem: FolderItem
     ): Response<RequestResult>
 
+    @DELETE("folder/{folder_id}")
+    suspend fun deleteFolder(
+        @Header("Authorization") token: String,
+        @Path("folder_id") folderId: Long,
+    ): Response<RequestResult>
+
     companion object {
         val api = Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)

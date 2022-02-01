@@ -1,8 +1,11 @@
 package com.hyeeyoung.wishboard.viewmodel
 
 import android.app.Application
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.folder.FolderListViewType
 import com.hyeeyoung.wishboard.repository.folder.FolderRepository
 import com.hyeeyoung.wishboard.util.prefs
@@ -22,6 +25,7 @@ class FolderViewModel @Inject constructor(
         FolderListAdapter(application, FolderListViewType.SQUARE_VIEW_TYPE)
     private val folderListSummaryAdapter =
         FolderListAdapter(application, FolderListViewType.HORIZONTAL_VIEW_TYPE)
+    private var isCompleteDeletion = MutableLiveData<Boolean>()
 
     fun fetchFolderList() {
         if (token == null) return
@@ -39,8 +43,21 @@ class FolderViewModel @Inject constructor(
         }
     }
 
+    fun deleteFolder(folder: FolderItem?, position: Int?) {
+        if (token == null || folder?.id == null) return // TODO 삭제 실패 예외처리 필요
+        viewModelScope.launch {
+            isCompleteDeletion.value = folderRepository.deleteFolder(token, folder.id)
+        }
+        folderListAdapter.deleteData(position ?: return, folder)
+    }
+
+    fun resetCompleteDeletion() {
+        isCompleteDeletion.value = false
+    }
+
     fun getFolderListAdapter(): FolderListAdapter = folderListAdapter
     fun getFolderListSummaryAdapter(): FolderListAdapter = folderListSummaryAdapter
+    fun getIsCompleteDeletion(): LiveData<Boolean> = isCompleteDeletion
 
     companion object {
         private const val TAG = "FolderViewModel"
