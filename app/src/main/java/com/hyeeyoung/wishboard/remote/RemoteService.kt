@@ -2,6 +2,7 @@ package com.hyeeyoung.wishboard.remote
 
 import com.hyeeyoung.wishboard.BuildConfig
 import com.hyeeyoung.wishboard.model.RequestResult
+import com.hyeeyoung.wishboard.model.RequestResultId
 import com.hyeeyoung.wishboard.model.RequestResultToken
 import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.folder.FolderItem
@@ -93,7 +94,7 @@ interface RemoteService {
     suspend fun createNewFolder(
         @Header("Authorization") token: String,
         @Body folderItem: FolderItem
-    ): Response<RequestResult>
+    ): Response<RequestResultId>
 
     @FormUrlEncoded
     @PUT("folder/{folder_id}")
