@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.cart.CartItemButtonType
@@ -22,9 +23,10 @@ class CartViewModel @Inject constructor(
     private val token = prefs?.getUserToken()
     private val cartList = MutableLiveData<MutableList<CartItem>>(mutableListOf())
     private val cartListAdapter = CartListAdapter(application)
-    private var totalPrice = MutableLiveData<Int>()
+    private var totalPrice = MediatorLiveData<Int>()
 
     init {
+        calculateTotalPrice()
         fetchCartList()
     }
 
@@ -33,14 +35,18 @@ class CartViewModel @Inject constructor(
         viewModelScope.launch {
             val items = cartRepository.fetchCartList(token)
             cartListAdapter.setData(items ?: return@launch)
-            cartList.postValue(items as MutableList<CartItem>)
+            cartList.postValue(items as? MutableList<CartItem>)
         }
     }
 
-    fun removeToCart(itemId: Long) {
+    fun removeToCart(itemId: Long, position: Int) {
         if (token == null) return
         viewModelScope.launch {
-            cartRepository.removeToCart(token, itemId)
+            val isSuccessful = cartRepository.removeToCart(token, itemId)
+            if (!isSuccessful) return@launch
+
+            cartListAdapter.removeItem(position)
+            cartList.postValue(cartListAdapter.getData() as? MutableList<CartItem>)
         }
     }
 
@@ -66,15 +72,16 @@ class CartViewModel @Inject constructor(
             val isSuccessful = cartRepository.updateCartInfo(token, item)
             if (!isSuccessful) return@launch // TODO 장바구니 업데이트 실패 시 예외 처리 필요
 
-            cartList.value?.set(position, item)
             cartListAdapter.updateItem(position, item)
-            calculateTotalPrice()
+            cartList.postValue(cartListAdapter.getData() as? MutableList<CartItem>)
         }
     }
 
     private fun calculateTotalPrice() {
-        totalPrice.value = cartList.value?.sumOf {
-            (it.wishItem.price ?: 0) * it.cartItemInfo.count
+        totalPrice.addSource(cartList) {
+            totalPrice.value = cartList.value?.sumOf {
+                (it.wishItem.price ?: 0) * it.cartItemInfo.count
+            }
         }
     }
 
