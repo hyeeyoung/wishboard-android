@@ -39,7 +39,6 @@ class CartListAdapter(
 
                 delete.setOnClickListener {
                     listener.onItemClick(item, position, CartItemButtonType.VIEW_TYPE_DELETION)
-                    removeItem(position)
                 }
                 container.setOnClickListener {
                     listener.onItemClick(item, position, CartItemButtonType.VIEW_TYPE_CONTAINER)
@@ -71,6 +70,8 @@ class CartListAdapter(
     }
 
     override fun getItemCount(): Int = dataSet.size
+
+    fun getData(): List<CartItem> = dataSet
 
     fun setData(items: List<CartItem>) {
         dataSet.clear()

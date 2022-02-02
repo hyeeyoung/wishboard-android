@@ -66,7 +66,7 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener, ImageLoade
                 )
             }
             CartItemButtonType.VIEW_TYPE_DELETION -> {
-                viewModel.removeToCart(item.wishItem.id!!)
+                viewModel.removeToCart(item.wishItem.id!!, position)
             }
             CartItemButtonType.VIEW_TYPE_PLUS, CartItemButtonType.VIEW_TYPE_MINUS -> {
                 viewModel.controlItemCount(item, position, viewType)
