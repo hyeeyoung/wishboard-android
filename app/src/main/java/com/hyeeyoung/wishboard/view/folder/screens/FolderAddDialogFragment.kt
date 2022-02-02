@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.DialogNewFolderAddBinding
 import com.hyeeyoung.wishboard.model.folder.FolderItem
@@ -33,7 +32,6 @@ class FolderAddDialogFragment : DialogFragment() {
         binding.lifecycleOwner = this@FolderAddDialogFragment
 
         arguments?.let {
-
             (it[ARG_FOLDER_ITEM] as? FolderItem)?.let { folder ->
                 viewModel.setEditMode(true)
                 folderItem = folder
@@ -50,10 +48,9 @@ class FolderAddDialogFragment : DialogFragment() {
 
     private fun addListeners() {
         binding.add.setOnClickListener {
-            if (viewModel.getEditMode().value == true) {
-                viewModel.updateFolderName(folderItem, position)
-            } else {
-                viewModel.createNewFolder()
+            when (viewModel.getEditMode().value) {
+                true -> viewModel.updateFolderName(folderItem, position)
+                false -> viewModel.createNewFolder()
             }
         }
         binding.close.setOnClickListener {
@@ -62,30 +59,17 @@ class FolderAddDialogFragment : DialogFragment() {
     }
 
     private fun addObservers() {
-        viewModel.getIsCompleteAddition().observe(viewLifecycleOwner) {
-            findNavController().apply {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.folder_add_toast_text),
-                    Toast.LENGTH_SHORT
-                ).show()
-                
-                previousBackStackEntry?.savedStateHandle?.set(
-                    ARG_FOLDER_ITEM,
-                    viewModel.getFolderItem()
-                )
-                popBackStack()
-            }
-        }
-        viewModel.getIsCompleteUpdate().observe(viewLifecycleOwner) { isComplete ->
+        viewModel.getIsCompleteUpload().observe(viewLifecycleOwner) { isComplete ->
             if (isComplete) {
                 dismiss()
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.folder_name_update_toast_text),
-                    Toast.LENGTH_SHORT
-                ).show()
-                viewModel.resetCompleteUpdate()
+                val toastMessageRes = when (viewModel.getEditMode().value) {
+                    true -> R.string.folder_name_update_toast_text
+                    else -> R.string.folder_add_toast_text
+                }
+                Toast.makeText(requireContext(), getString(toastMessageRes), Toast.LENGTH_SHORT)
+                    .show()
+
+                viewModel.resetFolderData()
             }
         }
     }
