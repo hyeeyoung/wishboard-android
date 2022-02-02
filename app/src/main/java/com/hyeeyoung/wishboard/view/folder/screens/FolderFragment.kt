@@ -37,7 +37,6 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener, ImageL
 
         initializeView()
         addListeners()
-        addObservers()
 
         return binding.root
     }
@@ -46,9 +45,11 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener, ImageL
         val adapter = viewModel.getFolderListAdapter()
         adapter.setOnItemClickListener(this)
         adapter.setImageLoader(this)
-        binding.folderList.adapter = adapter
-        binding.folderList.layoutManager = GridLayoutManager(requireContext(), 2)
 
+        binding.folderList.apply {
+            this.adapter = adapter
+            layoutManager = GridLayoutManager(requireContext(), 2)
+        }
     }
 
     private fun addListeners() {
@@ -58,13 +59,6 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener, ImageL
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.fetchFolderList()
             binding.swipeRefresh.isRefreshing = false
-        }
-    }
-
-    private fun addObservers() {
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<FolderItem>(
-            ARG_FOLDER_ITEM
-        )?.observe(viewLifecycleOwner) {
         }
     }
 

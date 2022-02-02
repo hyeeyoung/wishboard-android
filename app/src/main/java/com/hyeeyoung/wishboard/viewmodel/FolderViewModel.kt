@@ -27,8 +27,7 @@ class FolderViewModel @Inject constructor(
         FolderListAdapter(application, FolderListViewType.HORIZONTAL_VIEW_TYPE)
     private var folderName = MutableLiveData<String>()
     private var folderItem: FolderItem? = null
-    private var isCompleteAddition = MutableLiveData<Boolean>()
-    private var isCompleteUpdate = MutableLiveData<Boolean>()
+    private var isCompleteUpload = MutableLiveData<Boolean>()
     private var isCompleteDeletion = MutableLiveData<Boolean>()
     private var isEditMode = MutableLiveData<Boolean>()
 
@@ -57,7 +56,7 @@ class FolderViewModel @Inject constructor(
             folderItem = folderInfo
             val folderId = folderRepository.createNewFolder(token, folderInfo) ?: return@launch
             folderListAdapter.addData(FolderItem(folderId, folderName))
-            isCompleteAddition.value = true
+            isCompleteUpload.value = true
         }
     }
 
@@ -65,7 +64,7 @@ class FolderViewModel @Inject constructor(
         val folderName = folderName.value?.trim()
         if (token == null || folder?.id == null || folderName == null) return // TODO 수정 실패 예외처리 필요
         viewModelScope.launch {
-            isCompleteUpdate.value = folderRepository.updateFolderName(token, folder.id, folderName)
+            isCompleteUpload.value = folderRepository.updateFolderName(token, folder.id, folderName)
         }
 
         folder.name = folderName
@@ -84,8 +83,11 @@ class FolderViewModel @Inject constructor(
         folderName.value = s.toString()
     }
 
-    fun resetCompleteUpdate() {
-        isCompleteUpdate.value = false
+    /** 폴더 추가 후 또 다른 폴더 추가/수정을 위해 이전에 입력한 폴더명 등의 폴더 관련 데이터를 reset */
+    fun resetFolderData() {
+        folderName.value = null
+        isEditMode.value = false
+        isCompleteUpload.value = false
     }
 
     fun resetCompleteDeletion() {
@@ -103,9 +105,7 @@ class FolderViewModel @Inject constructor(
     fun getFolderListAdapter(): FolderListAdapter = folderListAdapter
     fun getFolderListSummaryAdapter(): FolderListAdapter = folderListSummaryAdapter
     fun getFolderName(): LiveData<String> = folderName
-    fun getFolderItem(): FolderItem? = folderItem
-    fun getIsCompleteAddition(): LiveData<Boolean> = isCompleteAddition
-    fun getIsCompleteUpdate(): LiveData<Boolean> = isCompleteUpdate
+    fun getIsCompleteUpload(): LiveData<Boolean> = isCompleteUpload
     fun getIsCompleteDeletion(): LiveData<Boolean> = isCompleteDeletion
     fun getEditMode(): LiveData<Boolean> = isEditMode
 
