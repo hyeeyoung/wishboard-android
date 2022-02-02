@@ -55,7 +55,9 @@ class FolderViewModel @Inject constructor(
 
         viewModelScope.launch {
             folderItem = folderInfo
-            isCompleteAddition.value = folderRepository.createNewFolder(token, folderInfo)
+            val folderId = folderRepository.createNewFolder(token, folderInfo) ?: return@launch
+            folderListAdapter.addData(FolderItem(folderId, folderName))
+            isCompleteAddition.value = true
         }
     }
 

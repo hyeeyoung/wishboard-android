@@ -101,6 +101,11 @@ class FolderListAdapter(
 
     override fun getItemCount(): Int = dataSet.size
 
+    fun addData(folderItem: FolderItem) {
+        dataSet.add(0, folderItem)
+        notifyItemInserted(0)
+    }
+
     fun updateData(position: Int, folderItem: FolderItem) {
         dataSet[position] = folderItem
         notifyItemChanged(position)

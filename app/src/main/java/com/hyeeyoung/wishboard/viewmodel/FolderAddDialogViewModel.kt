@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FolderAddDialogViewModel @Inject constructor(
+class FolderAddDialogViewModel @Inject constructor( // TODO 사용되지 않는 파일, 삭제 예정
     private val folderRepository: FolderRepository,
 ) : ViewModel() {
     private val token = prefs?.getUserToken()
@@ -28,7 +28,7 @@ class FolderAddDialogViewModel @Inject constructor(
 
         viewModelScope.launch {
             folderItem = folderInfo
-            isCompleteAddition.value = folderRepository.createNewFolder(token, folderInfo)
+          //  isCompleteAddition.value = folderRepository.createNewFolder(token, folderInfo)
         }
     }
 
