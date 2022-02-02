@@ -64,6 +64,12 @@ class FolderAddDialogFragment : DialogFragment() {
     private fun addObservers() {
         viewModel.getIsCompleteAddition().observe(viewLifecycleOwner) {
             findNavController().apply {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.folder_add_toast_text),
+                    Toast.LENGTH_SHORT
+                ).show()
+                
                 previousBackStackEntry?.savedStateHandle?.set(
                     ARG_FOLDER_ITEM,
                     viewModel.getFolderItem()
