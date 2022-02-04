@@ -31,9 +31,16 @@ class FolderAddDialogFragment : DialogFragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this@FolderAddDialogFragment
 
-        arguments?.let {
+        viewModel.resetFolderData()
+
+        arguments.let {
+            if (it == null) {
+                viewModel.setEditMode(false)
+                return@let
+            }
+
+            viewModel.setEditMode(true)
             (it[ARG_FOLDER_ITEM] as? FolderItem)?.let { folder ->
-                viewModel.setEditMode(true)
                 folderItem = folder
                 viewModel.setFolderName(folder.name)
             }
@@ -60,7 +67,7 @@ class FolderAddDialogFragment : DialogFragment() {
 
     private fun addObservers() {
         viewModel.getIsCompleteUpload().observe(viewLifecycleOwner) { isComplete ->
-            if (isComplete) {
+            if (isComplete == true) {
                 dismiss()
                 val toastMessageRes = when (viewModel.getEditMode().value) {
                     true -> R.string.folder_name_update_toast_text
@@ -68,8 +75,6 @@ class FolderAddDialogFragment : DialogFragment() {
                 }
                 Toast.makeText(requireContext(), getString(toastMessageRes), Toast.LENGTH_SHORT)
                     .show()
-
-                viewModel.resetFolderData()
             }
         }
     }
