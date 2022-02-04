@@ -29,7 +29,7 @@ class FolderViewModel @Inject constructor(
     private var folderItem: FolderItem? = null
     private var isCompleteUpload = MutableLiveData<Boolean>()
     private var isCompleteDeletion = MutableLiveData<Boolean>()
-    private var isEditMode = MutableLiveData<Boolean>()
+    private var isEditMode = MutableLiveData(false)
 
     fun fetchFolderList() {
         if (token == null) return
