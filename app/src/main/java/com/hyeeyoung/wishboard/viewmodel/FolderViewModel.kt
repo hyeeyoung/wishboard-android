@@ -29,8 +29,8 @@ class FolderViewModel @Inject constructor(
     private var folderItem: FolderItem? = null
     private var isCompleteUpload = MutableLiveData<Boolean>()
     private var isCompleteDeletion = MutableLiveData<Boolean>()
-    private var isEditMode = MutableLiveData(false)
     private var isExistFolderName = MutableLiveData<Boolean>()
+    private var isEditMode = MutableLiveData<Boolean>()
 
     fun fetchFolderList() {
         if (token == null) return
@@ -93,8 +93,8 @@ class FolderViewModel @Inject constructor(
     /** 폴더 추가 후 또 다른 폴더 추가/수정을 위해 이전에 입력한 폴더명 등의 폴더 관련 데이터를 reset */
     fun resetFolderData() {
         folderName.value = null
-        isEditMode.value = false
-        isCompleteUpload.value = false
+        isCompleteUpload.value = null
+        isExistFolderName.value = null
     }
 
     fun resetCompleteDeletion() {
