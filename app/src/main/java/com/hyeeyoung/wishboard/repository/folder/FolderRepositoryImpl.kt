@@ -41,7 +41,10 @@ class FolderRepositoryImpl : FolderRepository {
         return response.body()
     }
 
-    override suspend fun createNewFolder(token: String, folderItemInfo: FolderItem): Long? {
+    override suspend fun createNewFolder(
+        token: String,
+        folderItemInfo: FolderItem
+    ): Pair<Pair<Boolean, Int>, Long?> {
         val response = api.createNewFolder(token, folderItemInfo)
 
         if (response.isSuccessful) {
@@ -49,14 +52,14 @@ class FolderRepositoryImpl : FolderRepository {
         } else {
             Log.e(TAG, "폴더 추가 실패: ${response.code()}")
         }
-        return response.body()?.id
+        return Pair(Pair(response.isSuccessful, response.code()), response.body()?.id)
     }
 
     override suspend fun updateFolderName(
         token: String,
         folderId: Long,
         folderName: String
-    ): Boolean {
+    ): Pair<Boolean, Int> {
         val response = api.updateFolderName(token, folderId, folderName)
 
         if (response.isSuccessful) {
@@ -64,7 +67,7 @@ class FolderRepositoryImpl : FolderRepository {
         } else {
             Log.e(TAG, "폴더명 수정 실패: ${response.code()}")
         }
-        return response.isSuccessful
+        return Pair(response.isSuccessful, response.code())
     }
 
     override suspend fun deleteFolder(token: String, folderId: Long): Boolean {

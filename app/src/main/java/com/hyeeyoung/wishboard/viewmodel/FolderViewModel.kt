@@ -30,6 +30,7 @@ class FolderViewModel @Inject constructor(
     private var isCompleteUpload = MutableLiveData<Boolean>()
     private var isCompleteDeletion = MutableLiveData<Boolean>()
     private var isEditMode = MutableLiveData(false)
+    private var isExistFolderName = MutableLiveData<Boolean>()
 
     fun fetchFolderList() {
         if (token == null) return
@@ -54,9 +55,12 @@ class FolderViewModel @Inject constructor(
 
         viewModelScope.launch {
             folderItem = folderInfo
-            val folderId = folderRepository.createNewFolder(token, folderInfo) ?: return@launch
-            folderListAdapter.addData(FolderItem(folderId, folderName))
-            isCompleteUpload.value = true
+            val result = folderRepository.createNewFolder(token, folderInfo)
+            isCompleteUpload.value = result.first.first
+            isExistFolderName.value = result.first.second == 409
+            result.second?.let { folderId ->
+                folderListAdapter.addData(FolderItem(folderId, folderName))
+            }
         }
     }
 
@@ -64,7 +68,9 @@ class FolderViewModel @Inject constructor(
         val folderName = folderName.value?.trim()
         if (token == null || folder?.id == null || folderName == null) return // TODO 수정 실패 예외처리 필요
         viewModelScope.launch {
-            isCompleteUpload.value = folderRepository.updateFolderName(token, folder.id, folderName)
+            val result = folderRepository.updateFolderName(token, folder.id, folderName)
+            isCompleteUpload.value = result.first
+            isExistFolderName.value = result.second == 409
         }
 
         folder.name = folderName
@@ -81,6 +87,7 @@ class FolderViewModel @Inject constructor(
 
     fun onFolderNameTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
         folderName.value = s.toString()
+        isExistFolderName.value = false
     }
 
     /** 폴더 추가 후 또 다른 폴더 추가/수정을 위해 이전에 입력한 폴더명 등의 폴더 관련 데이터를 reset */
@@ -107,6 +114,7 @@ class FolderViewModel @Inject constructor(
     fun getFolderName(): LiveData<String> = folderName
     fun getIsCompleteUpload(): LiveData<Boolean> = isCompleteUpload
     fun getIsCompleteDeletion(): LiveData<Boolean> = isCompleteDeletion
+    fun getIsExistFolderName(): LiveData<Boolean> = isExistFolderName
     fun getEditMode(): LiveData<Boolean> = isEditMode
 
     companion object {

@@ -36,6 +36,7 @@
     <string name="folder_delete_dialog_detail">해당 폴더에 담긴 모든 아이템이 사라질 수 있어요!</string>
     <string name="folder_add_toast_text">폴더를 추가했습니다</string>
     <string name="folder_name_update_toast_text">폴더명을 수정했습니다</string>
+    <string name="folder_name_already_exist_toast_text">같은 이름의 폴더가 있어요!</string>
     <string name="folder_delete_toast_text">폴더를 삭제했습니다</string>
     <string name="folder_more_dialog_title">옵션 더보기</string>
     <string name="folder_delete">폴더 삭제</string>
