@@ -33,7 +33,7 @@
     <string name="folder_add_dialog_detail">새 폴더명을 입력하세요.</string>
     <string name="folder_add_dialog_folder_name_length_format">(%d/10)</string>
     <string name="folder_delete_dialog_title">정말 삭제하시겠습니까?</string>
-    <string name="folder_delete_dialog_detail">해당 폴더에 담긴 모든 아이템이 사라질 수 있어요!</string>
+    <string name="folder_delete_dialog_detail">폴더가 삭제되어도 아이템은 사라지지 않아요!</string>
     <string name="folder_add_toast_text">폴더를 추가했습니다</string>
     <string name="folder_name_update_toast_text">폴더명을 수정했습니다</string>
     <string name="folder_name_already_exist_toast_text">같은 이름의 폴더가 있어요!</string>
