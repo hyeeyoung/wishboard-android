@@ -30,6 +30,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
+      - name: Decrypt Services
+        env:
+          FIREBASE_SECRET: ${{ secrets.FIREBASE_SECRET }}
+        run: gpg --quiet --batch --yes --always-trust --decrypt --passphrase="$FIREBASE_SECRET" --output services.tar services.tar.gpg
+
+      - name: Unzip Services
+        run: tar xvf services.tar
+      
       - name: Touch local properties
         run: touch local.properties
 
