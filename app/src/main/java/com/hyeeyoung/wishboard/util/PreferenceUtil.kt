@@ -29,4 +29,12 @@ class PreferenceUtil(context: Context) {
     fun clearUserInfo() {
         prefs.edit().clear().apply()
     }
+
+    fun setFCMToken(token: String) {
+        prefs.edit().putString(PREF_FCM_TOKEN, token).apply()
+    }
+
+    fun getFCMToken(): String? {
+        return prefs.getString(PREF_FCM_TOKEN, null)
+    }
 }
