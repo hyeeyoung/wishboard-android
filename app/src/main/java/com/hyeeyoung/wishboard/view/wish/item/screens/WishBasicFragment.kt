@@ -20,7 +20,6 @@ import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.util.ImageLoader
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.loadImage
-import com.hyeeyoung.wishboard.view.folder.screens.FolderListFragment
 import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -42,7 +41,7 @@ class WishBasicFragment : Fragment(), ImageLoader {
     ): View {
         binding = FragmentWishBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-
+        binding.lifecycleOwner = this@WishBasicFragment
 
         // 갤러리 이미지 선택 화면으로 전환 -> 해당 화면 복귀할 경우, 생명주기상 onCreateView를 재호출되고,
         // if문 내 코드를 실행하면서 입력된 정보가 reset되는 문제가 있음
