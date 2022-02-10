@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.Transformations
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -36,6 +37,7 @@ import java.io.IOException
 import java.io.OutputStream
 import java.net.MalformedURLException
 import java.net.URL
+import java.text.DecimalFormat
 import javax.inject.Inject
 
 @HiltViewModel
@@ -112,7 +114,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                 val item = WishItem(
                     name = name,
                     image = imageFile?.name,
-                    price = itemPrice.value?.toIntOrNull(),
+                    price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                     url = siteUrl,
                     memo = itemMemo.value?.trim()
                 )
@@ -133,7 +135,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                 val item = WishItem(
                     name = name,
                     image = file.name,
-                    price = itemPrice.value?.toIntOrNull(),
+                    price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                     url = itemUrl.value,
                     memo = itemMemo.value?.trim(),
                     folderId = folderItem?.id,
@@ -161,7 +163,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                 createAt = wishItem?.createAt,
                 name = itemName,
                 image = file?.name ?: wishItem?.image,
-                price = itemPrice.value?.toIntOrNull(),
+                price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                 url = itemUrl.value,
                 memo = itemMemo.value?.trim(),
                 folderId = folderItem?.id ?: wishItem?.folderId,
@@ -258,6 +260,18 @@ class WishItemRegistrationViewModel @Inject constructor(
         return file
     }
 
+    /** 가격 데이터에 천단위 구분자를 적용 */
+    private fun applyPriceFormat(price: String): String? {
+        // 천단위 구분자 포함 11자리 이상인 경우, 입력 불가하도록 바로 직전에 입력한 값을 반환
+        if (price.length > 11) return price.substring(0, price.length - 1)
+        
+        // 숫자가 아닌 문자는 모두 제거
+        val numPrice = price.replace(("[\\D.]").toRegex(), "")
+        if (numPrice == "") return null
+        val decimalFormat = DecimalFormat("#,###")
+        return decimalFormat.format(numPrice.toInt())
+    }
+
     fun setWishItem(wishItem: WishItem) {
         this.wishItem = wishItem
         setWishItemInfo()
@@ -280,7 +294,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     }
 
     fun onItemPriceTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        itemPrice.value = s.toString().trim()
+        itemPrice.value = s.toString()
     }
 
     fun onItemUrlTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -317,7 +331,9 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     fun getItemName(): LiveData<String> = itemName
     fun getItemImage(): LiveData<String> = itemImage
-    fun getItemPrice(): LiveData<String> = itemPrice
+    fun getItemPrice(): LiveData<String> = Transformations.map(itemPrice) { price ->
+        applyPriceFormat(price)
+    }
     fun getItemUrl(): LiveData<String> = itemUrl
     fun getItemMemo(): LiveData<String> = itemMemo
     fun getFolderItem(): FolderItem? = folderItem

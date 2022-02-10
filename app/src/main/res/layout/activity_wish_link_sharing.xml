@@ -90,7 +90,8 @@
                             android:textAlignment="center"
                             android:textColor="@color/black"
                             android:textColorHint="@color/gray_300"
-                            android:textSize="15sp" />
+                            android:textSize="15sp"
+                            android:selection="@{viewModel.itemPrice.length()}" />
 
                         <!-- @brief : 원 표시 추가할지 고민 중-->
                         <!--                <TextView-->

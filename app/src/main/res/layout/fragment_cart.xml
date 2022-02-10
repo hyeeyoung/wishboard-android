@@ -105,11 +105,11 @@
                 android:layout_marginRight="2dp"
                 android:layout_toLeftOf="@id/won"
                 android:fontFamily="@font/nanum_square_eb"
-                android:text="@{Integer.toString(viewModel.totalPrice)}"
                 android:textColor="@color/gray_700"
                 android:textSize="17dp"
                 app:layout_constraintEnd_toStartOf="@id/won"
                 app:layout_constraintTop_toTopOf="parent"
+                app:priceFormat="@{viewModel.totalPrice}"
                 tools:text="0" />
 
             <TextView

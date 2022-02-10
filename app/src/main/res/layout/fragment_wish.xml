@@ -191,6 +191,7 @@
                             android:textColor="@color/gray_700"
                             android:textSize="13dp" />
 
+                        <!-- text, selection 순서 바뀌지 않도록 주의 -->
                         <EditText
                             android:id="@+id/item_price"
                             android:layout_width="0dp"
@@ -206,7 +207,8 @@
                             android:text="@{viewModel.itemPrice}"
                             android:textColor="@color/gray_700"
                             android:textColorHint="@color/gray_200"
-                            android:textSize="13dp" />
+                            android:textSize="13sp"
+                            android:selection="@{viewModel.itemPrice.length()}" />
                     </LinearLayout>
 
                     <LinearLayout
