@@ -20,7 +20,9 @@ import com.hyeeyoung.wishboard.util.loadImage
 import com.hyeeyoung.wishboard.util.safeLet
 import com.hyeeyoung.wishboard.view.wish.list.adapters.WishListAdapter
 import com.hyeeyoung.wishboard.viewmodel.WishListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener, ImageLoader {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: WishListViewModel by activityViewModels()
