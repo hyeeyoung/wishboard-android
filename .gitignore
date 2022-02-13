@@ -13,7 +13,7 @@
 .externalNativeBuild
 .cxx
 
-#amplify-do-not-edit-begin
+# AWS Services
 amplify/
 build/
 dist/
@@ -27,6 +27,7 @@ amplify-gradle-config.json
 amplifytools.xcconfig
 .secret-*
 **.sample
-#amplify-do-not-edit-end
 
+# Google Services
+google-services.json
 /services.tar
