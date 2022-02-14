@@ -4,31 +4,21 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.DialogFolderMoreBinding
-import com.hyeeyoung.wishboard.model.folder.FolderItem
-import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FolderMoreDialogFragment : BottomSheetDialogFragment() {
     private lateinit var binding: DialogFolderMoreBinding
-    private var folderItem: FolderItem? = null
-    private var position: Int? = null
+    private var folderInfo: Bundle? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = DialogFolderMoreBinding.inflate(inflater, container, false)
-
-        arguments?.let {
-            (it[ARG_FOLDER_ITEM] as? FolderItem)?.let { folderItem = it }
-            (it[ARG_FOLDER_POSITION] as? Int)?.let { position = it }
-        }
+        folderInfo = arguments
 
         addListener()
 
@@ -37,30 +27,20 @@ class FolderMoreDialogFragment : BottomSheetDialogFragment() {
 
     private fun addListener() {
         binding.update.setOnClickListener {
-            dismiss()
-            findNavController().navigateSafe(
-                R.id.action_folder_more_to_folder_add_dialog,
-                bundleOf(
-                    ARG_FOLDER_ITEM to folderItem,
-                    ARG_FOLDER_POSITION to position
-                )
-            )
+            dialog?.dismiss()
+            val dialog = FolderAddDialogFragment()
+            dialog.arguments = folderInfo
+            dialog.show(requireActivity().supportFragmentManager, FolderAddDialogFragment.TAG)
         }
         binding.delete.setOnClickListener {
-            dismiss()
-            findNavController().navigateSafe(
-                R.id.action_folder_more_to_folder_delete_dialog,
-                bundleOf(
-                    ARG_FOLDER_ITEM to folderItem,
-                    ARG_FOLDER_POSITION to position
-                )
-            )
+            dialog?.dismiss()
+            val dialog = FolderDeleteDialogFragment()
+            dialog.arguments = folderInfo
+            dialog.show(requireActivity().supportFragmentManager, FolderDeleteDialogFragment.TAG)
         }
     }
 
     companion object {
-        private const val TAG = "FolderListFragment"
-        private const val ARG_FOLDER_ITEM = "folderItem"
-        private const val ARG_FOLDER_POSITION = "folderPosition"
+        private const val TAG = "FolderMoreDialogFragment"
     }
 }

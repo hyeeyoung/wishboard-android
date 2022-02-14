@@ -69,12 +69,11 @@ class FolderDeleteDialogFragment : DialogFragment() {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     companion object {
-        private const val TAG = "FolderDeleteDialogFragment"
+        const val TAG = "FolderDeleteDialogFragment"
         private const val ARG_FOLDER_ITEM = "folderItem"
         private const val ARG_FOLDER_POSITION = "folderPosition"
     }
