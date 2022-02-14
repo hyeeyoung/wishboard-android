@@ -75,7 +75,7 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener, ImageLoade
     }
 
     override fun loadImage(imageUrl: String, imageView: ImageView) {
-        loadImage(lifecycleScope, requireContext(), imageUrl, imageView)
+        loadImage(lifecycleScope, imageUrl, imageView)
     }
 
     companion object {

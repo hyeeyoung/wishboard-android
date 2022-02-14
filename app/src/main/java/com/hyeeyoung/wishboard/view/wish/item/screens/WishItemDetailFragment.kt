@@ -104,7 +104,7 @@ class WishItemDetailFragment : Fragment(), ImageLoader {
     }
 
     override fun loadImage(imageUrl: String, imageView: ImageView) {
-        loadImage(lifecycleScope, requireContext(), imageUrl, imageView)
+        loadImage(lifecycleScope, imageUrl, imageView)
     }
 
     companion object {
