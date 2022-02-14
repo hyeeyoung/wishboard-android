@@ -17,14 +17,17 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.hyeeyoung.wishboard.model.folder.FolderItem
+import com.hyeeyoung.wishboard.model.folder.FolderListViewType
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.remote.AWSS3Service
 import com.hyeeyoung.wishboard.repository.common.GalleryPagingDataSource
 import com.hyeeyoung.wishboard.repository.common.GalleryRepository
+import com.hyeeyoung.wishboard.repository.folder.FolderRepository
 import com.hyeeyoung.wishboard.repository.wish.WishRepository
 import com.hyeeyoung.wishboard.util.getTimestamp
 import com.hyeeyoung.wishboard.util.prefs
 import com.hyeeyoung.wishboard.util.safeLet
+import com.hyeeyoung.wishboard.view.folder.adapters.FolderListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
@@ -45,6 +48,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private val application: Application,
     private val wishRepository: WishRepository,
     private val galleryRepository: GalleryRepository,
+    private val folderRepository: FolderRepository,
 ) : ViewModel() {
     private var wishItem: WishItem? = null
     private var itemId: Long? = null
@@ -61,7 +65,14 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var selectedGalleryImageUri = MutableLiveData<Uri?>()
     private var imageFile: File? = null
 
+    private val folderListAdapter =
+        FolderListAdapter(application, FolderListViewType.HORIZONTAL_VIEW_TYPE)
+
     private val token = prefs?.getUserToken()
+
+    init {
+        fetchFolderList()
+    }
 
     /** 오픈그래프 메타태그 파싱을 통해 아이템 정보 가져오기 */
     suspend fun getWishItemInfo(url: String) {
@@ -174,6 +185,15 @@ class WishItemRegistrationViewModel @Inject constructor(
 
             val isComplete = wishRepository.updateWishItem(token, itemId!!, wishItem!!)
             isCompleteUpload.postValue(isComplete)
+        }
+    }
+
+    private fun fetchFolderList() {
+        if (token == null) return
+        viewModelScope.launch {
+            folderListAdapter.setData(
+                folderRepository.fetchFolderListSummary(token) ?: return@launch
+            )
         }
     }
 
@@ -342,6 +362,8 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun getGalleryImageUris(): LiveData<PagingData<Uri>?> = galleryImageUris
     fun getSelectedGalleryImageUri(): LiveData<Uri?> = selectedGalleryImageUri
     fun getWishItem(): WishItem? = wishItem
+
+    fun getFolderListAdapter(): FolderListAdapter = folderListAdapter
 
     companion object {
         private const val TAG = "WishItemRegistrationViewModel"

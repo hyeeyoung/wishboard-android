@@ -15,7 +15,6 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentWishBinding
-import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.util.ImageLoader
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
@@ -126,13 +125,6 @@ class WishBasicFragment : Fragment(), ImageLoader {
                 Glide.with(requireContext()).load(uri).into(binding.itemImage)
             }
         }
-
-        // 폴더 리스트에서 선택한 폴더 정보를 전달받음
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<FolderItem>(
-            ARG_FOLDER_ITEM
-        )?.observe(viewLifecycleOwner) { folder ->
-            viewModel.setFolderItem(folder)
-        }
     }
 
     private val requestStorage =
@@ -151,6 +143,5 @@ class WishBasicFragment : Fragment(), ImageLoader {
         private const val TAG = "WishBasicFragment"
         private const val ARG_WISH_ITEM = "wishItem"
         private const val ARG_IS_EDIT_MODE = "isEditMode"
-        private const val ARG_FOLDER_ITEM = "folderItem"
     }
 }

@@ -7,10 +7,6 @@
     <data>
 
         <import type="androidx.navigation.Navigation" />
-
-        <variable
-            name="viewModel"
-            type="com.hyeeyoung.wishboard.viewmodel.FolderViewModel" />
     </data>
 
     <LinearLayout

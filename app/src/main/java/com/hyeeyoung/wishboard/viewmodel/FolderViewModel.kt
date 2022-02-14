@@ -23,8 +23,6 @@ class FolderViewModel @Inject constructor(
 
     private val folderListAdapter =
         FolderListAdapter(application, FolderListViewType.SQUARE_VIEW_TYPE)
-    private val folderListSummaryAdapter =
-        FolderListAdapter(application, FolderListViewType.HORIZONTAL_VIEW_TYPE)
     private var folderName = MutableLiveData<String>()
     private var folderItem: FolderItem? = null
     private var isCompleteUpload = MutableLiveData<Boolean>()
@@ -32,19 +30,14 @@ class FolderViewModel @Inject constructor(
     private var isExistFolderName = MutableLiveData<Boolean>()
     private var isEditMode = MutableLiveData<Boolean>()
 
+    init {
+        fetchFolderList()
+    }
+
     fun fetchFolderList() {
         if (token == null) return
         viewModelScope.launch {
             folderListAdapter.setData(folderRepository.fetchFolderList(token) ?: return@launch)
-        }
-    }
-
-    fun fetchFolderListSummary() {
-        if (token == null) return
-        viewModelScope.launch {
-            folderListSummaryAdapter.setData(
-                folderRepository.fetchFolderListSummary(token) ?: return@launch
-            )
         }
     }
 
@@ -110,7 +103,6 @@ class FolderViewModel @Inject constructor(
     }
 
     fun getFolderListAdapter(): FolderListAdapter = folderListAdapter
-    fun getFolderListSummaryAdapter(): FolderListAdapter = folderListSummaryAdapter
     fun getFolderName(): LiveData<String> = folderName
     fun getIsCompleteUpload(): LiveData<Boolean> = isCompleteUpload
     fun getIsCompleteDeletion(): LiveData<Boolean> = isCompleteDeletion

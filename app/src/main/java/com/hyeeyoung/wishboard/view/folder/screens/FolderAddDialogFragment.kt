@@ -32,7 +32,6 @@ class FolderAddDialogFragment : DialogFragment() {
         binding.lifecycleOwner = this@FolderAddDialogFragment
 
         viewModel.resetFolderData()
-
         arguments.let {
             if (it == null) {
                 viewModel.setEditMode(false)
@@ -61,7 +60,7 @@ class FolderAddDialogFragment : DialogFragment() {
             }
         }
         binding.close.setOnClickListener {
-            dialog?.dismiss()
+            dismiss()
         }
     }
 
@@ -85,12 +84,11 @@ class FolderAddDialogFragment : DialogFragment() {
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.MATCH_PARENT
         )
-
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
     }
 
     companion object {
-        private const val TAG = "FolderAdditionDialogFragment"
+        const val TAG = "FolderAdditionDialogFragment"
         private const val ARG_FOLDER_ITEM = "folderItem"
         private const val ARG_FOLDER_POSITION = "folderPosition"
     }
