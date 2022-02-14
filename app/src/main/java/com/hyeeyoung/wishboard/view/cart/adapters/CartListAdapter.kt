@@ -3,6 +3,8 @@ package com.hyeeyoung.wishboard.view.cart.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hyeeyoung.wishboard.databinding.ItemCartBinding
 import com.hyeeyoung.wishboard.model.cart.CartItem
@@ -11,10 +13,14 @@ import com.hyeeyoung.wishboard.util.ImageLoader
 
 class CartListAdapter(
     private val context: Context
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : ListAdapter<CartItem, RecyclerView.ViewHolder>(diffCallback) {
     private val dataSet = arrayListOf<CartItem>()
     private lateinit var listener: OnItemClickListener
     private lateinit var imageLoader: ImageLoader
+
+    init {
+        setHasStableIds(true)
+    }
 
     interface OnItemClickListener {
         fun onItemClick(item: CartItem, position: Int, viewType: CartItemButtonType)
@@ -71,6 +77,8 @@ class CartListAdapter(
 
     override fun getItemCount(): Int = dataSet.size
 
+    override fun getItemId(position: Int): Long = position.toLong()
+
     fun getData(): List<CartItem> = dataSet
 
     fun setData(items: List<CartItem>) {
@@ -88,5 +96,23 @@ class CartListAdapter(
     fun updateItem(position: Int, cartItem: CartItem) {
         dataSet[position] = cartItem
         notifyItemChanged(position)
+    }
+
+    companion object {
+        private val diffCallback = object : DiffUtil.ItemCallback<CartItem>() {
+            override fun areItemsTheSame(
+                oldItem: CartItem,
+                newItem: CartItem
+            ): Boolean {
+                return oldItem.wishItem.id == newItem.wishItem.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: CartItem,
+                newItem: CartItem
+            ): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 }
