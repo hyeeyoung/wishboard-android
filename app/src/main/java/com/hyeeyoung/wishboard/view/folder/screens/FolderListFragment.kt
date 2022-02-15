@@ -1,15 +1,14 @@
 package com.hyeeyoung.wishboard.view.folder.screens
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentFolderListBinding
 import com.hyeeyoung.wishboard.model.folder.FolderItem
@@ -39,8 +38,11 @@ class FolderListFragment : Fragment(), FolderListAdapter.OnItemClickListener, Im
         val adapter = viewModel.getFolderListAdapter()
         adapter.setOnItemClickListener(this)
         adapter.setImageLoader(this)
-        binding.folderList.adapter = adapter
-        binding.folderList.layoutManager = LinearLayoutManager(requireContext())
+        binding.folderList.run {
+            this.adapter = adapter
+            itemAnimator = null
+            setItemViewCacheSize(20)
+        }
     }
 
     override fun onItemClick(item: FolderItem) {
