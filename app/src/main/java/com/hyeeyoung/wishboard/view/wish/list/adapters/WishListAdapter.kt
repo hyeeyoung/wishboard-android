@@ -3,18 +3,27 @@ package com.hyeeyoung.wishboard.view.wish.list.adapters
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.databinding.ItemWishBinding
 import com.hyeeyoung.wishboard.model.cart.CartStateType
+import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.util.ImageLoader
+import com.hyeeyoung.wishboard.view.folder.adapters.FolderListAdapter
 
 class WishListAdapter(
     private val context: Context
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : ListAdapter<WishItem, RecyclerView.ViewHolder>(diffCallback) {
     private val dataSet = arrayListOf<WishItem>()
     private lateinit var listener: OnItemClickListener
     private lateinit var imageLoader: ImageLoader
+
+    init {
+        setHasStableIds(true)
+    }
 
     interface OnItemClickListener {
         fun onItemClick(position: Int, item: WishItem)
@@ -35,7 +44,7 @@ class WishListAdapter(
             val item = dataSet[position]
             with(binding) {
                 this.item = item
-                item.image?.let { imageLoader.loadImage(it, binding.itemImage) }
+                item.image?.let { imageLoader.loadImage(it, itemImage) }
                 binding.cart.isSelected = item.cartState == CartStateType.IN_CART.numValue
 
                 container.setOnClickListener {
@@ -67,6 +76,8 @@ class WishListAdapter(
 
     override fun getItemCount(): Int = dataSet.size
 
+    override fun getItemId(position: Int): Long = position.toLong()
+
     /** 아이템 정보(타이틀 및 가격 등)수정, cart 포함 여부 수정에 사용 */
     fun updateData(position: Int, wishItem: WishItem) {
         dataSet[position] = wishItem
@@ -82,5 +93,24 @@ class WishListAdapter(
         dataSet.clear()
         dataSet.addAll(items)
         notifyDataSetChanged()
+    }
+
+    companion object {
+        private const val TAG = "wishListAdapter"
+        private val diffCallback = object : DiffUtil.ItemCallback<WishItem>() {
+            override fun areItemsTheSame(
+                oldItem: WishItem,
+                newItem: WishItem
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: WishItem,
+                newItem: WishItem
+            ): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 }
