@@ -26,15 +26,17 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener, ImageLoader {
     private lateinit var binding: FragmentHomeBinding
     private val viewModel: WishListViewModel by activityViewModels()
-    private lateinit var adapter: WishListAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.fetchWishList()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
-
-        viewModel.fetchWishList()
 
         initializeView()
         addListeners()
@@ -44,11 +46,15 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener, ImageLoade
     }
 
     private fun initializeView() {
-        adapter = viewModel.getWishListAdapter()
+        val adapter = viewModel.getWishListAdapter()
         adapter.setOnItemClickListener(this)
         adapter.setImageLoader(this)
-        binding.wishList.adapter = adapter
-        binding.wishList.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.wishList.run {
+            this.adapter = adapter
+            layoutManager = GridLayoutManager(requireContext(), 2)
+            itemAnimator = null
+            setItemViewCacheSize(20)
+        }
     }
 
     private fun addListeners() {
