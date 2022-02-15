@@ -58,23 +58,17 @@
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeRefresh"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/folder_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:padding="10dp"
+            android:scrollbarFadeDuration="0"
+            android:scrollbarSize="5dp"
+            android:scrollbarThumbVertical="@android:color/darker_gray"
+            android:scrollbars="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title_container">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/folder_list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="10dp"
-                android:scrollbarFadeDuration="0"
-                android:scrollbarSize="5dp"
-                android:scrollbarThumbVertical="@android:color/darker_gray"
-                android:scrollbars="vertical" />
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+            app:layout_constraintTop_toBottomOf="@id/title_container"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

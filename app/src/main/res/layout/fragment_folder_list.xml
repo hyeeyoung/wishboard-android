@@ -59,7 +59,8 @@
                 android:scrollbarFadeDuration="0"
                 android:scrollbarSize="5dp"
                 android:scrollbarThumbVertical="@android:color/darker_gray"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </LinearLayout>

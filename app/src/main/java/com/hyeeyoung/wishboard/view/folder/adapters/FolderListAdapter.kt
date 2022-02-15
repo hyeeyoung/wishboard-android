@@ -1,10 +1,13 @@
 package com.hyeeyoung.wishboard.view.folder.adapters
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ItemFolderHorizontalBinding
@@ -17,10 +20,14 @@ import com.hyeeyoung.wishboard.util.extension.navigateSafe
 class FolderListAdapter(
     private val context: Context,
     private val folderListViewType: FolderListViewType,
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : ListAdapter<FolderItem, RecyclerView.ViewHolder>(diffCallback) {
     private val dataSet = arrayListOf<FolderItem>()
     private lateinit var listener: OnItemClickListener
     private lateinit var imageLoader: ImageLoader
+
+    init {
+        setHasStableIds(true)
+    }
 
     interface OnItemClickListener {
         fun onItemClick(item: FolderItem)
@@ -101,6 +108,8 @@ class FolderListAdapter(
 
     override fun getItemCount(): Int = dataSet.size
 
+    override fun getItemId(position: Int): Long = position.toLong()
+
     fun addData(folderItem: FolderItem) {
         dataSet.add(0, folderItem)
         notifyItemInserted(0)
@@ -125,5 +134,20 @@ class FolderListAdapter(
     companion object {
         private const val ARG_FOLDER_ITEM = "folderItem"
         private const val ARG_FOLDER_POSITION = "folderPosition"
+        private val diffCallback = object : DiffUtil.ItemCallback<FolderItem>() {
+            override fun areItemsTheSame(
+                oldItem: FolderItem,
+                newItem: FolderItem
+            ): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(
+                oldItem: FolderItem,
+                newItem: FolderItem
+            ): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 }

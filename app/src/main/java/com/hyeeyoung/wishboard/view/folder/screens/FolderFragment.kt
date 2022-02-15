@@ -47,16 +47,14 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener, ImageL
         binding.folderList.apply {
             this.adapter = adapter
             layoutManager = GridLayoutManager(requireContext(), 2)
+            itemAnimator = null
+            setItemViewCacheSize(20)
         }
     }
 
     private fun addListeners() {
         binding.newFolder.setOnClickListener {
             findNavController().navigateSafe(R.id.action_folder_to_folder_add_dialog)
-        }
-        binding.swipeRefresh.setOnRefreshListener {
-            viewModel.fetchFolderList()
-            binding.swipeRefresh.isRefreshing = false
         }
     }
 
