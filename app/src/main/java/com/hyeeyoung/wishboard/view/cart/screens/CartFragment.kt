@@ -47,7 +47,8 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener, ImageLoade
         adapter.setImageLoader(this)
         binding.cartList.run {
             this.adapter = adapter
-            layoutManager = LinearLayoutManager(requireContext())
+            itemAnimator = null
+            setItemViewCacheSize(20)
             binding.cartList.addItemDecoration(
                 DividerItemDecoration(
                     binding.cartList.context,
