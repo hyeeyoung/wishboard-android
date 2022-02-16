@@ -110,6 +110,14 @@ interface RemoteService {
         @Path("folder_id") folderId: Long,
     ): Response<RequestResult>
 
+    // 사용자
+    @FormUrlEncoded
+    @PUT("user/fcm")
+    suspend fun updateFCMToken(
+        @Header("Authorization") userToken: String,
+        @Field("fcm_token") fcmToken: String
+    ): Response<RequestResult>
+
     companion object {
         val api = Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
