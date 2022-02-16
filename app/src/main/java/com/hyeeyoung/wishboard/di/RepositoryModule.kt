@@ -10,6 +10,8 @@ import com.hyeeyoung.wishboard.repository.wish.WishRepository
 import com.hyeeyoung.wishboard.repository.wish.WishRepositoryImpl
 import com.hyeeyoung.wishboard.repository.sign.SignRepository
 import com.hyeeyoung.wishboard.repository.sign.SignRepositoryImpl
+import com.hyeeyoung.wishboard.repository.user.UserRepository
+import com.hyeeyoung.wishboard.repository.user.UserRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,5 +49,11 @@ object RepositoryModule {
     @Provides
     fun provideGalleryRepository(): GalleryRepository {
         return GalleryRepositoryImpl()
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserRepository(): UserRepository {
+        return UserRepositoryImpl()
     }
 }
