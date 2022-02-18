@@ -127,6 +127,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="3"
+                                    android:onValueChange="@{viewModel::onNotiTypeValueChanged}"
                                     android:theme="@style/AppTheme.NumberPicker" />
 
                                 <NumberPicker
@@ -134,6 +135,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="3"
+                                    android:onValueChange="@{viewModel::onNotiDateValueChanged}"
                                     android:theme="@style/AppTheme.NumberPicker" />
 
                                 <TextView
@@ -151,6 +153,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
+                                    android:onValueChange="@{viewModel::onNotiHourValueChanged}"
                                     android:theme="@style/AppTheme.NumberPicker" />
 
                                 <TextView
@@ -168,6 +171,7 @@
                                     android:layout_width="0dp"
                                     android:layout_height="match_parent"
                                     android:layout_weight="1"
+                                    android:onValueChange="@{viewModel::onNotiMinuteValueChanged}"
                                     android:theme="@style/AppTheme.NumberPicker" />
                             </LinearLayout>
                         </LinearLayout>

@@ -102,3 +102,17 @@ fun setMinutePicker(minutePicker: NumberPicker) {
         descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
     }
 }
+
+fun getTypePickerValue(index: Int?): NotiType? {
+    val type = notiTypes[index ?: 0]
+    if (type == NotiType.NONE) return null
+    return type
+}
+
+fun getDatePickerValue(dateIndex: Int?, hourIndex: Int?, minuteIndex: Int?): String {
+    return getNotiDateServerFormat(
+        datesForServer[dateIndex ?: 0],
+        hours[hourIndex ?: 0],
+        minutes[minuteIndex ?: 0]
+    )
+}

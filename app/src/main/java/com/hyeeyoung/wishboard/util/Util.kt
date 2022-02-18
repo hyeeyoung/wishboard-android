@@ -6,7 +6,9 @@ import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.remote.AWSS3Service
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.TimeZone
+import java.util.Locale
+import java.util.Date
 
 var prefs: PreferenceUtil? = null
 
@@ -43,3 +45,6 @@ fun loadImage(
         }
     }
 }
+
+fun getNotiDateServerFormat(date: String, hour: String, minute: String) =
+    "$date $hour:$minute:00" // TODO DateFormatUtil.kt 로 이동
