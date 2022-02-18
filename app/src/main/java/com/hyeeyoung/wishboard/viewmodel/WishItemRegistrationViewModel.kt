@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
+import android.widget.NumberPicker
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -24,9 +25,7 @@ import com.hyeeyoung.wishboard.repository.common.GalleryPagingDataSource
 import com.hyeeyoung.wishboard.repository.common.GalleryRepository
 import com.hyeeyoung.wishboard.repository.folder.FolderRepository
 import com.hyeeyoung.wishboard.repository.wish.WishRepository
-import com.hyeeyoung.wishboard.util.getTimestamp
-import com.hyeeyoung.wishboard.util.prefs
-import com.hyeeyoung.wishboard.util.safeLet
+import com.hyeeyoung.wishboard.util.*
 import com.hyeeyoung.wishboard.view.folder.adapters.FolderListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -58,6 +57,10 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var itemMemo = MutableLiveData<String>()
     private var itemUrl = MutableLiveData<String>()
     private var folderItem: FolderItem? = null
+    private var notiTypeVal: Int? = null
+    private var notiDateVal: Int? = null
+    private var notiHourVal: Int? = null
+    private var notiMinuteVal: Int? = null
 
     private var isCompleteUpload = MutableLiveData<Boolean?>()
 
@@ -67,6 +70,8 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     private val folderListAdapter =
         FolderListAdapter(application, FolderListViewType.HORIZONTAL_VIEW_TYPE)
+
+    //private var numberPickerUtil = NumberPickerUtil()
 
     private val token = prefs?.getUserToken()
 
@@ -127,8 +132,11 @@ class WishItemRegistrationViewModel @Inject constructor(
                     image = imageFile?.name,
                     price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                     url = siteUrl,
-                    memo = itemMemo.value?.trim()
+                    memo = itemMemo.value?.trim(),
+                    notiType = getTypePickerValue(notiTypeVal),
+                    notiDate = getDatePickerValue(notiDateVal, notiHourVal, notiMinuteVal)
                 )
+
                 val isComplete = wishRepository.uploadWishItem(token, item)
                 isCompleteUpload.postValue(isComplete)
             }
@@ -178,7 +186,8 @@ class WishItemRegistrationViewModel @Inject constructor(
                 url = itemUrl.value,
                 memo = itemMemo.value?.trim(),
                 folderId = folderItem?.id ?: wishItem?.folderId,
-                folderName = folderItem?.name ?: wishItem?.folderName, // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
+                folderName = folderItem?.name
+                    ?: wishItem?.folderName, // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
                 notiDate = wishItem?.notiDate,
                 notiType = wishItem?.notiType
             )
@@ -284,7 +293,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private fun applyPriceFormat(price: String): String? {
         // 천단위 구분자 포함 11자리 이상인 경우, 입력 불가하도록 바로 직전에 입력한 값을 반환
         if (price.length > 11) return price.substring(0, price.length - 1)
-        
+
         // 숫자가 아닌 문자는 모두 제거
         val numPrice = price.replace(("[\\D.]").toRegex(), "")
         if (numPrice == "") return null
@@ -325,6 +334,22 @@ class WishItemRegistrationViewModel @Inject constructor(
         itemMemo.value = s.toString()
     }
 
+    fun onNotiTypeValueChanged(picker: NumberPicker, oldVal: Int, newVal: Int) {
+        notiTypeVal = newVal
+    }
+
+    fun onNotiDateValueChanged(picker: NumberPicker, oldVal: Int, newVal: Int) {
+        notiDateVal = newVal
+    }
+
+    fun onNotiHourValueChanged(picker: NumberPicker, oldVal: Int, newVal: Int) {
+        notiHourVal = newVal
+    }
+
+    fun onNotiMinuteValueChanged(picker: NumberPicker, oldVal: Int, newVal: Int) {
+        notiMinuteVal = newVal
+    }
+
     fun setFolderItem(folder: FolderItem) {
         folderItem = folder
     }
@@ -354,6 +379,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun getItemPrice(): LiveData<String> = Transformations.map(itemPrice) { price ->
         applyPriceFormat(price)
     }
+
     fun getItemUrl(): LiveData<String> = itemUrl
     fun getItemMemo(): LiveData<String> = itemMemo
     fun getFolderItem(): FolderItem? = folderItem
