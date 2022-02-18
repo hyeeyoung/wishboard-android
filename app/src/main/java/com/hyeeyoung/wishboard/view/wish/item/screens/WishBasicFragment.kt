@@ -88,6 +88,9 @@ class WishBasicFragment : Fragment(), ImageLoader {
         binding.folderContainer.setOnClickListener {
             findNavController().navigateSafe(R.id.action_wish_to_folder_list)
         }
+        binding.btnNoti.setOnClickListener {
+            findNavController().navigateSafe(R.id.action_wish_to_noti_setting)
+        }
     }
 
     private fun addObservers() {

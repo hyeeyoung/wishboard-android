@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_wish_to_folder_list"
             app:destination="@id/folderListFragment" />
+        <action
+            android:id="@+id/action_wish_to_noti_setting"
+            app:destination="@id/notiSettingFragment" />
     </fragment>
 
     <fragment
@@ -29,4 +32,10 @@
         android:name="com.hyeeyoung.wishboard.view.folder.screens.FolderListFragment"
         android:label="fragment_folder_list"
         tools:layout="@layout/fragment_folder_list"/>
+
+    <fragment
+        android:id="@+id/notiSettingFragment"
+        android:name="com.hyeeyoung.wishboard.view.noti.screens.NotiSettingFragment"
+        android:label="fragment_noti_setting"
+        tools:layout="@layout/fragment_noti_setting"/>
 </navigation>

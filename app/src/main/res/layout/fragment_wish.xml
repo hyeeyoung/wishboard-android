@@ -13,6 +13,8 @@
         <import type="androidx.navigation.Navigation" />
 
         <import type="android.view.View" />
+
+        <import type="com.hyeeyoung.wishboard.R" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -264,6 +266,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/nanum_square_b"
+                            android:text="@{viewModel.notiType == null ? `` : String.format(context.getString(R.string.item_notification_info), context.getString(viewModel.notiType.strRes), viewModel.notiDate)}"
                             android:textColor="@color/gray_700"
                             android:textSize="13dp" />
 

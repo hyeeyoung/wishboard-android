@@ -2,7 +2,16 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="">
+    tools:context="com.hyeeyoung.wishboard.view.noti.screens.NotiSettingFragment">
+
+    <data>
+
+        <import type="androidx.navigation.Navigation" />
+
+        <variable
+            name="viewModel"
+            type="com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,6 +28,7 @@
                 android:id="@+id/back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:onClick="@{(v) -> Navigation.findNavController(v).popBackStack()}"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_back"
                 app:layout_constraintStart_toStartOf="parent"
@@ -115,10 +125,12 @@
                         android:gravity="center_vertical">
 
                         <NumberPicker
-                            android:id="@+id/num_picker_type"
+                            android:id="@+id/type_picker"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="4"
+                            android:value="@{viewModel.notiTypeVal == null ? 0 : viewModel.notiTypeVal}"
+                            android:onValueChange="@{viewModel::onNotiTypeValueChanged}"
                             android:selectionDividerHeight="0dp"
                             android:theme="@style/AppTheme.NumberPicker" />
                     </LinearLayout>
@@ -145,10 +157,12 @@
                         android:gravity="center_vertical">
 
                         <NumberPicker
-                            android:id="@+id/num_picker_date"
+                            android:id="@+id/date_picker"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="4"
+                            android:value="@{viewModel.notiDateVal == null ? 0 : viewModel.notiDateVal}"
+                            android:onValueChange="@{viewModel::onNotiDateValueChanged}"
                             android:selectionDividerHeight="0dp"
                             android:theme="@style/AppTheme.NumberPicker" />
 
@@ -163,10 +177,12 @@
                             android:visibility="invisible" />
 
                         <NumberPicker
-                            android:id="@+id/num_picker_hour"
+                            android:id="@+id/hour_picker"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:value="@{viewModel.notiHourVal == null ? 0 : viewModel.notiHourVal}"
+                            android:onValueChange="@{viewModel::onNotiHourValueChanged}"
                             android:selectionDividerHeight="0dp"
                             android:theme="@style/AppTheme.NumberPicker" />
 
@@ -181,10 +197,12 @@
                             android:textSize="15dp" />
 
                         <NumberPicker
-                            android:id="@+id/num_picker_minute"
+                            android:id="@+id/minute_picker"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
+                            android:value="@{viewModel.notiMinuteVal == null ? 0 : viewModel.notiMinuteVal}"
+                            android:onValueChange="@{viewModel::onNotiMinuteValueChanged}"
                             android:selectionDividerHeight="0dp"
                             android:theme="@style/AppTheme.NumberPicker" />
                     </LinearLayout>

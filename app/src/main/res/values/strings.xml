@@ -52,6 +52,7 @@
     <string name="shop_link">쇼핑몰 링크</string>
     <string name="shop_link_input_text">쇼핑몰 링크를 입력해주세요.</string>
     <string name="item_schedule_notification">상품 일정 알림</string>
+    <string name="item_notification_info">[%s 알림] %s</string>
     <string name="memo">메모</string>
     <string name="memo_input_text">메모를 작성해 보세요.</string>
     <string name="wish_item_registration_toast_text">위시리스트에 추가되었습니다</string>
