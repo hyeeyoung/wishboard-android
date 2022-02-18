@@ -204,13 +204,13 @@
                             android:gravity="right"
                             android:hint="@string/price_input_text"
                             android:inputType="number"
+                            android:text="@{viewModel.itemPrice}"
                             android:onTextChanged="@{viewModel::onItemPriceTextChanged}"
                             android:paddingVertical="12dp"
-                            android:text="@{viewModel.itemPrice}"
+                            android:selection="@{viewModel.itemPrice.length()}"
                             android:textColor="@color/gray_700"
                             android:textColorHint="@color/gray_200"
-                            android:textSize="13sp"
-                            android:selection="@{viewModel.itemPrice.length()}" />
+                            android:textSize="13sp" />
                     </LinearLayout>
 
                     <LinearLayout
