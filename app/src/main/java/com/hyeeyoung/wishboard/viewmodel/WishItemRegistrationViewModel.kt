@@ -19,6 +19,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.folder.FolderListViewType
+import com.hyeeyoung.wishboard.model.noti.NotiType
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.remote.AWSS3Service
 import com.hyeeyoung.wishboard.repository.common.GalleryPagingDataSource
@@ -57,10 +58,13 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var itemMemo = MutableLiveData<String>()
     private var itemUrl = MutableLiveData<String>()
     private var folderItem: FolderItem? = null
-    private var notiTypeVal: Int? = null
-    private var notiDateVal: Int? = null
-    private var notiHourVal: Int? = null
-    private var notiMinuteVal: Int? = null
+    private var notiType = MutableLiveData<NotiType?>()
+    private var notiDate = MutableLiveData<String?>()
+
+    private var notiTypeVal = MutableLiveData<Int>()
+    private var notiDateVal = MutableLiveData<Int>()
+    private var notiHourVal = MutableLiveData<Int>()
+    private var notiMinuteVal = MutableLiveData<Int>()
 
     private var isCompleteUpload = MutableLiveData<Boolean?>()
 
@@ -70,8 +74,6 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     private val folderListAdapter =
         FolderListAdapter(application, FolderListViewType.HORIZONTAL_VIEW_TYPE)
-
-    //private var numberPickerUtil = NumberPickerUtil()
 
     private val token = prefs?.getUserToken()
 
@@ -133,8 +135,12 @@ class WishItemRegistrationViewModel @Inject constructor(
                     price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                     url = siteUrl,
                     memo = itemMemo.value?.trim(),
-                    notiType = getTypePickerValue(notiTypeVal),
-                    notiDate = getDatePickerValue(notiDateVal, notiHourVal, notiMinuteVal)
+                    notiType = getTypePickerValue(notiTypeVal.value),
+                    notiDate = getDatePickerValue(
+                        notiDateVal.value,
+                        notiHourVal.value,
+                        notiMinuteVal.value
+                    )
                 )
 
                 val isComplete = wishRepository.uploadWishItem(token, item)
@@ -158,7 +164,9 @@ class WishItemRegistrationViewModel @Inject constructor(
                     url = itemUrl.value,
                     memo = itemMemo.value?.trim(),
                     folderId = folderItem?.id,
-                    folderName = folderItem?.name // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
+                    folderName = folderItem?.name, // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
+                    notiType = notiType.value,
+                    notiDate = notiDate.value
                 )
                 val isComplete = wishRepository.uploadWishItem(token, item)
                 isCompleteUpload.postValue(isComplete)
@@ -188,8 +196,8 @@ class WishItemRegistrationViewModel @Inject constructor(
                 folderId = folderItem?.id ?: wishItem?.folderId,
                 folderName = folderItem?.name
                     ?: wishItem?.folderName, // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
-                notiDate = wishItem?.notiDate,
-                notiType = wishItem?.notiType
+                notiType = notiType.value,
+                notiDate = notiDate.value
             )
 
             val isComplete = wishRepository.updateWishItem(token, itemId!!, wishItem!!)
@@ -315,6 +323,8 @@ class WishItemRegistrationViewModel @Inject constructor(
             itemPrice.value = item.price.toString()
             itemMemo.value = item.memo
             itemUrl.value = item.url
+            notiType.value = item.notiType
+            notiDate.value = item.notiDate
         }
     }
 
@@ -335,23 +345,28 @@ class WishItemRegistrationViewModel @Inject constructor(
     }
 
     fun onNotiTypeValueChanged(picker: NumberPicker, oldVal: Int, newVal: Int) {
-        notiTypeVal = newVal
+        notiTypeVal.value = newVal
     }
 
     fun onNotiDateValueChanged(picker: NumberPicker, oldVal: Int, newVal: Int) {
-        notiDateVal = newVal
+        notiDateVal.value = newVal
     }
 
     fun onNotiHourValueChanged(picker: NumberPicker, oldVal: Int, newVal: Int) {
-        notiHourVal = newVal
+        notiHourVal.value = newVal
     }
 
     fun onNotiMinuteValueChanged(picker: NumberPicker, oldVal: Int, newVal: Int) {
-        notiMinuteVal = newVal
+        notiMinuteVal.value = newVal
     }
 
     fun setFolderItem(folder: FolderItem) {
         folderItem = folder
+    }
+
+    fun setNotiInfo(notiType: NotiType?, notiDate: String?) {
+        this.notiType.value = notiType
+        this.notiDate.value = notiDate
     }
 
     fun setItemUrl(url: String) {
@@ -383,13 +398,21 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun getItemUrl(): LiveData<String> = itemUrl
     fun getItemMemo(): LiveData<String> = itemMemo
     fun getFolderItem(): FolderItem? = folderItem
-    fun isCompleteUpload(): LiveData<Boolean?> = isCompleteUpload
+    fun getNotiType(): LiveData<NotiType?> = notiType
+    fun getNotiDate(): LiveData<String?> = notiDate
+
+    fun getNotiTypeVal(): LiveData<Int?> = notiTypeVal
+    fun getNotiDateVal(): LiveData<Int?> = notiDateVal
+    fun getNotiHourVal(): LiveData<Int?> = notiHourVal
+    fun getNotiMinuteVal(): LiveData<Int?> = notiMinuteVal
 
     fun getGalleryImageUris(): LiveData<PagingData<Uri>?> = galleryImageUris
     fun getSelectedGalleryImageUri(): LiveData<Uri?> = selectedGalleryImageUri
     fun getWishItem(): WishItem? = wishItem
 
     fun getFolderListAdapter(): FolderListAdapter = folderListAdapter
+
+    fun isCompleteUpload(): LiveData<Boolean?> = isCompleteUpload
 
     companion object {
         private const val TAG = "WishItemRegistrationViewModel"
