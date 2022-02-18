@@ -2,6 +2,7 @@ package com.hyeeyoung.wishboard.model.wish
 
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.hyeeyoung.wishboard.model.noti.NotiType
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -25,7 +26,7 @@ data class WishItem(
     @SerializedName("create_at")
     val createAt: String? = null,
     @SerializedName("item_notification_type")
-    val notiType: String? = null,
+    val notiType: NotiType? = null,
     @SerializedName("item_notification_date")
     val notiDate: String? = null,
     /** cartState(1) : 장바구니에 존재, cartState(0) : 장바구니에 존재 X*/
