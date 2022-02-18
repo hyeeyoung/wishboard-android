@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 class WishLinkSharingActivity : AppCompatActivity() {
     private val viewModel: WishItemRegistrationViewModel by viewModels()
     private lateinit var binding: ActivityWishLinkSharingBinding
-    /** 알림 type, date 설정 객체 */
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
