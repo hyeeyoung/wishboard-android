@@ -71,9 +71,9 @@
     <string name="select_notification_type">알림 유형 선택</string>
     <string name="restock">재입고</string>
     <string name="open_day">오픈일</string>
-    <string name="preorder_closed">프리오더 마감</string>
+    <string name="preorder_close">프리오더 마감</string>
     <string name="sale_start">세일 시작</string>
-    <string name="sale_closing">세일 마감</string>
+    <string name="sale_close">세일 마감</string>
 
     <!-- My -->
     <string name="my_title">마이페이지</string>

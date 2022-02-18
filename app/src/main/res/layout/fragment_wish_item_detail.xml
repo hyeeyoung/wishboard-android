@@ -183,10 +183,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="10dp"
                         android:fontFamily="@font/nanum_square_b"
-                        android:text="@{viewModel.wishItem.notiDate}"
+                        android:text="@{viewModel.wishItem.notiType == null ? `` : viewModel.wishItem.notiDate + ` ` + context.getString(viewModel.wishItem.notiType.strRes)}"
                         android:textColor="@color/gray_700"
                         android:textSize="15dp"
-                        tools:text="8월 22일 22시 재입고 " />
+                        tools:text="8월 22일 22시 재입고" />
 
                     <TextView
                         android:id="@+id/tag"
