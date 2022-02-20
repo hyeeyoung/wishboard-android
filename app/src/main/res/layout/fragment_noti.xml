@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="20dp"
                 android:background="@android:color/transparent"
-                android:src="@drawable/ic_cart_black"
+                android:src="@drawable/ic_cart"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/more"/>
