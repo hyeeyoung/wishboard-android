@@ -2,28 +2,28 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/homeFragment"
-        android:icon="@drawable/selector_nav_icon_home"
+        android:icon="@drawable/ic_nav_wish_list"
         android:state_selected="false"
-        android:title="home" />
+        android:title="@string/navigation_menu_title_wishlist" />
     <!-- TODO id값 snake case로 통일 -->
     <item
         android:id="@+id/folderFragment"
-        android:icon="@drawable/selector_nav_icon_folder"
+        android:icon="@drawable/ic_nav_folder"
         android:state_selected="false"
-        android:title="folder" />
+        android:title="@string/navigation_menu_title_folder" />
     <item
         android:id="@+id/wish_item_registration_nav_graph"
-        android:icon="@drawable/selector_nav_icon_item_registration"
+        android:icon="@drawable/ic_nav_add"
         android:state_selected="false"
-        android:title="new_item" />
+        android:title="@string/navigation_menu_title_add" />
     <item
         android:id="@+id/notiFragment"
-        android:icon="@drawable/selector_nav_icon_noti"
+        android:icon="@drawable/ic_nav_notice"
         android:state_selected="false"
-        android:title="notification" />
+        android:title="@string/navigation_menu_title_notice" />
     <item
         android:id="@+id/myFragment"
-        android:icon="@drawable/selector_nav_icon_my"
+        android:icon="@drawable/ic_nav_my"
         android:state_selected="false"
-        android:title="my" />
+        android:title="@string/navigation_menu_title_my" />
 </menu>

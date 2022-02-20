@@ -88,4 +88,11 @@
     <string name="wish_list_registration_memo_hint">메모를 입력해보세요.</string>
     <string name="wish_registration_price_hint">가격을 입력해주세요.</string>
 
+    <!-- Navigation Menu -->
+    <string name="navigation_menu_title_wishlist">WISHLIST</string>
+    <string name="navigation_menu_title_folder">FOLDER</string>
+    <string name="navigation_menu_title_add">ADD</string>
+    <string name="navigation_menu_title_notice">NOTICE</string>
+    <string name="navigation_menu_title_my">MY</string>
+
 </resources>

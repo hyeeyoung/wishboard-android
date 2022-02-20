@@ -18,6 +18,11 @@
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
     </style>
 
+    <style name="TextAppearance.BottomNavigation.Tab.Text" parent="">
+        <item name="android:fontFamily">@font/montserrat_r</item>
+        <item name="android:textSize">9sp</item>
+    </style>
+
     <style name="AppTheme.NumberPicker">
         <item name="android:textSize">15dp</item>
         <item name="android:textColor">@color/gray_700</item>

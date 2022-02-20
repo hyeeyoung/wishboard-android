@@ -21,13 +21,15 @@
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="58dp"
             android:background="@color/white"
+            android:paddingVertical="4dp"
+            android:theme="@style/TextAppearance.BottomNavigation.Tab.Text"
             app:itemIconSize="20dp"
-            app:itemIconTint="@color/gray_700"
-            app:labelVisibilityMode="unlabeled"
+            app:itemIconTint="@drawable/selector_navigation_menu_item_color"
+            app:itemTextColor="@drawable/selector_navigation_menu_item_color"
+            app:labelVisibilityMode="labeled"
             app:layout_constraintBottom_toBottomOf="parent"
             app:menu="@menu/bottom_nav" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
