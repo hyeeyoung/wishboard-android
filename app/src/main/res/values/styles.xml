@@ -36,4 +36,12 @@
     <style name="bottomSheetBackground" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
     </style>
+
+    <style name="Widget.Button.Icon.Navigation" parent="">
+        <item name="android:padding">@dimen/spacingBase</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/transparent</item>
+    </style>
+
 </resources>
