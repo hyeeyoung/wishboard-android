@@ -17,12 +17,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
-    private val application: Application,
     private val cartRepository: CartRepository,
 ) : ViewModel() {
     private val token = prefs?.getUserToken()
     private val cartList = MutableLiveData<MutableList<CartItem>>(mutableListOf())
-    private val cartListAdapter = CartListAdapter(application)
+    private val cartListAdapter = CartListAdapter()
     private var totalPrice = MediatorLiveData<Int>()
 
     init {

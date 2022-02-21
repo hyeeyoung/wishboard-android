@@ -11,6 +11,8 @@
     <string name="add">추가</string>
     <string name="edit">변경</string>
     <string name="colon">:</string>
+    <string name="all">전체</string>
+    <string name="count">개</string>
 
     <!-- Sign -->
     <string name="sign_up">가입하기</string>
