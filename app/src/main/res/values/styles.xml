@@ -54,4 +54,10 @@
         <item name="android:layout_marginStart">@dimen/spacingBase</item>
     </style>
 
+    <style name="Widget.Tab.Detail.TextAppearance.Title" parent="">
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="android:textSize">@dimen/typographyBase</item>
+        <item name="fontFamily">@font/suit_b</item>
+    </style>
+
 </resources>

@@ -42,7 +42,6 @@ class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener, Im
         }
 
         initializeView()
-        addListeners()
 
         return binding.root
     }
@@ -53,12 +52,6 @@ class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener, Im
         adapter.setImageLoader(this)
         binding.wishList.adapter = adapter
         binding.wishList.layoutManager = GridLayoutManager(requireContext(), 2)
-    }
-
-    private fun addListeners() {
-        binding.more.setOnClickListener {
-            // TODO not yet implemented
-        }
     }
 
     override fun onItemClick(position: Int, item: WishItem) {
