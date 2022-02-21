@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="">
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -14,117 +13,143 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guild_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="@dimen/spacingBase" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guild_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/spacingBase" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guild_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/spacingBase" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guild_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/spacingBase" />
+
 
         <ImageView
             android:id="@+id/item_image"
             android:layout_width="70dp"
             android:layout_height="70dp"
+            android:background="@drawable/shape_border_radius_10"
             android:foreground="@color/ultraSemiTransparent"
             android:scaleType="centerCrop"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@id/guild_bottom"
+            app:layout_constraintStart_toStartOf="@id/guild_start"
+            app:layout_constraintTop_toTopOf="@id/guild_top" />
 
-        <LinearLayout
-            android:id="@+id/item_name_container"
+        <TextView
+            android:id="@+id/item_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:gravity="center_vertical"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/item_image">
+            android:layout_marginHorizontal="@dimen/spacing10"
+            android:ellipsize="end"
+            android:fontFamily="@font/suit_r"
+            android:maxLines="2"
+            android:text="@{item.wishItem.name}"
+            android:textColor="@color/gray_700"
+            android:textSize="@dimen/typographyDescription"
+            app:layout_constraintEnd_toStartOf="@id/delete"
+            app:layout_constraintStart_toEndOf="@id/item_image"
+            app:layout_constraintTop_toTopOf="@id/item_image"
+            tools:text="ITEM NAME" />
 
-            <TextView
-                android:id="@+id/item_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="15dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/nanum_square_b"
-                android:maxLines="1"
-                android:text="@{item.wishItem.name}"
-                tools:text="ITEM NAME"
-                android:textColor="@color/gray_700"
-                android:textSize="15dp" />
-
-            <!-- TODO Padding 조정 필요-->
-            <ImageView
-                android:id="@+id/delete"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_delete" />
-
-        </LinearLayout>
-
-        <LinearLayout
+        <ImageView
+            android:id="@+id/delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/item_image"
-            android:layout_marginTop="10dp"
-            android:layout_toRightOf="@id/item_image"
+            android:padding="@dimen/spacing12"
+            android:src="@drawable/ic_delete_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/quantity_control_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing10"
+            android:layout_marginBottom="11dp"
+            android:gravity="center_vertical"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@id/item_name_container">
+            app:layout_constraintStart_toEndOf="@id/item_image">
 
             <ImageView
                 android:id="@+id/minus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_cart_minus" />
+                android:padding="@dimen/spacing5"
+                android:src="@drawable/ic_cart_minus"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/item_count"
-                android:layout_width="wrap_content"
+                android:layout_width="24dp"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginHorizontal="15dp"
-                android:fontFamily="@font/nanum_square_r"
-                tools:text="1"
+                android:layout_marginHorizontal="2dp"
+                android:fontFamily="@font/suit_r"
+                android:gravity="center_horizontal"
+                android:maxLength="2"
                 android:text="@{Integer.toString(item.cartItemInfo.count)}"
                 android:textColor="@color/gray_700"
-                android:textSize="15dp" />
+                android:textSize="@dimen/typographyBase"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/plus"
+                app:layout_constraintStart_toEndOf="@id/minus"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="1" />
 
             <ImageView
                 android:id="@+id/plus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:src="@drawable/ic_cart_plus" />
-        </LinearLayout>
+                android:padding="@dimen/spacing5"
+                android:src="@drawable/ic_cart_plus"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/item_price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/item_image"
-            android:layout_alignParentEnd="true"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            android:fontFamily="@font/montserrat_b"
+            android:textColor="@color/gray_700"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/won"
+            app:layout_constraintEnd_toStartOf="@id/won"
+            app:layout_constraintTop_toTopOf="@id/won"
+            app:priceFormat="@{item.wishItem.price * item.cartItemInfo.count}"
+            tools:text="238,000" />
 
-            <TextView
-                android:id="@+id/item_price"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toLeftOf="@id/won"
-                android:fontFamily="@font/nanum_square_eb"
-                tools:text="238,000"
-                app:priceFormat="@{item.wishItem.price * item.cartItemInfo.count}"
-                android:textColor="@color/gray_700"
-                android:textSize="17dp" />
-
-            <TextView
-                android:id="@+id/won"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginLeft="2dp"
-                android:fontFamily="@font/nanum_square_b"
-                android:text="@string/won"
-                android:textColor="@color/gray_700"
-                android:textSize="17dp" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/won"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/suit_r"
+            android:text="@string/won"
+            android:textColor="@color/gray_700"
+            android:textSize="@dimen/typographyBase"
+            app:layout_constraintBottom_toBottomOf="@id/guild_bottom"
+            app:layout_constraintEnd_toEndOf="@id/guild_end" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

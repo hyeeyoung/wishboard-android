@@ -10,8 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.DividerItemDecoration
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentCartBinding
 import com.hyeeyoung.wishboard.model.cart.CartItem
@@ -22,6 +20,7 @@ import com.hyeeyoung.wishboard.util.loadImage
 import com.hyeeyoung.wishboard.view.cart.adapters.CartListAdapter
 import com.hyeeyoung.wishboard.viewmodel.CartViewModel
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class CartFragment : Fragment(), CartListAdapter.OnItemClickListener, ImageLoader {
@@ -45,16 +44,11 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener, ImageLoade
         val adapter = viewModel.getCartListAdapter()
         adapter.setOnItemClickListener(this)
         adapter.setImageLoader(this)
+
         binding.cartList.run {
             this.adapter = adapter
             itemAnimator = null
             setItemViewCacheSize(20)
-            binding.cartList.addItemDecoration(
-                DividerItemDecoration(
-                    binding.cartList.context,
-                    LinearLayoutManager(requireContext()).orientation
-                )
-            )
         }
     }
 

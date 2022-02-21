@@ -1,6 +1,5 @@
 package com.hyeeyoung.wishboard.view.cart.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -11,9 +10,7 @@ import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.cart.CartItemButtonType
 import com.hyeeyoung.wishboard.util.ImageLoader
 
-class CartListAdapter(
-    private val context: Context
-) : ListAdapter<CartItem, RecyclerView.ViewHolder>(diffCallback) {
+class CartListAdapter : ListAdapter<CartItem, RecyclerView.ViewHolder>(diffCallback) {
     private val dataSet = arrayListOf<CartItem>()
     private lateinit var listener: OnItemClickListener
     private lateinit var imageLoader: ImageLoader
@@ -42,11 +39,14 @@ class CartListAdapter(
             with(binding) {
                 this.item = item
                 item.wishItem.image?.let { imageLoader.loadImage(it, binding.itemImage) }
-
+                itemImage.clipToOutline = true
                 delete.setOnClickListener {
                     listener.onItemClick(item, position, CartItemButtonType.VIEW_TYPE_DELETION)
                 }
-                container.setOnClickListener {
+                itemImage.setOnClickListener {
+                    listener.onItemClick(item, position, CartItemButtonType.VIEW_TYPE_CONTAINER)
+                }
+                itemName.setOnClickListener {
                     listener.onItemClick(item, position, CartItemButtonType.VIEW_TYPE_CONTAINER)
                 }
                 plus.setOnClickListener {
