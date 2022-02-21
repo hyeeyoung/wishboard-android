@@ -8,18 +8,23 @@
         <variable
             name="item"
             type="com.hyeeyoung.wishboard.model.folder.FolderItem" />
+
+        <import type="com.hyeeyoung.wishboard.R" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:layout_marginBottom="@dimen/spacing10">
 
         <ImageView
             android:id="@+id/thumbnail"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginHorizontal="@dimen/spacingSmall"
+            android:background="@drawable/shape_border_radius_10"
+            android:clipToOutline="true"
             android:foreground="@color/ultraSemiTransparent"
             android:scaleType="centerCrop"
             app:layout_constraintDimensionRatio="1:1"
@@ -31,18 +36,19 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingStart="@dimen/spacing10"
+            android:paddingBottom="@dimen/spacing10"
             app:layout_constraintTop_toBottomOf="@id/thumbnail">
 
             <TextView
                 android:id="@+id/folder_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="10dp"
-                android:fontFamily="@font/nanum_square_eb"
+                android:layout_marginTop="@dimen/spacing10"
+                android:fontFamily="@font/suit_b"
                 android:text="@{item.name}"
                 android:textColor="@color/gray_700"
-                android:textSize="13sp"
+                android:textSize="@dimen/typographyDescription"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="폴더명" />
@@ -51,25 +57,27 @@
                 android:id="@+id/item_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:fontFamily="@font/nanum_square_b"
-                android:text="@{Integer.toString(item.itemCount != null ? item.itemCount : 0)}"
-                android:textColor="@color/gray_200"
-                android:textSize="13sp"
+                android:layout_marginTop="@dimen/spacingMicro"
+                android:fontFamily="@font/suit_r"
+                android:text="@{String.format(context.getString(R.string.folder_item_count_format), item.itemCount != null ? item.itemCount : 0)}"
+                android:textColor="@color/gray_250"
+                android:textSize="@dimen/typographyBaseDetail"
                 app:layout_constraintStart_toStartOf="@id/folder_name"
                 app:layout_constraintTop_toBottomOf="@id/folder_name"
-                tools:text="10" />
+                tools:text="10 아이템" />
 
             <ImageButton
-                android:id="@+id/more_folder"
+                android:id="@+id/more"
+                style="@style/Widget.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="2dp"
-                android:background="@android:color/transparent"
-                android:paddingBottom="15dp"
-                android:src="@drawable/ic_folder_more"
+                android:paddingHorizontal="5dp"
+                android:paddingTop="3dp"
+                android:paddingBottom="8dp"
+                android:src="@drawable/ic_more_small"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@id/folder_name" />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

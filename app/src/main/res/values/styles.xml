@@ -37,11 +37,27 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
-    <style name="Widget.Button.Icon.Navigation" parent="">
+    <style name="Widget.Button" parent="">
+        <item name="android:background">@color/transparent</item>
+    </style>
+
+    <style name="Widget.Button.Icon.Navigation" parent="Widget.Button">
         <item name="android:padding">@dimen/spacingBase</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">@color/transparent</item>
+    </style>
+
+    <style name="Widget.Tab.TextAppearance.Title" parent="">
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/suit_b</item>
+        <item name="android:layout_marginStart">@dimen/spacingBase</item>
+    </style>
+
+    <style name="Widget.Tab.Detail.TextAppearance.Title" parent="">
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="android:textSize">@dimen/typographyBase</item>
+        <item name="fontFamily">@font/suit_b</item>
     </style>
 
 </resources>
