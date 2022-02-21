@@ -45,7 +45,7 @@ class WishListAdapter(
             with(binding) {
                 this.item = item
                 item.image?.let { imageLoader.loadImage(it, itemImage) }
-                binding.cart.isSelected = item.cartState == CartStateType.IN_CART.numValue
+                cart.isSelected = item.cartState == CartStateType.IN_CART.numValue
 
                 container.setOnClickListener {
                     listener.onItemClick(position, item)

@@ -25,56 +25,66 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/item_name"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:fontFamily="@font/nanum_square_eb"
-            android:textColor="@color/gray_700"
-            android:textSize="13dp"
-            android:text="@{item.name}"
-            app:layout_constraintStart_toStartOf="@id/item_image"
-            app:layout_constraintTop_toBottomOf="@id/item_image"
-            tools:text="name" />
+            android:paddingHorizontal="@dimen/spacing10"
+            android:paddingTop="@dimen/spacing10"
+            app:layout_constraintTop_toBottomOf="@id/item_image">
 
-        <TextView
-            android:id="@+id/item_price"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:fontFamily="@font/nanum_square_b"
-            android:textColor="@color/gray_700"
-            android:textSize="13dp"
-            app:priceFormat="@{item.price}"
-            app:layout_constraintStart_toStartOf="@id/item_name"
-            app:layout_constraintTop_toBottomOf="@id/item_name"
-            tools:text="price" />
+            <TextView
+                android:id="@+id/item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/nanum_square_r"
+                android:maxLines="2"
+                android:text="@{item.name}"
+                android:textColor="@color/gray_700"
+                android:textSize="@dimen/typographyDescription"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="21SS KEILY JACHKT" />
 
-        <TextView
-            android:id="@+id/won"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="1dp"
-            android:fontFamily="@font/nanum_square_b"
-            android:text="@string/won"
-            android:textColor="@color/gray_700"
-            android:textSize="13dp"
-            app:layout_constraintStart_toEndOf="@id/item_price"
-            app:layout_constraintTop_toTopOf="@id/item_price" />
+            <TextView
+                android:id="@+id/item_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="@font/montserrat_b"
+                android:textColor="@color/gray_700"
+                android:textSize="@dimen/typographyBase"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/item_name"
+                app:priceFormat="@{item.price}"
+                tools:text="127,000" />
+
+            <TextView
+                android:id="@+id/won"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="2dp"
+                android:fontFamily="@font/nanum_square_r"
+                android:text="@string/won"
+                android:textColor="@color/gray_700"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="@id/item_price"
+                app:layout_constraintStart_toEndOf="@id/item_price" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <Button
             android:id="@+id/cart"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:layout_margin="10dp"
-            android:background="@drawable/background_sticker_white"
-            android:fontFamily="@font/nanum_square_b"
-            android:outlineProvider="none"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:background="@drawable/selector_background_cart_button"
+            android:fontFamily="@font/montserrat_m"
             android:text="@string/cart"
             android:textAllCaps="false"
             android:textColor="@color/gray_700"
-            android:textSize="10dp"
+            android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="@id/item_image"
             app:layout_constraintRight_toRightOf="@id/item_image" />
 
