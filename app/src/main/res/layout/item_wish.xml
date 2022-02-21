@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:fontFamily="@font/nanum_square_r"
+                android:fontFamily="@font/suit_r"
                 android:maxLines="2"
                 android:text="@{item.name}"
                 android:textColor="@color/gray_700"
@@ -63,11 +63,11 @@
                 android:id="@+id/won"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
-                android:fontFamily="@font/nanum_square_r"
+                android:layout_marginBottom="1dp"
+                android:fontFamily="@font/suit_r"
                 android:text="@string/won"
                 android:textColor="@color/gray_700"
-                android:textSize="13sp"
+                android:textSize="@dimen/typographyDescription"
                 app:layout_constraintBottom_toBottomOf="@id/item_price"
                 app:layout_constraintStart_toEndOf="@id/item_price" />
 
@@ -80,11 +80,11 @@
             android:minHeight="0dp"
             android:minWidth="0dp"
             android:background="@drawable/selector_background_cart_button"
-            android:fontFamily="@font/montserrat_m"
+            android:fontFamily="@font/suit_r"
             android:text="@string/cart"
             android:textAllCaps="false"
             android:textColor="@color/gray_700"
-            android:textSize="11sp"
+            android:textSize="@dimen/typographyBaseDetail"
             app:layout_constraintBottom_toBottomOf="@id/item_image"
             app:layout_constraintRight_toRightOf="@id/item_image" />
 
