@@ -14,6 +14,7 @@
     <color name="gray_100">#E3E3E3</color>
     <color name="gray_150">#CACACA</color>
     <color name="gray_200">#AAAAAA</color>
+    <color name="gray_250">#979797</color>
     <color name="gray_300">#858585</color>
     <color name="gray_700">#292929</color>
 </resources>

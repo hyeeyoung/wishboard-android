@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Spacing -->
-    <dimen name="spacing4">4dp</dimen>
+    <dimen name="spacingMicro">4dp</dimen>
+    <dimen name="spacingSmall">8dp</dimen>
     <dimen name="spacing10">10dp</dimen>
     <dimen name="spacing12">12dp</dimen>
     <dimen name="spacing14">14dp</dimen>
@@ -14,4 +15,8 @@
     <dimen name="typographyBaseDetail">12sp</dimen>
     <dimen name="typographyDescription">14sp</dimen>
     <dimen name="typographyBase">16sp</dimen>
+
+    <!-- Radius -->
+    <dimen name="radiusSmall">10dp</dimen>
+
 </resources>

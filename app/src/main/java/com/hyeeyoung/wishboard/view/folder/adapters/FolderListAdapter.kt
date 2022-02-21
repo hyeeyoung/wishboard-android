@@ -49,10 +49,11 @@ class FolderListAdapter(
             with(binding) {
                 this.item = item
                 item.thumbnail?.let { imageLoader.loadImage(it, thumbnail) }
+                thumbnail.clipToOutline = true
                 container.setOnClickListener {
                     listener.onItemClick(item)
                 }
-                moreFolder.setOnClickListener {
+                more.setOnClickListener {
                     it.findNavController().navigateSafe(R.id.action_folder_to_folder_more_dialog, bundleOf(
                         ARG_FOLDER_ITEM to item,
                         ARG_FOLDER_POSITION to position
