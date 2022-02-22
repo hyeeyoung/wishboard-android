@@ -17,6 +17,15 @@ class NotiRepositoryImpl : NotiRepository {
         return response.body()
     }
 
+    override suspend fun updateNotiReadState(token: String, itemId: Long) {
+        val response = api.updateNotiReadState(token, itemId)
+        if (response.isSuccessful) {
+            Log.d(TAG, "알림 읽음 처리 성공")
+        } else {
+            Log.e(TAG, "알림 읽음 처리 실패: ${response.code()}")
+        }
+    }
+
     override suspend fun updatePushNotiSettings(token: String, isSet: Boolean) {
         val response = api.updatePushNotiSettings(token, isSet)
 

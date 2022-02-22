@@ -1,9 +1,7 @@
 package com.hyeeyoung.wishboard.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.repository.noti.NotiRepository
 import com.hyeeyoung.wishboard.util.prefs
 import com.hyeeyoung.wishboard.view.noti.adapters.NotiListAdapter
@@ -23,6 +21,14 @@ class NotiViewModel @Inject constructor(
         if (token == null) return
         viewModelScope.launch {
             notiListAdapter.setData(notiRepository.fetchNotiList(token) ?: return@launch)
+        }
+    }
+
+    fun updateNotiReadState(position: Int, itemId: Long) {
+        if (token == null) return
+        notiListAdapter.updateReadState(position)
+        viewModelScope.launch {
+            notiRepository.updateNotiReadState(token, itemId)
         }
     }
 

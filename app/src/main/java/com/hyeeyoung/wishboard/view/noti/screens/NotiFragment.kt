@@ -62,6 +62,7 @@ class NotiFragment : Fragment(), NotiListAdapter.OnItemClickListener, ImageLoade
     override fun onItemClick(position: Int, item: NotiItem) {
         if (item.itemUrl == null) return
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item.itemUrl)))
+        viewModel.updateNotiReadState(position, item.itemId)
     }
 
     override fun loadImage(imageUrl: String, imageView: ImageView) {
