@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.hyeeyoung.wishboard.databinding.FragmentMyBinding
+import com.hyeeyoung.wishboard.util.prefs
 import com.hyeeyoung.wishboard.view.sign.screens.SignActivity
 import com.hyeeyoung.wishboard.viewmodel.MyViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,6 +32,9 @@ class MyFragment : Fragment() {
     }
 
     private fun addListeners() {
+        prefs?.getCheckedPushNoti()?.let {
+            binding.notiSwitch.isChecked = it
+        }
         binding.notiSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.updatePushNotiSettings(isChecked)
         }

@@ -35,6 +35,7 @@ class MyViewModel @Inject constructor(
 
     fun updatePushNotiSettings(isChecked: Boolean) {
         if (token == null) return
+        prefs?.setCheckedPushNoti(isChecked)
         viewModelScope.launch {
             notiRepository.updatePushNotiSettings(token, isChecked)
         }
