@@ -20,17 +20,20 @@ class MyFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentMyBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this@MyFragment
 
-        setListeners()
+        addListeners()
 
         return binding.root
     }
 
-    private fun setListeners() {
+    private fun addListeners() {
+        binding.notiSwitch.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.updatePushNotiSettings(isChecked)
+        }
         binding.logoutBtn.setOnClickListener {
             viewModel.signOut()
             startActivity(Intent(requireContext(), SignActivity::class.java))
