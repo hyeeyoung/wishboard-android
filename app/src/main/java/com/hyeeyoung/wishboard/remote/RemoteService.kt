@@ -110,6 +110,13 @@ interface RemoteService {
         @Path("folder_id") folderId: Long,
     ): Response<RequestResult>
 
+    // 알림
+    @GET("noti/schedule")
+    suspend fun updatePushNotiSettings(
+        @Header("Authorization") token: String,
+        @Query("push") isSet: Boolean,
+    ): Response<RequestResult>
+    
     // 사용자
     @FormUrlEncoded
     @PUT("user/fcm")

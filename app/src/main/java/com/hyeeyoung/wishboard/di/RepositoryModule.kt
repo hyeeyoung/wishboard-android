@@ -6,6 +6,8 @@ import com.hyeeyoung.wishboard.repository.common.GalleryRepository
 import com.hyeeyoung.wishboard.repository.common.GalleryRepositoryImpl
 import com.hyeeyoung.wishboard.repository.folder.FolderRepository
 import com.hyeeyoung.wishboard.repository.folder.FolderRepositoryImpl
+import com.hyeeyoung.wishboard.repository.noti.NotiRepository
+import com.hyeeyoung.wishboard.repository.noti.NotiRepositoryImpl
 import com.hyeeyoung.wishboard.repository.wish.WishRepository
 import com.hyeeyoung.wishboard.repository.wish.WishRepositoryImpl
 import com.hyeeyoung.wishboard.repository.sign.SignRepository
@@ -49,6 +51,12 @@ object RepositoryModule {
     @Provides
     fun provideGalleryRepository(): GalleryRepository {
         return GalleryRepositoryImpl()
+    }
+
+    @Singleton
+    @Provides
+    fun provideNotiRepository(): NotiRepository {
+        return NotiRepositoryImpl()
     }
 
     @Singleton
