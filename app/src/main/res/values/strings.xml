@@ -71,6 +71,7 @@
 
     <!-- Notification -->
     <string name="noti_title">알림</string>
+    <string name="noti_item_type">%s 알림</string>
     <string name="item_schedule_notification_setting_title">상품 알림 설정</string>
     <string name="default_notification_channel_id">fcm_default_channel</string>
 
