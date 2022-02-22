@@ -47,10 +47,15 @@ class WishItemDetailFragment : Fragment(), ImageLoader {
             }
         }
 
+        initializeView()
         addListeners()
         addObservers()
 
         return binding.root
+    }
+
+    private fun initializeView() {
+        binding.itemImage.clipToOutline = true
     }
 
     private fun addListeners() {
