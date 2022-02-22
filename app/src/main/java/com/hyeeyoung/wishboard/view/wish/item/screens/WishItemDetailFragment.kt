@@ -71,6 +71,7 @@ class WishItemDetailFragment : Fragment(), ImageLoader {
         viewModel.getWishItem().observe(viewLifecycleOwner) { wishItem ->
             if (wishItem == null) return@observe
             binding.goToShopBtn.setOnClickListener {
+                if (wishItem.url == null) return@setOnClickListener
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(wishItem.url)))
             }
             Glide.with(requireContext()).load(wishItem.image).into(binding.itemImage)
