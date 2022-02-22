@@ -12,7 +12,7 @@ data class NotiItem(
     @SerializedName("item_url")
     val itemUrl: String? = null,
     @SerializedName("read_state")
-    val readState: Int,
+    var readState: Int,
     @SerializedName("item_notification_type")
     val notiType: NotiType,
     @SerializedName("item_notification_date")

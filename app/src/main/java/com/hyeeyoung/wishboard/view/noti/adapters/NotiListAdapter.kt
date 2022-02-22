@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hyeeyoung.wishboard.databinding.ItemNotiBinding
 import com.hyeeyoung.wishboard.model.noti.NotiItem
+import com.hyeeyoung.wishboard.model.noti.ReadStateType
 import com.hyeeyoung.wishboard.util.ImageLoader
 
 class NotiListAdapter : ListAdapter<NotiItem, RecyclerView.ViewHolder>(diffCallback) {
@@ -66,8 +67,8 @@ class NotiListAdapter : ListAdapter<NotiItem, RecyclerView.ViewHolder>(diffCallb
 
     override fun getItemId(position: Int): Long = position.toLong()
 
-    fun updateReadState(position: Int, notiItem: NotiItem) {
-        dataSet[position] = notiItem
+    fun updateReadState(position: Int) {
+        dataSet[position].readState = ReadStateType.READ.numValue
         notifyItemChanged(position)
     }
 

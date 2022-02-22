@@ -123,6 +123,12 @@ interface RemoteService {
         @Query("push") isSet: Boolean,
     ): Response<RequestResult>
 
+    @PUT("noti/{item_id}/read-state")
+    suspend fun updateNotiReadState(
+        @Header("Authorization") token: String,
+        @Path("item_id") itemId: Long,
+    ): Response<RequestResult>
+
     // 사용자
     @FormUrlEncoded
     @PUT("user/fcm")
