@@ -6,6 +6,7 @@ import com.hyeeyoung.wishboard.model.RequestResultId
 import com.hyeeyoung.wishboard.model.RequestResultToken
 import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.folder.FolderItem
+import com.hyeeyoung.wishboard.model.noti.NotiItem
 import com.hyeeyoung.wishboard.model.sign.SignInfo
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import retrofit2.Response
@@ -111,12 +112,17 @@ interface RemoteService {
     ): Response<RequestResult>
 
     // 알림
+    @GET("noti")
+    suspend fun fetchNotiList(
+        @Header("Authorization") token: String,
+    ): Response<List<NotiItem>>?
+
     @GET("noti/schedule")
     suspend fun updatePushNotiSettings(
         @Header("Authorization") token: String,
         @Query("push") isSet: Boolean,
     ): Response<RequestResult>
-    
+
     // 사용자
     @FormUrlEncoded
     @PUT("user/fcm")

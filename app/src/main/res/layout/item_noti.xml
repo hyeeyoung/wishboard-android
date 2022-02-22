@@ -1,47 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="">
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hyeeyoung.wishboard.model.noti.NotiItem" />
+
+        <import type="com.hyeeyoung.wishboard.model.noti.ReadStateType" />
+
+        <import type="com.hyeeyoung.wishboard.util.DateFormatUtilKt" />
+
+        <import type="android.view.View" />
+
+        <import type="com.hyeeyoung.wishboard.R" />
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/noti_layout"
+        android:id="@+id/noti_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="20dp">
+        android:padding="@dimen/spacingBase">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/item_image"
-            android:layout_width="53dp"
-            android:layout_height="53dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/shape_border_radius_40"
+            android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/sample" />
 
         <TextView
-            android:id="@+id/noti_title"
+            android:id="@+id/noti_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_toRightOf="@id/item_image"
-            android:fontFamily="@font/nanum_square_b"
+            android:layout_marginStart="@dimen/spacing12"
+            android:fontFamily="@font/suit_b"
+            android:text="@{String.format(context.getString(R.string.noti_item_type), context.getString(item.notiType.strRes))}"
             android:textColor="@color/gray_700"
-            android:textSize="15dp"
+            android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/item_image"
             app:layout_constraintTop_toTopOf="@id/item_image"
-            tools:text="[알림] 상품명" />
+            tools:text="재입고 알림" />
+
+        <ImageView
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginStart="@dimen/spacing5"
+            android:background="@drawable/shape_circle"
+            android:backgroundTint="@color/green_500"
+            android:visibility="@{item.readState == ReadStateType.READ.numValue ? View.INVISIBLE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="@id/noti_type"
+            app:layout_constraintStart_toEndOf="@id/noti_type"
+            app:layout_constraintTop_toTopOf="@id/noti_type" />
+
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacingSmall"
+            android:ellipsize="end"
+            android:fontFamily="@font/suit_r"
+            android:maxLines="2"
+            android:text="@{item.itemName}"
+            android:textColor="@color/gray_700"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/noti_type"
+            app:layout_constraintTop_toBottomOf="@id/noti_type"
+            tools:text="아이템명" />
 
         <TextView
             android:id="@+id/noti_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/noti_title"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/nanum_square_r"
-            android:textColor="@color/gray_200"
-            android:textSize="13dp"
-            app:layout_constraintStart_toStartOf="@id/noti_title"
-            app:layout_constraintTop_toBottomOf="@id/noti_title"
+            android:fontFamily="@font/suit_r"
+            android:text="@{DateFormatUtilKt.beforeTime(item.notiDate)}"
+            android:textColor="@color/gray_300"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/noti_type"
             tools:text="1시간 전" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
