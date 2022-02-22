@@ -26,6 +26,11 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener, ImageL
     private lateinit var binding: FragmentFolderBinding
     private val viewModel: FolderViewModel by activityViewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.fetchFolderList()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
