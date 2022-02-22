@@ -30,10 +30,6 @@ class FolderViewModel @Inject constructor(
     private var isExistFolderName = MutableLiveData<Boolean>()
     private var isEditMode = MutableLiveData<Boolean>()
 
-    init {
-        fetchFolderList()
-    }
-
     fun fetchFolderList() {
         if (token == null) return
         viewModelScope.launch {
