@@ -70,7 +70,7 @@ class WishItemDetailFragment : Fragment(), ImageLoader {
     private fun addObservers() {
         viewModel.getWishItem().observe(viewLifecycleOwner) { wishItem ->
             if (wishItem == null) return@observe
-            binding.goToShopBtn.setOnClickListener {
+            binding.goToShopBtn.setOnClickListener { // TODO need refactoring
                 if (wishItem.url == null) return@setOnClickListener
                 startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(wishItem.url)))
             }

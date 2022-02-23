@@ -60,4 +60,16 @@
         <item name="fontFamily">@font/suit_b</item>
     </style>
 
+    <style name="Widget.EditText.Input" parent="Widget.MaterialComponents.TextView">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:paddingTop">@dimen/spacing20</item>
+        <item name="android:paddingBottom">@dimen/spacing20</item>
+    </style>
+
+    <style name="Item.Basic.Upload.EditText.TextAppearance" parent="">
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="android:textSize">15sp</item>
+        <item name="fontFamily">@font/suit_m</item>
+    </style>
+
 </resources>
