@@ -210,7 +210,7 @@
                             style="@style/Widget.EditText.Input"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:focusable="false"
+                            android:clickable="false"
                             android:hint="@string/folder"
                             android:text="@{viewModel.folderItem.name == null ? viewModel.wishItem.folderName : viewModel.folderItem.name}"
                             android:textAppearance="@style/Item.Basic.Upload.EditText.TextAppearance"
@@ -222,6 +222,7 @@
 
                         <ImageButton
                             android:id="@+id/folder_detail"
+                            android:clickable="false"
                             style="@style/Widget.Button.Icon.Navigation"
                             android:src="@drawable/ic_detail_small"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -249,7 +250,7 @@
                             style="@style/Widget.EditText.Input"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:focusable="false"
+                            android:clickable="false"
                             android:hint="@string/item_schedule_notification"
                             android:text="@{viewModel.notiType == null ? `` : String.format(context.getString(R.string.item_notification_info), context.getString(viewModel.notiType.strRes), DateFormatUtilKt.shortDateYMDAHM(viewModel.notiDate))}"
                             android:textAppearance="@style/Item.Basic.Upload.EditText.TextAppearance"
@@ -260,7 +261,9 @@
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <ImageButton
+                            android:focusable="false"
                             android:id="@+id/noti_detail"
+                            android:clickable="false"
                             style="@style/Widget.Button.Icon.Navigation"
                             android:src="@drawable/ic_detail_small"
                             app:layout_constraintEnd_toEndOf="parent"
