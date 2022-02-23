@@ -13,201 +13,259 @@
             type="com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white"
-        android:orientation="vertical">
+        android:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="20dp">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
                 android:id="@+id/back"
+                style="@style/Widget.Button.Icon.Navigation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:onClick="@{(v) -> Navigation.findNavController(v).popBackStack()}"
-                android:background="@android:color/transparent"
                 android:src="@drawable/ic_back"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                style="@style/Widget.Tab.Detail.TextAppearance.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:fontFamily="@font/nanum_square_eb"
                 android:text="@string/item_schedule_notification_setting_title"
-                android:textColor="@color/gray_700"
-                android:textSize="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <Button
                 android:id="@+id/save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/nanum_square_r"
-                android:onClick="onClick"
-                android:text="@string/complete"
+                android:layout_marginEnd="@dimen/spacingBase"
+                android:background="@drawable/shape_border_radius_32"
+                android:backgroundTint="@color/green_500"
+                android:fontFamily="@font/suit_m"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:text="@string/save"
                 android:textColor="@color/gray_700"
-                android:textSize="15dp"
+                android:textSize="@dimen/typographyDescription"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:background="@color/gray_700" />
+            android:background="@color/gray_100"
+            app:layout_constraintTop_toTopOf="@id/noti_setting_container" />
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/noti_setting_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="15dp">
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/noti_setting_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacingBase"
+                android:layout_marginTop="@dimen/spacing20"
+                android:fontFamily="@font/suit_b"
+                android:text="@string/noti_setting"
+                android:textColor="@color/gray_700"
+                android:textSize="@dimen/typographyBase"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/noti_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacingBase"
+                android:checked="true"
+                app:layout_constraintBottom_toTopOf="@id/noti_receive_divider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:switchMinWidth="50dp"
+                app:thumbTint="@color/white"
+                app:trackTint="@color/selector_switch_track" />
+
+            <View
+                android:id="@+id/noti_receive_divider"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:layout_marginTop="@dimen/spacing20"
+                android:background="@color/gray_100"
+                app:layout_constraintTop_toBottomOf="@id/noti_setting_title" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/noti_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="15dp"
-                android:orientation="horizontal">
+                app:layout_constraintTop_toBottomOf="@id/noti_receive_divider">
 
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/nanum_square_eb"
-                    android:paddingBottom="5dp"
-                    android:text="알림 수신"
-                    android:textColor="@color/gray_700"
-                    android:textSize="15dp" />
-
-                <Switch
-                    android:id="@+id/noti_switch"
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guild_start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical|right"
-                    android:checked="true"
-                    android:thumb="@drawable/selector_switch_thumb"
-                    android:track="@drawable/selector_switch_background" />
-            </LinearLayout>
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_begin="@dimen/spacingBase" />
 
-            <LinearLayout
-                android:id="@+id/noti_setting"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:animateLayoutChanges="true"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <androidx.constraintlayout.widget.Guideline
+                    android:id="@+id/guild_end"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    app:layout_constraintGuide_end="@dimen/spacingBase" />
+
+                <TextView
+                    android:id="@+id/noti_type_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing20"
+                    android:fontFamily="@font/suit_b"
+                    android:text="@string/noti_type"
+                    android:textColor="@color/gray_700"
+                    android:textSize="@dimen/typographyBase"
+                    app:layout_constraintStart_toStartOf="@id/guild_start"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/noti_type_highlight"
+                    android:layout_width="0dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/shape_border_radius_5"
+                    android:backgroundTint="@color/gray_100"
+                    android:clipToOutline="true"
+                    app:layout_constraintBottom_toBottomOf="@id/type_picker"
+                    app:layout_constraintEnd_toEndOf="@id/guild_end"
+                    app:layout_constraintStart_toStartOf="@id/guild_start"
+                    app:layout_constraintTop_toTopOf="@id/type_picker" />
+
+                <NumberPicker
+                    android:id="@+id/type_picker"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="@dimen/spacing10"
+                    android:divider="@color/transparent"
+                    android:onValueChange="@{viewModel::onNotiTypeValueChanged}"
+                    android:theme="@style/AppTheme.NumberPicker"
+                    android:value="@{viewModel.notiTypeVal == null ? 0 : viewModel.notiTypeVal}"
+                    app:layout_constraintEnd_toEndOf="@id/guild_end"
+                    app:layout_constraintStart_toStartOf="@id/guild_start"
+                    app:layout_constraintTop_toBottomOf="@id/noti_type_title" />
+
+                <View
+                    android:id="@+id/noti_type_divider"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="@dimen/spacing20"
+                    android:background="@color/gray_100"
+                    app:layout_constraintTop_toBottomOf="@id/type_picker" />
+
+                <TextView
+                    android:id="@+id/nori_date_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing20"
+                    android:fontFamily="@font/suit_b"
+                    android:text="@string/noti_date"
+                    android:textColor="@color/gray_700"
+                    android:textSize="@dimen/typographyBase"
+                    app:layout_constraintStart_toStartOf="@id/guild_start"
+                    app:layout_constraintTop_toTopOf="@id/noti_type_divider" />
+
+                <ImageView
+                    android:id="@+id/noti_date_highlight"
+                    android:layout_width="0dp"
+                    android:layout_height="34dp"
+                    android:background="@drawable/shape_border_radius_5"
+                    android:backgroundTint="@color/gray_100"
+                    app:layout_constraintBottom_toBottomOf="@id/noti_date_container"
+                    app:layout_constraintEnd_toEndOf="@id/guild_end"
+                    app:layout_constraintStart_toStartOf="@id/guild_start"
+                    app:layout_constraintTop_toTopOf="@id/noti_date_container" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/noti_date_container"
+                    android:layout_width="0dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="@dimen/spacing10"
+                    app:layout_constraintEnd_toEndOf="@id/guild_end"
+                    app:layout_constraintStart_toStartOf="@id/guild_start"
+                    app:layout_constraintTop_toBottomOf="@id/nori_date_title">
+
+                    <NumberPicker
+                        android:id="@+id/date_picker"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:onValueChange="@{viewModel::onNotiDateValueChanged}"
+                        android:theme="@style/AppTheme.NumberPicker"
+                        android:value="@{viewModel.notiDateVal == null ? 0 : viewModel.notiDateVal}"
+                        app:layout_constraintEnd_toStartOf="@id/hour_picker"
+                        app:layout_constraintHorizontal_weight="3"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <!--                <TextView-->
+                    <!--                    android:id="@+id/invisible_colon"-->
+                    <!--                    android:layout_width="wrap_content"-->
+                    <!--                    android:layout_height="wrap_content"-->
+                    <!--                    android:layout_gravity="center_vertical"-->
+                    <!--                    android:fontFamily="@font/nanum_square_eb"-->
+                    <!--                    android:text=":"-->
+                    <!--                    android:textSize="15dp"-->
+                    <!--                    android:visibility="invisible" />-->
+
+                    <NumberPicker
+                        android:id="@+id/hour_picker"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:onValueChange="@{viewModel::onNotiHourValueChanged}"
+                        android:theme="@style/AppTheme.NumberPicker"
+                        android:value="@{viewModel.notiHourVal == null ? 0 : viewModel.notiHourVal}"
+                        app:layout_constraintHorizontal_weight="1"
+                        app:layout_constraintStart_toEndOf="@id/date_picker" />
 
                     <TextView
-                        android:layout_width="match_parent"
+                        android:id="@+id/colon"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
                         android:fontFamily="@font/nanum_square_eb"
-                        android:paddingBottom="5dp"
-                        android:text="알림 유형"
+                        android:text="@string/colon"
                         android:textColor="@color/gray_700"
-                        android:textSize="15dp" />
+                        android:textSize="@dimen/typographyBase"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/minute_picker"
+                        app:layout_constraintStart_toEndOf="@id/hour_picker"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                    <LinearLayout
-                        android:id="@+id/noti_type"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:gravity="center_vertical">
+                    <NumberPicker
+                        android:id="@+id/minute_picker"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:onValueChange="@{viewModel::onNotiMinuteValueChanged}"
+                        android:theme="@style/AppTheme.NumberPicker"
+                        android:value="@{viewModel.notiMinuteVal == null ? 0 : viewModel.notiMinuteVal}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_weight="1"
+                        app:layout_constraintStart_toEndOf="@id/colon" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <NumberPicker
-                            android:id="@+id/type_picker"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="4"
-                            android:value="@{viewModel.notiTypeVal == null ? 0 : viewModel.notiTypeVal}"
-                            android:onValueChange="@{viewModel::onNotiTypeValueChanged}"
-                            android:selectionDividerHeight="0dp"
-                            android:theme="@style/AppTheme.NumberPicker" />
-                    </LinearLayout>
-                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="15dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/nanum_square_eb"
-                        android:text="알림 시간"
-                        android:textColor="@color/gray_700"
-                        android:textSize="15dp" />
-
-                    <LinearLayout
-                        android:id="@+id/noti_content"
-                        android:layout_width="match_parent"
-                        android:layout_height="150dp"
-                        android:gravity="center_vertical">
-
-                        <NumberPicker
-                            android:id="@+id/date_picker"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="4"
-                            android:value="@{viewModel.notiDateVal == null ? 0 : viewModel.notiDateVal}"
-                            android:onValueChange="@{viewModel::onNotiDateValueChanged}"
-                            android:selectionDividerHeight="0dp"
-                            android:theme="@style/AppTheme.NumberPicker" />
-
-                        <TextView
-                            android:id="@+id/invisible_colon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:fontFamily="@font/nanum_square_eb"
-                            android:text=":"
-                            android:textSize="15dp"
-                            android:visibility="invisible" />
-
-                        <NumberPicker
-                            android:id="@+id/hour_picker"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:value="@{viewModel.notiHourVal == null ? 0 : viewModel.notiHourVal}"
-                            android:onValueChange="@{viewModel::onNotiHourValueChanged}"
-                            android:selectionDividerHeight="0dp"
-                            android:theme="@style/AppTheme.NumberPicker" />
-
-                        <TextView
-                            android:id="@+id/colon"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:fontFamily="@font/nanum_square_eb"
-                            android:text=":"
-                            android:textColor="@color/gray_700"
-                            android:textSize="15dp" />
-
-                        <NumberPicker
-                            android:id="@+id/minute_picker"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_weight="1"
-                            android:value="@{viewModel.notiMinuteVal == null ? 0 : viewModel.notiMinuteVal}"
-                            android:onValueChange="@{viewModel::onNotiMinuteValueChanged}"
-                            android:selectionDividerHeight="0dp"
-                            android:theme="@style/AppTheme.NumberPicker" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-    </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

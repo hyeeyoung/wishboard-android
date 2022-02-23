@@ -17,6 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class NotiSettingFragment : Fragment() {
     private lateinit var binding: FragmentNotiSettingBinding
     private val viewModel: WishItemRegistrationViewModel by hiltNavGraphViewModels(R.id.wish_item_registration_nav_graph)
+    private var isCheckedNotiSwitch = true
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,10 +34,13 @@ class NotiSettingFragment : Fragment() {
 
     private fun initializeView() {
         // 알림 유형 및 날짜 넘버피커 설정
-        setTypePicker(binding.typePicker)
+        setTypePicker(binding.typePicker, false)
         setDatePicker(binding.datePicker)
         setHourPicker(binding.hourPicker)
         setMinutePicker(binding.minutePicker)
+
+        binding.notiTypeHighlight.clipToOutline = true
+        binding.notiDateHighlight.clipToOutline = true
     }
 
     private fun addListeners() {
@@ -47,8 +51,17 @@ class NotiSettingFragment : Fragment() {
                 binding.hourPicker.value,
                 binding.minutePicker.value
             )
-            viewModel.setNotiInfo(type, date)
+            viewModel.setNotiInfo(isCheckedNotiSwitch, type, date)
             findNavController().popBackStack()
+        }
+
+        binding.notiSwitch.setOnCheckedChangeListener { _, isChecked ->  // TODO need refactoring
+            if (isChecked) {
+                binding.notiContainer.visibility = View.VISIBLE
+            } else {
+                binding.notiContainer.visibility = View.INVISIBLE
+            }
+            isCheckedNotiSwitch = isChecked
         }
     }
 

@@ -386,9 +386,14 @@ class WishItemRegistrationViewModel @Inject constructor(
         folderItem = folder
     }
 
-    fun setNotiInfo(notiType: NotiType?, notiDate: String?) {
-        this.notiType.value = notiType
-        this.notiDate.value = notiDate
+    fun setNotiInfo(isNotiSwitchChecked: Boolean, notiType: NotiType?, notiDate: String?) {
+        if (isNotiSwitchChecked) {
+            this.notiType.value = notiType
+            this.notiDate.value = notiDate
+        } else {
+            this.notiType.value = null
+            this.notiDate.value = null
+        }
     }
 
     fun setItemUrl(url: String) {
