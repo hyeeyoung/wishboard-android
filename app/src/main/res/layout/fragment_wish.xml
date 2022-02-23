@@ -14,6 +14,8 @@
 
         <import type="android.view.View" />
 
+        <import type="com.hyeeyoung.wishboard.util.DateFormatUtilKt" />
+
         <import type="com.hyeeyoung.wishboard.R" />
     </data>
 
@@ -25,33 +27,47 @@
         android:orientation="vertical">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/title_container"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
                 android:id="@+id/back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
+                style="@style/Widget.Button.Icon.Navigation"
                 android:onClick="@{(v) -> Navigation.findNavController(v).popBackStack()}"
-                android:padding="20dp"
                 android:src="@drawable/ic_back"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/item_upload_title"
+                style="@style/Widget.Tab.Detail.TextAppearance.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/wish_basic_item_add_title"/>
+
+            <Button
                 android:id="@+id/save"
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="8dp"
-                android:background="@android:color/transparent"
-                android:fontFamily="@font/nanum_square_r"
-                android:padding="12dp"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:minHeight="0dp"
+                android:minWidth="0dp"
+                android:enabled="@{viewModel.isEnabledSaveButton()}"
+                android:layout_marginEnd="@dimen/spacingBase"
+                android:fontFamily="@font/suit_m"
                 android:text="@string/save"
-                android:textColor="@color/gray_700"
-                android:textSize="15dp"
+                android:background="@drawable/shape_border_radius_32"
+                android:backgroundTint="@{context.getColor(viewModel.isEnabledSaveButton == false ? R.color.gray_100 : R.color.green_500)}"
+                android:textColor="@{context.getColor(viewModel.isEnabledSaveButton == false ? R.color.gray_300 : R.color.gray_700)}"
+                android:textSize="@dimen/typographyDescription"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -62,14 +78,14 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title_container">
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/item_image_layout"
+                    android:id="@+id/image_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent">
@@ -78,15 +94,17 @@
                         android:id="@+id/item_image"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:foreground="@color/semiTransparent"
-                        android:scaleType="centerCrop"
-                        app:layout_constraintDimensionRatio="1:1"
+                        android:background="@drawable/shape_border_radius_32"
+                        android:backgroundTint="@color/gray_50"
+                        android:scaleType="centerInside"
+                        app:layout_constraintDimensionRatio="1.5:1"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <ImageView
                         android:id="@+id/add_photo"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:padding="@dimen/spacingBase"
                         android:src="@drawable/ic_camera"
                         android:visibility="@{viewModel.selectedGalleryImageUri == null ? View.VISIBLE : View.INVISIBLE}"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -96,227 +114,211 @@
 
                     <ImageView
                         android:id="@+id/edit_photo"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_margin="15dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:padding="@dimen/spacingBase"
                         android:src="@drawable/ic_camera"
-                        android:visibility="@{viewModel.selectedGalleryImageUri == null ? View.INVISIBLE : View.VISIBLE}"
+                        android:visibility="@{viewModel.selectedGalleryImageUri == null ? View.GONE : View.VISIBLE}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
                         tools:visibility="invisible" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <LinearLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="8dp"
-                    app:layout_constraintTop_toBottomOf="@id/item_image_layout">
+                    app:layout_constraintTop_toBottomOf="@id/image_container">
 
-                    <LinearLayout
-                        android:id="@+id/folder_container"
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_begin="@dimen/typographyBase" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_begin="@dimen/typographyBase" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guide_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_end="@dimen/spacingBase" />
+
+                    <EditText
+                        android:id="@+id/item_name"
+                        style="@style/Widget.EditText.Input"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/item_name"
+                        android:inputType="textMultiLine"
+                        android:onTextChanged="@{viewModel::onItemNameTextChanged}"
+                        android:text="@{viewModel.itemName}"
+                        android:textAppearance="@style/Item.Basic.Upload.EditText.TextAppearance"
+                        android:textColorHint="@color/gray_200"
+                        app:layout_constraintEnd_toEndOf="@id/guide_end"
+                        app:layout_constraintStart_toEndOf="@id/guide_start"
+                        app:layout_constraintTop_toTopOf="@id/guide_top" />
+
+                    <View
+                        android:id="@+id/name_divider"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="0.5dp"
+                        android:background="@color/gray_100"
+                        app:layout_constraintTop_toBottomOf="@id/item_name" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/nanum_square_eb"
-                            android:paddingVertical="12dp"
-                            android:text="@string/folder"
-                            android:textColor="@color/gray_700"
-                            android:textSize="13dp" />
+                    <!-- text, selection 순서 바뀌지 않도록 주의 -->
+                    <EditText
+                        android:id="@+id/item_price"
+                        style="@style/Widget.EditText.Input"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/price"
+                        android:inputType="number"
+                        android:text="@{viewModel.itemPrice}"
+                        android:onTextChanged="@{viewModel::onItemPriceTextChanged}"
+                        android:selection="@{viewModel.itemPrice.length()}"
+                        android:textAppearance="@style/Item.Basic.Upload.EditText.TextAppearance"
+                        android:textColorHint="@color/gray_200"
+                        app:layout_constraintEnd_toEndOf="@id/guide_end"
+                        app:layout_constraintStart_toStartOf="@id/guide_start"
+                        app:layout_constraintTop_toBottomOf="@id/name_divider" />
+
+                    <View
+                        android:id="@+id/price_divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/gray_100"
+                        app:layout_constraintTop_toBottomOf="@id/item_price" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/folder_container"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/guide_start"
+                        app:layout_constraintTop_toBottomOf="@id/item_price">
 
                         <TextView
                             android:id="@+id/folder_name"
-                            android:layout_width="wrap_content"
+                            style="@style/Widget.EditText.Input"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="5dp"
+                            android:focusable="false"
+                            android:hint="@string/folder"
                             android:text="@{viewModel.folderItem.name == null ? viewModel.wishItem.folderName : viewModel.folderItem.name}"
-                            android:fontFamily="@font/nanum_square_b"
-                            android:textColor="@color/gray_700"
-                            android:textSize="13dp" />
+                            android:textAppearance="@style/Item.Basic.Upload.EditText.TextAppearance"
+                            android:textColorHint="@color/gray_700"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/folder_detail"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical|right"
-                            android:src="@drawable/ic_detail_gray"></ImageView>
-                    </LinearLayout>
+                        <ImageButton
+                            android:id="@+id/folder_detail"
+                            style="@style/Widget.Button.Icon.Navigation"
+                            android:src="@drawable/ic_detail_small"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                    <LinearLayout
+                    <View
+                        android:id="@+id/folder_divider"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="0.5dp"
+                        android:background="@color/gray_100"
+                        app:layout_constraintTop_toBottomOf="@id/folder_container" />
 
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/nanum_square_eb"
-                            android:paddingVertical="12dp"
-                            android:text="@string/item_name"
-                            android:textColor="@color/gray_700"
-                            android:textSize="13dp" />
-
-                        <EditText
-                            android:id="@+id/item_name"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:background="@android:color/transparent"
-                            android:fontFamily="@font/nanum_square_b"
-                            android:gravity="right"
-                            android:hint="@string/item_name_input_text"
-                            android:inputType="text"
-                            android:onTextChanged="@{viewModel::onItemNameTextChanged}"
-                            android:paddingVertical="12dp"
-                            android:text="@{viewModel.itemName}"
-                            android:textColor="@color/gray_700"
-                            android:textColorHint="@color/gray_200"
-                            android:textSize="13dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/nanum_square_eb"
-                            android:paddingVertical="12dp"
-                            android:text="@string/price"
-                            android:textColor="@color/gray_700"
-                            android:textSize="13dp" />
-
-                        <!-- text, selection 순서 바뀌지 않도록 주의 -->
-                        <EditText
-                            android:id="@+id/item_price"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:background="@android:color/transparent"
-                            android:fontFamily="@font/nanum_square_b"
-                            android:gravity="right"
-                            android:hint="@string/price_input_text"
-                            android:inputType="number"
-                            android:text="@{viewModel.itemPrice}"
-                            android:onTextChanged="@{viewModel::onItemPriceTextChanged}"
-                            android:paddingVertical="12dp"
-                            android:selection="@{viewModel.itemPrice.length()}"
-                            android:textColor="@color/gray_700"
-                            android:textColorHint="@color/gray_200"
-                            android:textSize="13sp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/nanum_square_eb"
-                            android:paddingVertical="12dp"
-                            android:text="@string/shop_link"
-                            android:textColor="@color/gray_700"
-                            android:textSize="13dp" />
-
-                        <EditText
-                            android:id="@+id/item_url"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="2"
-                            android:background="@android:color/transparent"
-                            android:fontFamily="@font/nanum_square_b"
-                            android:gravity="right"
-                            android:hint="@string/shop_link_input_text"
-                            android:inputType="textUri"
-                            android:onTextChanged="@{viewModel::onItemUrlTextChanged}"
-                            android:paddingVertical="12dp"
-                            android:text="@{viewModel.itemUrl}"
-                            android:textColor="@color/gray_700"
-                            android:textColorHint="@color/gray_200"
-                            android:textSize="13dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:id="@+id/btn_noti"
-                        android:layout_width="match_parent"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/noti_container"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:gravity="center_vertical">
-
-                        <TextView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:fontFamily="@font/nanum_square_eb"
-                            android:paddingVertical="12dp"
-                            android:text="@string/item_schedule_notification"
-                            android:textColor="@color/gray_700"
-                            android:textSize="13dp" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/guide_start"
+                        app:layout_constraintTop_toBottomOf="@id/folder_container">
 
                         <TextView
                             android:id="@+id/noti_date"
-                            android:layout_width="wrap_content"
+                            style="@style/Widget.EditText.Input"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/nanum_square_b"
-                            android:text="@{viewModel.notiType == null ? `` : String.format(context.getString(R.string.item_notification_info), context.getString(viewModel.notiType.strRes), viewModel.notiDate)}"
-                            android:textColor="@color/gray_700"
-                            android:textSize="13dp" />
+                            android:focusable="false"
+                            android:hint="@string/item_schedule_notification"
+                            android:text="@{viewModel.notiType == null ? `` : String.format(context.getString(R.string.item_notification_info), context.getString(viewModel.notiType.strRes), DateFormatUtilKt.shortDateYMDAHM(viewModel.notiDate))}"
+                            android:textAppearance="@style/Item.Basic.Upload.EditText.TextAppearance"
+                            android:textColorHint="@color/gray_700"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@id/noti_detail"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
 
-                        <TextView
-                            android:id="@+id/noti_type"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginHorizontal="5dp"
-                            android:fontFamily="@font/nanum_square_b"
-                            android:textColor="@color/gray_700"
-                            android:textSize="13dp" />
+                        <ImageButton
+                            android:id="@+id/noti_detail"
+                            style="@style/Widget.Button.Icon.Navigation"
+                            android:src="@drawable/ic_detail_small"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical|right"
-                            android:src="@drawable/ic_detail_gray"></ImageView>
-                    </LinearLayout>
-
-                    <LinearLayout
+                    <View
+                        android:id="@+id/noti_divider"
                         android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/gray_100"
+                        app:layout_constraintTop_toBottomOf="@id/noti_container" />
+
+                    <EditText
+                        android:id="@+id/item_url"
+                        style="@style/Widget.EditText.Input"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical">
+                        android:hint="@string/shop_link_input_text"
+                        android:inputType="textUri"
+                        android:onTextChanged="@{viewModel::onItemUrlTextChanged}"
+                        android:text="@{viewModel.itemUrl}"
+                        android:textAppearance="@style/Item.Basic.Upload.EditText.TextAppearance"
+                        android:textColorHint="@color/gray_200"
+                        app:layout_constraintEnd_toEndOf="@id/guide_end"
+                        app:layout_constraintStart_toStartOf="@id/guide_start"
+                        app:layout_constraintTop_toBottomOf="@id/noti_container" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/nanum_square_eb"
-                            android:paddingVertical="12dp"
-                            android:text="@string/memo"
-                            android:textColor="@color/gray_700"
-                            android:textSize="13dp" />
+                    <View
+                        android:id="@+id/url_divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/gray_100"
+                        app:layout_constraintTop_toBottomOf="@id/item_url" />
 
-                        <EditText
-                            android:id="@+id/item_memo"
-                            android:layout_width="match_parent"
-                            android:layout_height="0dp"
-                            android:layout_marginBottom="12dp"
-                            android:layout_weight="1"
-                            android:background="@android:color/transparent"
-                            android:fontFamily="@font/nanum_square_b"
-                            android:hint="@string/memo_input_text"
-                            android:inputType="textMultiLine"
-                            android:onTextChanged="@{viewModel::onItemMemoTextChanged}"
-                            android:text="@{viewModel.itemMemo}"
-                            android:textColor="@color/gray_700"
-                            android:textColorHint="@color/gray_200"
-                            android:textSize="13dp" />
-                    </LinearLayout>
-                </LinearLayout>
+                    <EditText
+                        android:id="@+id/item_memo"
+                        style="@style/Widget.EditText.Input"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/memo_input_text"
+                        android:inputType="textMultiLine"
+                        android:onTextChanged="@{viewModel::onItemMemoTextChanged}"
+                        android:text="@{viewModel.itemMemo}"
+                        android:textAppearance="@style/Item.Basic.Upload.EditText.TextAppearance"
+                        android:textColorHint="@color/gray_200"
+                        app:layout_constraintEnd_toEndOf="@id/guide_end"
+                        app:layout_constraintStart_toStartOf="@id/guide_start"
+                        app:layout_constraintTop_toBottomOf="@id/item_url" />
+
+                    <View
+                        android:id="@+id/memo_divider"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/gray_100"
+                        app:layout_constraintTop_toBottomOf="@id/item_memo" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
     </androidx.constraintlayout.widget.ConstraintLayout>

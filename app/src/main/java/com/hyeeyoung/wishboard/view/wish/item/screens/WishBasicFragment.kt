@@ -58,6 +58,7 @@ class WishBasicFragment : Fragment(), ImageLoader {
             }
         }
 
+        initializeView()
         addListeners()
         addObservers()
 
@@ -73,6 +74,18 @@ class WishBasicFragment : Fragment(), ImageLoader {
         binding.itemMemo.setText("")
     }
 
+    private fun initializeView() {
+        // TODO need refactoring
+        binding.itemUploadTitle.text =
+            context?.getString(
+                if (isEditMode) {
+                    R.string.wish_basic_item_edit_title
+                } else {
+                    R.string.wish_basic_item_add_title
+                }
+            )
+    }
+
     private fun addListeners() {
         binding.save.setOnClickListener {
             lifecycleScope.launch {
@@ -82,13 +95,16 @@ class WishBasicFragment : Fragment(), ImageLoader {
                 }
             }
         }
-        binding.itemImageLayout.setOnClickListener { // TODO itemImageContainer로 변경
+        binding.addPhoto.setOnClickListener {
+            requestStorage.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+        binding.editPhoto.setOnClickListener {
             requestStorage.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
         binding.folderContainer.setOnClickListener {
             findNavController().navigateSafe(R.id.action_wish_to_folder_list)
         }
-        binding.btnNoti.setOnClickListener {
+        binding.notiContainer.setOnClickListener {
             findNavController().navigateSafe(R.id.action_wish_to_noti_setting)
         }
     }

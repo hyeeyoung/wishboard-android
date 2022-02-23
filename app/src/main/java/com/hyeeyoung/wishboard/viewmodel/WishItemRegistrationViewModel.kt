@@ -13,6 +13,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.Transformations
+import androidx.lifecycle.MediatorLiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -66,6 +67,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var notiHourVal = MutableLiveData<Int>()
     private var notiMinuteVal = MutableLiveData<Int>()
 
+    private var isEnabledSaveButton = MediatorLiveData<Boolean>()
     private var isCompleteUpload = MutableLiveData<Boolean?>()
 
     private val galleryImageUris = MutableLiveData<PagingData<Uri>>()
@@ -78,6 +80,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private val token = prefs?.getUserToken()
 
     init {
+        initEnabledSaveButton()
         fetchFolderList()
     }
 
@@ -309,6 +312,25 @@ class WishItemRegistrationViewModel @Inject constructor(
         return decimalFormat.format(numPrice.toInt())
     }
 
+    private fun initEnabledSaveButton() {
+        isEnabledSaveButton.addSource(itemName) { name ->
+            combineEnabledSaveButton(name, itemPrice.value, selectedGalleryImageUri.value)
+        }
+
+        isEnabledSaveButton.addSource(itemPrice) { price ->
+            combineEnabledSaveButton(itemName.value, price, selectedGalleryImageUri.value)
+        }
+
+        isEnabledSaveButton.addSource(selectedGalleryImageUri) { imageUri ->
+            combineEnabledSaveButton(itemName.value, itemPrice.value, imageUri)
+        }
+    }
+
+    private fun combineEnabledSaveButton(name: String?, price: String?, imageUrl: Uri?) {
+        val image = wishItem?.image ?: imageUrl
+        isEnabledSaveButton.value = !(name.isNullOrBlank() || price.isNullOrBlank() || image == null)
+    }
+
     fun setWishItem(wishItem: WishItem) {
         this.wishItem = wishItem
         setWishItemInfo()
@@ -412,6 +434,7 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     fun getFolderListAdapter(): FolderListAdapter = folderListAdapter
 
+    fun isEnabledSaveButton(): LiveData<Boolean> = isEnabledSaveButton
     fun isCompleteUpload(): LiveData<Boolean?> = isCompleteUpload
 
     companion object {
