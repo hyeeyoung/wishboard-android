@@ -14,57 +14,42 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="10dp">
+        android:paddingHorizontal="@dimen/spacingBase"
+        android:paddingVertical="@dimen/spacingSmall">
 
-        <de.hdodenhof.circleimageview.CircleImageView
+        <ImageView
             android:id="@+id/thumbnail"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:foreground="@color/ultraSemiTransparent"
+            android:background="@drawable/shape_border_radius_32"
+            android:foreground="@color/semiTransparent"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/sample" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/layout"
+        <TextView
+            android:id="@+id/folder_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="5dp"
-            android:gravity="center_vertical"
+            android:layout_marginStart="@dimen/spacing10"
+            android:fontFamily="@font/suit_r"
+            android:text="@{item.name}"
+            android:textColor="@color/gray_700"
+            android:textSize="@dimen/typographyBase"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/check"
+            app:layout_constraintStart_toEndOf="@id/thumbnail"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="폴더명" />
+
+        <ImageView
+            android:id="@+id/check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_check"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/thumbnail"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/folder_name"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:layout_weight="1"
-                android:fontFamily="@font/nanum_square_b"
-                android:text="@{item.name}"
-                android:textColor="@color/gray_700"
-                android:textSize="15sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btn_radio"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="폴더명" />
-
-            <RadioButton
-                android:id="@+id/btn_radio"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:button="@drawable/selector_checkbox"
-                android:state_checked="false"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
