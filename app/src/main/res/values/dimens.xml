@@ -18,6 +18,7 @@
     <dimen name="typographyBase">16sp</dimen>
 
     <!-- Radius -->
+    <dimen name="radiusMicro">5dp</dimen>
     <dimen name="radiusSmall">10dp</dimen>
     <dimen name="radiusLarge">32dp</dimen>
     <dimen name="spacing20">20dp</dimen>

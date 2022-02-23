@@ -24,9 +24,10 @@
     </style>
 
     <style name="AppTheme.NumberPicker">
-        <item name="android:textSize">15dp</item>
+        <item name="android:textSize">@dimen/typographyBase</item>
         <item name="android:textColor">@color/gray_700</item>
-        <item name="android:fontFamily">@font/nanum_square_b</item>
+        <item name="android:fontFamily">@font/suit_m</item>
+        <item name="android:colorControlNormal">@color/transparent</item>
     </style>
 
     <style name="BottomSheetDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">

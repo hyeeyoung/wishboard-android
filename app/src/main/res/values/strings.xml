@@ -74,6 +74,9 @@
     <string name="noti_item_type">%s 알림</string>
     <string name="item_schedule_notification_setting_title">상품 알림 설정</string>
     <string name="default_notification_channel_id">fcm_default_channel</string>
+    <string name="noti_setting">알림 설정</string>
+    <string name="noti_type">알림 유형</string>
+    <string name="noti_date">알림 날짜</string>
 
     <string name="select_notification_type">알림 유형 선택</string>
     <string name="restock">재입고</string>
