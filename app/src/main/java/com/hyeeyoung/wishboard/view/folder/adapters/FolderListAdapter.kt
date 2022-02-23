@@ -3,6 +3,7 @@ package com.hyeeyoung.wishboard.view.folder.adapters
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.navigation.findNavController
@@ -24,6 +25,7 @@ class FolderListAdapter(
     private val dataSet = arrayListOf<FolderItem>()
     private lateinit var listener: OnItemClickListener
     private lateinit var imageLoader: ImageLoader
+    private var selectedFolderPosition: Int? = null
 
     init {
         setHasStableIds(true)
@@ -67,11 +69,17 @@ class FolderListAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             val item = dataSet[position]
-
             with(binding) {
                 this.item = item
+                check.visibility = if (selectedFolderPosition == position) {
+                    View.VISIBLE
+                } else {
+                    View.INVISIBLE
+                }
+                thumbnail.clipToOutline = true
                 item.thumbnail?.let { imageLoader.loadImage(it, thumbnail) }
                 container.setOnClickListener {
+                    selectedFolderPosition = position
                     listener.onItemClick(item)
                 }
             }
