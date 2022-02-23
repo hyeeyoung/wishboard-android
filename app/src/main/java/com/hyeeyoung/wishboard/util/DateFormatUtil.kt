@@ -61,7 +61,7 @@ fun shortDateYMD(date: Date): String? {
 
 /** 날짜를 "yy. M. d a h:mm" 포맷으로 변경 */
 fun shortDateYMDAHM(date: String?): String? {
-    val inputDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    val inputDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
     val outputDateFormat = SimpleDateFormat("yy. M. d a h:mm")
     val inputDate: Date?
     val outputDate: String
