@@ -1,12 +1,16 @@
 package com.hyeeyoung.wishboard
 
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.ktx.Firebase
 import com.hyeeyoung.wishboard.databinding.ActivityMainBinding
 import com.hyeeyoung.wishboard.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,8 +24,28 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
+        addDynamicLinkListener()
         viewModel.initFCMToken()
+
         initializeView()
+    }
+
+    private fun addDynamicLinkListener() {
+        Firebase.dynamicLinks
+            .getDynamicLink(intent)
+            .addOnSuccessListener(this) { pendingDynamicLinkData ->
+                var deeplink: Uri? = null
+                if (pendingDynamicLinkData != null) {
+                    deeplink = pendingDynamicLinkData.link
+                }
+
+                if (deeplink != null) {
+                    Log.i(TAG, "deeplink: $deeplink")
+                } else {
+                    Log.d(TAG, "getDynamicLink: no link found")
+                }
+            }
+            .addOnFailureListener(this) { e -> Log.w(TAG, "getDynamicLink:onFailure", e) }
     }
 
     private fun initializeView() {
