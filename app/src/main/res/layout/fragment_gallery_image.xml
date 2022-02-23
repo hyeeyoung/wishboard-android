@@ -17,44 +17,35 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/widgetHeightBase"
-            android:paddingHorizontal="8dp"
+            android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
                 android:id="@+id/back"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:background="@android:color/transparent"
+                style="@style/Widget.Button.Icon.Navigation"
                 android:onClick="@{v -> Navigation.findNavController(v).popBackStack()}"
-                android:paddingHorizontal="@dimen/spacing12"
                 android:src="@drawable/ic_back"
-                android:tint="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/white" />
 
             <TextView
+                android:id="@+id/item_upload_title"
+                style="@style/Widget.Tab.Detail.TextAppearance.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:fontFamily="@font/nanum_square_eb"
                 android:text="@string/wish_item_registration_gallery_image_title"
                 android:textColor="@color/white"
-                android:textSize="15dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/wish_basic_item_add_title" />
 
             <ImageView
                 android:id="@+id/camera"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerVertical="true"
-                android:background="@android:color/transparent"
-                android:paddingHorizontal="@dimen/spacing12"
+                style="@style/Widget.Button.Icon.Navigation"
                 android:src="@drawable/ic_camera"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
