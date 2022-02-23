@@ -59,21 +59,18 @@ fun shortDateYMD(date: Date): String? {
     }
 }
 
-/** 날짜를 "M월 d일 HH시 m분" 포맷으로 변경 */
-fun shortDateMDHM(str_date: String?): String? {
-    val inputDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
-    val outputDateFormat = SimpleDateFormat("M월 d일 HH시 m분")
+/** 날짜를 "yy. M. d a h:mm" 포맷으로 변경 */
+fun shortDateYMDAHM(date: String?): String? {
+    val inputDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+    val outputDateFormat = SimpleDateFormat("yy. M. d a h:mm")
     val inputDate: Date?
-    var outputDate: String
+    val outputDate: String
     try {
-        inputDate = inputDateFormat.parse(str_date)
+        inputDate = inputDateFormat.parse(date)
         outputDate = outputDateFormat.format(inputDate)
     } catch (e: ParseException) {
         e.printStackTrace()
         return null
-    }
-    if (outputDate.substring(outputDate.length - 3) == " 0분") {
-        outputDate = outputDate.replace("0분", "")
     }
     return outputDate
 }
