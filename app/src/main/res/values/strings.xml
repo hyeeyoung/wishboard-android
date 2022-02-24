@@ -22,6 +22,8 @@
     <string name="time_months_ago">달 전</string>
     <string name="time_years_ago">년 전</string>
 
+    <string name="length_format">(%d/%d자)</string>
+
     <!-- Sign -->
     <string name="sign_up">가입하기</string>
     <string name="first_visit_detail">위시보드가 처음이신가요?</string>
@@ -126,5 +128,6 @@
     <string name="navigation_menu_title_my">MY</string>
     <string name="wish_basic_item_add_title">아이템 추가</string>
     <string name="wish_basic_item_edit_title">아이템 수정</string>
+    <string name="my_profile_edit_completion_toast_Text">프로필 수정을 완료했습니다</string>
 
 </resources>

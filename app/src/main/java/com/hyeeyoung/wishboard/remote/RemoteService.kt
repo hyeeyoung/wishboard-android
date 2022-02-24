@@ -137,6 +137,13 @@ interface RemoteService {
         @Field("fcm_token") fcmToken: String
     ): Response<RequestResult>
 
+    @FormUrlEncoded
+    @PUT("user/nickname")
+    suspend fun updateUserNickname(
+        @Header("Authorization") token: String,
+        @Field("nickname") nickname: String
+    ): Response<RequestResult>
+
     companion object {
         val api = Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
