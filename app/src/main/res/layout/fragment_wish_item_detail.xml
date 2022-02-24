@@ -173,7 +173,7 @@
                         android:layout_height="0dp"
                         android:layout_marginEnd="20dp"
                         android:fontFamily="@font/nanum_square_r"
-                        android:text="@{DateFormatUtilKt.getTimeBefore(viewModel.wishItem.createAt)}"
+                        app:timeFormat="@{DateFormatUtilKt.convertStrTimeToDate(viewModel.wishItem.createAt)}"
                         android:textColor="@color/gray_300"
                         android:textSize="@dimen/typographyDescription"
                         app:layout_constraintEnd_toEndOf="parent"

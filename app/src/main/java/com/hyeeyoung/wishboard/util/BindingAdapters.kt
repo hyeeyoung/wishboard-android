@@ -5,6 +5,7 @@ import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.util.custom.CustomDecoration
 import java.text.DecimalFormat
 
@@ -12,6 +13,38 @@ import java.text.DecimalFormat
 fun TextView.setPriceFormat(price: Number?) {
     val decimalFormat = DecimalFormat("#,###")
     text = decimalFormat.format(price ?: 0)
+}
+
+@BindingAdapter("timeFormat")
+fun TextView.setTimeFormat(regTime: Long?) {
+    if (regTime == null || regTime == 0L) run {
+        text = ""
+        return
+    }
+
+    val curTime = System.currentTimeMillis()
+    var diffTime = (curTime - regTime) / 1000
+
+    text = when {
+        diffTime < TimeUtil.SEC -> {
+            context.getString(R.string.time_a_moment_ago)
+        }
+        TimeUtil.SEC.let { diffTime /= it; diffTime } < TimeUtil.MIN -> {
+            diffTime.toString() + context.getString(R.string.time_minutes_ago)
+        }
+        TimeUtil.MIN.let { diffTime /= it; diffTime } < TimeUtil.HOUR -> {
+            diffTime.toString() + context.getString(R.string.time_hours_ago)
+        }
+        TimeUtil.HOUR.let { diffTime /= it; diffTime } < TimeUtil.DAY -> {
+            diffTime.toString() + context.getString(R.string.time_days_ago)
+        }
+        TimeUtil.DAY.let { diffTime /= it; diffTime } < TimeUtil.MONTH -> {
+            diffTime.toString() + context.getString(R.string.time_months_ago)
+        }
+        else -> {
+            diffTime.toString() + context.getString(R.string.time_years_ago)
+        }
+    }
 }
 
 @BindingAdapter(value = ["dividerHeight", "dividerPadding", "dividerColor"], requireAll = false)
