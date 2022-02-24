@@ -96,13 +96,29 @@ fun countDday(date: String): String? {
             shortDateYMD(endDate)
         }
         else -> { // 디데이 당일 -> ex) "오늘 15시 30분"
-            val minutes = date.substring(14,16)
-
-            if (minutes == "00") { // 00분인 경우 분 표시 안함
-                "오늘 ${date.substring(11,13)}시"
-            } else {
-                "오늘 ${date.substring(11,13)}시 ${date.substring(14,16)}분"
-            }
+            "오늘 ${convertYMDHMToHourMinute(endDate)}"
         }
+    }
+}
+
+/** "h시 m분" 포맷으로 변환 */
+fun convertYMDHMToHourMinute(date: Date): String {
+    val dateFormat = SimpleDateFormat("H:m")
+    val hourMinute: String
+    try {
+        hourMinute = dateFormat.format(date)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+        return ""
+    }
+
+    val dividerIdx = hourMinute.indexOf(":")
+    val hour = hourMinute.substring(0, dividerIdx)
+    val minute = hourMinute.substring(dividerIdx+1)
+
+    return if (minute[0] == '0') {
+        "${hour}시"
+    } else {
+        "${hour}시 ${minute}분"
     }
 }
