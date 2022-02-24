@@ -38,7 +38,7 @@ class MyFragment : Fragment() {
         binding.notiSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.updatePushNotiSettings(isChecked)
         }
-        binding.logoutBtn.setOnClickListener {
+        binding.logout.setOnClickListener {
             viewModel.signOut()
             startActivity(Intent(requireContext(), SignActivity::class.java))
             requireActivity().finish()
