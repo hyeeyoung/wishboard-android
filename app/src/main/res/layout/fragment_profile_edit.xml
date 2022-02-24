@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.cart.screens.CartFragment">
+
+    <data>
+
+        <import type="androidx.navigation.Navigation" />
+
+        <variable
+            name="viewModel"
+            type="com.hyeeyoung.wishboard.viewmodel.CartViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/back"
+                style="@style/Widget.Button.Icon.Navigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> Navigation.findNavController(v).popBackStack()}"
+                android:src="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                style="@style/Widget.Tab.Detail.TextAppearance.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/my_profile_edit_title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/gray_100"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/profile_image_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <ImageView
+                android:id="@+id/profile_image"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:src="@drawable/ic_background_user_profile"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/camera"
+                style="@style/Widget.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="-20dp"
+                android:layout_marginBottom="1dp"
+                android:src="@drawable/ic_camera"
+                app:layout_constraintBottom_toBottomOf="@id/profile_image"
+                app:layout_constraintStart_toEndOf="@id/profile_image" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <EditText
+            android:id="@+id/user_nickname"
+            style="@style/Widget.EditText.Basic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing20"
+            android:hint="@string/my_profile_edit_nickname_hint"
+            android:maxLength="10"
+            android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
+            app:layout_constraintTop_toBottomOf="@id/profile_image_container" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1.5dp"
+            android:layout_marginHorizontal="@dimen/spacing20"
+            android:background="@color/gray_150"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/user_nickname" />
+
+        <Button
+            android:id="@+id/won"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing20"
+            android:layout_marginTop="@dimen/spacing20"
+            android:background="@drawable/shape_border_radius_32"
+            android:backgroundTint="@color/green_500"
+            android:fontFamily="@font/suit_b"
+            android:paddingVertical="@dimen/spacingBase"
+            android:text="@string/complete"
+            android:textColor="@color/gray_700"
+            android:textSize="@dimen/typographyBase"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/user_nickname" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -22,7 +22,7 @@
         android:state_selected="false"
         android:title="@string/navigation_menu_title_notice" />
     <item
-        android:id="@+id/myFragment"
+        android:id="@+id/my_nav_graph"
         android:icon="@drawable/ic_nav_my"
         android:state_selected="false"
         android:title="@string/navigation_menu_title_my" />

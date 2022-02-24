@@ -61,10 +61,27 @@
         <item name="fontFamily">@font/suit_b</item>
     </style>
 
+    <!-- TODO need refacotring -->
     <style name="Widget.EditText.Input" parent="Widget.MaterialComponents.TextView">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:paddingTop">@dimen/spacing20</item>
         <item name="android:paddingBottom">@dimen/spacing20</item>
+    </style>
+
+    <style name="Widget.EditText" parent="">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="Widget.EditText.Basic" parent="Widget.EditText">
+        <item name="android:paddingTop">@dimen/spacing12</item>
+        <item name="android:paddingBottom">@dimen/spacing12</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Widget.EditText.Basic.TextAppearance" parent="">
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="android:fontFamily">@font/suit_m</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
     <style name="Item.Basic.Upload.EditText.TextAppearance" parent="">
