@@ -79,7 +79,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/suit_r"
-            android:text="@{DateFormatUtilKt.beforeTime(item.notiDate)}"
+            android:text="@{DateFormatUtilKt.getTimeBefore(item.notiDate)}"
             android:textColor="@color/gray_300"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -10,8 +10,8 @@ const val MIN = 60
 const val HOUR = 24
 const val WEEK = 7
 
-/** 시간 정보 포맷을 지정 */
-fun beforeTime(strDate: String): String? {
+/** 시간 포맷 지정 */
+fun getTimeBefore(strDate: String): String? {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     val date: Date?
     try {
@@ -49,7 +49,7 @@ fun beforeTime(strDate: String): String? {
 }
 
 /** 날짜를 "yy년 M월 d일" 포맷으로 변경 */
-fun shortDateYMD(date: Date): String? {
+fun convertDateToYMD(date: Date): String? {
     val dateFormat = SimpleDateFormat("yy년 M월 d일")
     return try {
         dateFormat.format(date)
@@ -60,7 +60,7 @@ fun shortDateYMD(date: Date): String? {
 }
 
 /** 날짜를 "yy. M. d a h:mm" 포맷으로 변경 */
-fun shortDateYMDAHM(date: String?): String? {
+fun convertYMDHMToYMDAHM(date: String?): String? {
     val inputDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
     val outputDateFormat = SimpleDateFormat("yy. M. d a h:mm")
     val inputDate: Date?
@@ -76,7 +76,7 @@ fun shortDateYMDAHM(date: String?): String? {
 }
 
 /** D-day 계산 */
-fun countDday(date: String): String? {
+fun calculateDday(date: String): String? {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
     val endDate: Date
     try {
@@ -93,16 +93,32 @@ fun countDday(date: String): String? {
             "D-${dday}"
         }
         dday < 0L -> { // 디데이 경과 후 -> ex) "21년 1월 1일"
-            shortDateYMD(endDate)
+            convertDateToYMD(endDate)
         }
         else -> { // 디데이 당일 -> ex) "오늘 15시 30분"
-            val minutes = date.substring(14,16)
-
-            if (minutes == "00") { // 00분인 경우 분 표시 안함
-                "오늘 ${date.substring(11,13)}시"
-            } else {
-                "오늘 ${date.substring(11,13)}시 ${date.substring(14,16)}분"
-            }
+            "오늘 ${convertYMDHMToHourMinute(endDate)}"
         }
+    }
+}
+
+/** "h시 m분" 포맷으로 변환 */
+fun convertYMDHMToHourMinute(date: Date): String {
+    val dateFormat = SimpleDateFormat("H:m")
+    val hourMinute: String
+    try {
+        hourMinute = dateFormat.format(date)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+        return ""
+    }
+
+    val dividerIdx = hourMinute.indexOf(":")
+    val hour = hourMinute.substring(0, dividerIdx)
+    val minute = hourMinute.substring(dividerIdx+1)
+
+    return if (minute[0] == '0') {
+        "${hour}시"
+    } else {
+        "${hour}시 ${minute}분"
     }
 }
