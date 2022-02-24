@@ -14,6 +14,14 @@
     <string name="all">전체</string>
     <string name="count">개</string>
 
+    <!-- Format -->
+    <string name="time_a_moment_ago">방금 전</string>
+    <string name="time_minutes_ago">분 전</string>
+    <string name="time_hours_ago">시간 전</string>
+    <string name="time_days_ago">일 전</string>
+    <string name="time_months_ago">달 전</string>
+    <string name="time_years_ago">년 전</string>
+
     <!-- Sign -->
     <string name="sign_up">가입하기</string>
     <string name="first_visit_detail">위시보드가 처음이신가요?</string>

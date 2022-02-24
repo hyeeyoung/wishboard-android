@@ -4,14 +4,8 @@ import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
-/** 시간 단위 별 최댓값 */
-const val SEC = 60
-const val MIN = 60
-const val HOUR = 24
-const val WEEK = 7
-
 /** 시간 포맷 지정 */
-fun getTimeBefore(strDate: String): String? {
+fun convertStrTimeToDate(strDate: String): Long? {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     val date: Date?
     try {
@@ -20,32 +14,7 @@ fun getTimeBefore(strDate: String): String? {
         e.printStackTrace()
         return null
     }
-
-    val c = Calendar.getInstance()
-    val now = c.timeInMillis
-    val before = date!!.time
-    var gap = (now - before) / 1000
-    val timeInfo: String?
-
-    when {
-        gap < SEC -> {
-            timeInfo = "방금 전"
-        }
-        SEC.let { gap /= SEC; gap } < MIN -> {
-            timeInfo = gap.toString() + "분 전"
-        }
-        MIN.let { gap /= it; gap } < HOUR -> {
-            timeInfo = gap.toString() + "시간 전"
-        }
-        HOUR.let { gap /= it; gap } < WEEK -> {
-            timeInfo = gap.toString() + "일 전"
-        }
-        else -> {
-            gap /= WEEK.toLong()
-            timeInfo = gap.toString() + "주 전"
-        }
-    }
-    return timeInfo
+    return date.time
 }
 
 /** 날짜를 "yy년 M월 d일" 포맷으로 변경 */
@@ -114,7 +83,7 @@ fun convertYMDHMToHourMinute(date: Date): String {
 
     val dividerIdx = hourMinute.indexOf(":")
     val hour = hourMinute.substring(0, dividerIdx)
-    val minute = hourMinute.substring(dividerIdx+1)
+    val minute = hourMinute.substring(dividerIdx + 1)
 
     return if (minute[0] == '0') {
         "${hour}시"
