@@ -135,12 +135,10 @@ interface RemoteService {
         @Header("Authorization") token: String,
     ): Response<List<UserInfo>>?
 
-    @FormUrlEncoded
     @PUT("user")
     suspend fun updateUserInfo(
         @Header("Authorization") token: String,
-        @Field("nickname") nickname: String,
-        @Field("profile_img") profileImage: String?,
+        @Body userInfo: UserInfo,
     ): Response<RequestResult>
 
     // 사용자

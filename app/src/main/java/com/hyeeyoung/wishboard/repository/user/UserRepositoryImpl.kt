@@ -5,6 +5,7 @@ import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.sign.UserInfo
 import com.hyeeyoung.wishboard.remote.RemoteService
 import com.hyeeyoung.wishboard.repository.folder.FolderRepositoryImpl
+import java.util.*
 
 class UserRepositoryImpl : UserRepository {
     private val api = RemoteService.api
@@ -29,8 +30,13 @@ class UserRepositoryImpl : UserRepository {
         return response.isSuccessful
     }
 
-    override suspend fun updateUserInfo(userToken: String, nickname: String, imageFileName: String?): Pair<Boolean, Int> {
-        val response = api.updateUserInfo(userToken, nickname, imageFileName)
+    override suspend fun updateUserInfo(
+        userToken: String,
+        nickname: String?,
+        imageFileName: String?
+    ): Pair<Boolean, Int> {
+        val userInfo = UserInfo(nickname = nickname, profileImage = imageFileName)
+        val response = api.updateUserInfo(userToken, userInfo)
         if (response.isSuccessful) {
             Log.d(TAG, "닉네임 수정 성공")
         } else {
@@ -38,7 +44,7 @@ class UserRepositoryImpl : UserRepository {
         }
         return Pair(response.isSuccessful, response.code())
     }
-    
+
     companion object {
         private const val TAG = "UserRepositoryImpl"
     }

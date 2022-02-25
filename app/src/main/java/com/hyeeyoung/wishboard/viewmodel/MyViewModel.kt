@@ -48,6 +48,9 @@ class MyViewModel @Inject constructor(
     fun updateUserInfo() {
         if (token == null) return
         viewModelScope.launch {
+            val nickname =
+                if (userNickname.value == inputUserNickName.value) null else inputUserNickName.value
+
             // AWS 업로드
             val profile = userProfileImageFile.value
             profile?.let { file ->
@@ -56,7 +59,7 @@ class MyViewModel @Inject constructor(
 
             // DB 업로드
             val result =
-                userRepository.updateUserInfo(token, inputUserNickName.value!!, profile?.name)
+                userRepository.updateUserInfo(token, nickname, profile?.name)
             isCompleteUpdateUserInfo.value = result.first
             isExistNickname.value = result.second == 409
 
