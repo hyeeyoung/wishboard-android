@@ -59,7 +59,8 @@ class MainActivity : AppCompatActivity() {
                     R.id.wishFragment,
                     R.id.wishItemDetailFragment,
                     R.id.folderListFragment,
-                    R.id.galleryImageFragment
+                    R.id.galleryImageFragment,
+                    R.id.profileEditFragment
                     -> binding.bottomNav.visibility = View.GONE
                     else -> binding.bottomNav.visibility = View.VISIBLE
                 }

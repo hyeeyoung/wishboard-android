@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/my_nav_graph"
+    app:startDestination="@id/myFragment">
+
+    <fragment
+        android:id="@+id/myFragment"
+        android:name="com.hyeeyoung.wishboard.view.my.screens.MyFragment"
+        android:label="fragment_my"
+        tools:layout="@layout/fragment_my">
+        <action
+            android:id="@+id/action_my_to_profile_edit"
+            app:destination="@id/profileEditFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileEditFragment"
+        android:name="com.hyeeyoung.wishboard.view.my.screens.MyProfileEditFragment"
+        android:label="fragment_profile_edit"
+        tools:layout="@layout/fragment_profile_edit">
+        <action
+            android:id="@+id/action_my_profile_edit_to_gallery_image"
+            app:destination="@id/galleryImageFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/galleryImageFragment"
+        android:name="com.hyeeyoung.wishboard.view.common.screens.GalleryImageFragment"
+        android:label="fragment_gallery_image"
+        tools:layout="@layout/fragment_gallery_image" />
+
+</navigation>
