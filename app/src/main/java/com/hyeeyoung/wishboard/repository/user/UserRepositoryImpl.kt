@@ -1,11 +1,8 @@
 package com.hyeeyoung.wishboard.repository.user
 
 import android.util.Log
-import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.sign.UserInfo
 import com.hyeeyoung.wishboard.remote.RemoteService
-import com.hyeeyoung.wishboard.repository.folder.FolderRepositoryImpl
-import java.util.*
 
 class UserRepositoryImpl : UserRepository {
     private val api = RemoteService.api
@@ -13,9 +10,9 @@ class UserRepositoryImpl : UserRepository {
     override suspend fun fetchUserInfo(userToken: String): UserInfo? {
         val response = api.fetchUserInfo(userToken) ?: return null
         if (response.isSuccessful) {
-            Log.d(TAG, "유저 정보 불러오기 성공")
+            Log.d(TAG, "사용자 정보 불러오기 성공")
         } else {
-            Log.e(TAG, "유저 정보 불러오기 실패: ${response.code()}")
+            Log.e(TAG, "사용자 정보 불러오기 실패: ${response.code()}")
         }
         return response.body()?.get(0)
     }
@@ -38,9 +35,9 @@ class UserRepositoryImpl : UserRepository {
         val userInfo = UserInfo(nickname = nickname, profileImage = imageFileName)
         val response = api.updateUserInfo(userToken, userInfo)
         if (response.isSuccessful) {
-            Log.d(TAG, "닉네임 수정 성공")
+            Log.d(TAG, "사용자 정보 수정 성공")
         } else {
-            Log.e(TAG, "닉네임 수정 실패: ${response.code()}")
+            Log.e(TAG, "사용자 정보 수정 실패: ${response.code()}")
         }
         return Pair(response.isSuccessful, response.code())
     }
