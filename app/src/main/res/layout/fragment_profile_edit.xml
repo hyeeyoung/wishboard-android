@@ -8,9 +8,11 @@
 
         <import type="androidx.navigation.Navigation" />
 
+        <import type="com.hyeeyoung.wishboard.R" />
+
         <variable
             name="viewModel"
-            type="com.hyeeyoung.wishboard.viewmodel.CartViewModel" />
+            type="com.hyeeyoung.wishboard.viewmodel.MyViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -88,14 +90,31 @@
             style="@style/Widget.EditText.Basic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing20"
             android:layout_marginTop="@dimen/spacing20"
             android:hint="@string/my_profile_edit_nickname_hint"
-            android:maxLength="10"
+            android:maxLength="12"
+            android:onTextChanged="@{viewModel::onNicknameTextChanged}"
+            android:paddingVertical="@dimen/spacing12"
+            android:text="@{viewModel.inputUserNickname}"
             android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
             app:layout_constraintTop_toBottomOf="@id/profile_image_container" />
 
+        <TextView
+            android:id="@+id/nickname_length"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing5"
+            android:fontFamily="@font/suit_m"
+            android:text="@{String.format(context.getString(R.string.length_format), viewModel.inputUserNickname.length(), 12)}"
+            android:textColor="@color/gray_200"
+            android:textSize="@dimen/typographyDescription"
+            app:layout_constraintTop_toBottomOf="@id/user_nickname"
+            app:layout_constraintEnd_toEndOf="@id/user_nickname"
+            tools:text="(7/12)자" />
+
         <View
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="1.5dp"
             android:layout_marginHorizontal="@dimen/spacing20"
             android:background="@color/gray_150"
@@ -104,7 +123,7 @@
             app:layout_constraintTop_toBottomOf="@id/user_nickname" />
 
         <Button
-            android:id="@+id/won"
+            android:id="@+id/complete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing20"
@@ -117,6 +136,6 @@
             android:textColor="@color/gray_700"
             android:textSize="@dimen/typographyBase"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/user_nickname" />
+            app:layout_constraintTop_toBottomOf="@id/nickname_length" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
