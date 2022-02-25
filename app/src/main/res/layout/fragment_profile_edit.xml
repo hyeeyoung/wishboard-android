@@ -142,7 +142,7 @@
             android:layout_marginHorizontal="@dimen/spacing20"
             android:layout_marginTop="@dimen/spacing20"
             android:background="@drawable/selector_button"
-            android:enabled="@{viewModel.inputUserNickname.length() > 0}"
+            android:enabled="@{viewModel.isEnabledEditCompleteButton()}"
             android:fontFamily="@font/suit_b"
             android:outlineProvider="none"
             android:paddingVertical="@dimen/spacingBase"

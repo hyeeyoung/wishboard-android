@@ -1,10 +1,7 @@
 package com.hyeeyoung.wishboard.viewmodel
 
 import android.net.Uri
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.hyeeyoung.wishboard.remote.AWSS3Service
 import com.hyeeyoung.wishboard.repository.noti.NotiRepository
 import com.hyeeyoung.wishboard.repository.user.UserRepository
@@ -29,8 +26,13 @@ class MyViewModel @Inject constructor(
 
     private var isCompleteUpdateUserInfo = MutableLiveData<Boolean?>()
     private var isExistNickname = MutableLiveData<Boolean?>()
+    private var isEnabledEditCompleteButton = MediatorLiveData<Boolean>()
 
     private val token = prefs?.getUserToken()
+
+    init {
+        initEnabledEditCompleteButton()
+    }
 
     fun fetchUserInfo() {
         if (token == null) return
@@ -44,7 +46,7 @@ class MyViewModel @Inject constructor(
     }
 
     fun updateUserInfo() {
-        if (token == null || inputUserNickName.value == null) return
+        if (token == null) return
         viewModelScope.launch {
             // AWS 업로드
             val profile = userProfileImageFile.value
@@ -78,6 +80,7 @@ class MyViewModel @Inject constructor(
 
     fun onNicknameTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
         inputUserNickName.value = s.toString()
+        isExistNickname.value = null
     }
 
     fun resetUserInfo() {
@@ -90,12 +93,26 @@ class MyViewModel @Inject constructor(
     private fun setUserInfo() {
         prefs?.setUserNickName(inputUserNickName.value!!)
         userNickname.value = inputUserNickName.value
-        userProfileImage.value = userProfileImageFile.value?.name
+        userProfileImageFile.value?.let { file -> userProfileImage.value = file.name }
     }
 
     fun setSelectedUserProfileImage(imageUri: Uri, imageFile: File) {
         userProfileImageUri.value = imageUri
         userProfileImageFile.value = imageFile
+    }
+
+    private fun initEnabledEditCompleteButton() {
+        isEnabledEditCompleteButton.addSource(inputUserNickName) { nickname ->
+            combineEnabledEditCompleteButton(nickname, userProfileImageUri.value)
+        }
+        isEnabledEditCompleteButton.addSource(userProfileImageUri) { imageUri ->
+            combineEnabledEditCompleteButton(inputUserNickName.value, imageUri)
+        }
+    }
+
+    private fun combineEnabledEditCompleteButton(nickname: String?, imageUri: Uri?) {
+        isEnabledEditCompleteButton.value =
+            !(nickname == userNickname.value && imageUri == null || nickname.isNullOrBlank())
     }
 
     fun getUserEmail(): LiveData<String?> = userEmail
@@ -105,6 +122,7 @@ class MyViewModel @Inject constructor(
     fun getInputUserNickname(): LiveData<String?> = inputUserNickName
     fun getUserProfileImageUri(): LiveData<Uri?> = userProfileImageUri
     fun isExistNickname(): LiveData<Boolean?> = isExistNickname
+    fun isEnabledEditCompleteButton(): LiveData<Boolean> = isEnabledEditCompleteButton
     fun getCompleteUpdateUserInfo(): LiveData<Boolean?> = isCompleteUpdateUserInfo
 
     companion object {

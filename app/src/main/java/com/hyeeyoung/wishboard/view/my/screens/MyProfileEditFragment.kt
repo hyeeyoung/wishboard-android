@@ -27,6 +27,11 @@ class MyProfileEditFragment : Fragment() {
     private lateinit var binding: FragmentProfileEditBinding
     private val viewModel: MyViewModel by hiltNavGraphViewModels(R.id.my_nav_graph)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.resetUserInfo()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,8 +39,6 @@ class MyProfileEditFragment : Fragment() {
         binding = FragmentProfileEditBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this@MyProfileEditFragment
-
-        viewModel.resetUserInfo()
 
         // 갤러리에서 선택한 이미지 전달받기
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(

@@ -63,7 +63,3 @@ fun loadProfileImage( // TODO need refactoring
 
 fun getNotiDateServerFormat(date: String, hour: String, minute: String) =
     "$date $hour:$minute:00" // TODO DateFormatUtil.kt 로 이동
-
-/** 닉네임이 없는 유저는 이메일 hashcode에서 앞부분 6자리로 임시 부여 */
-fun getTempNicknameFormat(): String =
-    "wish${prefs?.getUserEmail().hashCode().toString().substring(0, 6)}"

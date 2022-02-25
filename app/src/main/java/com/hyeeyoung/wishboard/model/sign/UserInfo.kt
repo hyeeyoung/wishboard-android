@@ -7,6 +7,8 @@ data class UserInfo(
     var nickname: String?,
     @SerializedName("profile_img")
     var profileImage: String?,
+    @SerializedName("option_notification")
+    val notiOption: Boolean,
     @SerializedName("fcm_token")
     var token: String?
 )
