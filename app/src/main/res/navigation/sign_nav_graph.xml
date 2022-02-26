@@ -3,17 +3,27 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/signInFragment">
+    app:startDestination="@id/signFragment">
+
+    <fragment
+        android:id="@+id/signFragment"
+        android:name="com.hyeeyoung.wishboard.view.sign.screens.SignFragment"
+        android:label="fragment_sign"
+        tools:layout="@layout/fragment_sign">
+        <action
+            android:id="@+id/action_sign_to_email"
+            app:destination="@id/signUpEmailFragment" />
+        <action
+            android:id="@+id/action_sign_to_sign_in"
+            app:destination="@id/signInFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.hyeeyoung.wishboard.view.sign.screens.SignInFragment"
         android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in">
-        <action
-            android:id="@+id/action_login_to_email"
-            app:destination="@id/signUpEmailFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_sign_in" />
+
     <fragment
         android:id="@+id/signUpEmailFragment"
         android:name="com.hyeeyoung.wishboard.view.sign.screens.SignUpEmailFragment"
@@ -22,18 +32,12 @@
         <action
             android:id="@+id/action_email_to_password"
             app:destination="@id/signUpPasswordFragment" />
-        <action
-            android:id="@+id/action_email_to_sign_in"
-            app:destination="@id/signInFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/signUpPasswordFragment"
         android:name="com.hyeeyoung.wishboard.view.sign.screens.SignUpPasswordFragment"
         android:label="fragment_sign_up_password"
-        tools:layout="@layout/fragment_sign_up_password">
-        <action
-            android:id="@+id/action_password_to_email"
-            app:destination="@id/signUpEmailFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_sign_up_password" />
 
 </navigation>

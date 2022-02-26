@@ -42,10 +42,40 @@
         <item name="android:background">@color/transparent</item>
     </style>
 
+    <style name="Widget.Button.Basic" parent="">
+        <item name="android:paddingTop">@dimen/spacingBase</item>
+        <item name="android:paddingBottom">@dimen/spacingBase</item>
+        <item name="android:outlineProvider">none</item>
+        <item name="android:layout_marginEnd">@dimen/spacingBase</item>
+        <item name="android:layout_marginStart">@dimen/spacingBase</item>
+    </style>
+
     <style name="Widget.Button.Icon.Navigation" parent="Widget.Button">
         <item name="android:padding">@dimen/spacingBase</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="Widget.Button.Basic.Green" parent="Widget.Button.Basic">
+        <item name="android:background">@drawable/shape_border_radius_32</item>
+        <item name="android:backgroundTint">@color/green_500</item>
+    </style>
+
+    <style name="Widget.Button.Activate.Green" parent="Widget.Button.Basic">
+        <item name="android:background">@drawable/selector_button</item>
+    </style>
+
+    <style name="Widget.Button.Basic.TextAppearance" parent="">
+        <item name="android:fontFamily">@font/suit_b</item>
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="android:textSize">@dimen/typographyBase</item>
+    </style>
+
+    <style name="Widget.EditText.Divider.Full" parent="">
+        <item name="android:background">@color/gray_150</item>
+        <item name="android:layout_marginStart">@dimen/spacing20</item>
+        <item name="android:layout_marginEnd">@dimen/spacing20</item>
+        <item name="android:layout_height">1dp</item>
     </style>
 
     <style name="Widget.Tab.TextAppearance.Title" parent="">
@@ -73,8 +103,10 @@
     </style>
 
     <style name="Widget.EditText.Basic" parent="Widget.EditText">
-        <item name="android:paddingTop">@dimen/spacing12</item>
-        <item name="android:paddingBottom">@dimen/spacing12</item>
+        <item name="android:layout_marginStart">@dimen/spacing20</item>
+        <item name="android:layout_marginEnd">@dimen/spacing20</item>
+        <item name="android:paddingTop">@dimen/spacingSmall</item>
+        <item name="android:paddingBottom">@dimen/spacingSmall</item>
         <item name="android:gravity">center</item>
     </style>
 
