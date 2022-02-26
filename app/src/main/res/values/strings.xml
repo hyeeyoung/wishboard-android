@@ -23,14 +23,22 @@
     <string name="time_years_ago">년 전</string>
 
     <string name="length_format">(%d/%d자)</string>
+    <string name="step_format">%d/%d 단계</string>
 
     <!-- Sign -->
     <string name="sign_up">가입하기</string>
-    <string name="first_visit_detail">위시보드가 처음이신가요?</string>
     <string name="login_btn_text">로그인</string>
-    <string name="welcome_text">Wishboard로 간편하게\n흩어져있는 위시리스트를 통합 관리해보세요!</string>
-    <string name="email_input_text">이메일을 입력해주세요.</string>
-    <string name="password_input_text">8자리 이상의 영문자, 숫자, 특수 문자 조합</string>
+    <string name="login_underline_text"><u>로그인</u></string>
+    <string name="welcome_text">흩어져있는 위시리스트를\n위시보드로 간편하게 통합 관리해 보세요!️</string>
+    <string name="email_input_text">이메일을 입력해 주세요.</string>
+    <string name="password_input_text">비밀번호를 입력해 주세요.</string>
+    <string name="password_conditions_text">8자리 이상의 영문자, 숫자, 특수 문자 조합</string>
+    <string name="sign_up_email_guide_text">이메일 인증으로 비밀번호를 찾을 수 있어요.\n실제 사용될 이메일로 입력해주세요!</string>
+    <string name="sign_up_password_guide_text">마지막 비밀번호 입력 단계예요!\n입력된 비밀번호로 바로 가입되니 신중히 입력해 주세요.</string>
+    <string name="sign_already_have_an_account_guide_text">이미 계정이 있으신가요?</string>
+    <string name="sign_in_title">로그인 하기</string>
+    <string name="sign_in_forgot_your_password"><u>비밀번호를 잊으셨나요?</u></string>
+    <string name="login_failed_snackbar_test">잘못된 아이디 또는 패스워드 입니다</string>
 
     <!-- Cart -->
     <string name="cart_title">장바구니</string>
