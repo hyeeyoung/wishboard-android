@@ -2,12 +2,12 @@ package com.hyeeyoung.wishboard.remote
 
 import com.hyeeyoung.wishboard.BuildConfig
 import com.hyeeyoung.wishboard.model.RequestResult
+import com.hyeeyoung.wishboard.model.RequestResultData
 import com.hyeeyoung.wishboard.model.RequestResultId
 import com.hyeeyoung.wishboard.model.RequestResultToken
 import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.noti.NotiItem
-import com.hyeeyoung.wishboard.model.sign.SignInfo
 import com.hyeeyoung.wishboard.model.sign.UserInfo
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import retrofit2.Response
@@ -19,13 +19,13 @@ interface RemoteService {
     // 회원가입 및 로그인
     @POST("auth/signup")
     suspend fun signUpUser(
-        @Body signInfo: SignInfo
+        @Body userInfo: UserInfo
     ): Response<RequestResultToken>
 
     @POST("auth/signin")
     suspend fun signInUser(
-        @Body signInfo: SignInfo
-    ): Response<RequestResultToken>
+        @Body userInfo: UserInfo
+    ): Response<RequestResultData>
 
     // 위시리스트 및 아이템
     @GET("item")
