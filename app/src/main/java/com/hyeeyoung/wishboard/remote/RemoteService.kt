@@ -8,6 +8,7 @@ import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.noti.NotiItem
 import com.hyeeyoung.wishboard.model.sign.SignInfo
+import com.hyeeyoung.wishboard.model.sign.UserInfo
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -129,19 +130,23 @@ interface RemoteService {
         @Path("item_id") itemId: Long,
     ): Response<RequestResult>
 
+    @GET("user")
+    suspend fun fetchUserInfo(
+        @Header("Authorization") token: String,
+    ): Response<List<UserInfo>>?
+
+    @PUT("user")
+    suspend fun updateUserInfo(
+        @Header("Authorization") token: String,
+        @Body userInfo: UserInfo,
+    ): Response<RequestResult>
+
     // 사용자
     @FormUrlEncoded
     @PUT("user/fcm")
     suspend fun updateFCMToken(
         @Header("Authorization") userToken: String,
         @Field("fcm_token") fcmToken: String
-    ): Response<RequestResult>
-
-    @FormUrlEncoded
-    @PUT("user/nickname")
-    suspend fun updateUserNickname(
-        @Header("Authorization") token: String,
-        @Field("nickname") nickname: String
     ): Response<RequestResult>
 
     companion object {

@@ -10,6 +10,8 @@
 
         <import type="com.hyeeyoung.wishboard.R" />
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="com.hyeeyoung.wishboard.viewmodel.MyViewModel" />
@@ -67,6 +69,8 @@
                 android:id="@+id/profile_image"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
+                android:background="@drawable/shape_border_radius_45"
+                android:scaleType="centerCrop"
                 android:src="@drawable/ic_background_user_profile"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -101,16 +105,25 @@
             app:layout_constraintTop_toBottomOf="@id/profile_image_container" />
 
         <TextView
+            android:id="@+id/nickname_detail_text"
+            style="@style/Widget.TextAppearance.Detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/my_nickname_already_exist_toast_text"
+            android:visibility="@{viewModel.isExistNickname() == true ? View.VISIBLE : View.INVISIBLE}"
+            app:layout_constraintStart_toStartOf="@id/user_nickname"
+            app:layout_constraintTop_toBottomOf="@id/user_nickname" />
+
+        <TextView
             android:id="@+id/nickname_length"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing5"
-            android:fontFamily="@font/suit_m"
+            android:fontFamily="@font/suit_r"
             android:text="@{String.format(context.getString(R.string.length_format), viewModel.inputUserNickname.length(), 12)}"
             android:textColor="@color/gray_200"
             android:textSize="@dimen/typographyDescription"
-            app:layout_constraintTop_toBottomOf="@id/user_nickname"
             app:layout_constraintEnd_toEndOf="@id/user_nickname"
+            app:layout_constraintTop_toTopOf="@id/nickname_detail_text"
             tools:text="(7/12)자" />
 
         <View
@@ -128,9 +141,10 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing20"
             android:layout_marginTop="@dimen/spacing20"
-            android:background="@drawable/shape_border_radius_32"
-            android:backgroundTint="@color/green_500"
+            android:background="@drawable/selector_button"
+            android:enabled="@{viewModel.isEnabledEditCompleteButton()}"
             android:fontFamily="@font/suit_b"
+            android:outlineProvider="none"
             android:paddingVertical="@dimen/spacingBase"
             android:text="@string/complete"
             android:textColor="@color/gray_700"

@@ -8,26 +8,25 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hyeeyoung.wishboard.BuildConfig.APPLICATION_ID
+import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentGalleryImageBinding
 import com.hyeeyoung.wishboard.view.common.adapters.GalleryPagingAdapter
-import com.hyeeyoung.wishboard.viewmodel.GalleryViewModel
+import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-import java.io.File
 
 @AndroidEntryPoint
-class GalleryImageFragment : Fragment(),
-    GalleryPagingAdapter.OnItemClickListener {
+class OldGalleryImageFragment : Fragment(),
+    GalleryPagingAdapter.OnItemClickListener { // TODO 리팩토링 이후 삭제 예정
     private lateinit var binding: FragmentGalleryImageBinding
     private lateinit var adapter: GalleryPagingAdapter
-    private val viewModel: GalleryViewModel by viewModels()
+    private val viewModel: WishItemRegistrationViewModel by hiltNavGraphViewModels(R.id.wish_item_registration_nav_graph)
     private var photoUri: Uri? = null
 
     override fun onCreateView(
@@ -54,7 +53,8 @@ class GalleryImageFragment : Fragment(),
     }
 
     override fun onItemClick(imageUri: Uri) {
-        moveToPrevious(imageUri, viewModel.copyImageToInternalStorage(imageUri))
+        viewModel.setSelectedGalleryImageUri(imageUri)
+        findNavController().popBackStack()
     }
 
     private fun addListeners() {
@@ -94,26 +94,12 @@ class GalleryImageFragment : Fragment(),
             if (success) {
                 photoUri?.let {
                     viewModel.setSelectedGalleryImageUri(it)
-                    moveToPrevious(it, viewModel.getImageFile())
+                    findNavController().popBackStack()
                 }
             }
         }
 
-    private fun moveToPrevious(galleryImageUri: Uri, cameraImageFile: File?) {
-        val navController = findNavController()
-        navController.previousBackStackEntry?.savedStateHandle?.set(
-            ARG_IMAGE_INFO, bundleOf(
-                ARG_IMAGE_URI to galleryImageUri,
-                ARG_IMAGE_FILE to cameraImageFile
-            )
-        )
-        navController.popBackStack()
-    }
-
     companion object {
-        private const val TAG = "GalleryImageFragment"
-        private const val ARG_IMAGE_INFO = "imageInfo"
-        private const val ARG_IMAGE_URI = "imageUri"
-        private const val ARG_IMAGE_FILE = "imageFile"
+        private const val TAG = "OldGalleryImageFragment"
     }
 }

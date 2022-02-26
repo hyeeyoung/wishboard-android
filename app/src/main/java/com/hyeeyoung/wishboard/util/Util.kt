@@ -3,6 +3,7 @@ package com.hyeeyoung.wishboard.util
 import android.widget.ImageView
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.bumptech.glide.Glide
+import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.remote.AWSS3Service
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -42,6 +43,20 @@ fun loadImage(
     lifecycleScope.launch {
         AWSS3Service().getImageUrl(imageUrl)?.let { imageUrl ->
             Glide.with(imageView.context).load(imageUrl).into(imageView)
+        }
+    }
+}
+
+/** S3에서 다운로드 받은 이미지를 ImageView에 디스플레이 */
+fun loadProfileImage( // TODO need refactoring
+    lifecycleScope: LifecycleCoroutineScope,
+    imageUrl: String,
+    imageView: ImageView
+) {
+    lifecycleScope.launch {
+        AWSS3Service().getImageUrl(imageUrl)?.let { imageUrl ->
+            Glide.with(imageView.context).load(imageUrl)
+                .placeholder(R.drawable.ic_background_user_profile).into(imageView)
         }
     }
 }
