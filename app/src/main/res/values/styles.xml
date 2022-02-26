@@ -91,6 +91,13 @@
         <item name="fontFamily">@font/suit_b</item>
     </style>
 
+    <style name="Widget.TextAppearance.Detail" parent="">
+        <item name="android:textColor">@color/green_700</item>
+        <item name="android:textSize">@dimen/typographyDescription</item>
+        <item name="fontFamily">@font/suit_r</item>
+        <item name="android:layout_marginTop">@dimen/spacing5</item>
+    </style>
+
     <!-- TODO need refacotring -->
     <style name="Widget.EditText.Input" parent="Widget.MaterialComponents.TextView">
         <item name="android:background">@android:color/transparent</item>

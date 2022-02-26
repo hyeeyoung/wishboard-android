@@ -2,13 +2,13 @@ package com.hyeeyoung.wishboard.model.sign
 
 import com.google.gson.annotations.SerializedName
 
-data class UserInfo(
-    var email: String,
-    var nickname: String?,
+data class UserInfo( // TODO need refactoring
+    var email: String? = null,
+    var nickname: String? = null,
     @SerializedName("profile_img")
-    var profileImage: String?,
+    var profileImage: String? = null,
     @SerializedName("option_notification")
-    val notiOption: Boolean,
+    val notiOption: Boolean = false,
     @SerializedName("fcm_token")
-    var token: String?
+    var token: String? = null
 )

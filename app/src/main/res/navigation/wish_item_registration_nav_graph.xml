@@ -23,7 +23,7 @@
 
     <fragment
         android:id="@+id/galleryImageFragment"
-        android:name="com.hyeeyoung.wishboard.view.common.screens.GalleryImageFragment"
+        android:name="com.hyeeyoung.wishboard.view.common.screens.OldGalleryImageFragment"
         android:label="fragment_gallery_image"
         tools:layout="@layout/fragment_gallery_image"/>
 
