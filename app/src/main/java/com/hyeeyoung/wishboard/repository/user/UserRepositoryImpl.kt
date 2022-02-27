@@ -17,7 +17,7 @@ class UserRepositoryImpl : UserRepository {
         return response.body()?.get(0)
     }
 
-    override suspend fun registerFCMToken(userToken: String, fcmToken: String): Boolean {
+    override suspend fun registerFCMToken(userToken: String, fcmToken: String?): Boolean {
         val response = api.updateFCMToken(userToken, fcmToken)
         if (response.isSuccessful) {
             Log.d(TAG, "FCM 토큰 등록 성공")
