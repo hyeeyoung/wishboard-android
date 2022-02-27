@@ -6,11 +6,12 @@ data class RequestResultData(
     // TODO need refactoring
     val success: Boolean,
     val message: String,
-    val data: UserData,
+    val data: ResultData,
 ) {
-    data class UserData(
-        val token: String,
-        @SerializedName("push_state")
+    data class ResultData(
+        @SerializedName("result")
+        val id: Long? = null,
+        val token: String? = null,
         val pushState: Int? = null,
     )
 }

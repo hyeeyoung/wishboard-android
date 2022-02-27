@@ -3,12 +3,10 @@ package com.hyeeyoung.wishboard.remote
 import com.hyeeyoung.wishboard.BuildConfig
 import com.hyeeyoung.wishboard.model.RequestResult
 import com.hyeeyoung.wishboard.model.RequestResultData
-import com.hyeeyoung.wishboard.model.RequestResultId
-import com.hyeeyoung.wishboard.model.RequestResultToken
 import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.noti.NotiItem
-import com.hyeeyoung.wishboard.model.sign.UserInfo
+import com.hyeeyoung.wishboard.model.user.UserInfo
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -20,7 +18,7 @@ interface RemoteService {
     @POST("auth/signup")
     suspend fun signUpUser(
         @Body userInfo: UserInfo
-    ): Response<RequestResultToken>
+    ): Response<RequestResultData>
 
     @POST("auth/signin")
     suspend fun signInUser(
@@ -96,7 +94,7 @@ interface RemoteService {
     suspend fun createNewFolder(
         @Header("Authorization") token: String,
         @Body folderItem: FolderItem
-    ): Response<RequestResultId>
+    ): Response<RequestResultData>
 
     @FormUrlEncoded
     @PUT("folder/{folder_id}")
