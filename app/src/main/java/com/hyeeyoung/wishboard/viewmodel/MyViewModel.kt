@@ -78,6 +78,10 @@ class MyViewModel @Inject constructor(
     }
 
     fun signOut() {
+        if (token == null) return
+        viewModelScope.launch {
+            userRepository.registerFCMToken(token,null)
+        }
         prefs?.clearUserInfo()
     }
 

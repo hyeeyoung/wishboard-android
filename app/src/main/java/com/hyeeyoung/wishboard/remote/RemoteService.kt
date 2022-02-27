@@ -146,7 +146,7 @@ interface RemoteService {
     @PUT("user/fcm")
     suspend fun updateFCMToken(
         @Header("Authorization") userToken: String,
-        @Field("fcm_token") fcmToken: String
+        @Field("fcm_token") fcmToken: String?
     ): Response<RequestResult>
 
     companion object {
