@@ -46,13 +46,12 @@ class FolderRepositoryImpl : FolderRepository {
         folderItemInfo: FolderItem
     ): Pair<Pair<Boolean, Int>, Long?> {
         val response = api.createNewFolder(token, folderItemInfo)
-
         if (response.isSuccessful) {
             Log.d(TAG, "폴더 추가 성공")
         } else {
             Log.e(TAG, "폴더 추가 실패: ${response.code()}")
         }
-        return Pair(Pair(response.isSuccessful, response.code()), response.body()?.id)
+        return Pair(Pair(response.isSuccessful, response.code()), response.body()?.data?.result)
     }
 
     override suspend fun updateFolderName(
