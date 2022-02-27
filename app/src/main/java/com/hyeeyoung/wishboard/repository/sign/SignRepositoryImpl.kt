@@ -1,7 +1,7 @@
 package com.hyeeyoung.wishboard.repository.sign
 
 import android.util.Log
-import com.hyeeyoung.wishboard.model.sign.UserInfo
+import com.hyeeyoung.wishboard.model.user.UserInfo
 import com.hyeeyoung.wishboard.remote.RemoteService
 import com.hyeeyoung.wishboard.util.prefs
 

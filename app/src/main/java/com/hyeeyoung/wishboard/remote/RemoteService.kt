@@ -6,7 +6,7 @@ import com.hyeeyoung.wishboard.model.RequestResultData
 import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.noti.NotiItem
-import com.hyeeyoung.wishboard.model.sign.UserInfo
+import com.hyeeyoung.wishboard.model.user.UserInfo
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import retrofit2.Response
 import retrofit2.Retrofit

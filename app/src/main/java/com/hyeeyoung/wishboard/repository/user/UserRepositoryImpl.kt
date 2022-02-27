@@ -1,7 +1,7 @@
 package com.hyeeyoung.wishboard.repository.user
 
 import android.util.Log
-import com.hyeeyoung.wishboard.model.sign.UserInfo
+import com.hyeeyoung.wishboard.model.user.UserInfo
 import com.hyeeyoung.wishboard.remote.RemoteService
 
 class UserRepositoryImpl : UserRepository {

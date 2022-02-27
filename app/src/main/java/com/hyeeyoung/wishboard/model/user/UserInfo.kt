@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.model.sign
+package com.hyeeyoung.wishboard.model.user
 
 import com.google.gson.annotations.SerializedName
 

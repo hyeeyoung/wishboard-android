@@ -1,6 +1,6 @@
 package com.hyeeyoung.wishboard.repository.user
 
-import com.hyeeyoung.wishboard.model.sign.UserInfo
+import com.hyeeyoung.wishboard.model.user.UserInfo
 
 interface UserRepository {
     suspend fun fetchUserInfo(userToken: String): UserInfo?
