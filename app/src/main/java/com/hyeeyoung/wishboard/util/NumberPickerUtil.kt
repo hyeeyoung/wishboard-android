@@ -60,8 +60,8 @@ private val minutes: Array<String>
         return minutes.toTypedArray()
     }
 
-/** 5분 단위의 알림 시간 지정 */
-const val TIME_PICKER_INTERVAL = 5
+/** 30분 단위의 알림 시간 지정 */
+const val TIME_PICKER_INTERVAL = 30
 
 fun setTypePicker(typePicker: NumberPicker, isIncludeNone: Boolean) {
     notiTypes = if (isIncludeNone) {
