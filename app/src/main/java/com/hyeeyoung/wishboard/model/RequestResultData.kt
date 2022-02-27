@@ -1,5 +1,7 @@
 package com.hyeeyoung.wishboard.model
 
+import com.google.gson.annotations.SerializedName
+
 data class RequestResultData(
     // TODO need refactoring
     val success: Boolean,
@@ -7,7 +9,8 @@ data class RequestResultData(
     val data: ResultData,
 ) {
     data class ResultData(
-        val result: Long? = null,
+        @SerializedName("result")
+        val id: Long? = null,
         val token: String? = null,
         val pushState: Int? = null,
     )

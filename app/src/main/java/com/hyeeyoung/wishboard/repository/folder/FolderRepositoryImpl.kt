@@ -51,7 +51,7 @@ class FolderRepositoryImpl : FolderRepository {
         } else {
             Log.e(TAG, "폴더 추가 실패: ${response.code()}")
         }
-        return Pair(Pair(response.isSuccessful, response.code()), response.body()?.data?.result)
+        return Pair(Pair(response.isSuccessful, response.code()), response.body()?.data?.id)
     }
 
     override suspend fun updateFolderName(
