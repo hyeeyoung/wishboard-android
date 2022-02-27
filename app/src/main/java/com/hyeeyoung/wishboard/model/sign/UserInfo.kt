@@ -9,7 +9,7 @@ data class UserInfo( // TODO need refactoring
     @SerializedName("profile_img")
     var profileImage: String? = null,
     @SerializedName("push_state")
-    val pushState: Boolean = false,
+    val pushState: Int? = null,
     @SerializedName("fcm_token")
     var token: String? = null
 )
