@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.common.screens.TwoButtonDialogFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            style="@style/Widget.Dialog"
+            android:layout_marginHorizontal="32dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Widget.Dialog.TextAppearance.Title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="아이템 삭제" />
+
+            <TextView
+                android:id="@+id/description"
+                style="@style/Widget.Dialog.Description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Widget.Dialog.TextAppearance.Description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title"
+                tools:text="정말 아이템을 삭제하시겠어요?\n삭제된 아이템은 다시 복구할 수 없어요!" />
+
+            <Button
+                android:id="@+id/no"
+                style="@style/Widget.Button.Dialog.No"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"
+                android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
+                app:layout_constraintEnd_toStartOf="@id/yes"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/description" />
+
+            <Button
+                android:id="@+id/yes"
+                style="@style/Widget.Button.Dialog.Yes"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="@id/no"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/no"
+                app:layout_constraintTop_toTopOf="@id/no"
+                tools:text="삭제"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
+

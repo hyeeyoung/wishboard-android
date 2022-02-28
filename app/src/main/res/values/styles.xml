@@ -38,6 +38,33 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+    <style name="Widget.Dialog" parent="">
+        <item name="android:background">@drawable/shape_border_radius_32</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:paddingTop">24dp</item>
+        <item name="android:paddingBottom">@dimen/spacingBase</item>
+    </style>
+
+    <style name="Widget.Dialog.Description" parent="">
+        <item name="android:gravity">center</item>
+        <item name="android:lineSpacingExtra">@dimen/spacingMicro</item>
+        <item name="android:layout_marginTop">@dimen/spacingSmall</item>
+    </style>
+
+    <style name="Widget.Dialog.TextAppearance.Title" parent="">
+        <item name="android:fontFamily">@font/suit_b</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Widget.Dialog.TextAppearance.Description" parent="">
+        <item name="android:fontFamily">@font/suit_r</item>
+        <item name="android:textColor">@color/gray_300</item>
+        <item name="android:textSize">@dimen/typographyBase</item>
+    </style>
+
     <style name="Widget.Button" parent="">
         <item name="android:background">@color/transparent</item>
     </style>
@@ -48,6 +75,23 @@
         <item name="android:outlineProvider">none</item>
         <item name="android:layout_marginEnd">@dimen/spacingBase</item>
         <item name="android:layout_marginStart">@dimen/spacingBase</item>
+    </style>
+
+    <style name="Widget.Button.Dialog" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:background">@drawable/shape_border_radius_32</item>
+        <item name="android:outlineProvider">none</item>
+    </style>
+
+    <style name="Widget.Button.Dialog.Yes" parent="Widget.Button.Dialog">
+        <item name="android:backgroundTint">@color/black</item>
+
+    </style>
+
+    <style name="Widget.Button.Dialog.No" parent="Widget.Button.Dialog">
+        <item name="android:backgroundTint">@color/gray_50</item>
+        <item name="android:layout_marginEnd">8dp</item>
+        <item name="android:layout_marginTop">32dp</item>
     </style>
 
     <style name="Widget.Button.Icon.Navigation" parent="Widget.Button">

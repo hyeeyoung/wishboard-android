@@ -16,10 +16,13 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentWishItemDetailBinding
+import com.hyeeyoung.wishboard.model.common.DialogButtonReplyType
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.util.ImageLoader
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.loadImage
+import com.hyeeyoung.wishboard.view.common.screens.DialogListener
+import com.hyeeyoung.wishboard.view.common.screens.TwoButtonDialogFragment
 import com.hyeeyoung.wishboard.viewmodel.WishItemViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -59,6 +62,9 @@ class WishItemDetailFragment : Fragment(), ImageLoader {
     }
 
     private fun addListeners() {
+        binding.delete.setOnClickListener {
+            showItemDeleteDialog()
+        }
         binding.edit.setOnClickListener {
             findNavController().navigateSafe(R.id.action_detail_to_registration, bundleOf(
                 ARG_WISH_ITEM to viewModel.getWishItem().value,
@@ -107,6 +113,24 @@ class WishItemDetailFragment : Fragment(), ImageLoader {
             ARG_WISH_ITEM_POSITION to position
         ))
         navController.popBackStack()
+    }
+
+    private fun showItemDeleteDialog() {
+        val dialog = TwoButtonDialogFragment(
+            getString(R.string.item_detail_item_delete_dialog_title),
+            getString(R.string.item_detail_item_delete_dialog_description),
+            getString(R.string.delete)
+        ).apply {
+            setListener(object : DialogListener {
+                override fun onButtonClicked(clicked: DialogButtonReplyType) {
+                    if (clicked == DialogButtonReplyType.YES) {
+                        viewModel.deleteWishItem()
+                    }
+                    dismiss()
+                }
+            })
+        }
+        dialog.show(parentFragmentManager, "LocationPermissionDialog")
     }
 
     override fun loadImage(imageUrl: String, imageView: ImageView) {
