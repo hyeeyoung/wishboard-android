@@ -122,8 +122,8 @@ class WishItemDetailFragment : Fragment(), ImageLoader {
             getString(R.string.delete)
         ).apply {
             setListener(object : DialogListener {
-                override fun onButtonClicked(clicked: DialogButtonReplyType) {
-                    if (clicked == DialogButtonReplyType.YES) {
+                override fun onButtonClicked(clicked: String) {
+                    if (clicked == DialogButtonReplyType.YES.name) {
                         viewModel.deleteWishItem()
                     }
                     dismiss()

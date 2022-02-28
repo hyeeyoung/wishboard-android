@@ -2,6 +2,8 @@
 <resources>
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
+    <color name="red">#FF4B4B</color>
+
     <color name="transparent">#00000000</color>
     <color name="semiTransparent">#0D626056</color>
     <color name="ultraSemiTransparent">#10000000</color>
@@ -17,5 +19,6 @@
     <color name="gray_200">#AAAAAA</color>
     <color name="gray_250">#979797</color>
     <color name="gray_300">#858585</color>
+    <color name="gray_600">#474747</color>
     <color name="gray_700">#292929</color>
 </resources>

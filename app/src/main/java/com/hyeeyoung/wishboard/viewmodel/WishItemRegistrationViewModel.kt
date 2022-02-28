@@ -75,7 +75,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var imageFile: File? = null
 
     private val folderListAdapter =
-        FolderListAdapter(application, FolderListViewType.HORIZONTAL_VIEW_TYPE)
+        FolderListAdapter(FolderListViewType.HORIZONTAL_VIEW_TYPE)
 
     private val token = prefs?.getUserToken()
 

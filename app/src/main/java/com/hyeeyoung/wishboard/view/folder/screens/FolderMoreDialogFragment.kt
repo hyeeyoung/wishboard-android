@@ -6,38 +6,40 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hyeeyoung.wishboard.databinding.DialogFolderMoreBinding
+import com.hyeeyoung.wishboard.model.folder.FolderMoreDialogButtonReplyType
+import com.hyeeyoung.wishboard.view.common.screens.DialogListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FolderMoreDialogFragment : BottomSheetDialogFragment() {
     private lateinit var binding: DialogFolderMoreBinding
-    private var folderInfo: Bundle? = null
+    private lateinit var listener: DialogListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = DialogFolderMoreBinding.inflate(inflater, container, false)
-        folderInfo = arguments
 
-        addListener()
+        addListeners()
 
         return binding.root
     }
 
-    private fun addListener() {
+    private fun addListeners() {
         binding.update.setOnClickListener {
-            dialog?.dismiss()
-            val dialog = FolderAddDialogFragment()
-            dialog.arguments = folderInfo
-            dialog.show(requireActivity().supportFragmentManager, FolderAddDialogFragment.TAG)
+            listener.onButtonClicked(FolderMoreDialogButtonReplyType.UPDATE.name)
         }
         binding.delete.setOnClickListener {
-            dialog?.dismiss()
-            val dialog = FolderDeleteDialogFragment()
-            dialog.arguments = folderInfo
-            dialog.show(requireActivity().supportFragmentManager, FolderDeleteDialogFragment.TAG)
+            listener.onButtonClicked(FolderMoreDialogButtonReplyType.DELETE.name)
         }
+        binding.close.setOnClickListener {
+            listener.onButtonClicked(FolderMoreDialogButtonReplyType.CLOSE.name)
+        }
+    }
+
+    fun setListener(listener: DialogListener) {
+        this.listener = listener
     }
 
     companion object {

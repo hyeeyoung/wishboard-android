@@ -16,13 +16,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FolderViewModel @Inject constructor(
-    private val application: Application,
     private val folderRepository: FolderRepository,
 ) : ViewModel() {
     private val token = prefs?.getUserToken()
 
     private val folderListAdapter =
-        FolderListAdapter(application, FolderListViewType.SQUARE_VIEW_TYPE)
+        FolderListAdapter(FolderListViewType.SQUARE_VIEW_TYPE)
     private var folderName = MutableLiveData<String>()
     private var folderItem: FolderItem? = null
     private var isCompleteUpload = MutableLiveData<Boolean>()

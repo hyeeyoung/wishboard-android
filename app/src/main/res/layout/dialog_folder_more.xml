@@ -7,61 +7,53 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_dialog_top_corner"
-        android:orientation="vertical"
-        android:paddingBottom="20dp">
+        android:layout_marginHorizontal="@dimen/spacingSmall">
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/nanum_square_eb"
-            android:gravity="center"
-            android:text="@string/folder_more_dialog_title"
-            android:textColor="@color/gray_700"
-            android:textSize="17sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/cancel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:layout_marginBottom="20dp"
-            android:background="@android:color/transparent"
-            android:padding="@dimen/spacing12"
-            android:src="@drawable/ic_delete"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/delete"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/options"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/nanum_square_b"
-            android:gravity="center"
-            android:paddingVertical="10dp"
-            android:text="@string/folder_delete"
-            android:textColor="@color/gray_700"
-            android:textSize="15sp"
-            app:layout_constraintTop_toBottomOf="@id/title" />
+            android:background="@drawable/shape_border_radius_16"
+            android:backgroundTint="@color/white"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/update"
+            <Button
+                android:id="@+id/update"
+                style="@style/Widget.BottomSheetDialog.Option"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/folder_name_edit"
+                android:textAppearance="@style/Widget.BottomSheetDialog.Option.TextAppearance"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/name_divider"
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/gray_100"
+                app:layout_constraintTop_toBottomOf="@id/update" />
+
+            <Button
+                android:id="@+id/delete"
+                style="@style/Widget.BottomSheetDialog.Option"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/folder_delete"
+                android:textAppearance="@style/Widget.BottomSheetDialog.Option.TextAppearance"
+                android:textColor="@color/red"
+                app:layout_constraintTop_toBottomOf="@id/update" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/close"
+            style="@style/Widget.BottomSheetDialog.Option"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:fontFamily="@font/nanum_square_b"
-            android:gravity="center"
-            android:paddingVertical="10dp"
-            android:text="@string/folder_name_edit"
-            android:textColor="@color/gray_700"
-            android:textSize="15sp"
-            app:layout_constraintTop_toBottomOf="@id/delete" />
-
+            android:layout_marginTop="6dp"
+            android:background="@drawable/shape_border_radius_16"
+            android:backgroundTint="@color/white"
+            android:text="@string/close"
+            android:textAppearance="@style/Widget.BottomSheetDialog.Option.TextAppearance"
+            app:layout_constraintTop_toBottomOf="@id/options" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

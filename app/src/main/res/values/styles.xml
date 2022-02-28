@@ -65,6 +65,18 @@
         <item name="android:textSize">@dimen/typographyBase</item>
     </style>
 
+    <style name="Widget.BottomSheetDialog.Option.TextAppearance" parent="">
+        <item name="android:fontFamily">@font/suit_m</item>
+        <item name="android:textColor">@color/gray_600</item>
+        <item name="android:textSize">@dimen/typographyBase</item>
+    </style>
+    <style name="Widget.BottomSheetDialog.Option" parent="">
+        <item name="android:gravity">center</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:paddingTop">@dimen/spacingBase</item>
+        <item name="android:paddingBottom">@dimen/spacingBase</item>
+    </style>
+
     <style name="Widget.Button" parent="">
         <item name="android:background">@color/transparent</item>
     </style>
@@ -85,7 +97,6 @@
 
     <style name="Widget.Button.Dialog.Yes" parent="Widget.Button.Dialog">
         <item name="android:backgroundTint">@color/black</item>
-
     </style>
 
     <style name="Widget.Button.Dialog.No" parent="Widget.Button.Dialog">

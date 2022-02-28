@@ -83,8 +83,8 @@ class MyFragment : Fragment() {
             getString(R.string.my_section_sub_title_logout)
         ).apply {
             setListener(object : DialogListener {
-                override fun onButtonClicked(clicked: DialogButtonReplyType) {
-                    if (clicked == DialogButtonReplyType.YES) {
+                override fun onButtonClicked(clicked: String) {
+                    if (clicked == DialogButtonReplyType.YES.name) {
                         viewModel.signOut()
                         startActivity(Intent(requireContext(), SignActivity::class.java))
                         requireActivity().finish()
@@ -103,8 +103,8 @@ class MyFragment : Fragment() {
             getString(R.string.my_membership_exit_dialog_title)
         ).apply {
             setListener(object : DialogListener {
-                override fun onButtonClicked(clicked: DialogButtonReplyType) {
-                    if (clicked == DialogButtonReplyType.YES) {
+                override fun onButtonClicked(clicked: String) {
+                    if (clicked == DialogButtonReplyType.YES.name) {
                         // TODO not yet implemented
                     }
                     dismiss()
