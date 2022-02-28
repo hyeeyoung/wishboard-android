@@ -125,7 +125,11 @@
 
     <string name="my_section_title_account_management">계정 관리</string>
     <string name="my_section_sub_title_logout">로그아웃</string>
+    <string name="my_logout_dialog_description">정말 로그아웃 하시겠어요?</string>
     <string name="my_section_sub_title_exit">탈퇴하기</string>
+    <string name="my_membership_exit_dialog_title">탈퇴</string>
+    <!-- TODO 워딩 수정 필요 -->
+    <string name="my_membership_exit_dialog_description">정말 탈퇴 하시겠어요?</string>
 
     <string name="my_profile_edit_title">프로필 수정</string>
     <string name="my_profile_edit_nickname_hint">닉네임을 입력해 주세요.</string>

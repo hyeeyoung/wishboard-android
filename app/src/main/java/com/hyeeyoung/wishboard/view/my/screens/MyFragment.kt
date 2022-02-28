@@ -11,9 +11,12 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentMyBinding
+import com.hyeeyoung.wishboard.model.common.DialogButtonReplyType
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.loadProfileImage
 import com.hyeeyoung.wishboard.util.prefs
+import com.hyeeyoung.wishboard.view.common.screens.DialogListener
+import com.hyeeyoung.wishboard.view.common.screens.TwoButtonDialogFragment
 import com.hyeeyoung.wishboard.view.sign.screens.SignActivity
 import com.hyeeyoung.wishboard.viewmodel.MyViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,9 +58,10 @@ class MyFragment : Fragment() {
             viewModel.updatePushNotiSettings(isChecked)
         }
         binding.logout.setOnClickListener {
-            viewModel.signOut()
-            startActivity(Intent(requireContext(), SignActivity::class.java))
-            requireActivity().finish()
+            showLogoutDialog()
+        }
+        binding.exit.setOnClickListener {
+            showMembershipExitDialog()
         }
         binding.profileImageContainer.setOnClickListener {
             findNavController().navigateSafe(R.id.action_my_to_profile_edit)
@@ -70,5 +74,43 @@ class MyFragment : Fragment() {
             loadProfileImage(lifecycleScope, profileImage, binding.profileImage)
             return@observe
         }
+    }
+
+    private fun showLogoutDialog() {
+        val dialog = TwoButtonDialogFragment(
+            getString(R.string.my_section_sub_title_logout),
+            getString(R.string.my_logout_dialog_description),
+            getString(R.string.my_section_sub_title_logout)
+        ).apply {
+            setListener(object : DialogListener {
+                override fun onButtonClicked(clicked: DialogButtonReplyType) {
+                    if (clicked == DialogButtonReplyType.YES) {
+                        viewModel.signOut()
+                        startActivity(Intent(requireContext(), SignActivity::class.java))
+                        requireActivity().finish()
+                    }
+                    dismiss()
+                }
+            })
+        }
+        dialog.show(parentFragmentManager, "LogoutDialog")
+    }
+
+    private fun showMembershipExitDialog() {
+        val dialog = TwoButtonDialogFragment(
+            getString(R.string.my_membership_exit_dialog_title),
+            getString(R.string.my_membership_exit_dialog_description),
+            getString(R.string.my_membership_exit_dialog_title)
+        ).apply {
+            setListener(object : DialogListener {
+                override fun onButtonClicked(clicked: DialogButtonReplyType) {
+                    if (clicked == DialogButtonReplyType.YES) {
+                        // TODO not yet implemented
+                    }
+                    dismiss()
+                }
+            })
+        }
+        dialog.show(parentFragmentManager, "MembershipExitDialog")
     }
 }
