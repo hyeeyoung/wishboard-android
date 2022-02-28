@@ -13,6 +13,7 @@
     <string name="colon">:</string>
     <string name="all">전체</string>
     <string name="count">개</string>
+    <string name="delete">삭제</string>
 
     <!-- Format -->
     <string name="time_a_moment_ago">방금 전</string>
@@ -89,6 +90,8 @@
     <string name="wish_item_deletion_toast_text">위시리스트에서 삭제되었습니다</string>
     <string name="go_to_folder">%s></string>
     <string name="setting_folder">폴더를 지정해주세요!</string>
+    <string name="item_detail_item_delete_dialog_title">아이템 삭제</string>
+    <string name="item_detail_item_delete_dialog_description">정말 아이템을 삭제하시겠어요?\n삭제된 아이템은 다시 복구할 수 없어요!</string>
 
     <!-- Notification -->
     <string name="noti_title">알림</string>
