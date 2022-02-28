@@ -130,7 +130,7 @@ class WishItemDetailFragment : Fragment(), ImageLoader {
                 }
             })
         }
-        dialog.show(parentFragmentManager, "LocationPermissionDialog")
+        dialog.show(parentFragmentManager, "ItemDeleteDialog")
     }
 
     override fun loadImage(imageUrl: String, imageView: ImageView) {
