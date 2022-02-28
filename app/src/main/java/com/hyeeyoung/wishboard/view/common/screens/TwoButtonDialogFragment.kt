@@ -42,10 +42,10 @@ class TwoButtonDialogFragment(
 
     private fun addListener() {
         binding.yes.setOnClickListener {
-            listener.onButtonClicked(DialogButtonReplyType.YES)
+            listener.onButtonClicked(DialogButtonReplyType.YES.name)
         }
         binding.no.setOnClickListener {
-            listener.onButtonClicked(DialogButtonReplyType.NO)
+            listener.onButtonClicked(DialogButtonReplyType.NO.name)
         }
     }
 
