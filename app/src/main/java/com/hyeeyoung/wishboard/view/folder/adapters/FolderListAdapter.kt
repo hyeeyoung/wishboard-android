@@ -1,29 +1,23 @@
 package com.hyeeyoung.wishboard.view.folder.adapters
 
-import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ItemFolderHorizontalBinding
 import com.hyeeyoung.wishboard.databinding.ItemFolderSquareBinding
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.folder.FolderListViewType
 import com.hyeeyoung.wishboard.util.ImageLoader
-import com.hyeeyoung.wishboard.util.extension.navigateSafe
 
 class FolderListAdapter(
-    private val context: Context,
     private val folderListViewType: FolderListViewType,
 ) : ListAdapter<FolderItem, RecyclerView.ViewHolder>(diffCallback) {
     private val dataSet = arrayListOf<FolderItem>()
     private lateinit var listener: OnItemClickListener
+    private var folderMoreDialogListener: OnFolderMoreDialogListener? = null
     private lateinit var imageLoader: ImageLoader
     private var selectedFolderPosition: Int? = null
 
@@ -35,8 +29,16 @@ class FolderListAdapter(
         fun onItemClick(item: FolderItem)
     }
 
+    interface OnFolderMoreDialogListener {
+        fun onItemMoreButtonClick(position: Int, item: FolderItem)
+    }
+
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.listener = listener
+    }
+
+    fun setOnFolderMoreDialogListener(listener: OnFolderMoreDialogListener) {
+        this.folderMoreDialogListener = listener
     }
 
     fun setImageLoader(imageLoader: ImageLoader) {
@@ -56,10 +58,7 @@ class FolderListAdapter(
                     listener.onItemClick(item)
                 }
                 more.setOnClickListener {
-                    it.findNavController().navigateSafe(R.id.action_folder_to_folder_more_dialog, bundleOf(
-                        ARG_FOLDER_ITEM to item,
-                        ARG_FOLDER_POSITION to position
-                    ))
+                    folderMoreDialogListener?.onItemMoreButtonClick(position, item)
                 }
             }
         }
@@ -141,8 +140,6 @@ class FolderListAdapter(
     }
 
     companion object {
-        private const val ARG_FOLDER_ITEM = "folderItem"
-        private const val ARG_FOLDER_POSITION = "folderPosition"
         private val diffCallback = object : DiffUtil.ItemCallback<FolderItem>() {
             override fun areItemsTheSame(
                 oldItem: FolderItem,
