@@ -70,6 +70,7 @@
         <item name="android:textColor">@color/gray_600</item>
         <item name="android:textSize">@dimen/typographyBase</item>
     </style>
+
     <style name="Widget.BottomSheetDialog.Option" parent="">
         <item name="android:gravity">center</item>
         <item name="android:background">?attr/selectableItemBackground</item>
@@ -165,11 +166,13 @@
     </style>
 
     <style name="Widget.EditText.Basic" parent="Widget.EditText">
-        <item name="android:layout_marginStart">@dimen/spacing20</item>
-        <item name="android:layout_marginEnd">@dimen/spacing20</item>
-        <item name="android:paddingTop">@dimen/spacingSmall</item>
-        <item name="android:paddingBottom">@dimen/spacingSmall</item>
-        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/shape_border_rectangle_radius_5</item>
+        <item name="android:layout_marginStart">@dimen/spacingBase</item>
+        <item name="android:layout_marginEnd">@dimen/spacingBase</item>
+        <item name="android:paddingTop">@dimen/spacing12</item>
+        <item name="android:paddingBottom">@dimen/spacing12</item>
+        <item name="android:paddingStart">@dimen/spacing10</item>
+        <item name="android:paddingEnd">@dimen/spacing10</item>
     </style>
 
     <style name="Widget.EditText.Basic.TextAppearance" parent="">
