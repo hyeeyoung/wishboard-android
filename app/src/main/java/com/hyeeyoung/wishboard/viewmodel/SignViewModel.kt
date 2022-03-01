@@ -34,42 +34,6 @@ class SignViewModel @Inject constructor(
         initEnabledVerificationCodeButton()
     }
 
-    fun onRegistrationEmailTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        registrationEmail.value = s.toString().trim()
-        isUnregisteredUser.value = null
-        isCorrectedVerificationCode.value = null
-        checkEmailFormatValidation()
-    }
-
-    fun onRegistrationPasswordTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        registrationPassword.value = s.toString().trim()
-        checkPasswordFormatValidation()
-    }
-
-    fun onLoginEmailTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        loginEmail.value = s.toString().trim()
-    }
-
-    fun onLoginPasswordTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        loginPassword.value = s.toString().trim()
-    }
-
-    fun onVerificationCodeTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        isCorrectedVerificationCode.value = null
-        inputVerificationCode.value = s.toString().trim()
-    }
-
-    private fun checkEmailFormatValidation() {
-        val emailPattern = Patterns.EMAIL_ADDRESS
-        isValidEmailFormat.value = emailPattern.matcher(registrationEmail.value).matches()
-    }
-
-    private fun checkPasswordFormatValidation() {
-        val passwordPattern =
-            Pattern.compile("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{7,15}.$")
-        isValidPasswordFormat.value = passwordPattern.matcher(registrationPassword.value).matches()
-    }
-
     fun signUp() {
         viewModelScope.launch {
             safeLet(registrationEmail.value, registrationPassword.value) { email, password ->
@@ -87,10 +51,10 @@ class SignViewModel @Inject constructor(
     }
 
     fun signInEmail() {
-        if (registrationEmail.value == null) return
+        if (loginEmail.value == null) return
         viewModelScope.launch {
-            if (inputVerificationCode.value == verificationCode.value && registrationEmail.value != null) {
-                isCompletedSignIn.value = signRepository.signInEmail(registrationEmail.value!!)
+            if (inputVerificationCode.value == verificationCode.value) {
+                isCompletedSignIn.value = signRepository.signInEmail(loginEmail.value!!)
             } else {
                 isCorrectedVerificationCode.value = false
             }
@@ -102,7 +66,7 @@ class SignViewModel @Inject constructor(
         isCorrectedVerificationCode.value = null
 
         viewModelScope.launch {
-            registrationEmail.value?.let { email ->
+            loginEmail.value?.let { email ->
                 val result = signRepository.requestVerificationMail(email)
 
                 isUnregisteredUser.value = result.second == 404
@@ -110,6 +74,45 @@ class SignViewModel @Inject constructor(
                 result.first.second?.let { code -> verificationCode.value = code }
             }
         }
+    }
+
+    fun onRegistrationEmailTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        registrationEmail.value = s.toString().trim()
+        checkEmailFormatValidation(registrationEmail.value)
+    }
+
+    fun onRegistrationPasswordTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        registrationPassword.value = s.toString().trim()
+        checkPasswordFormatValidation(registrationPassword.value)
+    }
+
+    fun onLoginEmailTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        // 이메일 입력값 변경 시 가입자 여부 및 인증 코드 일치 여부 값을 초기화
+        isUnregisteredUser.value = null // TODO need refactoring
+        isCorrectedVerificationCode.value = null
+        loginEmail.value = s.toString().trim()
+        checkEmailFormatValidation(loginEmail.value)
+    }
+
+    fun onLoginPasswordTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        loginPassword.value = s.toString().trim()
+    }
+
+    fun onVerificationCodeTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        // 인증코드 입력값 변경 시 인증코드 일치 여부 값을 초기화
+        isCorrectedVerificationCode.value = null // TODO need refactoring
+        inputVerificationCode.value = s.toString().trim()
+    }
+
+    private fun checkEmailFormatValidation(email: String?) {
+        val emailPattern = Patterns.EMAIL_ADDRESS
+        isValidEmailFormat.value = emailPattern.matcher(email).matches()
+    }
+
+    private fun checkPasswordFormatValidation(password: String?) {
+        val passwordPattern =
+            Pattern.compile("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{7,15}.$")
+        isValidPasswordFormat.value = passwordPattern.matcher(password).matches()
     }
 
     private fun initEnabledVerificationCodeButton() {
@@ -121,11 +124,15 @@ class SignViewModel @Inject constructor(
         }
     }
 
-    private fun combineEnabledVerificationCodeButton(isUnregisteredUser: Boolean?, verificationCode: String?) {
+    private fun combineEnabledVerificationCodeButton(
+        isUnregisteredUser: Boolean?,
+        verificationCode: String?
+    ) {
         val code = verificationCode?.trim()
         isEnabledVerificationCodeButton.value = isUnregisteredUser == false && !code.isNullOrEmpty()
     }
 
+    fun getLoginEmail(): LiveData<String> = loginEmail
     fun getRegistrationEmail(): LiveData<String> = registrationEmail
     fun getRegistrationPassword(): LiveData<String> = registrationPassword
     fun getValidEmailFormat(): LiveData<Boolean> = isValidEmailFormat

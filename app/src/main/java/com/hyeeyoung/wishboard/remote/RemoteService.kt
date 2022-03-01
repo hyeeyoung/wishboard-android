@@ -2,7 +2,6 @@ package com.hyeeyoung.wishboard.remote
 
 import com.hyeeyoung.wishboard.BuildConfig
 import com.hyeeyoung.wishboard.model.RequestResult
-import com.hyeeyoung.wishboard.model.RequestResultCode
 import com.hyeeyoung.wishboard.model.RequestResultData
 import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.folder.FolderItem
@@ -30,7 +29,7 @@ interface RemoteService {
     @POST("auth/password-mail")
     suspend fun requestVerificationMail(
         @Field("email") email: String
-    ): Response<RequestResultCode>
+    ): Response<RequestResultData>
 
     @FormUrlEncoded
     @POST("auth/re-signin")
