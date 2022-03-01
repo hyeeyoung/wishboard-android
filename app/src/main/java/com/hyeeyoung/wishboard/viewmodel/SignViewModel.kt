@@ -15,8 +15,8 @@ class SignViewModel @Inject constructor(
 ) : ViewModel() {
     private var loginEmail = MutableLiveData<String>()
     private var loginPassword = MutableLiveData<String>()
-    private var registrationEmail = MutableLiveData<String>()
-    private var registrationPassword = MutableLiveData<String>()
+    private var registrationEmail = MutableLiveData<String?>()
+    private var registrationPassword = MutableLiveData<String?>()
     private var verificationCode = MutableLiveData<String?>()
     private var inputVerificationCode = MutableLiveData<String>()
 
@@ -132,9 +132,17 @@ class SignViewModel @Inject constructor(
         isEnabledVerificationCodeButton.value = isUnregisteredUser == false && !code.isNullOrEmpty()
     }
 
+    fun resetRegistrationEmail() {
+        registrationEmail.value = null
+    }
+
+    fun resetRegistrationPassword() {
+        registrationPassword.value = null
+    }
+
     fun getLoginEmail(): LiveData<String> = loginEmail
-    fun getRegistrationEmail(): LiveData<String> = registrationEmail
-    fun getRegistrationPassword(): LiveData<String> = registrationPassword
+    fun getRegistrationEmail(): LiveData<String?> = registrationEmail
+    fun getRegistrationPassword(): LiveData<String?> = registrationPassword
     fun getValidEmailFormat(): LiveData<Boolean> = isValidEmailFormat
     fun getValidPasswordFormat(): LiveData<Boolean> = isValidPasswordFormat
     fun getCompletedSignUp(): LiveData<Boolean> = isCompletedSignUp
