@@ -50,59 +50,46 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guide_center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_percent="0.5" />
-
-        <ImageView
-            android:id="@+id/password_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:src="@drawable/ic_lock"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
-
         <EditText
             android:id="@+id/email_input"
             style="@style/Widget.EditText.Basic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacingBase"
             android:layout_marginBottom="@dimen/spacingSmall"
             android:hint="@string/email_input_text"
             android:inputType="textEmailAddress"
             android:onTextChanged="@{viewModel::onLoginEmailTextChanged}"
             android:text="@{viewModel.registrationEmail}"
             android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
-            app:layout_constraintBottom_toTopOf="@id/password_input" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
         <EditText
             android:id="@+id/password_input"
             style="@style/Widget.EditText.Basic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacingBase"
+            android:layout_marginTop="@dimen/spacing5"
             android:hint="@string/password_input_text"
             android:inputType="textPassword"
             android:onTextChanged="@{viewModel::onLoginPasswordTextChanged}"
             android:paddingVertical="@dimen/spacing12"
             android:text="@{viewModel.registrationPassword}"
             android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
-            app:layout_constraintBottom_toTopOf="@id/sign_in" />
+            app:layout_constraintTop_toBottomOf="@id/email_input" />
 
         <Button
             android:id="@+id/sign_in"
             style="@style/Widget.Button.Activate.Green"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:layout_marginTop="@dimen/spacingBase"
             android:onClick="@{() -> viewModel.signIn()}"
             android:text="@string/login_btn_text"
             android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
-            app:layout_constraintBottom_toBottomOf="@id/guide_center" />
+            app:layout_constraintTop_toBottomOf="@id/password_input" />
 
         <TextView
             android:id="@+id/forgot_your_password"
