@@ -13,7 +13,6 @@ data class RequestResultData(
         val id: Long? = null,
         val token: String? = null,
         val pushState: Int? = null,
-        @SerializedName("randomNumber")
         val verificationCode: String
     )
 }
