@@ -17,6 +17,12 @@ import dagger.hilt.android.AndroidEntryPoint
 class SignUpEmailFragment : Fragment() {
     private lateinit var binding: FragmentSignUpEmailBinding
     private val viewModel: SignViewModel by hiltNavGraphViewModels(R.id.sign_nav_graph)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.resetRegistrationEmail()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

@@ -18,6 +18,11 @@ class SignUpPasswordFragment : Fragment() {
     private lateinit var binding: FragmentSignUpPasswordBinding
     private val viewModel: SignViewModel by hiltNavGraphViewModels(R.id.sign_nav_graph)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.resetRegistrationPassword()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,7 +30,7 @@ class SignUpPasswordFragment : Fragment() {
         binding = FragmentSignUpPasswordBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this@SignUpPasswordFragment
-        
+
         addObservers()
 
         return binding.root
