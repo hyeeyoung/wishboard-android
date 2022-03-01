@@ -26,12 +26,12 @@ class SignInFragment : Fragment() {
         binding = FragmentSignInBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
 
-        setObservers()
+        addObservers()
 
         return binding.root
     }
 
-    private fun setObservers() {
+    private fun addObservers() {
         viewModel.getCompletedSignIn().observe(viewLifecycleOwner) { isCompleted ->
             when (isCompleted) {
                 true -> {
