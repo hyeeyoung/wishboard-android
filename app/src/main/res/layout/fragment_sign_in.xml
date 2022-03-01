@@ -72,44 +72,27 @@
             style="@style/Widget.EditText.Basic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacingSmall"
             android:hint="@string/email_input_text"
             android:inputType="textEmailAddress"
             android:onTextChanged="@{viewModel::onLoginEmailTextChanged}"
             android:text="@{viewModel.registrationEmail}"
             android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
-            app:layout_constraintBottom_toTopOf="@id/email_divider" />
-
-        <View
-            android:id="@+id/email_divider"
-            style="@style/Widget.EditText.Divider.Full"
-            android:layout_width="0dp"
-            android:layout_marginBottom="@dimen/spacingMicro"
-            app:layout_constraintBottom_toTopOf="@id/password_input"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
+            app:layout_constraintBottom_toTopOf="@id/password_input" />
 
         <EditText
             android:id="@+id/password_input"
             style="@style/Widget.EditText.Basic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacingBase"
             android:hint="@string/password_input_text"
             android:inputType="textPassword"
             android:onTextChanged="@{viewModel::onLoginPasswordTextChanged}"
             android:paddingVertical="@dimen/spacing12"
             android:text="@{viewModel.registrationPassword}"
             android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
-            app:layout_constraintBottom_toTopOf="@id/password_divider" />
-
-        <View
-            android:id="@+id/password_divider"
-            style="@style/Widget.EditText.Divider.Full"
-            android:layout_width="0dp"
-            android:layout_marginBottom="@dimen/spacingBase"
-            app:layout_constraintBottom_toTopOf="@id/sign_in"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintBottom_toTopOf="@id/sign_in" />
 
         <Button
             android:id="@+id/sign_in"

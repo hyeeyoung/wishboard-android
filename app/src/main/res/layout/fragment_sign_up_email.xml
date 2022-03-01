@@ -97,21 +97,13 @@
             style="@style/Widget.EditText.Basic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacingBase"
             android:hint="@string/email_input_text"
             android:inputType="textEmailAddress"
             android:onTextChanged="@{viewModel::onRegistrationEmailTextChanged}"
             android:text="@{viewModel.registrationEmail}"
             android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
-            app:layout_constraintBottom_toTopOf="@id/divider" />
-
-        <View
-            android:id="@+id/divider"
-            style="@style/Widget.EditText.Divider.Full"
-            android:layout_width="0dp"
-            android:layout_marginBottom="@dimen/spacingBase"
-            app:layout_constraintBottom_toTopOf="@id/next"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintBottom_toTopOf="@id/next" />
 
         <Button
             android:id="@+id/next"
