@@ -25,6 +25,19 @@ interface RemoteService {
         @Body userInfo: UserInfo
     ): Response<RequestResultData>
 
+    @FormUrlEncoded
+    @POST("auth/password-mail")
+    suspend fun requestVerificationMail(
+        @Field("email") email: String
+    ): Response<RequestResultData>
+
+    @FormUrlEncoded
+    @POST("auth/re-signin")
+    suspend fun signInEmail(
+        @Field("verify") isVerify: Boolean,
+        @Field("email") email: String
+    ): Response<RequestResultData>
+
     // 위시리스트 및 아이템
     @GET("item")
     suspend fun fetchWishList(@Header("Authorization") token: String): Response<List<WishItem>>?

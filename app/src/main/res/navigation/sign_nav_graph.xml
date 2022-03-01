@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_graph"
+    android:id="@+id/sign_nav_graph"
     app:startDestination="@id/signFragment">
 
     <fragment
@@ -22,7 +22,11 @@
         android:id="@+id/signInFragment"
         android:name="com.hyeeyoung.wishboard.view.sign.screens.SignInFragment"
         android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in" />
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/action_sign_in_to_sign_in_email"
+            app:destination="@id/signInEmailFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/signUpEmailFragment"
@@ -33,6 +37,12 @@
             android:id="@+id/action_email_to_password"
             app:destination="@id/signUpPasswordFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/signInEmailFragment"
+        android:name="com.hyeeyoung.wishboard.view.sign.screens.SignInEmailFragment"
+        android:label="fragment_sign_in_email"
+        tools:layout="@layout/fragment_sign_in_email" />
 
     <fragment
         android:id="@+id/signUpPasswordFragment"

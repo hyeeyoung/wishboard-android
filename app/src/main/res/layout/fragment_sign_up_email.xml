@@ -110,7 +110,7 @@
             style="@style/Widget.Button.Activate.Green"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="@{v -> Navigation.findNavController(v).navigate(R.id.action_email_to_password)}"
+            android:enabled="@{viewModel.validEmailFormat == true}"
             android:text="@string/next"
             android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
             app:layout_constraintBottom_toTopOf="@id/guide_center"

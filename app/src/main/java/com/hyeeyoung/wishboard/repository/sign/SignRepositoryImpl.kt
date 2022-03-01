@@ -37,6 +37,32 @@ class SignRepositoryImpl : SignRepository {
         return response.isSuccessful
     }
 
+    override suspend fun signInEmail(email: String): Boolean {
+        val response = api.signInEmail(true, email)
+        val result = response.body()
+        if (response.isSuccessful) {
+            Log.d(TAG, "이메일 인증 로그인 성공")
+            result?.data?.token?.let {
+                prefs?.setUserInfo(it, email)
+            }
+            // TODO save the pushState
+        } else {
+            Log.e(TAG, "이메일 인증 로그인 실패: ${response.code()}")
+        }
+        return response.isSuccessful
+    }
+
+    override suspend fun requestVerificationMail(email: String): Pair<Pair<Boolean, String?>, Int> {
+        val response = api.requestVerificationMail(email)
+        val result = response.body()
+        if (response.isSuccessful) {
+            Log.d(TAG, "인증메일 요청 성공")
+        } else {
+            Log.e(TAG, "인증메일 요청 실패: ${response.code()}")
+        }
+        return Pair(Pair(response.isSuccessful, result?.data?.verificationCode), response.code())
+    }
+
     companion object {
         private const val TAG = "SignRepositoryImpl"
     }

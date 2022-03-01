@@ -1,10 +1,7 @@
 package com.hyeeyoung.wishboard.viewmodel
 
 import android.util.Patterns
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.hyeeyoung.wishboard.repository.sign.SignRepository
 import com.hyeeyoung.wishboard.util.safeLet
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,38 +17,21 @@ class SignViewModel @Inject constructor(
     private var loginPassword = MutableLiveData<String>()
     private var registrationEmail = MutableLiveData<String>()
     private var registrationPassword = MutableLiveData<String>()
-    private var isValidEmailFormat = MutableLiveData(false)
+    private var verificationCode = MutableLiveData<String?>()
+    private var inputVerificationCode = MutableLiveData<String>()
+
+    private var isValidEmailFormat = MutableLiveData<Boolean>()
     private var isValidPasswordFormat = MutableLiveData(false)
+    private var isUnregisteredUser = MutableLiveData<Boolean?>(null)
+    private var isCorrectedVerificationCode = MutableLiveData<Boolean?>(null)
+    private var isEnabledVerificationCodeButton = MediatorLiveData<Boolean>()
+
     private var isCompletedSignUp = MutableLiveData(false)
     private var isCompletedSignIn = MutableLiveData<Boolean?>(null)
+    private var isCompletedSendMail = MutableLiveData<Boolean?>(null)
 
-    fun onRegistrationEmailTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        registrationEmail.value = s.toString().trim()
-        checkEmailFormatValidation()
-    }
-
-    fun onRegistrationPasswordTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        registrationPassword.value = s.toString().trim()
-        checkPasswordFormatValidation()
-    }
-
-    fun onLoginEmailTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        loginEmail.value = s.toString().trim()
-    }
-
-    fun onLoginPasswordTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        loginPassword.value = s.toString().trim()
-    }
-
-    private fun checkEmailFormatValidation() {
-        val emailPattern = Patterns.EMAIL_ADDRESS
-        isValidEmailFormat.value = emailPattern.matcher(registrationEmail.value).matches()
-    }
-
-    private fun checkPasswordFormatValidation() {
-        val passwordPattern =
-            Pattern.compile("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{7,15}.$")
-        isValidPasswordFormat.value = passwordPattern.matcher(registrationPassword.value).matches()
+    init {
+        initEnabledVerificationCodeButton()
     }
 
     fun signUp() {
@@ -70,12 +50,99 @@ class SignViewModel @Inject constructor(
         }
     }
 
+    fun signInEmail() {
+        if (loginEmail.value == null) return
+        viewModelScope.launch {
+            if (inputVerificationCode.value == verificationCode.value) {
+                isCompletedSignIn.value = signRepository.signInEmail(loginEmail.value!!)
+            } else {
+                isCorrectedVerificationCode.value = false
+            }
+        }
+    }
+
+    fun requestVerificationMail() {
+        verificationCode.value = null
+        isCorrectedVerificationCode.value = null
+
+        viewModelScope.launch {
+            loginEmail.value?.let { email ->
+                val result = signRepository.requestVerificationMail(email)
+
+                isUnregisteredUser.value = result.second == 404
+                isCompletedSendMail.value = result.first.first
+                result.first.second?.let { code -> verificationCode.value = code }
+            }
+        }
+    }
+
+    fun onRegistrationEmailTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        registrationEmail.value = s.toString().trim()
+        checkEmailFormatValidation(registrationEmail.value)
+    }
+
+    fun onRegistrationPasswordTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        registrationPassword.value = s.toString().trim()
+        checkPasswordFormatValidation(registrationPassword.value)
+    }
+
+    fun onLoginEmailTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        // 이메일 입력값 변경 시 가입자 여부 및 인증 코드 일치 여부 값을 초기화
+        isUnregisteredUser.value = null // TODO need refactoring
+        isCorrectedVerificationCode.value = null
+        loginEmail.value = s.toString().trim()
+        checkEmailFormatValidation(loginEmail.value)
+    }
+
+    fun onLoginPasswordTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        loginPassword.value = s.toString().trim()
+    }
+
+    fun onVerificationCodeTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        // 인증코드 입력값 변경 시 인증코드 일치 여부 값을 초기화
+        isCorrectedVerificationCode.value = null // TODO need refactoring
+        inputVerificationCode.value = s.toString().trim()
+    }
+
+    private fun checkEmailFormatValidation(email: String?) {
+        val emailPattern = Patterns.EMAIL_ADDRESS
+        isValidEmailFormat.value = emailPattern.matcher(email).matches()
+    }
+
+    private fun checkPasswordFormatValidation(password: String?) {
+        val passwordPattern =
+            Pattern.compile("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{7,15}.$")
+        isValidPasswordFormat.value = passwordPattern.matcher(password).matches()
+    }
+
+    private fun initEnabledVerificationCodeButton() {
+        isEnabledVerificationCodeButton.addSource(isUnregisteredUser) { isUnregistered ->
+            combineEnabledVerificationCodeButton(isUnregistered, inputVerificationCode.value)
+        }
+        isEnabledVerificationCodeButton.addSource(inputVerificationCode) { code ->
+            combineEnabledVerificationCodeButton(isUnregisteredUser.value, code)
+        }
+    }
+
+    private fun combineEnabledVerificationCodeButton(
+        isUnregisteredUser: Boolean?,
+        verificationCode: String?
+    ) {
+        val code = verificationCode?.trim()
+        isEnabledVerificationCodeButton.value = isUnregisteredUser == false && !code.isNullOrEmpty()
+    }
+
+    fun getLoginEmail(): LiveData<String> = loginEmail
     fun getRegistrationEmail(): LiveData<String> = registrationEmail
     fun getRegistrationPassword(): LiveData<String> = registrationPassword
     fun getValidEmailFormat(): LiveData<Boolean> = isValidEmailFormat
     fun getValidPasswordFormat(): LiveData<Boolean> = isValidPasswordFormat
     fun getCompletedSignUp(): LiveData<Boolean> = isCompletedSignUp
     fun getCompletedSignIn(): LiveData<Boolean?> = isCompletedSignIn
+    fun isUnregisteredUser(): LiveData<Boolean?> = isUnregisteredUser
+    fun isCompletedSendMail(): LiveData<Boolean?> = isCompletedSendMail
+    fun isCorrectedVerificationCode(): LiveData<Boolean?> = isCorrectedVerificationCode
+    fun isEnabledVerificationCodeButton(): LiveData<Boolean> = isEnabledVerificationCodeButton
 
     companion object {
         private const val TAG = "SignViewModel"
