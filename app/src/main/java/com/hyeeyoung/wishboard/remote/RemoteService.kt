@@ -38,6 +38,13 @@ interface RemoteService {
         @Field("email") email: String
     ): Response<RequestResultData>
 
+
+    @FormUrlEncoded
+    @POST("auth/check-email")
+    suspend fun checkRegisteredUser(
+        @Field("email") email: String
+    ): Response<RequestResult>
+
     // 위시리스트 및 아이템
     @GET("item")
     suspend fun fetchWishList(@Header("Authorization") token: String): Response<List<WishItem>>?

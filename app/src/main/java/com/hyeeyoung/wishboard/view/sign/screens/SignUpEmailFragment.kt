@@ -31,14 +31,16 @@ class SignUpEmailFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this@SignUpEmailFragment
 
-        addListeners()
+        addObservers()
 
         return binding.root
     }
 
-    private fun addListeners() {
-        binding.next.setOnClickListener {
-            findNavController().navigateSafe(R.id.action_email_to_password)
+    private fun addObservers() {
+        viewModel.isUnregisteredUser().observe(viewLifecycleOwner) { isUnregistered ->
+            if (isUnregistered == true) {
+                findNavController().navigateSafe(R.id.action_email_to_password)
+            }
         }
     }
 }
