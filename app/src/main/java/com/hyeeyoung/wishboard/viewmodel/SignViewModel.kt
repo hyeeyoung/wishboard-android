@@ -76,7 +76,31 @@ class SignViewModel @Inject constructor(
         }
     }
 
+    fun checkRegisteredUser() {
+        viewModelScope.launch {
+            registrationEmail.value?.let { email ->
+                val result = signRepository.checkRegisteredUser(email)
+                setRegisteredUser(result.first, result.second)
+            }
+        }
+    }
+
+    private fun setRegisteredUser(isSuccessful: Boolean, resultCode: Int) {
+        isUnregisteredUser.value = when {
+            isSuccessful -> {
+                true
+            }
+            resultCode == 409 -> {
+                false
+            }
+            else -> {
+                null
+            }
+        }
+    }
+
     fun onRegistrationEmailTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        isUnregisteredUser.value = null
         registrationEmail.value = s.toString().trim()
         checkEmailFormatValidation(registrationEmail.value)
     }
@@ -133,10 +157,12 @@ class SignViewModel @Inject constructor(
     }
 
     fun resetRegistrationEmail() {
+        isUnregisteredUser.value = null
         registrationEmail.value = null
     }
 
     fun resetRegistrationPassword() {
+        isUnregisteredUser.value = null
         registrationPassword.value = null
     }
 

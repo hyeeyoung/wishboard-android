@@ -63,6 +63,16 @@ class SignRepositoryImpl : SignRepository {
         return Pair(Pair(response.isSuccessful, result?.data?.verificationCode), response.code())
     }
 
+    override suspend fun checkRegisteredUser(email: String): Pair<Boolean, Int> {
+        val response = api.checkRegisteredUser(email)
+        if (response.isSuccessful) {
+            Log.d(TAG, "가입 가능 검사 성공")
+        } else {
+            Log.e(TAG, "가입 가능 검사 실패: ${response.code()}")
+        }
+        return Pair(response.isSuccessful, response.code())
+    }
+
     companion object {
         private const val TAG = "SignRepositoryImpl"
     }
