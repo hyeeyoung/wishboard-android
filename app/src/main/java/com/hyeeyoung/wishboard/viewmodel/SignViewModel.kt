@@ -141,6 +141,7 @@ class SignViewModel @Inject constructor(
     }
 
     fun getLoginEmail(): LiveData<String> = loginEmail
+    fun getLoginPassword(): LiveData<String> = loginPassword
     fun getRegistrationEmail(): LiveData<String?> = registrationEmail
     fun getRegistrationPassword(): LiveData<String?> = registrationPassword
     fun getValidEmailFormat(): LiveData<Boolean> = isValidEmailFormat

@@ -27,6 +27,7 @@ class SignInFragment : Fragment() {
     ): View {
         binding = FragmentSignInBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
+        binding.lifecycleOwner = this@SignInFragment
 
         addListeners()
         addObservers()
