@@ -148,7 +148,7 @@
     </style>
 
     <style name="Widget.TextAppearance.Detail" parent="">
-        <item name="android:textColor">@color/green_700</item>
+        <item name="android:textColor">@color/pink</item>
         <item name="android:textSize">@dimen/typographyDescription</item>
         <item name="fontFamily">@font/suit_r</item>
         <item name="android:layout_marginTop">@dimen/spacing5</item>
@@ -166,7 +166,8 @@
     </style>
 
     <style name="Widget.EditText.Basic" parent="Widget.EditText">
-        <item name="android:background">@drawable/shape_border_rectangle_radius_5</item>
+        <item name="android:background">@drawable/shape_border_radius_5</item>
+        <item name="android:backgroundTint">@color/gray_25</item>
         <item name="android:layout_marginStart">@dimen/spacingBase</item>
         <item name="android:layout_marginEnd">@dimen/spacingBase</item>
         <item name="android:paddingTop">@dimen/spacing12</item>

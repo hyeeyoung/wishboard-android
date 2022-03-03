@@ -63,7 +63,10 @@
             android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <requestFocus />
+        </EditText>
 
         <EditText
             android:id="@+id/password_input"
@@ -78,31 +81,38 @@
             android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
             app:layout_constraintTop_toBottomOf="@id/email_input" />
 
-        <Button
-            android:id="@+id/sign_in"
-            style="@style/Widget.Button.Activate.Green"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="@dimen/spacingBase"
-            android:enabled="@{viewModel.loginEmail.length() > 0 &amp;&amp; viewModel.loginPassword.length() > 0}"
-            android:onClick="@{() -> viewModel.signIn()}"
-            android:text="@string/login_btn_text"
-            android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
-            app:layout_constraintTop_toBottomOf="@id/password_input" />
-
-        <TextView
-            android:id="@+id/forgot_your_password"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacingSmall"
-            android:fontFamily="@font/suit_m"
-            android:padding="@dimen/spacing12"
-            android:text="@string/sign_in_forgot_your_password"
-            android:textColor="@color/gray_300"
-            android:textSize="@dimen/typographyDescription"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sign_in" />
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <Button
+                android:id="@+id/sign_in"
+                style="@style/Widget.Button.Activate.Green"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="@dimen/spacingBase"
+                android:enabled="@{viewModel.loginEmail.length() > 0 &amp;&amp; viewModel.loginPassword.length() > 0}"
+                android:onClick="@{() -> viewModel.signIn()}"
+                android:text="@string/login_btn_text"
+                android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/forgot_your_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacingSmall"
+                android:fontFamily="@font/suit_m"
+                android:padding="@dimen/spacing12"
+                android:text="@string/sign_in_forgot_your_password"
+                android:textColor="@color/gray_300"
+                android:textSize="@dimen/typographyDescription"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sign_in" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

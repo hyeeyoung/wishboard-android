@@ -5,13 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.MainActivity
-import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentSignInEmailBinding
+import com.hyeeyoung.wishboard.util.showKeyboard
 import com.hyeeyoung.wishboard.viewmodel.SignViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,6 +30,11 @@ class SignInEmailFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        showKeyboard(requireContext(), binding.emailInput, true)
+    }
+
     private fun addObservers() {
         viewModel.getCompletedSignIn().observe(viewLifecycleOwner) { isCompleted ->
             when (isCompleted) {
@@ -39,6 +42,12 @@ class SignInEmailFragment : Fragment() {
                     startActivity(Intent(requireContext(), MainActivity::class.java))
                     requireActivity().finish()
                 }
+            }
+        }
+        viewModel.isCompletedSendMail().observe(viewLifecycleOwner) { isCompleted ->
+            // 재요청 버튼 클릭 시 인증코드 EditText로 커서 이동
+            if (isCompleted == true) {
+                binding.verificationCodeInput.requestFocus()
             }
         }
     }

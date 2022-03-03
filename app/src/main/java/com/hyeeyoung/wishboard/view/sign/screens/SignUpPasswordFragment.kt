@@ -10,6 +10,7 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.hyeeyoung.wishboard.MainActivity
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentSignUpPasswordBinding
+import com.hyeeyoung.wishboard.util.showKeyboard
 import com.hyeeyoung.wishboard.viewmodel.SignViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,6 +35,11 @@ class SignUpPasswordFragment : Fragment() {
         addObservers()
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        showKeyboard(requireContext(), binding.passwordInput, true)
     }
 
     private fun addObservers() {
