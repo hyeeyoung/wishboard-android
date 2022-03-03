@@ -10,6 +10,7 @@ import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentSignUpEmailBinding
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
+import com.hyeeyoung.wishboard.util.showKeyboard
 import com.hyeeyoung.wishboard.viewmodel.SignViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -34,6 +35,11 @@ class SignUpEmailFragment : Fragment() {
         addObservers()
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        showKeyboard(requireContext(), binding.emailInput, true)
     }
 
     private fun addObservers() {

@@ -1,5 +1,9 @@
 package com.hyeeyoung.wishboard.util
 
+import android.app.Activity
+import android.content.Context
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.bumptech.glide.Glide
@@ -63,3 +67,13 @@ fun loadProfileImage( // TODO need refactoring
 
 fun getNotiDateServerFormat(date: String, hour: String, minute: String) =
     "$date $hour:$minute:00" // TODO DateFormatUtil.kt 로 이동
+
+fun showKeyboard(context: Context, view: View, toShow: Boolean) {
+    val imm: InputMethodManager =
+        context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+    if (toShow) {
+        imm.showSoftInput(view, 0)
+    } else {
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
+    }
+}

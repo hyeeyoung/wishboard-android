@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.sign.screens.SignUpEmailFragment">
+    tools:context=".view.sign.screens.SignInEmailFragment">
 
     <data>
 
@@ -102,7 +102,10 @@
                     android:inputType="textEmailAddress"
                     android:onTextChanged="@{viewModel::onLoginEmailTextChanged}"
                     android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <requestFocus />
+                </EditText>
 
                 <Button
                     style="@style/Widget.Button"

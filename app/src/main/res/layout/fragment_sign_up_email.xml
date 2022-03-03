@@ -103,7 +103,10 @@
                 android:inputType="textEmailAddress"
                 android:onTextChanged="@{viewModel::onRegistrationEmailTextChanged}"
                 android:text="@{viewModel.registrationEmail}"
-                android:textAppearance="@style/Widget.EditText.Basic.TextAppearance" />
+                android:textAppearance="@style/Widget.EditText.Basic.TextAppearance">
+
+                <requestFocus />
+            </EditText>
 
             <TextView
                 android:layout_width="wrap_content"
