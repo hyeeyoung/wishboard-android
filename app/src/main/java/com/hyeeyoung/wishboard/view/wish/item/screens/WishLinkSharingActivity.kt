@@ -54,7 +54,7 @@ class WishLinkSharingActivity : AppCompatActivity() {
 
     private fun initializeView() {
         // 알림 유형 및 날짜 넘버피커 설정
-        setTypePicker(binding.typePicker, true)
+        setTypePicker(binding.typePicker)
         setDatePicker(binding.datePicker)
         setHourPicker(binding.hourPicker)
         setMinutePicker(binding.minutePicker)
