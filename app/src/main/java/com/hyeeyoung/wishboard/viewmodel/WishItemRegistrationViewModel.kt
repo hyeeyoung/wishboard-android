@@ -139,12 +139,8 @@ class WishItemRegistrationViewModel @Inject constructor(
                     price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                     url = siteUrl,
                     memo = itemMemo.value?.trim(),
-                    notiType = getTypePickerValue(notiTypeVal.value),
-                    notiDate = getDatePickerValue(
-                        notiDateVal.value,
-                        notiHourVal.value,
-                        notiMinuteVal.value
-                    )
+                    notiType = notiType.value,
+                    notiDate = notiDate.value
                 )
 
                 val isComplete = wishRepository.uploadWishItem(token, item)

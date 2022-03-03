@@ -87,6 +87,7 @@
     <string name="shop_link_input_text">쇼핑몰 링크를 입력해 보세요!</string>
     <string name="item_schedule_notification">상품 일정 알림</string>
     <string name="item_notification_info">[%s 알림] %s</string>
+    <string name="item_notification_info_short">%s %s</string>
     <string name="memo">메모</string>
     <string name="memo_input_text">브랜드, 사이즈, 컬러 등 아이템 정보를 메모로 남겨보세요😉</string>
     <string name="wish_item_registration_toast_text">위시리스트에 추가되었습니다</string>
@@ -96,6 +97,8 @@
     <string name="wish_list_registration">위시리스트에 추가</string>
     <string name="wish_list_registration_memo_hint">메모를 입력해보세요.</string>
     <string name="wish_registration_price_hint">가격을 입력해주세요.</string>
+    <string name="item_registration_noti_setting_title">상품 알림 설정하기</string>
+    <string name="item_registration_noti_setting_guide_text">30분 전에 상품 일정을 알려드려요! 시간은 30분 단위로 설정할 수 있어요.</string>
 
     <!-- Detail -->
     <string name="go_to_shop_btn_text">쇼핑몰로 이동하기</string>
