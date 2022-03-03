@@ -166,7 +166,8 @@
     </style>
 
     <style name="Widget.EditText.Basic" parent="Widget.EditText">
-        <item name="android:background">@drawable/shape_border_rectangle_radius_5</item>
+        <item name="android:background">@drawable/shape_border_radius_5</item>
+        <item name="android:backgroundTint">@color/gray_25</item>
         <item name="android:layout_marginStart">@dimen/spacingBase</item>
         <item name="android:layout_marginEnd">@dimen/spacingBase</item>
         <item name="android:paddingTop">@dimen/spacing12</item>
