@@ -147,8 +147,7 @@
                     android:layout_width="0dp"
                     android:layout_height="34dp"
                     android:background="@drawable/shape_border_radius_5"
-                    android:backgroundTint="@color/gray_100"
-                    android:clipToOutline="true"
+                    android:backgroundTint="@color/gray_50"
                     app:layout_constraintBottom_toBottomOf="@id/type_picker"
                     app:layout_constraintEnd_toEndOf="@id/guild_end"
                     app:layout_constraintStart_toStartOf="@id/guild_start"
@@ -192,13 +191,13 @@
                     android:layout_width="0dp"
                     android:layout_height="34dp"
                     android:background="@drawable/shape_border_radius_5"
-                    android:backgroundTint="@color/gray_100"
+                    android:backgroundTint="@color/gray_50"
                     app:layout_constraintBottom_toBottomOf="@id/noti_date_container"
                     app:layout_constraintEnd_toEndOf="@id/guild_end"
                     app:layout_constraintStart_toStartOf="@id/guild_start"
                     app:layout_constraintTop_toTopOf="@id/noti_date_container" />
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <LinearLayout
                     android:id="@+id/noti_date_container"
                     android:layout_width="0dp"
                     android:layout_height="100dp"
@@ -211,6 +210,7 @@
                         android:id="@+id/date_picker"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="3"
                         android:onValueChange="@{viewModel::onNotiDateValueChanged}"
                         android:theme="@style/AppTheme.NumberPicker"
                         android:value="@{viewModel.notiDateVal == null ? 0 : viewModel.notiDateVal}"
@@ -218,20 +218,11 @@
                         app:layout_constraintHorizontal_weight="3"
                         app:layout_constraintStart_toStartOf="parent" />
 
-                    <!--                <TextView-->
-                    <!--                    android:id="@+id/invisible_colon"-->
-                    <!--                    android:layout_width="wrap_content"-->
-                    <!--                    android:layout_height="wrap_content"-->
-                    <!--                    android:layout_gravity="center_vertical"-->
-                    <!--                    android:fontFamily="@font/nanum_square_eb"-->
-                    <!--                    android:text=":"-->
-                    <!--                    android:textSize="15dp"-->
-                    <!--                    android:visibility="invisible" />-->
-
                     <NumberPicker
                         android:id="@+id/hour_picker"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="1.2"
                         android:onValueChange="@{viewModel::onNotiHourValueChanged}"
                         android:theme="@style/AppTheme.NumberPicker"
                         android:value="@{viewModel.notiHourVal == null ? 0 : viewModel.notiHourVal}"
@@ -256,13 +247,14 @@
                         android:id="@+id/minute_picker"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
+                        android:layout_weight="1.2"
                         android:onValueChange="@{viewModel::onNotiMinuteValueChanged}"
                         android:theme="@style/AppTheme.NumberPicker"
                         android:value="@{viewModel.notiMinuteVal == null ? 0 : viewModel.notiMinuteVal}"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_weight="1"
                         app:layout_constraintStart_toEndOf="@id/colon" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
