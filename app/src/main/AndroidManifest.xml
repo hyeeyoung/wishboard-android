@@ -21,7 +21,8 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".view.sign.screens.SignActivity"
-            android:windowSoftInputMode="stateAlwaysVisible" />
+            android:windowSoftInputMode="adjustResize" />
+
         <activity
             android:name=".SplashActivity"
             android:exported="true">

@@ -135,18 +135,6 @@
                 android:visibility="@{viewModel.loginEmail.length() > 0 &amp;&amp; (viewModel.validEmailFormat == false || viewModel.isUnregisteredUser() == true) ? View.VISIBLE : View.GONE}"
                 tools:text="@string/sign_email_unregistered_user_detail_text" />
 
-            <Button
-                style="@style/Widget.Button.Activate.Green"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacingBase"
-                android:enabled="@{viewModel.validEmailFormat == true}"
-                android:onClick="@{() -> viewModel.requestVerificationMail()}"
-                android:text="@string/sign_in_verification_email_send_button_text"
-                android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
-                android:visibility="@{viewModel.isCompletedSendMail() == false ? View.VISIBLE : View.GONE}"
-                tools:visibility="gone" />
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -173,17 +161,32 @@
                     android:textAppearance="@style/Widget.TextAppearance.Detail"
                     android:visibility="@{viewModel.isCorrectedVerificationCode() == false &amp;&amp; viewModel.isCorrectedVerificationCode() != null ? View.VISIBLE : View.GONE}" />
 
-                <Button
-                    style="@style/Widget.Button.Activate.Green"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacingBase"
-                    android:enabled="@{viewModel.isEnabledVerificationCodeButton() == true}"
-                    android:onClick="@{() -> viewModel.signInEmail()}"
-                    android:text="@string/sign_in_title"
-                    android:textAppearance="@style/Widget.Button.Basic.TextAppearance" />
             </LinearLayout>
         </LinearLayout>
 
+        <Button
+            style="@style/Widget.Button.Activate.Green"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacingBase"
+            android:enabled="@{viewModel.validEmailFormat == true}"
+            android:onClick="@{() -> viewModel.requestVerificationMail()}"
+            android:text="@string/sign_in_verification_email_send_button_text"
+            android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
+            android:visibility="@{viewModel.isCompletedSendMail() == false ? View.VISIBLE : View.GONE}"
+            tools:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <Button
+            style="@style/Widget.Button.Activate.Green"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacingBase"
+            android:enabled="@{viewModel.isEnabledVerificationCodeButton() == true}"
+            android:onClick="@{() -> viewModel.signInEmail()}"
+            android:text="@string/sign_in_title"
+            android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:visibility="@{viewModel.isCompletedSendMail() == true ? View.VISIBLE : View.INVISIBLE}"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

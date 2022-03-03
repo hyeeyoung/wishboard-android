@@ -118,17 +118,18 @@
                 android:visibility="@{viewModel.registrationEmail.length() > 0 &amp;&amp; (viewModel.validEmailFormat == false || (viewModel.isUnregisteredUser() != null &amp;&amp; viewModel.isUnregisteredUser() == false)) ? View.VISIBLE : View.GONE}"
                 tools:text="@string/sign_up_email_registered_user_detail_text" />
 
-            <Button
-                android:id="@+id/next"
-                style="@style/Widget.Button.Activate.Green"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacingBase"
-                android:onClick="@{() -> viewModel.checkRegisteredUser()}"
-                android:enabled="@{viewModel.validEmailFormat == true}"
-                android:text="@string/next"
-                android:textAppearance="@style/Widget.Button.Basic.TextAppearance" />
         </LinearLayout>
 
+        <Button
+            android:id="@+id/next"
+            style="@style/Widget.Button.Activate.Green"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacingBase"
+            android:onClick="@{() -> viewModel.checkRegisteredUser()}"
+            android:enabled="@{viewModel.validEmailFormat == true}"
+            android:text="@string/next"
+            android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
