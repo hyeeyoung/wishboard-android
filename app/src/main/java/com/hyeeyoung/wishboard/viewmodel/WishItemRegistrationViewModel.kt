@@ -67,6 +67,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var notiHourVal = MutableLiveData<Int>()
     private var notiMinuteVal = MutableLiveData<Int>()
 
+    private var isVisibleNotiSettingDialog = MutableLiveData(false)
     private var isEnabledSaveButton = MediatorLiveData<Boolean>()
     private var isCompleteUpload = MutableLiveData<Boolean?>()
 
@@ -382,6 +383,15 @@ class WishItemRegistrationViewModel @Inject constructor(
         notiMinuteVal.value = newVal
     }
 
+    fun toggleVisibilityNotiSettingDialog() {
+        if (isVisibleNotiSettingDialog.value == null) return
+        isVisibleNotiSettingDialog.value = !isVisibleNotiSettingDialog.value!!
+    }
+
+    fun setVisibilityNotiSettingDialog(isVisible: Boolean) {
+        isVisibleNotiSettingDialog.value = isVisible
+    }
+
     fun setFolderItem(folder: FolderItem) {
         folderItem = folder
     }
@@ -394,6 +404,11 @@ class WishItemRegistrationViewModel @Inject constructor(
             this.notiType.value = null
             this.notiDate.value = null
         }
+    }
+
+    fun resetNotiInfo() {
+        this.notiType.value = null
+        this.notiDate.value = null
     }
 
     fun setItemUrl(url: String) {
@@ -439,6 +454,7 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     fun getFolderListAdapter(): FolderListAdapter = folderListAdapter
 
+    fun isVisibleNotiSettingDialog(): LiveData<Boolean> = isVisibleNotiSettingDialog
     fun isEnabledSaveButton(): LiveData<Boolean> = isEnabledSaveButton
     fun isCompleteUpload(): LiveData<Boolean?> = isCompleteUpload
 
