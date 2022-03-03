@@ -21,11 +21,13 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".view.sign.screens.SignActivity"
+            android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
             android:name=".SplashActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -33,8 +35,10 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainActivity"
-            android:exported="true">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter android:autoVerify="true">
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -48,6 +52,7 @@
         <activity
             android:name=".view.wish.item.screens.WishLinkSharingActivity"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemePopup">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
