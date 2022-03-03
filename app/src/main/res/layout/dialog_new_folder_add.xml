@@ -54,15 +54,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="새 폴더 추가" />
 
-            <!-- TODO 폴더 이미지 삭제 고려 중 -->
-            <!--                <de.hdodenhof.circleimageview.CircleImageView-->
-            <!--                    android:id="@+id/folder_image"-->
-            <!--                    android:layout_width="40dp"-->
-            <!--                    android:layout_height="40dp"-->
-            <!--                    android:src="@mipmap/ic_main"-->
-            <!--                    app:layout_constraintStart_toStartOf="parent"-->
-            <!--                    app:layout_constraintTop_toTopOf="parent" />-->
-
             <EditText
                 android:id="@+id/folder_name"
                 style="@style/Widget.EditText.Basic"
