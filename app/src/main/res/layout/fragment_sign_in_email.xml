@@ -88,16 +88,39 @@
                     android:textSize="@dimen/typographyDescription" />
             </LinearLayout>
 
-            <EditText
-                android:id="@+id/email_input"
-                style="@style/Widget.EditText.Basic"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacingBase"
-                android:hint="@string/email_input_text"
-                android:inputType="textEmailAddress"
-                android:onTextChanged="@{viewModel::onLoginEmailTextChanged}"
-                android:textAppearance="@style/Widget.EditText.Basic.TextAppearance" />
+                android:layout_marginTop="@dimen/spacingBase">
+
+                <EditText
+                    android:id="@+id/email_input"
+                    style="@style/Widget.EditText.Basic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/email_input_text"
+                    android:inputType="textEmailAddress"
+                    android:onTextChanged="@{viewModel::onLoginEmailTextChanged}"
+                    android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    style="@style/Widget.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:enabled="@{viewModel.validEmailFormat == true}"
+                    android:fontFamily="@font/suit_b"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:onClick="@{() -> viewModel.requestVerificationMail()}"
+                    android:paddingHorizontal="@dimen/spacing10"
+                    android:text="@string/sign_in_verification_email_resend_button_text"
+                    android:textColor="@drawable/selector_text_button_color"
+                    android:visibility="@{viewModel.isCompletedSendMail() == true ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/email_input"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -116,9 +139,10 @@
                 android:layout_marginTop="@dimen/spacingBase"
                 android:enabled="@{viewModel.validEmailFormat == true}"
                 android:onClick="@{() -> viewModel.requestVerificationMail()}"
-                android:text="@{viewModel.isCompletedSendMail() == false ? R.string.sign_in_verification_email_send_button_text : R.string.sign_in_verification_email_resend_button_text}"
+                android:text="@string/sign_in_verification_email_send_button_text"
                 android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
-                tools:text="@string/sign_in_verification_email_resend_button_text" />
+                android:visibility="@{viewModel.isCompletedSendMail() == false ? View.VISIBLE : View.GONE}"
+                tools:visibility="gone" />
 
             <LinearLayout
                 android:layout_width="match_parent"
