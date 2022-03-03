@@ -3,6 +3,7 @@
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="red">#FF4B4B</color>
+    <color name="pink">#FA5DBB</color>
 
     <color name="transparent">#00000000</color>
     <color name="semiTransparent">#0D626056</color>
