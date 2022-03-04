@@ -18,6 +18,7 @@ import com.hyeeyoung.wishboard.databinding.FragmentProfileEditBinding
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.loadProfileImage
 import com.hyeeyoung.wishboard.util.safeLet
+import com.hyeeyoung.wishboard.util.showKeyboard
 import com.hyeeyoung.wishboard.viewmodel.MyViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.File
@@ -57,6 +58,11 @@ class MyProfileEditFragment : Fragment() {
         addObservers()
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        showKeyboard(requireContext(), binding.nicknameInput, true)
     }
 
     private fun initializeView() {

@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.cart.screens.CartFragment">
+    tools:context=".view.my.screens.MyProfileEditFragment">
 
     <data>
 
@@ -90,7 +90,7 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <EditText
-            android:id="@+id/user_nickname"
+            android:id="@+id/nickname_input"
             style="@style/Widget.EditText.Basic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -102,7 +102,10 @@
             android:paddingVertical="@dimen/spacing12"
             android:text="@{viewModel.inputUserNickname}"
             android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
-            app:layout_constraintTop_toBottomOf="@id/profile_image_container" />
+            app:layout_constraintTop_toBottomOf="@id/profile_image_container">
+
+            <requestFocus />
+        </EditText>
 
         <TextView
             android:id="@+id/nickname_detail_text"
@@ -111,8 +114,8 @@
             android:layout_height="wrap_content"
             android:text="@string/my_nickname_already_exist_toast_text"
             android:visibility="@{viewModel.isExistNickname() == true ? View.VISIBLE : View.INVISIBLE}"
-            app:layout_constraintStart_toStartOf="@id/user_nickname"
-            app:layout_constraintTop_toBottomOf="@id/user_nickname" />
+            app:layout_constraintStart_toStartOf="@id/nickname_input"
+            app:layout_constraintTop_toBottomOf="@id/nickname_input" />
 
         <TextView
             android:id="@+id/nickname_length"
@@ -122,7 +125,7 @@
             android:text="@{String.format(context.getString(R.string.length_format), viewModel.inputUserNickname.length(), 12)}"
             android:textColor="@color/gray_200"
             android:textSize="@dimen/typographyDescription"
-            app:layout_constraintEnd_toEndOf="@id/user_nickname"
+            app:layout_constraintEnd_toEndOf="@id/nickname_input"
             app:layout_constraintTop_toTopOf="@id/nickname_detail_text"
             tools:text="(7/12)자" />
 
@@ -130,8 +133,9 @@
             android:id="@+id/complete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/spacing20"
+            android:layout_marginHorizontal="@dimen/spacingBase"
             android:layout_marginTop="@dimen/spacing20"
+            android:layout_marginBottom="@dimen/spacingBase"
             android:background="@drawable/selector_button"
             android:enabled="@{viewModel.isEnabledEditCompleteButton()}"
             android:fontFamily="@font/suit_b"
@@ -141,6 +145,6 @@
             android:textColor="@color/gray_700"
             android:textSize="@dimen/typographyBase"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/nickname_length" />
+            app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
