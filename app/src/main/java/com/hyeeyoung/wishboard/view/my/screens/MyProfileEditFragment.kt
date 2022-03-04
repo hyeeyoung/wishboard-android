@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentProfileEditBinding
+import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.loadProfileImage
 import com.hyeeyoung.wishboard.util.safeLet
@@ -97,6 +98,18 @@ class MyProfileEditFragment : Fragment() {
                 loadProfileImage(lifecycleScope, profileImage, binding.profileImage)
             }
             return@observe
+        }
+
+        viewModel.getProfileEditStatus().observe(viewLifecycleOwner) {
+            when (it) {
+                ProcessStatus.IDLE -> {
+                    binding.loadingLottie.visibility = View.GONE
+                }
+                ProcessStatus.IN_PROGRESS -> {
+                    binding.loadingLottie.visibility = View.VISIBLE
+                    binding.loadingLottie.playAnimation()
+                }
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package com.hyeeyoung.wishboard.viewmodel
 
 import android.net.Uri
 import androidx.lifecycle.*
+import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.remote.AWSS3Service
 import com.hyeeyoung.wishboard.repository.noti.NotiRepository
 import com.hyeeyoung.wishboard.repository.user.UserRepository
@@ -28,6 +29,8 @@ class MyViewModel @Inject constructor(
     private var isExistNickname = MutableLiveData<Boolean?>()
     private var isEnabledEditCompleteButton = MediatorLiveData<Boolean>()
 
+    private var profileEditStatus = MutableLiveData<ProcessStatus>()
+
     private val token = prefs?.getUserToken()
 
     init {
@@ -46,6 +49,7 @@ class MyViewModel @Inject constructor(
     }
 
     fun updateUserInfo() {
+        profileEditStatus.value = ProcessStatus.IN_PROGRESS
         if (token == null) return
         viewModelScope.launch {
             val nickname =
@@ -62,6 +66,8 @@ class MyViewModel @Inject constructor(
                 userRepository.updateUserInfo(token, nickname, profile?.name)
             isCompleteUpdateUserInfo.value = result.first
             isExistNickname.value = result.second == 409
+
+            profileEditStatus.postValue(ProcessStatus.IDLE)
 
             if (isCompleteUpdateUserInfo.value == true) {
                 setUserInfo()
@@ -131,6 +137,8 @@ class MyViewModel @Inject constructor(
     fun isExistNickname(): LiveData<Boolean?> = isExistNickname
     fun isEnabledEditCompleteButton(): LiveData<Boolean> = isEnabledEditCompleteButton
     fun getCompleteUpdateUserInfo(): LiveData<Boolean?> = isCompleteUpdateUserInfo
+
+    fun getProfileEditStatus(): LiveData<ProcessStatus> = profileEditStatus
 
     companion object {
         private const val TAG = "MyViewModel"
