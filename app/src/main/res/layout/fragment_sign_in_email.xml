@@ -14,6 +14,8 @@
 
         <import type="android.view.View" />
 
+        <import type="com.hyeeyoung.wishboard.model.common.ProcessStatus" />
+
         <import type="androidx.navigation.Navigation" />
     </data>
 
@@ -164,29 +166,43 @@
             </LinearLayout>
         </LinearLayout>
 
-        <Button
+        <TextView
+            android:id="@+id/send_mail"
             style="@style/Widget.Button.Activate.Green"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacingBase"
             android:enabled="@{viewModel.validEmailFormat == true}"
             android:onClick="@{() -> viewModel.requestVerificationMail()}"
             android:text="@string/sign_in_verification_email_send_button_text"
             android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
             android:visibility="@{viewModel.isCompletedSendMail() == false ? View.VISIBLE : View.GONE}"
-            tools:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:visibility="gone" />
 
-        <Button
+        <TextView
+            android:id="@+id/login"
             style="@style/Widget.Button.Activate.Green"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/spacingBase"
             android:enabled="@{viewModel.isEnabledVerificationCodeButton() == true}"
             android:onClick="@{() -> viewModel.signInEmail()}"
-            android:text="@string/sign_in_title"
+            android:text="@{viewModel.signProcessStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.sign_in_title)}"
             android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
+            android:visibility="@{viewModel.isCompletedSendMail() == true ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:visibility="@{viewModel.isCompletedSendMail() == true ? View.VISIBLE : View.INVISIBLE}"/>
+            tools:text="@string/sign_in_title" />
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/loading_lottie"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="@id/login"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/login"
+            app:lottie_fileName="lottie/loading_horizontal_black.json"
+            app:lottie_imageAssetsFolder="lottie"
+            app:lottie_loop="true" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

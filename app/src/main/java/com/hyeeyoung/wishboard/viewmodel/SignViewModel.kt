@@ -2,6 +2,7 @@ package com.hyeeyoung.wishboard.viewmodel
 
 import android.util.Patterns
 import androidx.lifecycle.*
+import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.repository.sign.SignRepository
 import com.hyeeyoung.wishboard.util.safeLet
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,27 +31,34 @@ class SignViewModel @Inject constructor(
     private var isCompletedSignIn = MutableLiveData<Boolean?>(null)
     private var isCompletedSendMail = MutableLiveData<Boolean?>(null)
 
+    private var signProcessStatus = MutableLiveData<ProcessStatus>()
+
     init {
         initEnabledVerificationCodeButton()
     }
 
     fun signUp() {
+        signProcessStatus.value = ProcessStatus.IN_PROGRESS
         viewModelScope.launch {
             safeLet(registrationEmail.value, registrationPassword.value) { email, password ->
                 isCompletedSignUp.value = signRepository.signUp(email, password)
+                signProcessStatus.postValue(ProcessStatus.IDLE)
             }
         }
     }
 
     fun signIn() {
+        signProcessStatus.value = ProcessStatus.IN_PROGRESS
         viewModelScope.launch {
             safeLet(loginEmail.value, loginPassword.value) { email, password ->
                 isCompletedSignIn.value = signRepository.signIn(email, password)
+                signProcessStatus.postValue(ProcessStatus.IDLE)
             }
         }
     }
 
     fun signInEmail() {
+        signProcessStatus.value = ProcessStatus.IN_PROGRESS
         if (loginEmail.value == null) return
         viewModelScope.launch {
             if (inputVerificationCode.value == verificationCode.value) {
@@ -58,10 +66,12 @@ class SignViewModel @Inject constructor(
             } else {
                 isCorrectedVerificationCode.value = false
             }
+            signProcessStatus.postValue(ProcessStatus.IDLE)
         }
     }
 
     fun requestVerificationMail() {
+        // TODO 타이머 구현
         verificationCode.value = null
         isCorrectedVerificationCode.value = null
 
@@ -77,10 +87,12 @@ class SignViewModel @Inject constructor(
     }
 
     fun checkRegisteredUser() {
+        signProcessStatus.value = ProcessStatus.IN_PROGRESS
         viewModelScope.launch {
             registrationEmail.value?.let { email ->
                 val result = signRepository.checkRegisteredUser(email)
                 setRegisteredUser(result.first, result.second)
+                signProcessStatus.postValue(ProcessStatus.IDLE)
             }
         }
     }
@@ -178,6 +190,8 @@ class SignViewModel @Inject constructor(
     fun isCompletedSendMail(): LiveData<Boolean?> = isCompletedSendMail
     fun isCorrectedVerificationCode(): LiveData<Boolean?> = isCorrectedVerificationCode
     fun isEnabledVerificationCodeButton(): LiveData<Boolean> = isEnabledVerificationCodeButton
+
+    fun getSignProcessStatus(): LiveData<ProcessStatus> = signProcessStatus
 
     companion object {
         private const val TAG = "SignViewModel"

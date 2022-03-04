@@ -9,6 +9,7 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentSignUpEmailBinding
+import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.showKeyboard
 import com.hyeeyoung.wishboard.viewmodel.SignViewModel
@@ -46,6 +47,17 @@ class SignUpEmailFragment : Fragment() {
         viewModel.isUnregisteredUser().observe(viewLifecycleOwner) { isUnregistered ->
             if (isUnregistered == true) {
                 findNavController().navigateSafe(R.id.action_email_to_password)
+            }
+        }
+        viewModel.getSignProcessStatus().observe(viewLifecycleOwner) {
+            when (it) {
+                ProcessStatus.IDLE -> {
+                    binding.loadingLottie.visibility = View.GONE
+                }
+                ProcessStatus.IN_PROGRESS -> {
+                    binding.loadingLottie.visibility = View.VISIBLE
+                    binding.loadingLottie.playAnimation()
+                }
             }
         }
     }

@@ -12,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.MainActivity
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentSignInBinding
+import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.showKeyboard
 import com.hyeeyoung.wishboard.viewmodel.SignViewModel
@@ -58,6 +59,17 @@ class SignInFragment : Fragment() {
                     // TODO 에러케이스에 따라 에러메세지 분리 및 스낵바 커스텀 필요
                     Snackbar.make(binding.signIn, getString(R.string.login_failed_snackbar_test), Snackbar.LENGTH_SHORT)
                         .show()
+                }
+            }
+        }
+        viewModel.getSignProcessStatus().observe(viewLifecycleOwner) {
+            when (it) {
+                ProcessStatus.IDLE -> {
+                    binding.loadingLottie.visibility = View.GONE
+                }
+                ProcessStatus.IN_PROGRESS -> {
+                    binding.loadingLottie.visibility = View.VISIBLE
+                    binding.loadingLottie.playAnimation()
                 }
             }
         }

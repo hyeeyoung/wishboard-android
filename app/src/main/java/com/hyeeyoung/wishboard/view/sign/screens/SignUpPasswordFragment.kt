@@ -10,6 +10,7 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.hyeeyoung.wishboard.MainActivity
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentSignUpPasswordBinding
+import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.util.showKeyboard
 import com.hyeeyoung.wishboard.viewmodel.SignViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,6 +48,17 @@ class SignUpPasswordFragment : Fragment() {
             if (isCompleted) {
                 startActivity(Intent(requireContext(), MainActivity::class.java))
                 requireActivity().finish()
+            }
+        }
+        viewModel.getSignProcessStatus().observe(viewLifecycleOwner) {
+            when (it) {
+                ProcessStatus.IDLE -> {
+                    binding.loadingLottie.visibility = View.GONE
+                }
+                ProcessStatus.IN_PROGRESS -> {
+                    binding.loadingLottie.visibility = View.VISIBLE
+                    binding.loadingLottie.playAnimation()
+                }
             }
         }
     }

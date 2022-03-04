@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.hyeeyoung.wishboard.MainActivity
 import com.hyeeyoung.wishboard.databinding.FragmentSignInEmailBinding
+import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.util.showKeyboard
 import com.hyeeyoung.wishboard.viewmodel.SignViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -48,6 +49,17 @@ class SignInEmailFragment : Fragment() {
             // 재요청 버튼 클릭 시 인증코드 EditText로 커서 이동
             if (isCompleted == true) {
                 binding.verificationCodeInput.requestFocus()
+            }
+        }
+        viewModel.getSignProcessStatus().observe(viewLifecycleOwner) {
+            when (it) {
+                ProcessStatus.IDLE -> {
+                    binding.loadingLottie.visibility = View.GONE
+                }
+                ProcessStatus.IN_PROGRESS -> {
+                    binding.loadingLottie.visibility = View.VISIBLE
+                    binding.loadingLottie.playAnimation()
+                }
             }
         }
     }
