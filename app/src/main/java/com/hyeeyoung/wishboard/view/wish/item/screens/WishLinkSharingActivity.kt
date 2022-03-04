@@ -2,6 +2,7 @@ package com.hyeeyoung.wishboard.view.wish.item.screens
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ActivityWishLinkSharingBinding
+import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.util.*
 import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -93,6 +95,17 @@ class WishLinkSharingActivity : AppCompatActivity() {
                     Toast.LENGTH_SHORT
                 ).show()
                 finish()
+            }
+        }
+        viewModel.getRegistrationStatus().observe(this) {
+            when (it) {
+                ProcessStatus.IDLE -> {
+                    binding.loadingLottie.visibility = View.GONE
+                }
+                ProcessStatus.IN_PROGRESS -> {
+                    binding.loadingLottie.visibility = View.VISIBLE
+                    binding.loadingLottie.playAnimation()
+                }
             }
         }
     }

@@ -1,10 +1,10 @@
 package com.hyeeyoung.wishboard.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.folder.FolderListViewType
 import com.hyeeyoung.wishboard.repository.folder.FolderRepository
@@ -24,10 +24,13 @@ class FolderViewModel @Inject constructor(
         FolderListAdapter(FolderListViewType.SQUARE_VIEW_TYPE)
     private var folderName = MutableLiveData<String?>()
     private var folderItem: FolderItem? = null
+
     private var isCompleteUpload = MutableLiveData<Boolean>()
     private var isCompleteDeletion = MutableLiveData<Boolean>()
     private var isExistFolderName = MutableLiveData<Boolean>()
     private var isEditMode = MutableLiveData<Boolean>()
+
+    private var folderRegistrationStatus = MutableLiveData<ProcessStatus>()
 
     fun fetchFolderList() {
         if (token == null) return
@@ -37,6 +40,7 @@ class FolderViewModel @Inject constructor(
     }
 
     fun createNewFolder() {
+        folderRegistrationStatus.value = ProcessStatus.IN_PROGRESS
         val folderName = folderName.value?.trim()
         if (token == null || folderName == null) return
         val folderInfo = FolderItem(name = folderName)
@@ -49,16 +53,19 @@ class FolderViewModel @Inject constructor(
             result.second?.let { folderId ->
                 folderListAdapter.addData(FolderItem(folderId, folderName))
             }
+            folderRegistrationStatus.postValue(ProcessStatus.IDLE)
         }
     }
 
     fun updateFolderName(folder: FolderItem?, position: Int?) {
+        folderRegistrationStatus.value = ProcessStatus.IN_PROGRESS
         val folderName = folderName.value?.trim()
         if (token == null || folder?.id == null || folderName == null) return // TODO 수정 실패 예외처리 필요
         viewModelScope.launch {
             val result = folderRepository.updateFolderName(token, folder.id, folderName)
             isCompleteUpload.value = result.first
             isExistFolderName.value = result.second == 409
+            folderRegistrationStatus.postValue(ProcessStatus.IDLE)
         }
 
         folder.name = folderName
@@ -107,6 +114,7 @@ class FolderViewModel @Inject constructor(
     fun getIsCompleteDeletion(): LiveData<Boolean> = isCompleteDeletion
     fun getIsExistFolderName(): LiveData<Boolean> = isExistFolderName
     fun getEditMode(): LiveData<Boolean> = isEditMode
+    fun getRegistrationStatus(): LiveData<ProcessStatus> = folderRegistrationStatus
 
     companion object {
         private const val TAG = "FolderViewModel"

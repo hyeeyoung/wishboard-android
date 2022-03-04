@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentWishBinding
+import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.util.ImageLoader
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
@@ -142,6 +143,18 @@ class WishBasicFragment : Fragment(), ImageLoader {
                 return@observe
             } else {
                 Glide.with(requireContext()).load(uri).into(binding.itemImage)
+            }
+        }
+
+        viewModel.getRegistrationStatus().observe(viewLifecycleOwner) {
+            when (it) {
+                ProcessStatus.IDLE -> {
+                    binding.loadingLottie.visibility = View.GONE
+                }
+                ProcessStatus.IN_PROGRESS -> {
+                    binding.loadingLottie.visibility = View.VISIBLE
+                    binding.loadingLottie.playAnimation()
+                }
             }
         }
     }

@@ -14,6 +14,8 @@
 
         <import type="androidx.navigation.Navigation" />
 
+        <import type="com.hyeeyoung.wishboard.model.common.ProcessStatus" />
+
         <import type="android.view.View" />
     </data>
 
@@ -86,17 +88,30 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <Button
+            <TextView
                 android:id="@+id/sign_in"
                 style="@style/Widget.Button.Activate.Green"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
                 android:layout_marginTop="@dimen/spacingBase"
                 android:enabled="@{viewModel.loginEmail.length() > 0 &amp;&amp; viewModel.loginPassword.length() > 0}"
                 android:onClick="@{() -> viewModel.signIn()}"
-                android:text="@string/login_btn_text"
+                android:text="@{viewModel.signProcessStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.login_btn_text)}"
                 android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/login_btn_text"/>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_lottie"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/sign_in"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/sign_in"
+                app:lottie_fileName="lottie/loading_horizontal_black.json"
+                app:lottie_imageAssetsFolder="lottie"
+                app:lottie_loop="true" />
 
             <TextView
                 android:id="@+id/forgot_your_password"

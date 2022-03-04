@@ -10,6 +10,8 @@
 
         <import type="com.hyeeyoung.wishboard.R" />
 
+        <import type="com.hyeeyoung.wishboard.model.common.ProcessStatus" />
+
         <import type="com.hyeeyoung.wishboard.util.DateFormatUtilKt" />
 
         <variable
@@ -128,24 +130,36 @@
                 android:layout_height="50dp"
                 android:layout_marginHorizontal="@dimen/spacingBase"
                 android:layout_marginTop="@dimen/spacing10"
-                android:layout_marginBottom="@dimen/spacingBase"
                 android:hint="@string/wish_list_registration_memo_hint"
                 android:inputType="text"
                 android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
                 android:textSize="@dimen/typographyBase"
-                app:layout_constraintBottom_toTopOf="@id/add"
                 app:layout_constraintTop_toBottomOf="@id/noti_info_container" />
 
-            <Button
+            <TextView
                 android:id="@+id/add"
                 style="@style/Widget.Button.Activate.Green"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/spacingBase"
+                android:layout_marginTop="@dimen/spacingBase"
                 android:enabled="@{viewModel.itemName.length() > 0 ? true : false}"
-                android:text="@string/wish_list_registration"
+                android:text="@{viewModel.registrationStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.wish_list_registration)}"
                 android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/item_memo"
+                tools:text="@string/wish_list_registration" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_lottie"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/add"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/add"
+                app:lottie_fileName="lottie/loading_horizontal_black.json"
+                app:lottie_imageAssetsFolder="lottie"
+                app:lottie_loop="true" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
