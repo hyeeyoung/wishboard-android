@@ -18,6 +18,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.folder.FolderListViewType
 import com.hyeeyoung.wishboard.model.noti.NotiType
@@ -70,6 +71,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var isVisibleNotiSettingDialog = MutableLiveData(false)
     private var isEnabledSaveButton = MediatorLiveData<Boolean>()
     private var isCompleteUpload = MutableLiveData<Boolean?>()
+    private var itemRegistrationStatus = MutableLiveData<ProcessStatus>()
 
     private val galleryImageUris = MutableLiveData<PagingData<Uri>>()
     private var selectedGalleryImageUri = MutableLiveData<Uri?>()
@@ -150,6 +152,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     }
 
     suspend fun uploadWishItemByBasics() {
+        itemRegistrationStatus.value = ProcessStatus.IN_PROGRESS
         if (token == null) return
         safeLet(itemName.value?.trim(), selectedGalleryImageUri.value) { name, imageUri ->
             withContext(Dispatchers.IO) {
@@ -170,11 +173,13 @@ class WishItemRegistrationViewModel @Inject constructor(
                 )
                 val isComplete = wishRepository.uploadWishItem(token, item)
                 isCompleteUpload.postValue(isComplete)
+                itemRegistrationStatus.postValue(ProcessStatus.IDLE)
             }
         }
     }
 
     suspend fun updateWishItem() {
+        itemRegistrationStatus.value = ProcessStatus.IN_PROGRESS
         if (itemId == null || token == null) return
         val itemName = itemName.value?.trim() ?: return // TODO 상품명 필수 입력 토스트 띄우기
 
@@ -202,6 +207,7 @@ class WishItemRegistrationViewModel @Inject constructor(
 
             val isComplete = wishRepository.updateWishItem(token, itemId!!, wishItem!!)
             isCompleteUpload.postValue(isComplete)
+            itemRegistrationStatus.postValue(ProcessStatus.IDLE)
         }
     }
 
@@ -454,6 +460,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun isEnabledSaveButton(): LiveData<Boolean> = isEnabledSaveButton
     fun isCompleteUpload(): LiveData<Boolean?> = isCompleteUpload
 
+    fun getRegistrationStatus(): LiveData<ProcessStatus> = itemRegistrationStatus
     companion object {
         private const val TAG = "WishItemRegistrationViewModel"
     }
