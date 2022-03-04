@@ -119,6 +119,8 @@
 
     <style name="Widget.Button.Activate.Green" parent="Widget.Button.Basic">
         <item name="android:background">@drawable/selector_button</item>
+        <item name="android:layout_height">@dimen/widgetHeightBase</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="Widget.Button.Basic.TextAppearance" parent="">

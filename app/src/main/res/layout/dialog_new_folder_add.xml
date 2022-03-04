@@ -10,7 +10,11 @@
             name="viewModel"
             type="com.hyeeyoung.wishboard.viewmodel.FolderViewModel" />
 
+        <import type="com.hyeeyoung.wishboard.model.common.ProcessStatus" />
+
         <import type="android.view.View" />
+
+        <import type="com.hyeeyoung.wishboard.R" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -103,17 +107,30 @@
                 app:layout_constraintStart_toStartOf="@id/folder_name"
                 app:layout_constraintTop_toBottomOf="@id/folder_name" />
 
-            <Button
+            <TextView
                 android:id="@+id/add"
                 style="@style/Widget.Button.Activate.Green"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacingBase"
                 android:enabled="@{viewModel.folderName.length() > 0}"
-                android:text="@{viewModel.editMode == true ? @string/edit : @string/add}"
+                android:text="@{viewModel.registrationStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(viewModel.editMode == true ? R.string.edit : R.string.add)}"
                 android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
                 app:layout_constraintTop_toBottomOf="@id/folder_name_detail_text"
                 tools:text="@string/add" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_lottie"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/add"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/add"
+                app:lottie_fileName="lottie/loading_horizontal_black.json"
+                app:lottie_imageAssetsFolder="lottie"
+                app:lottie_loop="true" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

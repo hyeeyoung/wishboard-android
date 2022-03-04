@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.DialogNewFolderAddBinding
+import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.viewmodel.FolderViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -74,6 +75,17 @@ class FolderAddDialogFragment : DialogFragment() {
                 }
                 Toast.makeText(requireContext(), getString(toastMessageRes), Toast.LENGTH_SHORT)
                     .show()
+            }
+        }
+        viewModel.getRegistrationStatus().observe(this) {
+            when (it) {
+                ProcessStatus.IDLE -> {
+                    binding.loadingLottie.visibility = View.GONE
+                }
+                ProcessStatus.IN_PROGRESS -> {
+                    binding.loadingLottie.visibility = View.VISIBLE
+                    binding.loadingLottie.playAnimation()
+                }
             }
         }
     }

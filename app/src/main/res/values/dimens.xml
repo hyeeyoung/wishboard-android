@@ -10,7 +10,7 @@
     <dimen name="spacingBase">16dp</dimen>
 
     <!-- Widget -->
-    <dimen name="widgetHeightBase">48dp</dimen>
+    <dimen name="widgetHeightBase">50dp</dimen>
 
     <!-- Typography -->
     <dimen name="typographyBaseDetail">12sp</dimen>
