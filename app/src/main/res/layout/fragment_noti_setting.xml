@@ -175,7 +175,7 @@
                     app:layout_constraintTop_toBottomOf="@id/type_picker" />
 
                 <TextView
-                    android:id="@+id/nori_date_title"
+                    android:id="@+id/noti_date_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing20"
@@ -204,7 +204,7 @@
                     android:layout_marginTop="@dimen/spacing10"
                     app:layout_constraintEnd_toEndOf="@id/guild_end"
                     app:layout_constraintStart_toStartOf="@id/guild_start"
-                    app:layout_constraintTop_toBottomOf="@id/nori_date_title">
+                    app:layout_constraintTop_toBottomOf="@id/noti_date_title">
 
                     <NumberPicker
                         android:id="@+id/date_picker"
@@ -256,8 +256,18 @@
                         app:layout_constraintStart_toEndOf="@id/colon" />
                 </LinearLayout>
 
+                <TextView
+                    android:id="@+id/noti_setting_guide"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacingBase"
+                    android:fontFamily="@font/suit_r"
+                    android:text="@string/item_registration_noti_setting_guide_text"
+                    android:textColor="@color/gray_300"
+                    android:textSize="@dimen/typographyBaseDetail"
+                    app:layout_constraintTop_toBottomOf="@id/noti_date_container"
+                    app:layout_constraintStart_toStartOf="@id/noti_date_title" />
             </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
