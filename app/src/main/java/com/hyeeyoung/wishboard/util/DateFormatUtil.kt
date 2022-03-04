@@ -91,3 +91,17 @@ fun convertYMDHMToHourMinute(date: Date): String {
         "${hour}시 ${minute}분"
     }
 }
+
+/** 날짜를 "yy년 M월 d일 H시 m분" 포맷으로 변경 */
+fun convertKoreanDate(date: String?): String? {
+    val inputDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
+    val inputDate: Date?
+    try {
+        inputDate = inputDateFormat.parse(date)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+        return null
+    }
+
+    return convertDateToYMD(inputDate) + " " + convertYMDHMToHourMinute(inputDate)
+}

@@ -10,10 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ActivityWishLinkSharingBinding
-import com.hyeeyoung.wishboard.util.setDatePicker
-import com.hyeeyoung.wishboard.util.setHourPicker
-import com.hyeeyoung.wishboard.util.setMinutePicker
-import com.hyeeyoung.wishboard.util.setTypePicker
+import com.hyeeyoung.wishboard.util.*
 import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -54,10 +51,12 @@ class WishLinkSharingActivity : AppCompatActivity() {
 
     private fun initializeView() {
         // 알림 유형 및 날짜 넘버피커 설정
-        setTypePicker(binding.typePicker, true)
+        setTypePicker(binding.typePicker)
         setDatePicker(binding.datePicker)
         setHourPicker(binding.hourPicker)
         setMinutePicker(binding.minutePicker)
+
+        binding.itemImage.clipToOutline = true
     }
 
     private fun addListeners() {
@@ -68,6 +67,16 @@ class WishLinkSharingActivity : AppCompatActivity() {
         }
         binding.cancel.setOnClickListener {
             finish()
+        }
+        binding.complete.setOnClickListener {
+            viewModel.setVisibilityNotiSettingDialog(false)
+            val type = getTypePickerValue(binding.typePicker.value)
+            val date = getDatePickerValue(
+                binding.datePicker.value,
+                binding.hourPicker.value,
+                binding.minutePicker.value
+            )
+            viewModel.setNotiInfo(true, type, date)
         }
     }
 

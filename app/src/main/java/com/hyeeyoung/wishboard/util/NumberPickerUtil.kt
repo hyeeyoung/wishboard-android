@@ -7,7 +7,7 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import kotlin.collections.ArrayList
 
-private var notiTypes = listOf<NotiType>()
+private var notiTypes = NotiType.values().toList()
 
 /** 현재부터 90일 후까지의 날짜 배열(MMM dd일 EEE) 생성 */
 private val dates: Array<String>
@@ -63,20 +63,7 @@ private val minutes: Array<String>
 /** 30분 단위의 알림 시간 지정 */
 const val TIME_PICKER_INTERVAL = 30
 
-fun setTypePicker(typePicker: NumberPicker, isIncludeNone: Boolean) {
-    notiTypes = if (isIncludeNone) {
-        NotiType.values().toList()
-    } else {
-        // NotiType에서 타입 추가 및 삭제 등의 변경 사항이 생길 경우 반드시 업데이트
-        listOf(
-            NotiType.RESTOCK,
-            NotiType.OPEN_DAY,
-            NotiType.PREORDER_CLOSE,
-            NotiType.SALE_START,
-            NotiType.SALE_CLOSE
-        )
-    }
-
+fun setTypePicker(typePicker: NumberPicker) {
     typePicker.apply {
         value = 0
         maxValue = notiTypes.size - 1
@@ -117,9 +104,8 @@ fun setMinutePicker(minutePicker: NumberPicker) {
 }
 
 fun getTypePickerValue(index: Int?): NotiType? {
-    val type = notiTypes[index ?: 0]
-    if (type == NotiType.NONE) return null
-    return type
+    if (index == null) return null
+    return notiTypes[index]
 }
 
 fun getDatePickerValue(dateIndex: Int?, hourIndex: Int?, minuteIndex: Int?): String {
