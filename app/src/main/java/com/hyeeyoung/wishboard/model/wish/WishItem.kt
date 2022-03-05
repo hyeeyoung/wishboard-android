@@ -15,6 +15,7 @@ data class WishItem(
     val id: Long? = null,
     @SerializedName("item_img")
     val image: String? = null,
+    var imageUrl: String? = null,
     @SerializedName("item_name")
     val name: String,
     @SerializedName("item_price")
