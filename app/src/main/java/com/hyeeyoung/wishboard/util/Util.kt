@@ -39,19 +39,6 @@ fun getTimestamp(): String {
 }
 
 /** S3에서 다운로드 받은 이미지를 ImageView에 디스플레이 */
-fun loadImage(
-    lifecycleScope: LifecycleCoroutineScope,
-    imageUrl: String,
-    imageView: ImageView
-) {
-    lifecycleScope.launch {
-        AWSS3Service().getImageUrl(imageUrl)?.let { imageUrl ->
-            Glide.with(imageView.context).load(imageUrl).into(imageView)
-        }
-    }
-}
-
-/** S3에서 다운로드 받은 이미지를 ImageView에 디스플레이 */
 fun loadProfileImage( // TODO need refactoring
     lifecycleScope: LifecycleCoroutineScope,
     imageUrl: String,
