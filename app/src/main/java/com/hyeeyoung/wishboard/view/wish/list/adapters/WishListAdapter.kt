@@ -10,14 +10,12 @@ import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.databinding.ItemWishBinding
 import com.hyeeyoung.wishboard.model.cart.CartStateType
 import com.hyeeyoung.wishboard.model.wish.WishItem
-import com.hyeeyoung.wishboard.util.ImageLoader
 
 class WishListAdapter(
     private val context: Context
 ) : ListAdapter<WishItem, RecyclerView.ViewHolder>(diffCallback) {
     private val dataSet = arrayListOf<WishItem>()
     private lateinit var listener: OnItemClickListener
-    private var imageLoader: ImageLoader? = null
 
     init {
         setHasStableIds(true)
@@ -30,10 +28,6 @@ class WishListAdapter(
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
         this.listener = listener
-    }
-
-    fun setImageLoader(imageLoader: ImageLoader) {
-        this.imageLoader = imageLoader
     }
 
     inner class ViewHolder(private val binding: ItemWishBinding) :

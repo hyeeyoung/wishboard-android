@@ -4,26 +4,22 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentFolderDetailBinding
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.wish.WishItem
-import com.hyeeyoung.wishboard.util.ImageLoader
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
-import com.hyeeyoung.wishboard.util.loadImage
 import com.hyeeyoung.wishboard.view.wish.list.adapters.WishListAdapter
 import com.hyeeyoung.wishboard.viewmodel.WishListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener, ImageLoader {
+class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener {
     private lateinit var binding: FragmentFolderDetailBinding
     private val viewModel: WishListViewModel by viewModels()
 
@@ -49,7 +45,6 @@ class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener, Im
     private fun initializeView() {
         val adapter = viewModel.getWishListAdapter()
         adapter.setOnItemClickListener(this)
-        adapter.setImageLoader(this)
         binding.wishList.adapter = adapter
         binding.wishList.layoutManager = GridLayoutManager(requireContext(), 2)
     }
@@ -66,10 +61,6 @@ class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener, Im
 
     override fun onCartBtnClick(position: Int, item: WishItem) {
         viewModel.toggleCartState(position, item)
-    }
-
-    override fun loadImage(imageUrl: String, imageView: ImageView) {
-        loadImage(lifecycleScope, imageUrl, imageView)
     }
 
     companion object {
