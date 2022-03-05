@@ -6,11 +6,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.databinding.ItemFolderHorizontalBinding
 import com.hyeeyoung.wishboard.databinding.ItemFolderSquareBinding
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.folder.FolderListViewType
-import com.hyeeyoung.wishboard.util.ImageLoader
 
 class FolderListAdapter(
     private val folderListViewType: FolderListViewType,
@@ -18,7 +18,6 @@ class FolderListAdapter(
     private val dataSet = arrayListOf<FolderItem>()
     private lateinit var listener: OnItemClickListener
     private var folderMoreDialogListener: OnFolderMoreDialogListener? = null
-    private lateinit var imageLoader: ImageLoader
     private var selectedFolderPosition: Int? = null
 
     init {
@@ -41,10 +40,6 @@ class FolderListAdapter(
         this.folderMoreDialogListener = listener
     }
 
-    fun setImageLoader(imageLoader: ImageLoader) {
-        this.imageLoader = imageLoader
-    }
-
     inner class SquareViewHolder(private val binding: ItemFolderSquareBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
@@ -52,8 +47,10 @@ class FolderListAdapter(
 
             with(binding) {
                 this.item = item
-                item.thumbnail?.let { imageLoader.loadImage(it, thumbnail) }
                 thumbnail.clipToOutline = true
+                item.thumbnailUrl?.let { url ->
+                    Glide.with(thumbnail.context).load(url).into(thumbnail)
+                }
                 container.setOnClickListener {
                     listener.onItemClick(item)
                 }
@@ -76,7 +73,9 @@ class FolderListAdapter(
                     View.INVISIBLE
                 }
                 thumbnail.clipToOutline = true
-                item.thumbnail?.let { imageLoader.loadImage(it, thumbnail) }
+                item.thumbnailUrl?.let { url ->
+                    Glide.with(thumbnail.context).load(url).into(thumbnail)
+                }
                 container.setOnClickListener {
                     selectedFolderPosition = position
                     listener.onItemClick(item)

@@ -4,12 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hyeeyoung.wishboard.R
@@ -17,9 +15,7 @@ import com.hyeeyoung.wishboard.databinding.FragmentFolderBinding
 import com.hyeeyoung.wishboard.model.common.DialogButtonReplyType
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.folder.FolderMoreDialogButtonReplyType
-import com.hyeeyoung.wishboard.util.ImageLoader
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
-import com.hyeeyoung.wishboard.util.loadImage
 import com.hyeeyoung.wishboard.view.common.screens.DialogListener
 import com.hyeeyoung.wishboard.view.common.screens.TwoButtonDialogFragment
 import com.hyeeyoung.wishboard.view.folder.adapters.FolderListAdapter
@@ -28,7 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
-    FolderListAdapter.OnFolderMoreDialogListener, ImageLoader {
+    FolderListAdapter.OnFolderMoreDialogListener {
     private lateinit var binding: FragmentFolderBinding
     private val viewModel: FolderViewModel by activityViewModels()
 
@@ -55,7 +51,6 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
         val adapter = viewModel.getFolderListAdapter()
         adapter.setOnItemClickListener(this)
         adapter.setOnFolderMoreDialogListener(this)
-        adapter.setImageLoader(this)
 
         binding.folderList.apply {
             this.adapter = adapter
@@ -94,10 +89,6 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
     /** 폴더 아이템의 더보기 버튼 클릭 시 폴더 더보기 다이얼로그 띄우기 */
     override fun onItemMoreButtonClick(position: Int, item: FolderItem) {
         showFolderMoreDialog(position, item)
-    }
-
-    override fun loadImage(imageUrl: String, imageView: ImageView) {
-        loadImage(lifecycleScope, imageUrl, imageView)
     }
 
     /** 폴더 더보기 다이얼로그 */

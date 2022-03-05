@@ -7,11 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.folder.FolderListViewType
+import com.hyeeyoung.wishboard.remote.AWSS3Service
 import com.hyeeyoung.wishboard.repository.folder.FolderRepository
 import com.hyeeyoung.wishboard.util.prefs
 import com.hyeeyoung.wishboard.view.folder.adapters.FolderListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,7 +38,18 @@ class FolderViewModel @Inject constructor(
     fun fetchFolderList() {
         if (token == null) return
         viewModelScope.launch {
-            folderListAdapter.setData(folderRepository.fetchFolderList(token) ?: return@launch)
+            var items: List<FolderItem>?
+            withContext(Dispatchers.IO){
+                items = folderRepository.fetchFolderList(token)
+                items?.forEach { item ->
+                    item.thumbnail?.let {
+                        item.thumbnailUrl = AWSS3Service().getImageUrl(it)
+                    }
+                }
+            }
+            withContext(Dispatchers.Main) {
+                folderListAdapter.setData(items?: return@withContext)
+            }
         }
     }
 
