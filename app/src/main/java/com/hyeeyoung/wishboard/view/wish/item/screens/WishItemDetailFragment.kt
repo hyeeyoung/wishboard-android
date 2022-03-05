@@ -18,6 +18,7 @@ import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentWishItemDetailBinding
 import com.hyeeyoung.wishboard.model.common.DialogButtonReplyType
 import com.hyeeyoung.wishboard.model.wish.WishItem
+import com.hyeeyoung.wishboard.remote.AWSS3Service
 import com.hyeeyoung.wishboard.util.ImageLoader
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.loadImage
@@ -25,9 +26,10 @@ import com.hyeeyoung.wishboard.view.common.screens.DialogListener
 import com.hyeeyoung.wishboard.view.common.screens.TwoButtonDialogFragment
 import com.hyeeyoung.wishboard.viewmodel.WishItemViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class WishItemDetailFragment : Fragment(), ImageLoader {
+class WishItemDetailFragment : Fragment() {
     private lateinit var binding: FragmentWishItemDetailBinding
     private val viewModel: WishItemViewModel by hiltNavGraphViewModels(R.id.wish_item_nav_graph)
     private var position: Int? = null
@@ -44,9 +46,14 @@ class WishItemDetailFragment : Fragment(), ImageLoader {
             val wishItem = it[ARG_WISH_ITEM] as? WishItem
             position = it[ARG_WISH_ITEM_POSITION] as? Int
 
-            if (wishItem != null) {
-                viewModel.setWishItem(wishItem)
-                loadImage(wishItem.image ?: return@let, binding.itemImage)
+            wishItem?.let { item ->
+                viewModel.setWishItem(item)
+
+                Glide.with(binding.itemImage).load(item.imageUrl).into(binding.itemImage)
+                binding.goToShopBtn.setOnClickListener { // TODO need refactoring
+                    if (item.url == null) return@setOnClickListener
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item.url)))
+                }
             }
         }
 
@@ -74,15 +81,6 @@ class WishItemDetailFragment : Fragment(), ImageLoader {
     }
 
     private fun addObservers() {
-        viewModel.getWishItem().observe(viewLifecycleOwner) { wishItem ->
-            if (wishItem == null) return@observe
-            binding.goToShopBtn.setOnClickListener { // TODO need refactoring
-                if (wishItem.url == null) return@setOnClickListener
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(wishItem.url)))
-            }
-            Glide.with(requireContext()).load(wishItem.image).into(binding.itemImage)
-        }
-
         viewModel.getIsCompleteDeletion().observe(viewLifecycleOwner) { isComplete ->
             if (isComplete == true) {
                 Toast.makeText(
@@ -99,10 +97,16 @@ class WishItemDetailFragment : Fragment(), ImageLoader {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<WishItem>(
             ARG_WISH_ITEM
         )?.observe(viewLifecycleOwner) { item ->
-            // TODO 이미지가 업데이트 된 경우, 해당 이미지 이름으로 S3에서 이미지 다운로드 받아야함.
-            //  매번 다운로드받기 번거롭기 때문에 다운로드 없이 이미지를 로드하는 방법을 고민하고 있음.
+            // 이미지가 업데이트 된 경우, 해당 이미지 이름으로 S3에서 이미지 다운로드 받기
+            item.image?.let { image ->
+                lifecycleScope.launch {
+                    val imageUrl = AWSS3Service().getImageUrl(image)
+                    Glide.with(binding.itemImage).load(imageUrl).into(binding.itemImage)
+                }
+            }
+
             viewModel.setWishItem(item)
-            loadImage(item.image ?: return@observe, binding.itemImage)
+            return@observe
         }
     }
 
@@ -131,10 +135,6 @@ class WishItemDetailFragment : Fragment(), ImageLoader {
             })
         }
         dialog.show(parentFragmentManager, "ItemDeleteDialog")
-    }
-
-    override fun loadImage(imageUrl: String, imageView: ImageView) {
-        loadImage(lifecycleScope, imageUrl, imageView)
     }
 
     companion object {
