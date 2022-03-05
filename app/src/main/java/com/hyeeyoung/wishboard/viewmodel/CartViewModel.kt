@@ -1,6 +1,5 @@
 package com.hyeeyoung.wishboard.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
@@ -8,11 +7,14 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.cart.CartItemButtonType
+import com.hyeeyoung.wishboard.remote.AWSS3Service
 import com.hyeeyoung.wishboard.repository.cart.CartRepository
 import com.hyeeyoung.wishboard.util.prefs
 import com.hyeeyoung.wishboard.view.cart.adapters.CartListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,9 +34,19 @@ class CartViewModel @Inject constructor(
     private fun fetchCartList() {
         if (token == null) return
         viewModelScope.launch {
-            val items = cartRepository.fetchCartList(token)
-            cartListAdapter.setData(items ?: return@launch)
-            cartList.postValue(items as? MutableList<CartItem>)
+            var items: List<CartItem>?
+            withContext(Dispatchers.IO) {
+                items = cartRepository.fetchCartList(token)
+                items?.forEach { item ->
+                    item.wishItem.image?.let {
+                        item.wishItem.imageUrl = AWSS3Service().getImageUrl(it)
+                    }
+                }
+                cartList.postValue(items as? MutableList<CartItem>)
+            }
+            withContext(Dispatchers.Main) {
+                cartListAdapter.setData(items ?: return@withContext)
+            }
         }
     }
 
