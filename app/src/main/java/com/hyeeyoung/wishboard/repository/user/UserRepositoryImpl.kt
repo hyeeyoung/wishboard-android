@@ -42,6 +42,16 @@ class UserRepositoryImpl : UserRepository {
         return Pair(response.isSuccessful, response.code())
     }
 
+    override suspend fun deleteUserAccount(userToken: String): Boolean {
+        val response = api.deleteUserAccount(userToken)
+        if (response.isSuccessful) {
+            Log.d(TAG, "사용자 탈퇴 처리 성공")
+        } else {
+            Log.e(TAG, "사용자 탈퇴 처리 실패: ${response.code()}")
+        }
+        return response.isSuccessful
+    }
+
     companion object {
         private const val TAG = "UserRepositoryImpl"
     }

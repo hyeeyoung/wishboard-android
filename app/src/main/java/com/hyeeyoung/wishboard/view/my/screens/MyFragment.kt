@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
@@ -74,6 +75,17 @@ class MyFragment : Fragment() {
             loadProfileImage(lifecycleScope, profileImage, binding.profileImage)
             return@observe
         }
+        viewModel.getCompleteDeleteUser().observe(viewLifecycleOwner) { isComplete ->
+            if (isComplete == true) {
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.my_delete_user_toast_text),
+                    Toast.LENGTH_SHORT
+                ).show()
+                startActivity(Intent(requireContext(), SignActivity::class.java))
+                requireActivity().finish()
+            }
+        }
     }
 
     private fun showLogoutDialog() {
@@ -105,7 +117,7 @@ class MyFragment : Fragment() {
             setListener(object : DialogListener {
                 override fun onButtonClicked(clicked: String) {
                     if (clicked == DialogButtonReplyType.YES.name) {
-                        // TODO not yet implemented
+                        viewModel.deleteUserAccount()
                     }
                     dismiss()
                 }

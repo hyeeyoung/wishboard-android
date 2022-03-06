@@ -26,6 +26,7 @@ class MyViewModel @Inject constructor(
     private var userProfileImageFile = MutableLiveData<File?>()
 
     private var isCompleteUpdateUserInfo = MutableLiveData<Boolean?>()
+    private var isCompleteUserDelete = MutableLiveData<Boolean?>()
     private var isExistNickname = MutableLiveData<Boolean?>()
     private var isEnabledEditCompleteButton = MediatorLiveData<Boolean>()
 
@@ -91,6 +92,14 @@ class MyViewModel @Inject constructor(
         prefs?.clearUserInfo()
     }
 
+    fun deleteUserAccount() {
+        if (token == null) return
+        viewModelScope.launch {
+            isCompleteUserDelete.postValue(userRepository.deleteUserAccount(token))
+        }
+        prefs?.clearUserInfo()
+    }
+
     fun onNicknameTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
         inputUserNickName.value = s.toString()
         isExistNickname.value = null
@@ -137,6 +146,7 @@ class MyViewModel @Inject constructor(
     fun isExistNickname(): LiveData<Boolean?> = isExistNickname
     fun isEnabledEditCompleteButton(): LiveData<Boolean> = isEnabledEditCompleteButton
     fun getCompleteUpdateUserInfo(): LiveData<Boolean?> = isCompleteUpdateUserInfo
+    fun getCompleteDeleteUser(): LiveData<Boolean?> = isCompleteUserDelete
 
     fun getProfileEditStatus(): LiveData<ProcessStatus> = profileEditStatus
 
