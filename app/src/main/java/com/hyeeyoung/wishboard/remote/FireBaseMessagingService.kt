@@ -19,21 +19,13 @@ class FireBaseMessagingService : FirebaseMessagingService() {
 
     /** 포그라운드 상태인 앱에서 알림 메시지 또는 데이터 메시지를 수신 */
     override fun onMessageReceived(msg: RemoteMessage) {
-        val title = msg.data["title"]
-        val message = msg.data["message"]
-        val itemId = msg.data["itemId"]
+        val title = msg.notification?.title
+        val body = msg.notification?.body
         if (!isTimeAutomatic(applicationContext)) {
             Log.d(TAG, "`Automatic Date and Time` is not enabled")
             return
         }
-
-        val isScheduled = msg.data["isScheduled"] != null
-        if (isScheduled) { // 예악한 상품 알림인 경우
-            val scheduledTime = msg.data["scheduledTime"]
-            scheduleAlarm(scheduledTime, title, message, itemId)
-        } else { // 예약되지 않은 바로 전송될 알림인 경우 (사용자 전체에게 공지를 발송할 경우 사용)
-            showNotification(title, message)
-        }
+        showNotification(title, body)
     }
 
     /** 푸시알림 생성 */
@@ -50,16 +42,6 @@ class FireBaseMessagingService : FirebaseMessagingService() {
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         Log.d(TAG, "Refreshed token: $token")
-    }
-
-    /** schedule 알림 설정 */
-    private fun scheduleAlarm(
-        scheduledTimeString: String?,
-        title: String?,
-        message: String?,
-        itemId: String?
-    ) {
-        // TODO not yet implemented
     }
 
     companion object {
