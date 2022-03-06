@@ -5,15 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.databinding.ItemNotiBinding
 import com.hyeeyoung.wishboard.model.noti.NotiItem
 import com.hyeeyoung.wishboard.model.noti.ReadStateType
-import com.hyeeyoung.wishboard.util.ImageLoader
 
 class NotiListAdapter : ListAdapter<NotiItem, RecyclerView.ViewHolder>(diffCallback) {
     private val dataSet = arrayListOf<NotiItem>()
     private lateinit var listener: OnItemClickListener
-    private lateinit var imageLoader: ImageLoader
 
     init {
         setHasStableIds(true)
@@ -27,18 +26,17 @@ class NotiListAdapter : ListAdapter<NotiItem, RecyclerView.ViewHolder>(diffCallb
         this.listener = listener
     }
 
-    fun setImageLoader(imageLoader: ImageLoader) {
-        this.imageLoader = imageLoader
-    }
-
     inner class ViewHolder(private val binding: ItemNotiBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             val item = dataSet[position]
             with(binding) {
                 this.item = item
-                item.itemImg?.let { imageLoader.loadImage(it, itemImage) }
+
                 itemImage.clipToOutline = true
+                item.itemImageUrl?.let {
+                    Glide.with(itemImage.context).load(it).into(itemImage)
+                }
 
                 notiContainer.setOnClickListener {
                     listener.onItemClick(position, item)

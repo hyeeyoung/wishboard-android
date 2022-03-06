@@ -6,20 +6,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.hyeeyoung.wishboard.databinding.FragmentNotiBinding
 import com.hyeeyoung.wishboard.model.noti.NotiItem
-import com.hyeeyoung.wishboard.util.ImageLoader
-import com.hyeeyoung.wishboard.util.loadImage
 import com.hyeeyoung.wishboard.view.noti.adapters.NotiListAdapter
 import com.hyeeyoung.wishboard.viewmodel.NotiViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NotiFragment : Fragment(), NotiListAdapter.OnItemClickListener, ImageLoader {
+class NotiFragment : Fragment(), NotiListAdapter.OnItemClickListener {
     private lateinit var binding: FragmentNotiBinding
     private val viewModel: NotiViewModel by viewModels()
 
@@ -43,7 +39,6 @@ class NotiFragment : Fragment(), NotiListAdapter.OnItemClickListener, ImageLoade
     private fun initializeView() {
         val adapter = viewModel.getNotiListAdapter()
         adapter.setOnItemClickListener(this)
-        adapter.setImageLoader(this)
 
         binding.notiList.apply {
             this.adapter = adapter
@@ -63,10 +58,6 @@ class NotiFragment : Fragment(), NotiListAdapter.OnItemClickListener, ImageLoade
         if (item.itemUrl == null) return
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item.itemUrl)))
         viewModel.updateNotiReadState(position, item.itemId)
-    }
-
-    override fun loadImage(imageUrl: String, imageView: ImageView) {
-        loadImage(lifecycleScope, imageUrl, imageView)
     }
 
     companion object {

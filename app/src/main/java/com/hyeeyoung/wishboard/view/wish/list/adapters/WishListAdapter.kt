@@ -9,17 +9,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.databinding.ItemWishBinding
 import com.hyeeyoung.wishboard.model.cart.CartStateType
-import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.wish.WishItem
-import com.hyeeyoung.wishboard.util.ImageLoader
-import com.hyeeyoung.wishboard.view.folder.adapters.FolderListAdapter
 
 class WishListAdapter(
     private val context: Context
 ) : ListAdapter<WishItem, RecyclerView.ViewHolder>(diffCallback) {
     private val dataSet = arrayListOf<WishItem>()
     private lateinit var listener: OnItemClickListener
-    private lateinit var imageLoader: ImageLoader
 
     init {
         setHasStableIds(true)
@@ -34,17 +30,17 @@ class WishListAdapter(
         this.listener = listener
     }
 
-    fun setImageLoader(imageLoader: ImageLoader) {
-        this.imageLoader = imageLoader
-    }
-
     inner class ViewHolder(private val binding: ItemWishBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             val item = dataSet[position]
             with(binding) {
                 this.item = item
-                item.image?.let { imageLoader.loadImage(it, itemImage) }
+
+                item.imageUrl?.let { url ->
+                    Glide.with(itemImage.context).load(url).into(itemImage)
+                }
+
                 cart.isSelected = item.cartState == CartStateType.IN_CART.numValue
 
                 container.setOnClickListener {

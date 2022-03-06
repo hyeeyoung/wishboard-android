@@ -197,7 +197,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                 id = itemId,
                 createAt = wishItem?.createAt,
                 name = itemName,
-                image = file?.name ?: wishItem?.image,
+                image = file?.name ?: wishItem?.image, // TODO imageUrl 추가
                 price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                 url = itemUrl.value,
                 memo = itemMemo.value?.trim(),
@@ -217,9 +217,18 @@ class WishItemRegistrationViewModel @Inject constructor(
     private fun fetchFolderList() {
         if (token == null) return
         viewModelScope.launch {
-            folderListAdapter.setData(
-                folderRepository.fetchFolderListSummary(token) ?: return@launch
-            )
+            var items: List<FolderItem>?
+            withContext(Dispatchers.IO){
+                items = folderRepository.fetchFolderListSummary(token)
+                items?.forEach { item ->
+                    item.thumbnail?.let {
+                        item.thumbnailUrl = AWSS3Service().getImageUrl(it)
+                    }
+                }
+            }
+            withContext(Dispatchers.Main) {
+                folderListAdapter.setData(items?: return@withContext)
+            }
         }
     }
 

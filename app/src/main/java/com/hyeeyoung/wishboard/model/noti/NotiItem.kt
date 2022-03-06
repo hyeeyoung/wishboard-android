@@ -6,7 +6,8 @@ data class NotiItem(
     @SerializedName("item_id")
     val itemId: Long,
     @SerializedName("item_img")
-    val itemImg: String? = null,
+    val itemImg: String? = null, // TODO rename itemImage
+    var itemImageUrl: String? = null,
     @SerializedName("item_name")
     val itemName: String,
     @SerializedName("item_url")

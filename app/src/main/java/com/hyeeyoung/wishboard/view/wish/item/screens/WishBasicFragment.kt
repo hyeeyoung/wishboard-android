@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -17,15 +16,13 @@ import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentWishBinding
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.model.wish.WishItem
-import com.hyeeyoung.wishboard.util.ImageLoader
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
-import com.hyeeyoung.wishboard.util.loadImage
 import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class WishBasicFragment : Fragment(), ImageLoader {
+class WishBasicFragment : Fragment() {
     private lateinit var binding: FragmentWishBinding
     private val viewModel: WishItemRegistrationViewModel by hiltNavGraphViewModels(R.id.wish_item_registration_nav_graph)
 
@@ -54,7 +51,7 @@ class WishBasicFragment : Fragment(), ImageLoader {
                 }
                 (it[ARG_WISH_ITEM] as? WishItem)?.let { item ->
                     viewModel.setWishItem(item)
-                    loadImage(item.image ?: return@let, binding.itemImage)
+                    Glide.with(binding.itemImage).load(item.imageUrl).into(binding.itemImage)
                 }
             }
         }
@@ -139,11 +136,10 @@ class WishBasicFragment : Fragment(), ImageLoader {
         }
 
         viewModel.getSelectedGalleryImageUri().observe(viewLifecycleOwner) { uri ->
-            if (uri == null) {
-                return@observe
-            } else {
+            if (uri != null) {
                 Glide.with(requireContext()).load(uri).into(binding.itemImage)
             }
+            return@observe
         }
 
         viewModel.getRegistrationStatus().observe(viewLifecycleOwner) {
@@ -166,10 +162,6 @@ class WishBasicFragment : Fragment(), ImageLoader {
                 findNavController().navigateSafe(R.id.action_wish_to_gallery_image)
             }
         }
-
-    override fun loadImage(imageUrl: String, imageView: ImageView) {
-        loadImage(lifecycleScope, imageUrl, imageView)
-    }
 
     companion object {
         private const val TAG = "WishBasicFragment"

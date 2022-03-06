@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.model.cart.CartStateType
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.wish.WishItem
+import com.hyeeyoung.wishboard.remote.AWSS3Service
 import com.hyeeyoung.wishboard.repository.cart.CartRepository
 import com.hyeeyoung.wishboard.repository.folder.FolderRepository
 import com.hyeeyoung.wishboard.repository.wish.WishRepository
@@ -35,6 +36,9 @@ class WishListViewModel @Inject constructor(
             var items: List<WishItem>?
             withContext(Dispatchers.IO) {
                 items = wishRepository.fetchWishList(token)
+                items?.forEach { item ->
+                    item.image?.let { item.imageUrl = AWSS3Service().getImageUrl(it) }
+                }
             }
             withContext(Dispatchers.Main) {
                 wishListAdapter.setData(items ?: return@withContext)
@@ -42,10 +46,19 @@ class WishListViewModel @Inject constructor(
         }
     }
 
-    fun fetchFolderItems(folderId: Long?) {
+    fun fetchFolderItems(folderId: Long?) { // TODO need refactoring
         if (token == null || folderId == null) return
         viewModelScope.launch {
-            wishListAdapter.setData(folderRepository.fetchItemsInFolder(token, folderId) ?: return@launch)
+            var items: List<WishItem>?
+            withContext(Dispatchers.IO) {
+                items = folderRepository.fetchItemsInFolder(token, folderId)
+                items?.forEach { item ->
+                    item.image?.let { item.imageUrl = AWSS3Service().getImageUrl(it) }
+                }
+            }
+            withContext(Dispatchers.Main) {
+                wishListAdapter.setData(items ?: return@withContext)
+            }
         }
     }
 
