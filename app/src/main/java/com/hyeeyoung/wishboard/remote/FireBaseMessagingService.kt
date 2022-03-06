@@ -44,16 +44,6 @@ class FireBaseMessagingService : FirebaseMessagingService() {
         Log.d(TAG, "Refreshed token: $token")
     }
 
-    /** schedule 알림 설정 */
-    private fun scheduleAlarm(
-        scheduledTimeString: String?,
-        title: String?,
-        message: String?,
-        itemId: String?
-    ) {
-        // TODO not yet implemented
-    }
-
     companion object {
         private const val TAG = "FireBaseMessagingService"
     }
