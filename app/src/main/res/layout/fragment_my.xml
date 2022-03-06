@@ -170,19 +170,6 @@
                         android:background="@color/gray_100" />
 
                     <TextView
-                        android:id="@+id/edit_password"
-                        style="@style/My.Section.SubTitle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/my_section_sub_title_edit_password"
-                        android:textAppearance="@style/My.Section.SubTitle.TextAppearance" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/gray_100" />
-
-                    <TextView
                         style="@style/My.Section.Title"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
