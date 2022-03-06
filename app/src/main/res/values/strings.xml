@@ -145,6 +145,7 @@
     <string name="my_membership_exit_dialog_title">탈퇴</string>
     <!-- TODO 워딩 수정 필요 -->
     <string name="my_membership_exit_dialog_description">정말 탈퇴 하시겠어요?</string>
+    <string name="my_delete_user_toast_text">탈퇴 완료되었습니다</string>
 
     <string name="my_profile_edit_title">프로필 수정</string>
     <string name="my_profile_edit_nickname_hint">닉네임</string>
