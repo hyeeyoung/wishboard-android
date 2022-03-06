@@ -44,11 +44,13 @@
 
             <EditText
                 android:id="@+id/item_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/typographyBase"
                 android:layout_marginTop="56dp"
                 android:background="@null"
                 android:fontFamily="@font/suit_r"
+                android:gravity="center"
                 android:hint="@string/item_name"
                 android:inputType="text"
                 android:onTextChanged="@{viewModel::onItemNameTextChanged}"
