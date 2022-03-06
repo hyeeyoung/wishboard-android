@@ -167,6 +167,11 @@ interface RemoteService {
         @Field("fcm_token") fcmToken: String?
     ): Response<RequestResult>
 
+    @PUT("user/active")
+    suspend fun deleteUserAccount(
+        @Header("Authorization") token: String,
+    ): Response<RequestResult>
+
     companion object {
         val api = Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)

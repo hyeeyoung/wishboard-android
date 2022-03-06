@@ -91,6 +91,14 @@ class MyViewModel @Inject constructor(
         prefs?.clearUserInfo()
     }
 
+    fun deleteUserAccount() {
+        if (token == null) return
+        viewModelScope.launch {
+            userRepository.deleteUserAccount(token)
+        }
+        prefs?.clearUserInfo()
+    }
+
     fun onNicknameTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
         inputUserNickName.value = s.toString()
         isExistNickname.value = null
