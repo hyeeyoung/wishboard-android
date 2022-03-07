@@ -67,8 +67,8 @@ class MyViewModel @Inject constructor(
             // DB 업로드
             val result =
                 userRepository.updateUserInfo(token, nickname, profile?.name)
-            isCompleteUpdateUserInfo.value = result.first
-            isExistNickname.value = result.second == 409
+            isCompleteUpdateUserInfo.value = result?.first
+            isExistNickname.value = result?.second == 409
 
             profileEditStatus.postValue(ProcessStatus.IDLE)
 

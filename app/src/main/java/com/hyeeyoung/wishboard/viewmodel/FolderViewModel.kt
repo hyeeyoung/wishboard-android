@@ -28,9 +28,9 @@ class FolderViewModel @Inject constructor(
     private var folderName = MutableLiveData<String?>()
     private var folderItem: FolderItem? = null
 
-    private var isCompleteUpload = MutableLiveData<Boolean>()
+    private var isCompleteUpload = MutableLiveData<Boolean?>()
     private var isCompleteDeletion = MutableLiveData<Boolean>()
-    private var isExistFolderName = MutableLiveData<Boolean>()
+    private var isExistFolderName = MutableLiveData<Boolean?>()
     private var isEditMode = MutableLiveData<Boolean>()
 
     private var folderRegistrationStatus = MutableLiveData<ProcessStatus>()
@@ -62,9 +62,9 @@ class FolderViewModel @Inject constructor(
         viewModelScope.launch {
             folderItem = folderInfo
             val result = folderRepository.createNewFolder(token, folderInfo)
-            isCompleteUpload.value = result.first.first
-            isExistFolderName.value = result.first.second == 409
-            result.second?.let { folderId ->
+            isCompleteUpload.value = result?.first?.first
+            isExistFolderName.value = result?.first?.second == 409
+            result?.second?.let { folderId ->
                 folderListAdapter.addData(FolderItem(folderId, folderName))
             }
             folderRegistrationStatus.postValue(ProcessStatus.IDLE)
@@ -77,8 +77,8 @@ class FolderViewModel @Inject constructor(
         if (token == null || folder?.id == null || folderName == null) return // TODO 수정 실패 예외처리 필요
         viewModelScope.launch {
             val result = folderRepository.updateFolderName(token, folder.id, folderName)
-            isCompleteUpload.value = result.first
-            isExistFolderName.value = result.second == 409
+            isCompleteUpload.value = result?.first
+            isExistFolderName.value = result?.second == 409
             folderRegistrationStatus.postValue(ProcessStatus.IDLE)
         }
 
@@ -124,9 +124,9 @@ class FolderViewModel @Inject constructor(
 
     fun getFolderListAdapter(): FolderListAdapter = folderListAdapter
     fun getFolderName(): LiveData<String?> = folderName
-    fun getIsCompleteUpload(): LiveData<Boolean> = isCompleteUpload
+    fun getIsCompleteUpload(): LiveData<Boolean?> = isCompleteUpload
     fun getIsCompleteDeletion(): LiveData<Boolean> = isCompleteDeletion
-    fun getIsExistFolderName(): LiveData<Boolean> = isExistFolderName
+    fun getIsExistFolderName(): LiveData<Boolean?> = isExistFolderName
     fun getEditMode(): LiveData<Boolean> = isEditMode
     fun getRegistrationStatus(): LiveData<ProcessStatus> = folderRegistrationStatus
 
