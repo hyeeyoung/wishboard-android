@@ -10,6 +10,7 @@ import com.hyeeyoung.wishboard.util.prefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.File
+import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,6 +30,7 @@ class MyViewModel @Inject constructor(
     private var isCompleteUserDelete = MutableLiveData<Boolean?>()
     private var isExistNickname = MutableLiveData<Boolean?>()
     private var isEnabledEditCompleteButton = MediatorLiveData<Boolean>()
+    private var isValidNicknameFormat = MutableLiveData<Boolean?>()
 
     private var profileEditStatus = MutableLiveData<ProcessStatus>()
 
@@ -100,8 +102,15 @@ class MyViewModel @Inject constructor(
         prefs?.clearUserInfo()
     }
 
+    private fun checkNicknameFormatValidation(nickname: String?) {
+        val nicknamePattern =
+            Pattern.compile("^[가-힣ㄱ-ㅎa-zA-Z0-9]+\$")
+        isValidNicknameFormat.value = nicknamePattern.matcher(nickname).matches() && !nickname.isNullOrEmpty()
+    }
+
     fun onNicknameTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        inputUserNickName.value = s.toString()
+        inputUserNickName.value = s.toString().trim()
+        checkNicknameFormatValidation(inputUserNickName.value)
         isExistNickname.value = null
     }
 
@@ -125,16 +134,19 @@ class MyViewModel @Inject constructor(
 
     private fun initEnabledEditCompleteButton() {
         isEnabledEditCompleteButton.addSource(inputUserNickName) { nickname ->
-            combineEnabledEditCompleteButton(nickname, userProfileImageUri.value)
+            combineEnabledEditCompleteButton(nickname, userProfileImageUri.value, isValidNicknameFormat.value)
         }
         isEnabledEditCompleteButton.addSource(userProfileImageUri) { imageUri ->
-            combineEnabledEditCompleteButton(inputUserNickName.value, imageUri)
+            combineEnabledEditCompleteButton(inputUserNickName.value, imageUri, isValidNicknameFormat.value)
+        }
+        isEnabledEditCompleteButton.addSource(isValidNicknameFormat) { isValid ->
+            combineEnabledEditCompleteButton(inputUserNickName.value, userProfileImageUri.value, isValid)
         }
     }
 
-    private fun combineEnabledEditCompleteButton(nickname: String?, imageUri: Uri?) {
+    private fun combineEnabledEditCompleteButton(nickname: String?, imageUri: Uri?, isValidNickname: Boolean?) {
         isEnabledEditCompleteButton.value =
-            !(nickname == userNickname.value && imageUri == null || nickname.isNullOrBlank())
+            !(nickname == userNickname.value && imageUri == null) && isValidNickname == true
     }
 
     fun getUserEmail(): LiveData<String?> = userEmail
@@ -147,6 +159,7 @@ class MyViewModel @Inject constructor(
     fun isEnabledEditCompleteButton(): LiveData<Boolean> = isEnabledEditCompleteButton
     fun getCompleteUpdateUserInfo(): LiveData<Boolean?> = isCompleteUpdateUserInfo
     fun getCompleteDeleteUser(): LiveData<Boolean?> = isCompleteUserDelete
+    fun isValidNicknameFormat(): LiveData<Boolean?> = isValidNicknameFormat
 
     fun getProfileEditStatus(): LiveData<ProcessStatus> = profileEditStatus
 

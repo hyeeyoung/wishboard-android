@@ -150,6 +150,7 @@
 
     <string name="my_profile_edit_title">프로필 수정</string>
     <string name="my_profile_edit_nickname_hint">닉네임</string>
+    <string name="my_nickname_condition_detail_text">닉네임은 한글, 영문, 숫자만 가능해요.</string>
     <string name="my_nickname_already_exist_toast_text">이미 사용 중인 닉네임이에요!</string>
     <string name="my_profile_edit_completion_toast_Text">프로필 수정을 완료했습니다</string>
 

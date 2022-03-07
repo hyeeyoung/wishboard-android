@@ -114,10 +114,10 @@
             style="@style/Widget.TextAppearance.Detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/my_nickname_already_exist_toast_text"
-            android:visibility="@{viewModel.isExistNickname() == true ? View.VISIBLE : View.INVISIBLE}"
+            android:text="@{viewModel.isValidNicknameFormat() == false &amp;&amp; viewModel.isValidNicknameFormat() != null ? context.getString(R.string.my_nickname_condition_detail_text) : viewModel.isExistNickname() == true ? context.getString(R.string.my_nickname_already_exist_toast_text) : ``}"
             app:layout_constraintStart_toStartOf="@id/nickname_input"
-            app:layout_constraintTop_toBottomOf="@id/nickname_input" />
+            app:layout_constraintTop_toBottomOf="@id/nickname_input"
+            tools:text="@string/my_nickname_condition_detail_text" />
 
         <TextView
             android:id="@+id/nickname_length"
