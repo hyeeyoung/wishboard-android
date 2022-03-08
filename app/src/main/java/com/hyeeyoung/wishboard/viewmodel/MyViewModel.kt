@@ -3,7 +3,7 @@ package com.hyeeyoung.wishboard.viewmodel
 import android.net.Uri
 import androidx.lifecycle.*
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
-import com.hyeeyoung.wishboard.remote.AWSS3Service
+import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.repository.noti.NotiRepository
 import com.hyeeyoung.wishboard.repository.user.UserRepository
 import com.hyeeyoung.wishboard.util.prefs

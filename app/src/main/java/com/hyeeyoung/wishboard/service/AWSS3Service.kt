@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.remote
+package com.hyeeyoung.wishboard.service
 
 import android.util.Log
 import com.amplifyframework.kotlin.core.Amplify

@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.remote
+package com.hyeeyoung.wishboard.service
 
 import android.content.Context
 import android.provider.Settings

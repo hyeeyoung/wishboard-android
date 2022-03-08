@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.remote
+package com.hyeeyoung.wishboard.service
 
 import com.hyeeyoung.wishboard.BuildConfig
 import com.hyeeyoung.wishboard.model.RequestResult

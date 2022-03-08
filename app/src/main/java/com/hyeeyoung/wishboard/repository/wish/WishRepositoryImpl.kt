@@ -2,7 +2,7 @@ package com.hyeeyoung.wishboard.repository.wish
 
 import android.util.Log
 import com.hyeeyoung.wishboard.model.wish.WishItem
-import com.hyeeyoung.wishboard.remote.RemoteService
+import com.hyeeyoung.wishboard.service.RemoteService
 
 class WishRepositoryImpl : WishRepository {
     private val api = RemoteService.api

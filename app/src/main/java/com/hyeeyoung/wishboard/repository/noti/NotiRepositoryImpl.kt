@@ -2,7 +2,7 @@ package com.hyeeyoung.wishboard.repository.noti
 
 import android.util.Log
 import com.hyeeyoung.wishboard.model.noti.NotiItem
-import com.hyeeyoung.wishboard.remote.RemoteService
+import com.hyeeyoung.wishboard.service.RemoteService
 
 class NotiRepositoryImpl : NotiRepository {
     private val api = RemoteService.api

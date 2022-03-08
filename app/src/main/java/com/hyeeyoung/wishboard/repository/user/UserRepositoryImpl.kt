@@ -2,8 +2,7 @@ package com.hyeeyoung.wishboard.repository.user
 
 import android.util.Log
 import com.hyeeyoung.wishboard.model.user.UserInfo
-import com.hyeeyoung.wishboard.remote.RemoteService
-import com.hyeeyoung.wishboard.repository.wish.WishRepositoryImpl
+import com.hyeeyoung.wishboard.service.RemoteService
 
 class UserRepositoryImpl : UserRepository {
     private val api = RemoteService.api

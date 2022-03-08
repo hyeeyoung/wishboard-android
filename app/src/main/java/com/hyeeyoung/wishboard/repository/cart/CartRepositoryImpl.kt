@@ -2,7 +2,7 @@ package com.hyeeyoung.wishboard.repository.cart
 
 import android.util.Log
 import com.hyeeyoung.wishboard.model.cart.CartItem
-import com.hyeeyoung.wishboard.remote.RemoteService
+import com.hyeeyoung.wishboard.service.RemoteService
 
 class CartRepositoryImpl : CartRepository {
     private val api = RemoteService.api

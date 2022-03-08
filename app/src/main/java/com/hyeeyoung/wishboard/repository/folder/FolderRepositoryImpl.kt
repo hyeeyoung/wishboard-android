@@ -3,7 +3,7 @@ package com.hyeeyoung.wishboard.repository.folder
 import android.util.Log
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.wish.WishItem
-import com.hyeeyoung.wishboard.remote.RemoteService
+import com.hyeeyoung.wishboard.service.RemoteService
 
 class FolderRepositoryImpl : FolderRepository {
     private val api = RemoteService.api
