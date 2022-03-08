@@ -4,6 +4,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -12,6 +13,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.ktx.Firebase
 import com.hyeeyoung.wishboard.databinding.ActivityMainBinding
+import com.hyeeyoung.wishboard.util.NetworkConnection
 import com.hyeeyoung.wishboard.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,8 +30,10 @@ class MainActivity : AppCompatActivity() {
         viewModel.initFCMToken()
 
         initializeView()
+        addObservers()
     }
 
+    // TODO delete
     private fun addDynamicLinkListener() {
         Firebase.dynamicLinks
             .getDynamicLink(intent)
@@ -64,6 +68,18 @@ class MainActivity : AppCompatActivity() {
                     -> binding.bottomNav.visibility = View.GONE
                     else -> binding.bottomNav.visibility = View.VISIBLE
                 }
+            }
+        }
+    }
+
+    private fun addObservers() {
+        NetworkConnection(this).observe(this) { isConnected ->
+            if (isConnected == false) {
+                Toast.makeText(
+                    this,
+                    getString(R.string.check_network_connection_toast_text),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
