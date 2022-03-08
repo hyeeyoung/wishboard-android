@@ -35,12 +35,12 @@ class MainActivity : AppCompatActivity() {
             binding.bottomNav.setupWithNavController(it.navController)
             it.navController.addOnDestinationChangedListener { _, destination, _ ->
                 when (destination.id) {
-                    R.id.cartFragment,
-                    R.id.wishFragment,
-                    R.id.wishItemDetailFragment,
-                    R.id.folderListFragment,
-                    R.id.galleryImageFragment,
-                    R.id.profileEditFragment
+                    R.id.cart_fragment,
+                    R.id.wish_fragment,
+                    R.id.wish_item_detail_fragment,
+                    R.id.folder_list_fragment,
+                    R.id.gallery_image_fragment,
+                    R.id.profile_edit_fragment
                     -> binding.bottomNav.visibility = View.GONE
                     else -> binding.bottomNav.visibility = View.VISIBLE
                 }

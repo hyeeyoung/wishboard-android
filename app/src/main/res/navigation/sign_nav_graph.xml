@@ -3,51 +3,51 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/sign_nav_graph"
-    app:startDestination="@id/signFragment">
+    app:startDestination="@id/sign_fragment">
 
     <fragment
-        android:id="@+id/signFragment"
+        android:id="@+id/sign_fragment"
         android:name="com.hyeeyoung.wishboard.view.sign.screens.SignFragment"
-        android:label="fragment_sign"
+        android:label="signFragment"
         tools:layout="@layout/fragment_sign">
         <action
             android:id="@+id/action_sign_to_email"
-            app:destination="@id/signUpEmailFragment" />
+            app:destination="@id/sign_up_email_fragment" />
         <action
             android:id="@+id/action_sign_to_sign_in"
-            app:destination="@id/signInFragment" />
+            app:destination="@id/sign_in_fragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/signInFragment"
+        android:id="@+id/sign_in_fragment"
         android:name="com.hyeeyoung.wishboard.view.sign.screens.SignInFragment"
-        android:label="fragment_sign_in"
+        android:label="signInFragment"
         tools:layout="@layout/fragment_sign_in">
         <action
             android:id="@+id/action_sign_in_to_sign_in_email"
-            app:destination="@id/signInEmailFragment" />
+            app:destination="@id/sign_in_email_fragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/signUpEmailFragment"
+        android:id="@+id/sign_up_email_fragment"
         android:name="com.hyeeyoung.wishboard.view.sign.screens.SignUpEmailFragment"
-        android:label="fragment_sign_up_email"
+        android:label="signInFragment"
         tools:layout="@layout/fragment_sign_up_email">
         <action
             android:id="@+id/action_email_to_password"
-            app:destination="@id/signUpPasswordFragment" />
+            app:destination="@id/sign_up_password_fragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/signInEmailFragment"
+        android:id="@+id/sign_in_email_fragment"
         android:name="com.hyeeyoung.wishboard.view.sign.screens.SignInEmailFragment"
-        android:label="fragment_sign_in_email"
+        android:label="signInFragment"
         tools:layout="@layout/fragment_sign_in_email" />
 
     <fragment
-        android:id="@+id/signUpPasswordFragment"
+        android:id="@+id/sign_up_password_fragment"
         android:name="com.hyeeyoung.wishboard.view.sign.screens.SignUpPasswordFragment"
-        android:label="fragment_sign_up_password"
+        android:label="signUpPasswordFragment"
         tools:layout="@layout/fragment_sign_up_password" />
 
 </navigation>

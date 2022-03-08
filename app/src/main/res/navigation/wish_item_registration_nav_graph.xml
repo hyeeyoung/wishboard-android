@@ -3,39 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/wish_item_registration_nav_graph"
-    app:startDestination="@id/wishFragment">
+    app:startDestination="@id/wish_fragment">
 
     <fragment
-        android:id="@+id/wishFragment"
+        android:id="@+id/wish_fragment"
         android:name="com.hyeeyoung.wishboard.view.wish.item.screens.WishBasicFragment"
-        android:label="fragment_wish"
+        android:label="wishFragment"
         tools:layout="@layout/fragment_wish">
         <action
             android:id="@+id/action_wish_to_gallery_image"
-            app:destination="@id/galleryImageFragment" />
+            app:destination="@id/gallery_image_fragment" />
         <action
             android:id="@+id/action_wish_to_folder_list"
-            app:destination="@id/folderListFragment" />
+            app:destination="@id/folder_list_fragment" />
         <action
             android:id="@+id/action_wish_to_noti_setting"
-            app:destination="@id/notiSettingFragment" />
+            app:destination="@id/noti_setting_fragment" />
     </fragment>
 
     <fragment
-        android:id="@+id/galleryImageFragment"
+        android:id="@+id/gallery_image_fragment"
         android:name="com.hyeeyoung.wishboard.view.common.screens.OldGalleryImageFragment"
         android:label="fragment_gallery_image"
         tools:layout="@layout/fragment_gallery_image"/>
 
     <fragment
-        android:id="@+id/folderListFragment"
+        android:id="@+id/folder_list_fragment"
         android:name="com.hyeeyoung.wishboard.view.folder.screens.FolderListFragment"
-        android:label="fragment_folder_list"
+        android:label="folderListFragment"
         tools:layout="@layout/fragment_folder_list"/>
 
     <fragment
-        android:id="@+id/notiSettingFragment"
+        android:id="@+id/noti_setting_fragment"
         android:name="com.hyeeyoung.wishboard.view.noti.screens.NotiSettingFragment"
-        android:label="fragment_noti_setting"
+        android:label="notiSettingFragment"
         tools:layout="@layout/fragment_noti_setting"/>
 </navigation>

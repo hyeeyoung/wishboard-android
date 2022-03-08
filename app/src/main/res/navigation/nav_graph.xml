@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/home_fragment">
 
     <include app:graph="@navigation/wish_item_nav_graph" />
     <include app:graph="@navigation/wish_item_registration_nav_graph" />
     <include app:graph="@navigation/my_nav_graph" />
 
     <fragment
-        android:id="@+id/homeFragment"
+        android:id="@+id/home_fragment"
         android:name="com.hyeeyoung.wishboard.view.wish.list.screens.HomeFragment"
-        android:label="fragment_home"
+        android:label="homeFragment"
         tools:layout="@layout/fragment_home">
         <argument
             android:name="itemId"
@@ -20,63 +20,62 @@
             app:nullable="false" />
         <action
             android:id="@+id/action_home_to_cart"
-            app:destination="@id/cartFragment" />
+            app:destination="@id/cart_fragment" />
         <action
             android:id="@+id/action_home_to_wish_item_detail"
             app:destination="@id/wish_item_nav_graph" />
     </fragment>
     <fragment
-        android:id="@+id/cartFragment"
+        android:id="@+id/cart_fragment"
         android:name="com.hyeeyoung.wishboard.view.cart.screens.CartFragment"
-        android:label="fragment_sign_up_email"
-        tools:layout="@layout/fragment_sign_up_email">
+        android:label="cartFragment"
+        tools:layout="@layout/fragment_cart">
         <action
             android:id="@+id/action_home_to_wish_item_detail"
             app:destination="@id/wish_item_nav_graph" />
     </fragment>
     <fragment
-        android:id="@+id/folderFragment"
+        android:id="@+id/folder_fragment"
         android:name="com.hyeeyoung.wishboard.view.folder.screens.FolderFragment"
-        android:label="fragment_folder"
+        android:label="folderFragment"
         tools:layout="@layout/fragment_folder">
         <action
             android:id="@+id/action_folder_to_folder_add_dialog"
-            app:destination="@id/folderAddDialog" />
+            app:destination="@id/folder_add_dialog" />
         <action
             android:id="@+id/action_folder_to_folder_more_dialog"
-            app:destination="@id/folderMoreDialog" />
+            app:destination="@id/folder_more_dialog" />
         <action
             android:id="@+id/action_folder_to_folder_detail"
-            app:destination="@id/folderDetailFragment" />
+            app:destination="@id/folder_detail_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/notiFragment"
+        android:id="@+id/noti_fragment"
         android:name="com.hyeeyoung.wishboard.view.noti.screens.NotiFragment"
-        android:label="fragment_noti"
+        android:label="notiFragment"
         tools:layout="@layout/fragment_noti">
         <action
             android:id="@+id/action_noti_to_wish_item_detail"
-            app:destination="@id/wishItemDetailFragment" />
+            app:destination="@id/wish_item_detail_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/folderDetailFragment"
+        android:id="@+id/folder_detail_fragment"
         android:name="com.hyeeyoung.wishboard.view.folder.screens.FolderDetailFragment"
-        android:label="fragment_folder_detail"
+        android:label="folderDetailFragment"
         tools:layout="@layout/fragment_folder_detail" >
         <action
             android:id="@+id/action_folder_detail_to_wish_item_detail"
             app:destination="@id/wish_item_nav_graph" />
     </fragment>
 
-    <!-- TODO id -> snake_case, label -> camelCase로 변경하기 -->
     <dialog
-        android:id="@+id/folderAddDialog"
+        android:id="@+id/folder_add_dialog"
         android:name="com.hyeeyoung.wishboard.view.folder.screens.FolderAddDialogFragment"
-        android:label="dialog_folder_add"
+        android:label="folderAddDialog"
         tools:layout="@layout/dialog_new_folder_add" />
     <dialog
-        android:id="@+id/folderMoreDialog"
+        android:id="@+id/folder_more_dialog"
         android:name="com.hyeeyoung.wishboard.view.folder.screens.FolderMoreDialogFragment"
-        android:label="dialog_folder_more"
+        android:label="folderMoreDialog"
         tools:layout="@layout/dialog_folder_more"/>
 </navigation>

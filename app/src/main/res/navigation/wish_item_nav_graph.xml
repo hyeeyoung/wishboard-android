@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/wish_item_nav_graph"
-    app:startDestination="@id/wishItemDetailFragment">
+    app:startDestination="@id/wish_item_detail_fragment">
 
     <include app:graph="@navigation/wish_item_registration_nav_graph" />
 
     <fragment
-        android:id="@+id/wishItemDetailFragment"
+        android:id="@+id/wish_item_detail_fragment"
         android:name="com.hyeeyoung.wishboard.view.wish.item.screens.WishItemDetailFragment"
-        android:label="fragment_wish_item_detail"
+        android:label="wishItemDetailFragment"
         tools:layout="@layout/fragment_wish_item_detail">
         <action
             android:id="@+id/action_detail_to_registration"
