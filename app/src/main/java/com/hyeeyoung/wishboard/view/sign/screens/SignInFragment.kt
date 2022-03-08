@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.Snackbar
-import com.hyeeyoung.wishboard.MainActivity
+import com.hyeeyoung.wishboard.view.MainActivity
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentSignInBinding
 import com.hyeeyoung.wishboard.model.common.ProcessStatus

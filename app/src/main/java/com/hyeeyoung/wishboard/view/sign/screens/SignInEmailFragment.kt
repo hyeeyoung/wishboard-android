@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.hyeeyoung.wishboard.MainActivity
+import com.hyeeyoung.wishboard.view.MainActivity
 import com.hyeeyoung.wishboard.databinding.FragmentSignInEmailBinding
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.util.showKeyboard

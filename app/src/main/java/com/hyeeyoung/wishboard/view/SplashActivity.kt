@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard
+package com.hyeeyoung.wishboard.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ActivitySplashBinding
 import com.hyeeyoung.wishboard.util.PreferenceUtil
 import com.hyeeyoung.wishboard.util.prefs

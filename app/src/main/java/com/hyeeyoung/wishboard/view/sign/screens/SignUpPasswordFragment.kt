@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
-import com.hyeeyoung.wishboard.MainActivity
+import com.hyeeyoung.wishboard.view.MainActivity
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentSignUpPasswordBinding
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
