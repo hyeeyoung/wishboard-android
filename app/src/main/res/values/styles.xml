@@ -11,7 +11,7 @@
     <style name="AppThemePopup" parent="AppTheme">
         <item name="android:windowFullscreen">false</item>
         <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:windowBackground">@color/semiTransparent</item>
+        <item name="android:windowBackground">@color/semi_transparent</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowAnimationStyle">@null</item>

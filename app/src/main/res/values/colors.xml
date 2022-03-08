@@ -5,9 +5,9 @@
     <color name="pink">#FA5DBB</color>
 
     <color name="transparent">#00000000</color>
-    <color name="semiTransparent">#0D626056</color>
-    <color name="ultraSemiTransparent">#10000000</color>
-    <color name="black_transparent_500">#38000000</color>
+    <color name="semi_transparent">#0D626056</color>
+    <color name="ultra_semi_transparent">#10000000</color>
+    <color name="black_transparent">#38000000</color>
 
     <color name="green_700">#31E864</color>
     <color name="green_500">#73F87C</color>

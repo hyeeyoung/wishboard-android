@@ -22,7 +22,7 @@
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@drawable/shape_border_radius_32"
-            android:foreground="@color/semiTransparent"
+            android:foreground="@color/semi_transparent"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
