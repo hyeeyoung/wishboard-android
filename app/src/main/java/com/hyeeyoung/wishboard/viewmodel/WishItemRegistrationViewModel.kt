@@ -184,7 +184,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                 id = itemId,
                 createAt = wishItem?.createAt,
                 name = itemName,
-                image = imageFile?.name ?: wishItem?.image,
+                image = imageFile?.name,
                 price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                 url = itemUrl.value,
                 memo = itemMemo.value?.trim(),
