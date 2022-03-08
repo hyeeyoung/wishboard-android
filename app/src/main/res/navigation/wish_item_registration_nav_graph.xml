@@ -23,9 +23,9 @@
 
     <fragment
         android:id="@+id/gallery_image_fragment"
-        android:name="com.hyeeyoung.wishboard.view.common.screens.OldGalleryImageFragment"
-        android:label="fragment_gallery_image"
-        tools:layout="@layout/fragment_gallery_image"/>
+        android:name="com.hyeeyoung.wishboard.view.common.screens.GalleryImageFragment"
+        android:label="galleryImageFragment"
+        tools:layout="@layout/fragment_gallery_image" />
 
     <fragment
         android:id="@+id/folder_list_fragment"

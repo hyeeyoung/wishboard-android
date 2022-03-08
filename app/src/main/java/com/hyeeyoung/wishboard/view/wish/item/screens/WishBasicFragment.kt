@@ -1,6 +1,7 @@
 package com.hyeeyoung.wishboard.view.wish.item.screens
 
 import android.Manifest
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,9 +18,11 @@ import com.hyeeyoung.wishboard.databinding.FragmentWishBinding
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
+import com.hyeeyoung.wishboard.util.safeLet
 import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import java.io.File
 
 @AndroidEntryPoint
 class WishBasicFragment : Fragment() {
@@ -63,15 +66,6 @@ class WishBasicFragment : Fragment() {
         return binding.root
     }
 
-    private fun init() {
-        viewModel.setSelectedGalleryImageUri(null)
-        binding.itemImage.setImageDrawable(null)
-        binding.itemName.setText("")
-        binding.itemPrice.setText("")
-        binding.itemUrl.setText("")
-        binding.itemMemo.setText("")
-    }
-
     private fun initializeView() {
         // TODO need refactoring
         binding.itemUploadTitle.text =
@@ -111,7 +105,6 @@ class WishBasicFragment : Fragment() {
         viewModel.isCompleteUpload().observe(viewLifecycleOwner) { isCompleted ->
             when (isCompleted) {
                 true -> {
-                    init()
                     val navController = findNavController()
                     if (isEditMode) {
                         Toast.makeText(
@@ -135,13 +128,6 @@ class WishBasicFragment : Fragment() {
             }
         }
 
-        viewModel.getSelectedGalleryImageUri().observe(viewLifecycleOwner) { uri ->
-            if (uri != null) {
-                Glide.with(requireContext()).load(uri).into(binding.itemImage)
-            }
-            return@observe
-        }
-
         viewModel.getRegistrationStatus().observe(viewLifecycleOwner) {
             when (it) {
                 ProcessStatus.IDLE -> {
@@ -151,6 +137,18 @@ class WishBasicFragment : Fragment() {
                     binding.loadingLottie.visibility = View.VISIBLE
                     binding.loadingLottie.playAnimation()
                 }
+            }
+        }
+
+        // 갤러리에서 선택한 이미지 전달받기
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
+            ARG_IMAGE_INFO
+        )?.observe(viewLifecycleOwner) {
+            safeLet(
+                it[ARG_IMAGE_URI] as? Uri, it[ARG_IMAGE_FILE] as? File
+            ) { imageUri, imageFile ->
+                Glide.with(requireContext()).load(imageUri).into(binding.itemImage)
+                viewModel.setSelectedGalleryImage(imageUri, imageFile)
             }
         }
     }
@@ -167,5 +165,8 @@ class WishBasicFragment : Fragment() {
         private const val TAG = "WishBasicFragment"
         private const val ARG_WISH_ITEM = "wishItem"
         private const val ARG_IS_EDIT_MODE = "isEditMode"
+        private const val ARG_IMAGE_INFO = "imageInfo"
+        private const val ARG_IMAGE_URI = "imageUri"
+        private const val ARG_IMAGE_FILE = "imageFile"
     }
 }
