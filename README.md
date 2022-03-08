@@ -37,7 +37,7 @@ PROJECT : 21.9.1 - 22.3.8 (+ iOS 개발 예정)
 
 | <img src="https://user-images.githubusercontent.com/48701368/157186833-1f852f89-1094-4d92-ba3c-de5a706ed7e1.jpg" width="60%" /> | <img src="https://user-images.githubusercontent.com/68772751/139533613-e4695172-50b5-4f12-8d39-0dd93de7b774.png" width="60%" /> |
 | --- | --- |
-| [최영진](https://github.com/youngjinc) / 안드로이드 및 디자인          | [김혜정](https://github.com/hyejungg) / 벡엔드 |
+| [최영진](https://github.com/youngjinc) / 안드로이드 및 디자인 | [김혜정](https://github.com/hyejungg) / 벡엔드 |
 
 <br>
 
@@ -234,8 +234,9 @@ PROJECT : 21.9.1 - 22.3.8 (+ iOS 개발 예정)
 <br>
 
 ## Metting Note
-[저희의 10개월 간의 발자취예요! Click ✔](https://www.notion.so/84c305675a7e43308bc8c90e94afeb9c?v=d8fbe05719154feeb03b8c234a5b861f)
+[팀 hyeeyoung의 10개월 간의 발자취예요! Click ✔](https://www.notion.so/84c305675a7e43308bc8c90e94afeb9c?v=d8fbe05719154feeb03b8c234a5b861f)
 
 <br>
 
 ## Convention
+[Git Convention과 Coding Convention이에요! Click ✔](https://www.notion.so/Android-37031c99b0d84cd5b03aa2e9197b4e96)
