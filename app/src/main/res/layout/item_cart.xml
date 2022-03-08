@@ -49,7 +49,7 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:background="@drawable/shape_border_radius_10"
-            android:foreground="@color/ultraSemiTransparent"
+            android:foreground="@color/semiTransparent"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="@id/guild_bottom"
             app:layout_constraintStart_toStartOf="@id/guild_start"
