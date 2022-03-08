@@ -1,5 +1,5 @@
 # Wishboard
-<img width="100" alt="logo" src="앱로고" align=left >
+<img width="100" alt="app_logo" src="https://user-images.githubusercontent.com/48701368/157261515-b0809692-3fc6-46eb-b4db-a0849cd557b6.svg">
 
 <br>
 <br>
