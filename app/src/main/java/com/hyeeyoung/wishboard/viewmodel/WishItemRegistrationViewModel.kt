@@ -1,38 +1,27 @@
 package com.hyeeyoung.wishboard.viewmodel
 
 import android.app.Application
-import android.content.ContentResolver
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
-import android.os.Environment
 import android.widget.NumberPicker
 import androidx.core.text.isDigitsOnly
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.MediatorLiveData
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
+import androidx.lifecycle.*
 import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.folder.FolderListViewType
 import com.hyeeyoung.wishboard.model.noti.NotiType
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.remote.AWSS3Service
-import com.hyeeyoung.wishboard.repository.common.GalleryPagingDataSource
-import com.hyeeyoung.wishboard.repository.common.GalleryRepository
 import com.hyeeyoung.wishboard.repository.folder.FolderRepository
 import com.hyeeyoung.wishboard.repository.wish.WishRepository
-import com.hyeeyoung.wishboard.util.*
+import com.hyeeyoung.wishboard.util.getTimestamp
+import com.hyeeyoung.wishboard.util.prefs
+import com.hyeeyoung.wishboard.util.safeLet
 import com.hyeeyoung.wishboard.view.folder.adapters.FolderListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.jsoup.Jsoup
@@ -49,7 +38,6 @@ import javax.inject.Inject
 class WishItemRegistrationViewModel @Inject constructor(
     private val application: Application,
     private val wishRepository: WishRepository,
-    private val galleryRepository: GalleryRepository,
     private val folderRepository: FolderRepository,
 ) : ViewModel() {
     private var wishItem: WishItem? = null
@@ -159,13 +147,13 @@ class WishItemRegistrationViewModel @Inject constructor(
         if (token == null) return
         safeLet(itemName.value?.trim(), selectedGalleryImageUri.value) { name, imageUri ->
             withContext(Dispatchers.IO) {
-                val file = imageFile ?: copyImageToInternalStorage(imageUri) ?: return@withContext
-                val isSuccessful = AWSS3Service().uploadFile(file.name, file)
+                if (imageFile == null) return@withContext
+                val isSuccessful = AWSS3Service().uploadFile(imageFile!!.name, imageFile!!)
                 if (!isSuccessful) return@withContext
 
                 val item = WishItem(
                     name = name,
-                    image = file.name,
+                    image = imageFile?.name,
                     price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                     url = itemUrl.value,
                     memo = itemMemo.value?.trim(),
@@ -184,20 +172,19 @@ class WishItemRegistrationViewModel @Inject constructor(
     suspend fun updateWishItem() {
         itemRegistrationStatus.value = ProcessStatus.IN_PROGRESS
         if (itemId == null || token == null) return
-        val itemName = itemName.value?.trim() ?: return // TODO 상품명 필수 입력 토스트 띄우기
+        val itemName = itemName.value?.trim() ?: return
 
         withContext(Dispatchers.IO) {
-            val file = imageFile ?: copyImageToInternalStorage(selectedGalleryImageUri.value)
-            file?.let {
+            imageFile?.let {
                 val isSuccessful = AWSS3Service().uploadFile(it.name, it)
                 if (!isSuccessful) return@withContext
             }
 
-            wishItem = WishItem( // TODO 수정된 folder, noti 데이터로 초기화
+            wishItem = WishItem(
                 id = itemId,
                 createAt = wishItem?.createAt,
                 name = itemName,
-                image = file?.name ?: wishItem?.image, // TODO imageUrl 추가
+                image = imageFile?.name,
                 price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                 url = itemUrl.value,
                 memo = itemMemo.value?.trim(),
@@ -218,7 +205,7 @@ class WishItemRegistrationViewModel @Inject constructor(
         if (token == null) return
         viewModelScope.launch {
             var items: List<FolderItem>?
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 items = folderRepository.fetchFolderListSummary(token)
                 items?.forEach { item ->
                     item.thumbnail?.let {
@@ -227,31 +214,9 @@ class WishItemRegistrationViewModel @Inject constructor(
                 }
             }
             withContext(Dispatchers.Main) {
-                folderListAdapter.setData(items?: return@withContext)
+                folderListAdapter.setData(items ?: return@withContext)
             }
         }
-    }
-
-    fun fetchGalleryImageUris(contentResolver: ContentResolver) {
-        viewModelScope.launch {
-            Pager(PagingConfig(pageSize = 10)) {
-                GalleryPagingDataSource(contentResolver, galleryRepository)
-            }.flow.cachedIn(viewModelScope)
-                .collect { images ->
-                    galleryImageUris.postValue(images)
-                }
-        }
-    }
-
-    fun createCameraImageFile(): File? {
-        val file = File(application.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "wishtem")
-        if (!file.exists()) {
-            file.mkdirs()
-        }
-
-        val fileName = makePhotoFileName()
-        imageFile = File(file.absoluteFile, fileName)
-        return imageFile
     }
 
     /** 이미지 파일명 생성하는 함수로 해당 함수 호출 전 반드시 token null 체크해야함 */
@@ -287,29 +252,6 @@ class WishItemRegistrationViewModel @Inject constructor(
             fileStream.close()
         } catch (e: Exception) {
             e.printStackTrace()
-            return null
-        }
-        return file
-    }
-
-    /** 갤러리 이미지를 내부저장소에 복사 */
-    private fun copyImageToInternalStorage(uri: Uri?): File? {
-        if (uri == null) return null
-        val fileName = makePhotoFileName()
-        val file = File(application.cacheDir, fileName)
-
-        try {
-            val inputStream = application.contentResolver.openInputStream(uri) ?: return null
-            val outputStream: OutputStream = FileOutputStream(file)
-            val buf = ByteArray(1024)
-            var len: Int
-            while (inputStream.read(buf).also { len = it } > 0) {
-                outputStream.write(buf, 0, len)
-            }
-            file.deleteOnExit()
-            outputStream.close()
-            inputStream.close()
-        } catch (ignore: IOException) {
             return null
         }
         return file
@@ -429,8 +371,9 @@ class WishItemRegistrationViewModel @Inject constructor(
         itemUrl.value = url
     }
 
-    fun setSelectedGalleryImageUri(imageUri: Uri?) {
+    fun setSelectedGalleryImage(imageUri: Uri, imageFile: File) {
         selectedGalleryImageUri.value = imageUri
+        this.imageFile = imageFile
     }
 
     fun setCompletedUpload(isCompleted: Boolean?) {
@@ -462,7 +405,6 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun getNotiHourVal(): LiveData<Int?> = notiHourVal
     fun getNotiMinuteVal(): LiveData<Int?> = notiMinuteVal
 
-    fun getGalleryImageUris(): LiveData<PagingData<Uri>?> = galleryImageUris
     fun getSelectedGalleryImageUri(): LiveData<Uri?> = selectedGalleryImageUri
     fun getWishItem(): WishItem? = wishItem
 
