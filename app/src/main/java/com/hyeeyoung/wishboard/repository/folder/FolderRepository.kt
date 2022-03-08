@@ -11,13 +11,13 @@ interface FolderRepository {
     suspend fun createNewFolder(
         token: String,
         folderItemInfo: FolderItem
-    ): Pair<Pair<Boolean, Int>, Long?>
+    ): Pair<Pair<Boolean, Int>, Long?>?
 
     /** [return type] first : isSuccessful, second : responseCode */
     suspend fun updateFolderName(
         token: String,
         folderId: Long,
         folderName: String
-    ): Pair<Boolean, Int>
+    ): Pair<Boolean, Int>?
     suspend fun deleteFolder(token: String, folderId: Long): Boolean
 }

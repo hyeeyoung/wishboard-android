@@ -79,9 +79,9 @@ class SignViewModel @Inject constructor(
             loginEmail.value?.let { email ->
                 val result = signRepository.requestVerificationMail(email)
 
-                isUnregisteredUser.value = result.second == 404
-                isCompletedSendMail.value = result.first.first
-                result.first.second?.let { code -> verificationCode.value = code }
+                isUnregisteredUser.value = result?.second == 404
+                isCompletedSendMail.value = result?.first?.first
+                result?.first?.second?.let { code -> verificationCode.value = code }
             }
         }
     }
@@ -91,7 +91,9 @@ class SignViewModel @Inject constructor(
         viewModelScope.launch {
             registrationEmail.value?.let { email ->
                 val result = signRepository.checkRegisteredUser(email)
-                setRegisteredUser(result.first, result.second)
+                safeLet(result?.first, result?.second) { isSuccessful, resultCode ->
+                    setRegisteredUser(isSuccessful, resultCode)
+                }
                 signProcessStatus.postValue(ProcessStatus.IDLE)
             }
         }
