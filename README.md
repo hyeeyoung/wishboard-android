@@ -1,5 +1,5 @@
 # Wishboard
-<img src="앱로고" align=left width=100>
+<img width="100" alt="logo" src="앱로고" align=left >
 
 <br>
 <br>
@@ -43,7 +43,7 @@ PROJECT : 21.9.1 - 22.3.8 (+ iOS 개발 예정)
 
 ## User Flow
 
-![userflow]()
+<img width="1200" alt="userflow" src="https://user-images.githubusercontent.com/48701368/157239273-7ded387e-4204-486f-ad4c-de0a61e18a60.png">
 
 <br>
 
