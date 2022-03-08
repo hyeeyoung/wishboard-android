@@ -1,16 +1,14 @@
 # Wishboard
-<img width="100" alt="app_logo" src="https://user-images.githubusercontent.com/48701368/157261515-b0809692-3fc6-46eb-b4db-a0849cd557b6.svg">
+<img width="150" alt="app_logo" src="https://user-images.githubusercontent.com/48701368/157261515-b0809692-3fc6-46eb-b4db-a0849cd557b6.svg">
 
 <br>
-<br>
-
-![썸네일]()
 
 __위시리스트 통합관리 앱, 위시보드(Wishboard)__
 
-TEAM : Hyeeyoung
+Timeline: 21.9.1 - 22.3.8 (+ iOS 개발 예정)
 
-PROJECT : 21.9.1 - 22.3.8 (+ iOS 개발 예정)
+TEAM: Hyeeyoung
+
 <br>
 
 ## Contents
@@ -27,9 +25,13 @@ PROJECT : 21.9.1 - 22.3.8 (+ iOS 개발 예정)
 <br>
 
 ## About Wishboard
+![썸네일]()
+
 화면 캡처나 페이지 즐겨찾기, 카톡 나에게 보내기는 이제 그만! Wishboard로 간편하게 위시리스트를 통합 관리해 보세요😉
 
-여러 쇼핑몰 플랫폼에 흩어져있는 갖고 싶은 아이템들, 링크 공유로 Wishboard에 아이템을 저장합니다. 저장 시 아이템의 재입고 날짜, 프리오더 날짜와 같이 상품 일정을 설정하면 알림을 보내줍니다. 구매할 아이템은 장바구니에 담아서 최종 결제 금액도 예상해보고, 폴더로 아이템을 보기 쉽게 정리할 수 있습니다!
+여러 쇼핑몰 플랫폼에 흩어져있는 아이템들, 사고 싶은 아이템을 링크 공유로 Wishboard에 저장합니다. 저장 시 아이템의 재입고 날짜, 프리오더 날짜와 같이 상품 일정을 설정하면 알림을 보내줍니다. 
+
+구매할 아이템은 장바구니에 담아서 최종 결제 금액을 예상해보고, 폴더로 아이템을 보기 쉽게 정리할 수 있습니다!
 
 <br>
 
@@ -37,7 +39,7 @@ PROJECT : 21.9.1 - 22.3.8 (+ iOS 개발 예정)
 
 | <img src="https://user-images.githubusercontent.com/48701368/157186833-1f852f89-1094-4d92-ba3c-de5a706ed7e1.jpg" width="60%" /> | <img src="https://user-images.githubusercontent.com/68772751/139533613-e4695172-50b5-4f12-8d39-0dd93de7b774.png" width="60%" /> |
 | --- | --- |
-| [최영진](https://github.com/youngjinc) / 안드로이드 및 디자인 | [김혜정](https://github.com/hyejungg) / 벡엔드 |
+| [최영진](https://github.com/youngjinc) / Android & Design | [김혜정](https://github.com/hyejungg) / Server |
 
 <br>
 
@@ -88,7 +90,7 @@ PROJECT : 21.9.1 - 22.3.8 (+ iOS 개발 예정)
 | `item` | 아이템 업로드 - 링크 공유 뷰 | [@youngjinc](https://github.com/youngjinc) |
 | `item` | 아이템 업로드 - 일반 뷰 | [@youngjinc](https://github.com/youngjinc) |
 | `item`, `my` | 커스텀 갤러리 뷰 | [@youngjinc](https://github.com/youngjinc) |
-| `cart` | 장바구니 뷰 | [@hyejungg](https://github.com/hyejungg), [@youngjinc](https://github.com/youngjinc) |
+| `cart` | 장바구니 뷰 | [@youngjinc](https://github.com/youngjinc), [@hyejungg](https://github.com/hyejungg) |
 | `folder` | 폴더 뷰 | [@youngjinc](https://github.com/youngjinc) |
 | `folder` | 폴더 디테일 뷰 | [@youngjinc](https://github.com/youngjinc) |
 | `noti` | 알림 뷰 | [@youngjinc](https://github.com/youngjinc) |
@@ -161,6 +163,7 @@ PROJECT : 21.9.1 - 22.3.8 (+ iOS 개발 예정)
 ┃ ┃ ┣ 📜NavController.kt
 ┃ ┣ 📜BindingAdapters.kt
 ┃ ┣ 📜DateFormatUtil.kt
+┃ ┣ 📜DialogListener.kt
 ┃ ┣ 📜NetworkConnection.kt
 ┃ ┣ 📜NotificationUtil.kt
 ┃ ┣ 📜NumberPickerUtil.kt
@@ -233,10 +236,12 @@ PROJECT : 21.9.1 - 22.3.8 (+ iOS 개발 예정)
 ```
 <br>
 
-## Metting Note
+## Meeting Note
 [팀 hyeeyoung의 10개월 간의 발자취예요! Click ✔](https://www.notion.so/84c305675a7e43308bc8c90e94afeb9c?v=d8fbe05719154feeb03b8c234a5b861f)
 
 <br>
 
 ## Convention
-[Git Convention과 Coding Convention이에요! Click ✔](https://www.notion.so/Android-37031c99b0d84cd5b03aa2e9197b4e96)
+[Git Convention 바로가기 Click ✔](https://www.notion.so/Git-fcda833780394a6bb658e1473d480d2f)
+
+[Code Convention 바로가기 Click ✔](https://www.notion.so/Android-37031c99b0d84cd5b03aa2e9197b4e96)
