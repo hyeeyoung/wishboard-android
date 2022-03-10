@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
@@ -17,6 +18,7 @@ import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentWishBinding
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.model.wish.WishItem
+import com.hyeeyoung.wishboard.model.wish.WishItemStatus
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.safeLet
 import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
@@ -105,25 +107,21 @@ class WishBasicFragment : Fragment() {
         viewModel.isCompleteUpload().observe(viewLifecycleOwner) { isCompleted ->
             when (isCompleted) {
                 true -> {
-                    val navController = findNavController()
                     if (isEditMode) {
                         Toast.makeText(
                             context,
                             getString(R.string.wish_item_update_toast_text),
                             Toast.LENGTH_SHORT
                         ).show()
-                        // 아이템 수정 성공한 경우, 상세조회 UI 업데이트를 위해 변경된 아이템 정보를 DetailFragment로 전달
-                        navController.previousBackStackEntry?.savedStateHandle?.set(
-                            ARG_WISH_ITEM, viewModel.getWishItem()
-                        )
+                        moveToPrevious(WishItemStatus.MODIFIED, viewModel.getWishItem())
                     } else {
                         Toast.makeText(
                             context,
                             getString(R.string.wish_item_upload_toast_text),
                             Toast.LENGTH_SHORT
                         ).show()
+                        moveToPrevious(WishItemStatus.ADDED, null)
                     }
-                    navController.popBackStack()
                 }
             }
         }
@@ -153,6 +151,17 @@ class WishBasicFragment : Fragment() {
         }
     }
 
+    /** 아이템 추가 또는 수정에 성공한 경우, UI 업데이트를 위해 변경된 아이템 정보를 이전 프래그먼트로 전달 */
+    private fun moveToPrevious(itemStatus: WishItemStatus, wishItem: WishItem?) {
+        val navController = findNavController()
+        navController.previousBackStackEntry?.savedStateHandle?.set(
+            ARG_WISH_ITEM_INFO, bundleOf(
+            ARG_ITEM_STATUS to itemStatus,
+            ARG_WISH_ITEM to wishItem,
+        ))
+        navController.popBackStack()
+    }
+
     private val requestStorage =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) {
@@ -168,5 +177,7 @@ class WishBasicFragment : Fragment() {
         private const val ARG_IMAGE_INFO = "imageInfo"
         private const val ARG_IMAGE_URI = "imageUri"
         private const val ARG_IMAGE_FILE = "imageFile"
+        private const val ARG_ITEM_STATUS = "itemStatus"
+        private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
     }
 }

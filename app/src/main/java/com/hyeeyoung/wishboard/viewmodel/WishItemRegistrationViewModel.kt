@@ -150,9 +150,9 @@ class WishItemRegistrationViewModel @Inject constructor(
                 val isSuccessful = AWSS3Service().uploadFile(imageFile!!.name, imageFile!!)
                 if (!isSuccessful) return@withContext
 
-                val item = WishItem(
+                wishItem = WishItem(
                     name = name,
-                    image = imageFile?.name,
+                    image = imageFile!!.name,
                     price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                     url = itemUrl.value,
                     memo = itemMemo.value?.trim(),
@@ -161,7 +161,8 @@ class WishItemRegistrationViewModel @Inject constructor(
                     notiType = notiType.value,
                     notiDate = notiDate.value
                 )
-                val isComplete = wishRepository.uploadWishItem(token, item)
+
+                val isComplete = wishRepository.uploadWishItem(token, wishItem!!)
                 isCompleteUpload.postValue(isComplete)
                 itemRegistrationStatus.postValue(ProcessStatus.IDLE)
             }
@@ -183,7 +184,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                 id = itemId,
                 createAt = wishItem?.createAt,
                 name = itemName,
-                image = imageFile?.name,
+                image = imageFile?.name ?: wishItem?.image,
                 price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                 url = itemUrl.value,
                 memo = itemMemo.value?.trim(),

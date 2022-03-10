@@ -46,6 +46,22 @@ class WishListViewModel @Inject constructor(
         }
     }
 
+    fun fetchLatestItem() { // TODO 가장 최근에 등록된 아이템 가져오기
+        if (token == null) return
+        viewModelScope.launch {
+            var items: List<WishItem>?
+            withContext(Dispatchers.IO) {
+                items = wishRepository.fetchWishList(token)
+                items?.forEach { item ->
+                    item.image?.let { item.imageUrl = AWSS3Service().getImageUrl(it) }
+                }
+            }
+            withContext(Dispatchers.Main) {
+                wishListAdapter.insertData(items?.get(0) ?: return@withContext)
+            }
+        }
+    }
+
     fun fetchFolderItems(folderId: Long?) { // TODO need refactoring
         if (token == null || folderId == null) return
         viewModelScope.launch {
@@ -87,6 +103,14 @@ class WishListViewModel @Inject constructor(
         } else {
             CartStateType.IN_CART.numValue
         }
+    }
+
+    fun insertWishItem(wishItem: WishItem) {
+        wishListAdapter.insertData(wishItem)
+    }
+
+    fun updateWishItem(position: Int, wishItem: WishItem) {
+        wishListAdapter.updateData(position, wishItem)
     }
 
     fun deleteWishItem(position: Int, wishItem: WishItem) {
