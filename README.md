@@ -5,7 +5,7 @@
 
 __위시리스트 통합관리 앱, 위시보드(Wishboard)__
 
-Timeline: 21.9.1 - 22.3.8 (+ iOS 개발 예정)
+Timeline: 21.9.26 - 22.3.8 (+ iOS 개발 예정)
 
 TEAM: Hyeeyoung
 
@@ -25,7 +25,7 @@ TEAM: Hyeeyoung
 <br>
 
 ## About Wishboard
-![썸네일]()
+<img width="1200" alt="thumbnail" src="https://user-images.githubusercontent.com/48701368/157662866-afc6bc95-4c7c-41d0-aab9-385aeb129cec.png">
 
 화면 캡처나 페이지 즐겨찾기, 카톡 나에게 보내기는 이제 그만! Wishboard로 간편하게 위시리스트를 통합 관리해 보세요😉
 
@@ -37,7 +37,7 @@ TEAM: Hyeeyoung
 
 ## Contributors
 
-| <img src="https://user-images.githubusercontent.com/48701368/157186833-1f852f89-1094-4d92-ba3c-de5a706ed7e1.jpg" width="60%" /> | <img src="https://user-images.githubusercontent.com/68772751/139533613-e4695172-50b5-4f12-8d39-0dd93de7b774.png" width="60%" /> |
+|<img src="https://user-images.githubusercontent.com/48701368/157186833-1f852f89-1094-4d92-ba3c-de5a706ed7e1.jpg" width="60%" /> | <img src="https://user-images.githubusercontent.com/68772751/139533613-e4695172-50b5-4f12-8d39-0dd93de7b774.png" width="60%" /> |
 | --- | --- |
 | [최영진](https://github.com/youngjinc) / Android & Design | [김혜정](https://github.com/hyejungg) / Server |
 
@@ -80,24 +80,27 @@ TEAM: Hyeeyoung
 
 ## Feature
 
-| 분류 | 기능 | 담당자 |
+| 분류 | 기능 | 진척도 |
 | --- | --- | --- |
-| `auth` | 회원가입 뷰 | [@youngjinc](https://github.com/youngjinc) |
-| `auth` | 로그인 뷰 | [@youngjinc](https://github.com/youngjinc) |
-| `auth` | 이메일 인증 | [@youngjinc](https://github.com/youngjinc) |
-| `item` | 홈 뷰 | [@youngjinc](https://github.com/youngjinc)| 
-| `item` | 아이템 디테일 뷰 | [@youngjinc](https://github.com/youngjinc)| 
-| `item` | 아이템 업로드 - 링크 공유 뷰 | [@youngjinc](https://github.com/youngjinc) |
-| `item` | 아이템 업로드 - 일반 뷰 | [@youngjinc](https://github.com/youngjinc) |
-| `item`, `my` | 커스텀 갤러리 뷰 | [@youngjinc](https://github.com/youngjinc) |
-| `cart` | 장바구니 뷰 | [@youngjinc](https://github.com/youngjinc), [@hyejungg](https://github.com/hyejungg) |
-| `folder` | 폴더 뷰 | [@youngjinc](https://github.com/youngjinc) |
-| `folder` | 폴더 디테일 뷰 | [@youngjinc](https://github.com/youngjinc) |
-| `noti` | 알림 뷰 | [@youngjinc](https://github.com/youngjinc) |
-| `noti` | 알림 설정 뷰 | [@youngjinc](https://github.com/youngjinc) |
-| `noti` | 푸시 알림 | [@youngjinc](https://github.com/youngjinc) |
-| `my` | 마이페이지 뷰 | [@youngjinc](https://github.com/youngjinc) |
-| `my` | 프로필 설정뷰 뷰 | [@youngjinc](https://github.com/youngjinc) |
+| `auth` | 회원가입 뷰 | ✔️ |
+| `auth` | 로그인 뷰 | ✔️ |
+| `auth` | 이메일 인증 | ✔️ |
+| `item` | 홈 뷰 | ✔️ | 
+| `item` | 아이템 디테일 뷰 | ✔️ | 
+| `item` | 아이템 업로드 - 링크 공유 뷰 | ✔️ |
+| `item` | 아이템 업로드 - 일반 뷰 | ✔️ |
+| `item`, `my` | 커스텀 갤러리 뷰 | ✔️ |
+| `search` | 검색 뷰 | 배포 이후 |
+| `cart` | 장바구니 뷰 | ✔️ |
+| `cart` | 장바구니 공유 뷰 | 배포 이후 |
+| `folder` | 폴더 뷰 | ✔️ |
+| `folder` | 폴더 디테일 뷰 | ✔️ |
+| `noti` | 알림 뷰 | ✔️ |
+| `noti` | 알림 설정 뷰 | ✔️ |
+| `noti` | 푸시 알림 | ✔️ |
+| `noti` | 캘린더 뷰 | 배포 이후 |
+| `my` | 마이페이지 뷰 | ✔️ |
+| `my` | 프로필 설정뷰 뷰 | ✔️ |
 
 <br>
 
@@ -237,7 +240,7 @@ TEAM: Hyeeyoung
 <br>
 
 ## Meeting Note
-[팀 hyeeyoung의 10개월 간의 발자취예요! Click ✔](https://www.notion.so/84c305675a7e43308bc8c90e94afeb9c?v=d8fbe05719154feeb03b8c234a5b861f)
+[hyeeyoung의 10개월 간의 발자취예요! Click ✔](https://www.notion.so/84c305675a7e43308bc8c90e94afeb9c?v=d8fbe05719154feeb03b8c234a5b861f)
 
 <br>
 
