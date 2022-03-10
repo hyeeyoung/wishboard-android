@@ -46,18 +46,16 @@ class WishListViewModel @Inject constructor(
         }
     }
 
-    fun fetchLatestItem() { // TODO 가장 최근에 등록된 아이템 가져오기
+    fun fetchLatestItem() {
         if (token == null) return
         viewModelScope.launch {
-            var items: List<WishItem>?
+            var item: WishItem? = null
             withContext(Dispatchers.IO) {
-                items = wishRepository.fetchWishList(token)
-                items?.forEach { item ->
-                    item.image?.let { item.imageUrl = AWSS3Service().getImageUrl(it) }
-                }
+                item = wishRepository.fetchLatestWishItem(token) ?: return@withContext
+                item!!.image?.let { item!!.imageUrl = AWSS3Service().getImageUrl(it) }
             }
             withContext(Dispatchers.Main) {
-                wishListAdapter.insertData(items?.get(0) ?: return@withContext)
+                insertWishItem(item ?: return@withContext)
             }
         }
     }

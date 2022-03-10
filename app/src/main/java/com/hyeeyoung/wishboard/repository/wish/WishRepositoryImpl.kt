@@ -22,6 +22,21 @@ class WishRepositoryImpl : WishRepository {
         }
     }
 
+    override suspend fun fetchLatestWishItem(token: String): WishItem? {
+        try {
+            val response = api.fetchLatestWishItem(token) ?: return null
+            if (response.isSuccessful) {
+                Log.d(TAG, "가장 최근 등록된 아이템 가져오기 성공")
+            } else {
+                Log.e(TAG, "가장 최근 등록된 아이템 가져오기 실패: ${response.code()}")
+            }
+            return response.body()?.get(0)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
+    }
+
     override suspend fun uploadWishItem(token: String, wishItem: WishItem): Boolean {
         try {
             val response = api.uploadWishItem(token, wishItem)

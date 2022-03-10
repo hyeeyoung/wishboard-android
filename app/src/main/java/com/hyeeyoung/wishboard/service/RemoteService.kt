@@ -49,6 +49,9 @@ interface RemoteService {
     @GET("item")
     suspend fun fetchWishList(@Header("Authorization") token: String): Response<List<WishItem>>?
 
+    @GET("item/latest")
+    suspend fun fetchLatestWishItem(@Header("Authorization") token: String): Response<List<WishItem>>?
+
     @POST("item")
     suspend fun uploadWishItem(
         @Header("Authorization") token: String,
