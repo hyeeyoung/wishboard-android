@@ -74,6 +74,11 @@ class WishListAdapter(
 
     override fun getItemId(position: Int): Long = position.toLong()
 
+    fun insertData(wishItem: WishItem) {
+        dataSet.add(0, wishItem)
+        notifyItemInserted(0)
+    }
+
     /** 아이템 정보(타이틀 및 가격 등)수정, cart 포함 여부 수정에 사용 */
     fun updateData(position: Int, wishItem: WishItem) {
         dataSet[position] = wishItem

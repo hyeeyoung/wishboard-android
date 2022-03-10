@@ -33,7 +33,6 @@
             <ImageButton
                 android:id="@+id/back"
                 style="@style/Widget.Button.Icon.Navigation"
-                android:onClick="@{(v) -> Navigation.findNavController(v).popBackStack()}"
                 android:src="@drawable/ic_back"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

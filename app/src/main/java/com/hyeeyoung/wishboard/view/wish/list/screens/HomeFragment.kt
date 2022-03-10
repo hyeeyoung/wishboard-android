@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentHomeBinding
 import com.hyeeyoung.wishboard.model.wish.WishItem
+import com.hyeeyoung.wishboard.model.wish.WishItemStatus
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
-import com.hyeeyoung.wishboard.util.safeLet
 import com.hyeeyoung.wishboard.view.wish.list.adapters.WishListAdapter
 import com.hyeeyoung.wishboard.viewmodel.WishListViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -67,11 +67,20 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
             ARG_WISH_ITEM_INFO
         )?.observe(viewLifecycleOwner) {
-            safeLet(
-                it[ARG_WISH_ITEM_POSITION] as? Int,
-                it[ARG_WISH_ITEM] as? WishItem
-            ) { position, withITem ->
-                viewModel.deleteWishItem(position, withITem)
+            (it[ARG_ITEM_STATUS] as? WishItemStatus)?.let { status ->
+                val position = it[ARG_WISH_ITEM_POSITION] as? Int
+                val item = it[ARG_WISH_ITEM] as? WishItem
+                when (status) {
+                    WishItemStatus.MODIFIED -> {
+                        viewModel.updateWishItem(position ?: return@let, item ?: return@let)
+                    }
+                    WishItemStatus.DELETED -> {
+                        viewModel.deleteWishItem(position ?: return@let, item ?: return@let)
+                    }
+                    WishItemStatus.ADDED -> {
+                        viewModel.fetchLatestItem()
+                    }
+                }
             }
         }
     }
@@ -95,5 +104,6 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
         private const val ARG_WISH_ITEM = "wishItem"
         private const val ARG_WISH_ITEM_POSITION = "position"
         private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
+        private const val ARG_ITEM_STATUS = "itemStatus"
     }
 }
