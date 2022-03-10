@@ -31,6 +31,7 @@ class MyViewModel @Inject constructor(
     private var isExistNickname = MutableLiveData<Boolean?>()
     private var isEnabledEditCompleteButton = MediatorLiveData<Boolean>()
     private var isValidNicknameFormat = MutableLiveData<Boolean?>()
+    private var pushState = MutableLiveData<Boolean?>()
 
     private var profileEditStatus = MutableLiveData<ProcessStatus>()
 
@@ -47,6 +48,7 @@ class MyViewModel @Inject constructor(
                 userEmail.value = it?.email ?: prefs?.getUserEmail()
                 userNickname.value = it?.nickname ?: prefs?.getUserNickName()
                 userProfileImage.value = it?.profileImage
+                pushState.value = convertIntToBooleanPushState(it?.pushState)
             }
         }
     }
@@ -78,11 +80,11 @@ class MyViewModel @Inject constructor(
         }
     }
 
-    fun updatePushNotiSettings(isChecked: Boolean) {
-        if (token == null) return
-        prefs?.setCheckedPushNoti(isChecked)
+    fun updatePushNotiSettings() {
+        if (token == null || pushState.value == null) return
+        pushState.value = !pushState.value!!
         viewModelScope.launch {
-            notiRepository.updatePushNotiSettings(token, isChecked)
+            notiRepository.updatePushNotiSettings(token, pushState.value!!)
         }
     }
 
@@ -100,6 +102,15 @@ class MyViewModel @Inject constructor(
             isCompleteUserDelete.postValue(userRepository.deleteUserAccount(token))
         }
         prefs?.clearUserInfo()
+    }
+
+    /** 서버에서 전달받은 push_state 값은 Int타입으로, 알림 스위치 on/off를 위해 Boolean타입으로 변경 */
+    private fun convertIntToBooleanPushState(pushState: Int?): Boolean? {
+        return when(pushState) {
+            0 -> false
+            1 -> true
+            else -> null
+        }
     }
 
     private fun checkNicknameFormatValidation(nickname: String?) {
@@ -152,6 +163,7 @@ class MyViewModel @Inject constructor(
     fun getUserEmail(): LiveData<String?> = userEmail
     fun getUserNickname(): LiveData<String?> = userNickname
     fun getUserProfileImage(): LiveData<String?> = userProfileImage
+    fun getPushState(): LiveData<Boolean?> = pushState
 
     fun getInputUserNickname(): LiveData<String?> = inputUserNickName
     fun getUserProfileImageUri(): LiveData<Uri?> = userProfileImageUri
