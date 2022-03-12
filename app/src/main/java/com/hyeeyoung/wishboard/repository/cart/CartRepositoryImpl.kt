@@ -22,7 +22,7 @@ class CartRepositoryImpl : CartRepository {
         }
     }
 
-    override suspend fun updateCartInfo(token: String, item: CartItem): Boolean {
+    override suspend fun updateCartItemCount(token: String, item: CartItem): Boolean {
         try {
             if (item.wishItem.id == null) return false
             val response = api.updateToCart(token, item.wishItem.id, item.cartItemInfo.count)

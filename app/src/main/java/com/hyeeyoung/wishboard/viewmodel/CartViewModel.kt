@@ -73,14 +73,14 @@ class CartViewModel @Inject constructor(
                     it.cartItemInfo.count -= 1
                 }
             }
-            updateCartInfo(item, position)
+            updateCartItemCount(item, position)
         }
     }
 
-    private fun updateCartInfo(item: CartItem, position: Int) {
+    private fun updateCartItemCount(item: CartItem, position: Int) {
         if (token == null) return
         viewModelScope.launch {
-            val isSuccessful = cartRepository.updateCartInfo(token, item)
+            val isSuccessful = cartRepository.updateCartItemCount(token, item)
             if (!isSuccessful) return@launch // TODO 장바구니 업데이트 실패 시 예외 처리 필요
 
             cartListAdapter.updateItem(position, item)
