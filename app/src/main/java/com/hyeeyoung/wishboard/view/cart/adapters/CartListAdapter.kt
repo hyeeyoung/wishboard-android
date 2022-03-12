@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.databinding.ItemCartBinding
 import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.cart.CartItemButtonType
+import com.hyeeyoung.wishboard.model.wish.WishItem
 
 class CartListAdapter : ListAdapter<CartItem, RecyclerView.ViewHolder>(diffCallback) {
     private val dataSet = arrayListOf<CartItem>()
@@ -92,6 +93,11 @@ class CartListAdapter : ListAdapter<CartItem, RecyclerView.ViewHolder>(diffCallb
     //TODO 해당 코드 확인 필요
     fun updateItem(position: Int, cartItem: CartItem) {
         dataSet[position] = cartItem
+        notifyItemChanged(position)
+    }
+
+    fun updateItem(position: Int, wishItem: WishItem) {
+        dataSet[position].wishItem = wishItem
         notifyItemChanged(position)
     }
 

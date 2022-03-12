@@ -7,6 +7,7 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.cart.CartItemButtonType
+import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.repository.cart.CartRepository
 import com.hyeeyoung.wishboard.util.prefs
@@ -86,6 +87,18 @@ class CartViewModel @Inject constructor(
             cartListAdapter.updateItem(position, item)
             cartList.postValue(cartListAdapter.getData() as? MutableList<CartItem>)
         }
+    }
+
+    /** 장바구니에서 아이템 수정할 경우 ui 업데이트 */
+    fun updateCartItem(position: Int, item: WishItem) {
+        cartListAdapter.updateItem(position, item)
+        cartList.postValue(cartListAdapter.getData() as? MutableList<CartItem>)
+    }
+
+    /** 장바구니에서 아이템 삭제할 경우 ui 업데이트 */
+    fun deleteCartItem(position: Int) {
+        cartListAdapter.removeItem(position)
+        cartList.postValue(cartListAdapter.getData() as? MutableList<CartItem>)
     }
 
     private fun calculateTotalPrice() {

@@ -12,6 +12,8 @@ import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentCartBinding
 import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.cart.CartItemButtonType
+import com.hyeeyoung.wishboard.model.wish.WishItem
+import com.hyeeyoung.wishboard.model.wish.WishItemStatus
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.view.cart.adapters.CartListAdapter
 import com.hyeeyoung.wishboard.viewmodel.CartViewModel
@@ -31,6 +33,7 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
         binding.lifecycleOwner = this@CartFragment
 
         initializeView()
+        addObservers()
 
         return binding.root
     }
@@ -51,7 +54,10 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
             CartItemButtonType.VIEW_TYPE_CONTAINER -> {
                 findNavController().navigateSafe(
                     R.id.action_home_to_wish_item_detail,
-                    bundleOf(ARG_WISH_ITEM to item.wishItem)
+                    bundleOf(
+                        ARG_WISH_ITEM_POSITION to position,
+                        ARG_WISH_ITEM to item.wishItem
+                    )
                 )
             }
             CartItemButtonType.VIEW_TYPE_DELETION -> {
@@ -63,8 +69,32 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
         }
     }
 
+    private fun addObservers() {
+        // 상세조회에서 아이템 수정 및 삭제 후 장바구니 복귀했을 때 해당 아이템 정보를 전달받고, ui를 업데이트
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
+            ARG_WISH_ITEM_INFO
+        )?.observe(viewLifecycleOwner) {
+            (it[ARG_ITEM_STATUS] as? WishItemStatus)?.let { status ->
+                val position = it[ARG_WISH_ITEM_POSITION] as? Int
+                val item = it[ARG_WISH_ITEM] as? WishItem
+                when (status) {
+                    WishItemStatus.MODIFIED -> {
+                        viewModel.updateCartItem(position ?: return@let, item ?: return@let)
+                    }
+                    WishItemStatus.DELETED -> {
+                        viewModel.deleteCartItem(position ?: return@let)
+                    }
+                }
+                return@observe
+            }
+        }
+    }
+
     companion object {
         private const val TAG = "CartFragment"
         const val ARG_WISH_ITEM = "wishItem"
+        private const val ARG_WISH_ITEM_POSITION = "position"
+        private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
+        private const val ARG_ITEM_STATUS = "itemStatus"
     }
 }
