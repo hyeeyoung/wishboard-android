@@ -13,6 +13,7 @@ import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentFolderDetailBinding
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.wish.WishItem
+import com.hyeeyoung.wishboard.model.wish.WishItemStatus
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.view.wish.list.adapters.WishListAdapter
 import com.hyeeyoung.wishboard.viewmodel.WishListViewModel
@@ -23,6 +24,16 @@ class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener {
     private lateinit var binding: FragmentFolderDetailBinding
     private val viewModel: WishListViewModel by viewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            (it[ARG_FOLDER_ITEM] as? FolderItem)?.let { folder ->
+                viewModel.setFolderItem(folder)
+                viewModel.fetchFolderItems(folder.id)
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,14 +41,8 @@ class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener {
         binding = FragmentFolderDetailBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
 
-        arguments?.let {
-            (it[ARG_FOLDER_ITEM] as? FolderItem)?.let { folder ->
-                viewModel.setFolderItem(folder)
-                viewModel.fetchFolderItems(folder.id)
-            }
-        }
-
         initializeView()
+        addObservers()
 
         return binding.root
     }
@@ -47,6 +52,27 @@ class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener {
         adapter.setOnItemClickListener(this)
         binding.wishList.adapter = adapter
         binding.wishList.layoutManager = GridLayoutManager(requireContext(), 2)
+    }
+
+    private fun addObservers() {
+        // 상세조회에서 아이템 수정 및 삭제 후 폴더 디테일로 복귀했을 때 해당 아이템 정보를 전달받고, ui를 업데이트
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
+            ARG_WISH_ITEM_INFO
+        )?.observe(viewLifecycleOwner) {
+            (it[ARG_ITEM_STATUS] as? WishItemStatus)?.let { status ->
+                val position = it[ARG_WISH_ITEM_POSITION] as? Int
+                val item = it[ARG_WISH_ITEM] as? WishItem
+                when (status) {
+                    WishItemStatus.MODIFIED -> {
+                        viewModel.updateWishItem(position ?: return@let, item ?: return@let)
+                    }
+                    WishItemStatus.DELETED -> {
+                        viewModel.deleteWishItem(position ?: return@let, item ?: return@let)
+                    }
+                }
+                return@observe
+            }
+        }
     }
 
     override fun onItemClick(position: Int, item: WishItem) {
@@ -64,9 +90,11 @@ class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener {
     }
 
     companion object {
-        private const val TAG = "WishItemDetailFragment"
+        private const val TAG = "FolderItemDetailFragment"
+        private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
         private const val ARG_FOLDER_ITEM = "folderItem"
         private const val ARG_WISH_ITEM_POSITION = "position"
         private const val ARG_WISH_ITEM = "wishItem"
+        private const val ARG_ITEM_STATUS = "itemStatus"
     }
 }
