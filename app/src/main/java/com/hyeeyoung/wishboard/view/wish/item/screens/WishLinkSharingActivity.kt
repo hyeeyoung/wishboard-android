@@ -110,13 +110,12 @@ class WishLinkSharingActivity : AppCompatActivity() {
         }
 
         NetworkConnection(this).observe(this) { isConnected ->
-            if (isConnected == false) {
-                Toast.makeText(
-                    this,
-                    getString(R.string.check_network_connection_toast_text),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+            binding.networkView.visibility =
+                if (isConnected == true) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
         }
     }
 

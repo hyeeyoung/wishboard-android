@@ -2,7 +2,6 @@ package com.hyeeyoung.wishboard.view
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -51,13 +50,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun addObservers() {
         NetworkConnection(this).observe(this) { isConnected ->
-            if (isConnected == false) {
-                Toast.makeText(
-                    this,
-                    getString(R.string.check_network_connection_toast_text),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+            binding.networkView.visibility =
+                if (isConnected == true) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
         }
     }
 

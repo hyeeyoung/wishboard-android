@@ -15,7 +15,7 @@
     <string name="count">개</string>
     <string name="delete">삭제</string>
     <string name="close">닫기</string>
-    <string name="check_network_connection_toast_text">네트워크 연결 상태를 확인해 주세요</string>
+    <string name="check_network_connection_detail">네트워크 연결 상태를 확인해 주세요</string>
 
     <!-- Format -->
     <string name="time_a_moment_ago">방금 전</string>
