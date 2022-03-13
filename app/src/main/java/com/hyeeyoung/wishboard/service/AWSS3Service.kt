@@ -29,6 +29,15 @@ class AWSS3Service {
         }
     }
 
+    suspend fun removeImageUrl(fileName: String) {
+        try {
+            val result = Amplify.Storage.remove(fileName)
+            Log.d(TAG, "Successfully removed ${result.key}")
+        } catch (error: StorageException) {
+            Log.e(TAG, "Remove failure", error)
+        }
+    }
+
     companion object {
         private const val TAG = "AwsS3Service"
     }
