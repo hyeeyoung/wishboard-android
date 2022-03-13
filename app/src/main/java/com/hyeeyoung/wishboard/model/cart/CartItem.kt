@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 import com.hyeeyoung.wishboard.model.wish.WishItem
 
 data class CartItem(
-    val wishItem: WishItem,
+    var wishItem: WishItem,
     val cartItemInfo: CartItemInfo,
 ) {
     data class CartItemInfo(
