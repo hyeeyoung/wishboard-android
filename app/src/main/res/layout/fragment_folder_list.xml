@@ -6,7 +6,13 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="androidx.navigation.Navigation" />
+
+        <variable
+            name="viewModel"
+            type="com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -46,6 +52,18 @@
             android:layout_height="0.5dp"
             android:background="@color/gray_100"
             app:layout_constraintTop_toTopOf="@id/folder_list" />
+
+        <TextView
+            style="@style/Widget.TextAppearance.NoItemView.Detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/folder_no_item_view"
+            android:visibility="@{viewModel.folderListAdapter.itemCount > 0 ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/folder_list"
+            tools:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/folder_list"

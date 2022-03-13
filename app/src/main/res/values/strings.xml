@@ -53,10 +53,14 @@
     <string name="sign_in_verification_email_resend_button_text">재요청</string>
     <string name="sign_up_complete">가입하기</string>
 
+    <!-- Home -->
+    <string name="home_no_item_view">앗, 아이템이 없어요!\n갖고 싶은 아이템을 등록해보세요!</string>
+
     <!-- Cart -->
     <string name="cart_title">장바구니</string>
     <string name="won">원</string>
     <string name="cart">Cart</string>
+    <string name="cart_no_item_view">앗, 장바구니가 비어있어요!\n구매할 아이템을 장바구니에 담아보세요!</string>
 
     <!-- Folder -->
     <string name="folder">폴더</string>
@@ -76,6 +80,8 @@
     <string name="folder_delete">폴더 삭제</string>
     <string name="folder_name_edit">폴더명 수정</string>
     <string name="folder_item_count_format">%d 아이템</string>
+    <string name="folder_no_item_view">앗, 폴더가 없어요!\n폴더를 추가해서 아이템을 정리해 보세요!</string>
+    <string name="folder_detail_no_item_view">앗, 아이템이 없어요!\n폴더에 아이템을 담아보세요!</string>
 
     <!-- Item Registration -->
     <string name="wish_basic_item_add_title">아이템 추가</string>
@@ -125,6 +131,8 @@
     <string name="preorder_close">프리오더 마감</string>
     <string name="sale_start">세일 시작</string>
     <string name="sale_close">세일 마감</string>
+
+    <string name="noti_no_item_view">앗, 알림이 없어요!\n상품 일정을 지정하고 알림을 받아보세요!</string>
 
     <!-- My -->
     <string name="my_title">마이페이지</string>

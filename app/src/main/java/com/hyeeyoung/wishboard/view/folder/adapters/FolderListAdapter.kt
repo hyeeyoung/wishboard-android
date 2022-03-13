@@ -113,6 +113,8 @@ class FolderListAdapter(
         }
     }
 
+    fun getData(): List<FolderItem> = dataSet
+
     override fun getItemCount(): Int = dataSet.size
 
     override fun getItemId(position: Int): Long = position.toLong()
@@ -132,9 +134,9 @@ class FolderListAdapter(
         notifyItemRemoved(position)
     }
 
-    fun setData(items: List<FolderItem>) {
+    fun setData(items: List<FolderItem>?) {
         dataSet.clear()
-        dataSet.addAll(items)
+        items?.let { dataSet.addAll(it) }
         notifyDataSetChanged()
     }
 

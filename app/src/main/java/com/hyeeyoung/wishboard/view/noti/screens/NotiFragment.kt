@@ -29,6 +29,8 @@ class NotiFragment : Fragment(), NotiListAdapter.OnItemClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentNotiBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this@NotiFragment
 
         initializeView()
         addListeners()

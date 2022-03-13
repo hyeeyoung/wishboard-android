@@ -23,7 +23,7 @@ class CartViewModel @Inject constructor(
     private val cartRepository: CartRepository,
 ) : ViewModel() {
     private val token = prefs?.getUserToken()
-    private val cartList = MutableLiveData<MutableList<CartItem>>(mutableListOf())
+    private val cartList = MutableLiveData<List<CartItem>?>(listOf())
     private val cartListAdapter = CartListAdapter()
     private var totalPrice = MediatorLiveData<Int>()
 
@@ -43,7 +43,7 @@ class CartViewModel @Inject constructor(
                         item.wishItem.imageUrl = AWSS3Service().getImageUrl(it)
                     }
                 }
-                cartList.postValue(items as? MutableList<CartItem>)
+                cartList.postValue(items)
             }
             withContext(Dispatchers.Main) {
                 cartListAdapter.setData(items ?: return@withContext)
@@ -58,7 +58,7 @@ class CartViewModel @Inject constructor(
             if (!isSuccessful) return@launch
 
             cartListAdapter.removeItem(position)
-            cartList.postValue(cartListAdapter.getData() as? MutableList<CartItem>)
+            cartList.postValue(cartListAdapter.getData())
         }
     }
 
@@ -85,20 +85,20 @@ class CartViewModel @Inject constructor(
             if (!isSuccessful) return@launch // TODO 장바구니 업데이트 실패 시 예외 처리 필요
 
             cartListAdapter.updateItem(position, item)
-            cartList.postValue(cartListAdapter.getData() as? MutableList<CartItem>)
+            cartList.postValue(cartListAdapter.getData())
         }
     }
 
     /** 장바구니에서 아이템 수정할 경우 ui 업데이트 */
     fun updateCartItem(position: Int, item: WishItem) {
         cartListAdapter.updateItem(position, item)
-        cartList.postValue(cartListAdapter.getData() as? MutableList<CartItem>)
+        cartList.postValue(cartListAdapter.getData())
     }
 
     /** 장바구니에서 아이템 삭제할 경우 ui 업데이트 */
     fun deleteCartItem(position: Int) {
         cartListAdapter.removeItem(position)
-        cartList.postValue(cartListAdapter.getData() as? MutableList<CartItem>)
+        cartList.postValue(cartListAdapter.getData())
     }
 
     private fun calculateTotalPrice() {
@@ -109,7 +109,7 @@ class CartViewModel @Inject constructor(
         }
     }
 
-    fun getCartList(): LiveData<MutableList<CartItem>?> = cartList
+    fun getCartList(): LiveData<List<CartItem>?> = cartList
     fun getCartListAdapter(): CartListAdapter = cartListAdapter
     fun getTotalPrice(): LiveData<Int> = totalPrice
 

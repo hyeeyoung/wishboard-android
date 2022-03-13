@@ -70,9 +70,9 @@ class NotiListAdapter : ListAdapter<NotiItem, RecyclerView.ViewHolder>(diffCallb
         notifyItemChanged(position)
     }
 
-    fun setData(items: List<NotiItem>) {
+    fun setData(items: List<NotiItem>?) {
         dataSet.clear()
-        dataSet.addAll(items)
+        items?.let { dataSet.addAll(it) }
         notifyDataSetChanged()
     }
 

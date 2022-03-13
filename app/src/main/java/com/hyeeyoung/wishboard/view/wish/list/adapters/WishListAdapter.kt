@@ -1,6 +1,5 @@
 package com.hyeeyoung.wishboard.view.wish.list.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -11,9 +10,7 @@ import com.hyeeyoung.wishboard.databinding.ItemWishBinding
 import com.hyeeyoung.wishboard.model.cart.CartStateType
 import com.hyeeyoung.wishboard.model.wish.WishItem
 
-class WishListAdapter(
-    private val context: Context
-) : ListAdapter<WishItem, RecyclerView.ViewHolder>(diffCallback) {
+class WishListAdapter : ListAdapter<WishItem, RecyclerView.ViewHolder>(diffCallback) {
     private val dataSet = arrayListOf<WishItem>()
     private lateinit var listener: OnItemClickListener
 
@@ -70,6 +67,8 @@ class WishListAdapter(
         }
     }
 
+    fun getData(): List<WishItem> = dataSet
+
     override fun getItemCount(): Int = dataSet.size
 
     override fun getItemId(position: Int): Long = position.toLong()
@@ -90,9 +89,9 @@ class WishListAdapter(
         notifyItemRemoved(position)
     }
 
-    fun setData(items: List<WishItem>) {
+    fun setData(items: List<WishItem>?) {
         dataSet.clear()
-        dataSet.addAll(items)
+        items?.let { dataSet.addAll(it) }
         notifyDataSetChanged()
     }
 

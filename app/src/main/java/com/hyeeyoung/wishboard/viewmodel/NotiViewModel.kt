@@ -1,5 +1,7 @@
 package com.hyeeyoung.wishboard.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.model.noti.NotiItem
@@ -19,6 +21,7 @@ class NotiViewModel @Inject constructor(
 ) : ViewModel() {
     private val token = prefs?.getUserToken()
 
+    private var notiList = MutableLiveData<List<NotiItem>?>(listOf())
     private val notiListAdapter = NotiListAdapter()
 
     fun fetchNotiList() {
@@ -32,7 +35,8 @@ class NotiViewModel @Inject constructor(
                 }
             }
             withContext(Dispatchers.Main) {
-                notiListAdapter.setData(items ?: return@withContext)
+                notiList.postValue(items)
+                notiListAdapter.setData(items)
             }
         }
     }
@@ -45,6 +49,7 @@ class NotiViewModel @Inject constructor(
         }
     }
 
+    fun getNotiList(): LiveData<List<NotiItem>?> = notiList
     fun getNotiListAdapter(): NotiListAdapter = notiListAdapter
 
     companion object {

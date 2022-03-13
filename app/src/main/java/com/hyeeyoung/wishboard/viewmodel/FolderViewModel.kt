@@ -23,6 +23,7 @@ class FolderViewModel @Inject constructor(
 ) : ViewModel() {
     private val token = prefs?.getUserToken()
 
+    private val folderList = MutableLiveData<List<FolderItem>?>(listOf())
     private val folderListAdapter =
         FolderListAdapter(FolderListViewType.SQUARE_VIEW_TYPE)
     private var folderName = MutableLiveData<String?>()
@@ -48,7 +49,8 @@ class FolderViewModel @Inject constructor(
                 }
             }
             withContext(Dispatchers.Main) {
-                folderListAdapter.setData(items?: return@withContext)
+                folderList.postValue(items)
+                folderListAdapter.setData(items)
             }
         }
     }
@@ -65,7 +67,9 @@ class FolderViewModel @Inject constructor(
             isCompleteUpload.value = result?.first?.first
             isExistFolderName.value = result?.first?.second == 409
             result?.second?.let { folderId ->
-                folderListAdapter.addData(FolderItem(folderId, folderName))
+                val folder = FolderItem(folderId, folderName)
+                folderListAdapter.addData(folder)
+                folderList.postValue(folderListAdapter.getData())
             }
             folderRegistrationStatus.postValue(ProcessStatus.IDLE)
         }
@@ -92,6 +96,7 @@ class FolderViewModel @Inject constructor(
             isCompleteDeletion.value = folderRepository.deleteFolder(token, folder.id)
         }
         folderListAdapter.deleteData(position ?: return, folder)
+        folderList.value = folderListAdapter.getData()
     }
 
     fun onFolderNameTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -122,6 +127,7 @@ class FolderViewModel @Inject constructor(
         isEditMode.value = isEditable
     }
 
+    fun getFolderList(): LiveData<List<FolderItem>?> = folderList
     fun getFolderListAdapter(): FolderListAdapter = folderListAdapter
     fun getFolderName(): LiveData<String?> = folderName
     fun getIsCompleteUpload(): LiveData<Boolean?> = isCompleteUpload
