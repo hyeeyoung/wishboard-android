@@ -33,6 +33,8 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this@HomeFragment
 
         initializeView()
         addListeners()

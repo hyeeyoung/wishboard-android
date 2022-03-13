@@ -156,6 +156,14 @@
         <item name="android:layout_marginTop">@dimen/spacing5</item>
     </style>
 
+    <style name="Widget.TextAppearance.NoItemView.Detail" parent="">
+        <item name="android:gravity">center</item>
+        <item name="android:lineSpacingExtra">@dimen/spacingMicro</item>
+        <item name="android:textColor">@color/gray_200</item>
+        <item name="android:textSize">@dimen/typographyBase</item>
+        <item name="fontFamily">@font/suit_r</item>
+    </style>
+
     <!-- TODO need refacotring -->
     <style name="Widget.EditText.Input" parent="Widget.MaterialComponents.TextView">
         <item name="android:background">@android:color/transparent</item>

@@ -1,8 +1,9 @@
 package com.hyeeyoung.wishboard.viewmodel
 
-import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.LiveData
 import com.hyeeyoung.wishboard.model.cart.CartStateType
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.wish.WishItem
@@ -20,14 +21,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WishListViewModel @Inject constructor(
-    private val application: Application,
     private val wishRepository: WishRepository,
     private val cartRepository: CartRepository,
     private val folderRepository: FolderRepository,
 ) : ViewModel() {
     private val token = prefs?.getUserToken()
 
-    private val wishListAdapter = WishListAdapter(application)
+    private val wishList = MutableLiveData<List<WishItem>?>(listOf())
+    private val wishListAdapter = WishListAdapter()
     private var folderItem: FolderItem? = null
 
     fun fetchWishList() {
@@ -41,7 +42,8 @@ class WishListViewModel @Inject constructor(
                 }
             }
             withContext(Dispatchers.Main) {
-                wishListAdapter.setData(items ?: return@withContext)
+                wishList.postValue(items)
+                wishListAdapter.setData(items)
             }
         }
     }
@@ -71,7 +73,8 @@ class WishListViewModel @Inject constructor(
                 }
             }
             withContext(Dispatchers.Main) {
-                wishListAdapter.setData(items ?: return@withContext)
+                wishList.postValue(items)
+                wishListAdapter.setData(items)
             }
         }
     }
@@ -103,8 +106,9 @@ class WishListViewModel @Inject constructor(
         }
     }
 
-    fun insertWishItem(wishItem: WishItem) {
+    private fun insertWishItem(wishItem: WishItem) {
         wishListAdapter.insertData(wishItem)
+        wishList.value = wishListAdapter.getData()
     }
 
     fun updateWishItem(position: Int, wishItem: WishItem) {
@@ -113,12 +117,14 @@ class WishListViewModel @Inject constructor(
 
     fun deleteWishItem(position: Int, wishItem: WishItem) {
         wishListAdapter.deleteData(position, wishItem)
+        wishList.value = wishListAdapter.getData()
     }
 
     fun setFolderItem(folderItem: FolderItem) {
         this.folderItem = folderItem
     }
 
+    fun getWishList(): LiveData<List<WishItem>?> = wishList
     fun getWishListAdapter(): WishListAdapter = wishListAdapter
     fun getFolderItem(): FolderItem? = folderItem
 

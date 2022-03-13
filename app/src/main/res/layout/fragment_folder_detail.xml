@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <import type="androidx.navigation.Navigation" />
 
         <variable
@@ -48,6 +50,18 @@
                 tools:text="폴더명" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            style="@style/Widget.TextAppearance.NoItemView.Detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/folder_detail_no_item_view"
+            android:visibility="@{viewModel.wishList.size() > 0 ? View.GONE : View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            tools:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/wish_list"
