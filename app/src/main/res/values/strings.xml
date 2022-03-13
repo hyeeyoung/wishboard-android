@@ -132,7 +132,7 @@
     <string name="sale_start">세일 시작</string>
     <string name="sale_close">세일 마감</string>
 
-    <string name="noti_no_item_view">앗, 알림이 없어요!\n아이템에 상품 일정을 지정하고 알림을 받아보세요!</string>
+    <string name="noti_no_item_view">앗, 알림이 없어요!\n상품 일정을 지정하고 알림을 받아보세요!</string>
 
     <!-- My -->
     <string name="my_title">마이페이지</string>
