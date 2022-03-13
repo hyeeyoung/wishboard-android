@@ -28,11 +28,6 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
     private lateinit var binding: FragmentFolderBinding
     private val viewModel: FolderViewModel by activityViewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.fetchFolderList()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,6 +59,10 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
     private fun addListeners() {
         binding.newFolder.setOnClickListener {
             findNavController().navigateSafe(R.id.action_folder_to_folder_add_dialog)
+        }
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.fetchFolderList()
+            binding.swipeRefresh.isRefreshing = false
         }
     }
 
