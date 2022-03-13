@@ -85,6 +85,8 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
                         viewModel.deleteCartItem(position ?: return@let)
                     }
                 }
+                // 단순 화면 전환 시에도 해당 코드 실행 방지를 위해 전달받은 bundle 데이터를 clear()
+                it.clear()
                 return@observe
             }
         }
