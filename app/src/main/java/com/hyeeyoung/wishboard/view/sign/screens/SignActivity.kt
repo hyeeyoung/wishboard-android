@@ -2,7 +2,7 @@ package com.hyeeyoung.wishboard.view.sign.screens
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
+import android.view.View
 import androidx.activity.viewModels
 import androidx.databinding.DataBindingUtil
 import com.hyeeyoung.wishboard.R
@@ -26,13 +26,12 @@ class SignActivity : AppCompatActivity() {
 
     private fun addObservers() {
         NetworkConnection(this).observe(this) { isConnected ->
-            if (isConnected == false) {
-                Toast.makeText(
-                    this,
-                    getString(R.string.check_network_connection_toast_text),
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+            binding.networkView.visibility =
+                if (isConnected == true) {
+                    View.GONE
+                } else {
+                    View.VISIBLE
+                }
         }
     }
 }
