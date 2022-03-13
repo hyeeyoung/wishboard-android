@@ -36,6 +36,10 @@ class FolderViewModel @Inject constructor(
 
     private var folderRegistrationStatus = MutableLiveData<ProcessStatus>()
 
+    init {
+        fetchFolderList()
+    }
+
     fun fetchFolderList() {
         if (token == null) return
         viewModelScope.launch {
