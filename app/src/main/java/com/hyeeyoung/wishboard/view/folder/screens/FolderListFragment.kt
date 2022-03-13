@@ -24,6 +24,7 @@ class FolderListFragment : Fragment(), FolderListAdapter.OnItemClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentFolderListBinding.inflate(inflater, container, false)
+        binding.viewModel = viewModel
 
         initializeView()
 
