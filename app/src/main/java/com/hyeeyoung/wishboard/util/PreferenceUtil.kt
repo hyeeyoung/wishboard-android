@@ -9,7 +9,6 @@ class PreferenceUtil(context: Context) { // TODO need refactoring
         private const val PREF_USER_TOKEN = "token"
         private const val PREF_USER_NICKNAME = "nickname"
         private const val PREF_FCM_TOKEN = "fcmToken"
-        private const val PREF_PUSH_NOTI = "pushNoti"
     }
 
     private val prefs: SharedPreferences =
@@ -46,13 +45,5 @@ class PreferenceUtil(context: Context) { // TODO need refactoring
 
     fun getFCMToken(): String? {
         return prefs.getString(PREF_FCM_TOKEN, null)
-    }
-
-    fun getCheckedPushNoti(): Boolean {
-        return prefs.getBoolean(PREF_PUSH_NOTI, false)
-    }
-
-    fun setCheckedPushNoti(isChecked: Boolean) {
-        prefs.edit().putBoolean(PREF_PUSH_NOTI, isChecked).apply()
     }
 }

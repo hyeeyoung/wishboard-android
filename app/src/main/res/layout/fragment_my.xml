@@ -157,7 +157,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/spacing5"
-                            android:checked="true"
+                            android:checked="@{viewModel.pushState}"
                             app:switchMinWidth="50dp"
                             app:thumbTint="@color/white"
                             app:trackTint="@color/selector_switch_track" />

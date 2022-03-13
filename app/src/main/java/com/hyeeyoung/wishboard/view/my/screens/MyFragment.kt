@@ -15,7 +15,6 @@ import com.hyeeyoung.wishboard.databinding.FragmentMyBinding
 import com.hyeeyoung.wishboard.model.common.DialogButtonReplyType
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.loadProfileImage
-import com.hyeeyoung.wishboard.util.prefs
 import com.hyeeyoung.wishboard.view.common.screens.DialogListener
 import com.hyeeyoung.wishboard.view.common.screens.TwoButtonDialogFragment
 import com.hyeeyoung.wishboard.view.sign.screens.SignActivity
@@ -52,11 +51,8 @@ class MyFragment : Fragment() {
     }
 
     private fun addListeners() {
-        prefs?.getCheckedPushNoti()?.let {
-            binding.notiSwitch.isChecked = it
-        }
-        binding.notiSwitch.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.updatePushNotiSettings(isChecked)
+        binding.notiSwitch.setOnClickListener {
+            viewModel.updatePushNotiSettings()
         }
         binding.logout.setOnClickListener {
             showLogoutDialog()
