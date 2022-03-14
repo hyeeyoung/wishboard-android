@@ -34,8 +34,18 @@ class WishBasicFragment : Fragment() {
     /** 아이템 수정 여부에 따라 아이템을 update 또는 upload를 진행 (등록 및 수정 시 동일한 뷰를 사용하고 있기 때문) */
     private var isEditMode = false
 
-    /** 해당 화면을 방문 여부를 구분하기 위한 변수 */
-    private var isVisited = false
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            (it[ARG_IS_EDIT_MODE] as? Boolean)?.let { isEditable ->
+                isEditMode = isEditable
+            }
+            (it[ARG_WISH_ITEM] as? WishItem)?.let { item ->
+                viewModel.setWishItem(item)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,22 +54,6 @@ class WishBasicFragment : Fragment() {
         binding = FragmentWishBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this@WishBasicFragment
-
-        // 갤러리 이미지 선택 화면으로 전환 -> 해당 화면 복귀할 경우, 생명주기상 onCreateView를 재호출되고,
-        // if문 내 코드를 실행하면서 입력된 정보가 reset되는 문제가 있음
-        // 입력된 데이터가 reset되는 것을 방지하기 위해 방문한 적이 있는 경우 아래 코드를 실행하지 않도록 함
-        if (!isVisited) {
-            isVisited = true
-            arguments?.let {
-                (it[ARG_IS_EDIT_MODE] as? Boolean)?.let { isEditable ->
-                    isEditMode = isEditable
-                }
-                (it[ARG_WISH_ITEM] as? WishItem)?.let { item ->
-                    viewModel.setWishItem(item)
-                    Glide.with(binding.itemImage).load(item.imageUrl).into(binding.itemImage)
-                }
-            }
-        }
 
         initializeView()
         addListeners()
@@ -78,6 +72,8 @@ class WishBasicFragment : Fragment() {
                     R.string.wish_basic_item_add_title
                 }
             )
+
+        Glide.with(binding.itemImage).load(viewModel.getWishItem()?.imageUrl).into(binding.itemImage)
     }
 
     private fun addListeners() {
@@ -145,7 +141,7 @@ class WishBasicFragment : Fragment() {
             safeLet(
                 it[ARG_IMAGE_URI] as? Uri, it[ARG_IMAGE_FILE] as? File
             ) { imageUri, imageFile ->
-                Glide.with(requireContext()).load(imageUri).into(binding.itemImage)
+                Glide.with(binding.itemImage).load(imageUri).into(binding.itemImage)
                 viewModel.setSelectedGalleryImage(imageUri, imageFile)
             }
         }
