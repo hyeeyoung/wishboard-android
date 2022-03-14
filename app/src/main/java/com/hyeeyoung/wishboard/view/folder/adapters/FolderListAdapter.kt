@@ -117,7 +117,7 @@ class FolderListAdapter(
 
     override fun getItemCount(): Int = dataSet.size
 
-    override fun getItemId(position: Int): Long = position.toLong()
+    override fun getItemId(position: Int): Long = dataSet[position].id ?: 0
 
     fun addData(folderItem: FolderItem) {
         dataSet.add(0, folderItem)
