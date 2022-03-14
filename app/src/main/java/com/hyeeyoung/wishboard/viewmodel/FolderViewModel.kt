@@ -80,18 +80,19 @@ class FolderViewModel @Inject constructor(
     }
 
     fun updateFolderName(folder: FolderItem?, position: Int?) {
-        folderRegistrationStatus.value = ProcessStatus.IN_PROGRESS
         val folderName = folderName.value?.trim()
-        if (token == null || folder?.id == null || folderName == null) return // TODO 수정 실패 예외처리 필요
+        if (token == null || folder?.id == null || position == null || folderName == null) return
+        folderRegistrationStatus.value = ProcessStatus.IN_PROGRESS
         viewModelScope.launch {
             val result = folderRepository.updateFolderName(token, folder.id, folderName)
+            if (result?.first == true) {
+                folder.name = folderName
+                folderListAdapter.updateData(position, folder)
+            }
             isCompleteUpload.value = result?.first
             isExistFolderName.value = result?.second == 409
             folderRegistrationStatus.postValue(ProcessStatus.IDLE)
         }
-
-        folder.name = folderName
-        folderListAdapter.updateData(position ?: return, folder) // TODO 수정 완료 후 UI 업데이트
     }
 
     fun deleteFolder(folder: FolderItem?, position: Int?) {
