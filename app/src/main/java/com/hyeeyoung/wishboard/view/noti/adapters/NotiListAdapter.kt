@@ -63,7 +63,7 @@ class NotiListAdapter : ListAdapter<NotiItem, RecyclerView.ViewHolder>(diffCallb
 
     override fun getItemCount(): Int = dataSet.size
 
-    override fun getItemId(position: Int): Long = position.toLong()
+    override fun getItemId(position: Int): Long = dataSet[position].itemId
 
     fun updateReadState(position: Int) {
         dataSet[position].readState = ReadStateType.READ.numValue

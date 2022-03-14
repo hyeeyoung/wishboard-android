@@ -71,7 +71,7 @@ class WishListAdapter : ListAdapter<WishItem, RecyclerView.ViewHolder>(diffCallb
 
     override fun getItemCount(): Int = dataSet.size
 
-    override fun getItemId(position: Int): Long = position.toLong()
+    override fun getItemId(position: Int): Long = dataSet[position].id ?: 0
 
     fun insertData(wishItem: WishItem) {
         dataSet.add(0, wishItem)
