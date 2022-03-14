@@ -75,7 +75,7 @@ class CartListAdapter : ListAdapter<CartItem, RecyclerView.ViewHolder>(diffCallb
 
     override fun getItemCount(): Int = dataSet.size
 
-    override fun getItemId(position: Int): Long = position.toLong()
+    override fun getItemId(position: Int): Long = dataSet[position].wishItem.id ?: 0
 
     fun getData(): List<CartItem> = dataSet
 
