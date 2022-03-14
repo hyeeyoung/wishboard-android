@@ -112,8 +112,10 @@ class WishItemRegistrationViewModel @Inject constructor(
     }
 
     suspend fun uploadWishItemByLinkSharing() {
-        itemRegistrationStatus.value = ProcessStatus.IN_PROGRESS
         if (token == null) return
+        if (itemRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return
+        itemRegistrationStatus.postValue(ProcessStatus.IN_PROGRESS)
+
         // TODO 가격 데이터에 천단위 구분자 ',' 있는 경우 문자열 처리 필요
         safeLet(itemName.value?.trim(), itemUrl.value) { name, siteUrl ->
             withContext(Dispatchers.IO) {
@@ -136,43 +138,45 @@ class WishItemRegistrationViewModel @Inject constructor(
 
                 val isComplete = wishRepository.uploadWishItem(token, item)
                 isCompleteUpload.postValue(isComplete)
-                itemRegistrationStatus.postValue(ProcessStatus.IDLE)
             }
+            itemRegistrationStatus.postValue(ProcessStatus.IDLE)
         }
     }
 
     suspend fun uploadWishItemByBasics() {
-        itemRegistrationStatus.value = ProcessStatus.IN_PROGRESS
+        if (itemRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return
         if (token == null) return
-        safeLet(itemName.value?.trim(), selectedGalleryImageUri.value) { name, imageUri ->
-            withContext(Dispatchers.IO) {
-                if (imageFile == null) return@withContext
-                val isSuccessful = AWSS3Service().uploadFile(imageFile!!.name, imageFile!!)
-                if (!isSuccessful) return@withContext
+        val name = itemName.value?.trim() ?: return
+        itemRegistrationStatus.postValue(ProcessStatus.IN_PROGRESS)
 
-                wishItem = WishItem(
-                    name = name,
-                    image = imageFile!!.name,
-                    price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
-                    url = itemUrl.value,
-                    memo = itemMemo.value?.trim(),
-                    folderId = folderItem?.id,
-                    folderName = folderItem?.name, // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
-                    notiType = notiType.value,
-                    notiDate = notiDate.value
-                )
+        withContext(Dispatchers.IO) {
+            if (imageFile == null) return@withContext
+            val isSuccessful = AWSS3Service().uploadFile(imageFile!!.name, imageFile!!)
+            if (!isSuccessful) return@withContext
 
-                val isComplete = wishRepository.uploadWishItem(token, wishItem!!)
-                isCompleteUpload.postValue(isComplete)
-                itemRegistrationStatus.postValue(ProcessStatus.IDLE)
-            }
+            wishItem = WishItem(
+                name = name,
+                image = imageFile!!.name,
+                price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
+                url = itemUrl.value,
+                memo = itemMemo.value?.trim(),
+                folderId = folderItem?.id,
+                folderName = folderItem?.name, // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
+                notiType = notiType.value,
+                notiDate = notiDate.value
+            )
+
+            val isComplete = wishRepository.uploadWishItem(token, wishItem!!)
+            isCompleteUpload.postValue(isComplete)
         }
+        itemRegistrationStatus.postValue(ProcessStatus.IDLE)
     }
 
     suspend fun updateWishItem() {
-        itemRegistrationStatus.value = ProcessStatus.IN_PROGRESS
+        if (itemRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return
         if (itemId == null || token == null) return
         val itemName = itemName.value?.trim() ?: return
+        itemRegistrationStatus.postValue(ProcessStatus.IN_PROGRESS)
 
         withContext(Dispatchers.IO) {
             imageFile?.let {
@@ -197,8 +201,8 @@ class WishItemRegistrationViewModel @Inject constructor(
 
             val isComplete = wishRepository.updateWishItem(token, itemId!!, wishItem!!)
             isCompleteUpload.postValue(isComplete)
-            itemRegistrationStatus.postValue(ProcessStatus.IDLE)
         }
+        itemRegistrationStatus.postValue(ProcessStatus.IDLE)
     }
 
     private fun fetchFolderList() {
