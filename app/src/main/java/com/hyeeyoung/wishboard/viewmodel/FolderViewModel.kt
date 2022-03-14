@@ -60,11 +60,12 @@ class FolderViewModel @Inject constructor(
     }
 
     fun createNewFolder() {
-        folderRegistrationStatus.value = ProcessStatus.IN_PROGRESS
+        if (folderRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return
         val folderName = folderName.value?.trim()
         if (token == null || folderName == null) return
-        val folderInfo = FolderItem(name = folderName)
 
+        folderRegistrationStatus.value = ProcessStatus.IN_PROGRESS
+        val folderInfo = FolderItem(name = folderName)
         viewModelScope.launch {
             folderItem = folderInfo
             val result = folderRepository.createNewFolder(token, folderInfo)
@@ -80,8 +81,10 @@ class FolderViewModel @Inject constructor(
     }
 
     fun updateFolderName(folder: FolderItem?, position: Int?) {
+        if (folderRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return
         val folderName = folderName.value?.trim()
         if (token == null || folder?.id == null || position == null || folderName == null) return
+
         folderRegistrationStatus.value = ProcessStatus.IN_PROGRESS
         viewModelScope.launch {
             val result = folderRepository.updateFolderName(token, folder.id, folderName)
@@ -96,12 +99,15 @@ class FolderViewModel @Inject constructor(
     }
 
     fun deleteFolder(folder: FolderItem?, position: Int?) {
-        if (token == null || folder?.id == null) return // TODO 삭제 실패 예외처리 필요
+        if (token == null || folder?.id == null || position == null) return
         viewModelScope.launch {
-            isCompleteDeletion.value = folderRepository.deleteFolder(token, folder.id)
+            val result = folderRepository.deleteFolder(token, folder.id)
+            if (result) {
+                folderListAdapter.deleteData(position, folder)
+                folderList.value = folderListAdapter.getData()
+            }
+            isCompleteDeletion.postValue(result)
         }
-        folderListAdapter.deleteData(position ?: return, folder)
-        folderList.value = folderListAdapter.getData()
     }
 
     fun onFolderNameTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
