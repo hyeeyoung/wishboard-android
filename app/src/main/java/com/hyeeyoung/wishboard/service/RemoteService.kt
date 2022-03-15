@@ -139,12 +139,6 @@ interface RemoteService {
         @Header("Authorization") token: String,
     ): Response<List<NotiItem>>?
 
-    @GET("noti/schedule")
-    suspend fun updatePushNotiSettings(
-        @Header("Authorization") token: String,
-        @Query("push") isSet: Boolean,
-    ): Response<RequestResult>
-
     @PUT("noti/{item_id}/read-state")
     suspend fun updateNotiReadState(
         @Header("Authorization") token: String,
@@ -173,6 +167,12 @@ interface RemoteService {
     @PUT("user/active")
     suspend fun deleteUserAccount(
         @Header("Authorization") token: String,
+    ): Response<RequestResult>
+
+    @PUT("user/push-state/{push}")
+    suspend fun updatePushNotiSettings(
+        @Header("Authorization") token: String,
+        @Path("push") push: Boolean,
     ): Response<RequestResult>
 
     companion object {
