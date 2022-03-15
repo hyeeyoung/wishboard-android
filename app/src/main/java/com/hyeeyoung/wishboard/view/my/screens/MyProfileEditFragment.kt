@@ -83,7 +83,7 @@ class MyProfileEditFragment : Fragment() {
         viewModel.getCompleteUpdateUserInfo().observe(viewLifecycleOwner) { isComplete ->
             if (isComplete == true) {
                 CustomSnackbar.make(
-                    binding.layout, getString(R.string.my_profile_edit_completion_toast_Text)
+                    binding.layout, getString(R.string.my_profile_edit_completion_snackbar_text)
                 ).show()
                 findNavController().popBackStack()
             }

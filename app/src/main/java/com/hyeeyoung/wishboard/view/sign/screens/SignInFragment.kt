@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.view.MainActivity
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentSignInBinding
@@ -58,7 +57,7 @@ class SignInFragment : Fragment() {
                 }
                 false -> {
                     // TODO 에러케이스에 따라 에러메세지 분리 및 스낵바 커스텀 필요
-                    CustomSnackbar.make(binding.layout, getString(R.string.login_failed_snackbar_test), false).show()
+                    CustomSnackbar.make(binding.layout, getString(R.string.sign_in_failed_snackbar_text), false).show()
                 }
             }
         }

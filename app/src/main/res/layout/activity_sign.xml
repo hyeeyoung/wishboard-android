@@ -31,7 +31,7 @@
             android:fontFamily="@font/suit_r"
             android:paddingHorizontal="@dimen/typographyDescription"
             android:paddingVertical="@dimen/spacing20"
-            android:text="@string/check_network_connection_detail"
+            android:text="@string/check_network_connection_snackbar_text"
             android:textColor="@color/white"
             android:textSize="@dimen/typographyBase"
             app:layout_constraintBottom_toBottomOf="parent"

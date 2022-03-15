@@ -82,7 +82,7 @@
             android:fontFamily="@font/suit_r"
             android:gravity="center"
             android:lineSpacingExtra="@dimen/spacingMicro"
-            android:text="@string/sign_up_email_guide_text"
+            android:text="@string/sign_up_email_guide"
             android:textColor="@color/gray_700"
             android:textSize="@dimen/typographyDescription"
             app:layout_constraintEnd_toEndOf="parent"
@@ -101,7 +101,7 @@
                 style="@style/Widget.EditText.Basic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/email_input_text"
+                android:hint="@string/email"
                 android:inputType="textEmailAddress"
                 android:onTextChanged="@{viewModel::onRegistrationEmailTextChanged}"
                 android:text="@{viewModel.registrationEmail}"
@@ -115,10 +115,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacingBase"
                 android:layout_marginTop="@dimen/spacing5"
-                android:text="@{viewModel.validEmailFormat == false ? context.getString(R.string.sign_email_format_detail_text) : (viewModel.isUnregisteredUser() != null &amp;&amp; viewModel.isUnregisteredUser() == false) ? context.getString(R.string.sign_up_email_registered_user_detail_text) : ``}"
+                android:text="@{viewModel.validEmailFormat == false ? context.getString(R.string.sign_email_format_detail) : (viewModel.isUnregisteredUser() != null &amp;&amp; viewModel.isUnregisteredUser() == false) ? context.getString(R.string.sign_up_email_registered_user_detail) : ``}"
                 android:textAppearance="@style/Widget.TextAppearance.Detail"
                 android:visibility="@{viewModel.registrationEmail.length() > 0 &amp;&amp; (viewModel.validEmailFormat == false || (viewModel.isUnregisteredUser() != null &amp;&amp; viewModel.isUnregisteredUser() == false)) ? View.VISIBLE : View.GONE}"
-                tools:text="@string/sign_up_email_registered_user_detail_text" />
+                tools:text="@string/sign_up_email_registered_user_detail" />
 
         </LinearLayout>
 

@@ -45,7 +45,7 @@
                 style="@style/Widget.Tab.Detail.TextAppearance.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/sign_in_title"
+                android:text="@string/sign_in"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -60,7 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacingBase"
             android:layout_marginBottom="@dimen/spacingSmall"
-            android:hint="@string/email_input_text"
+            android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:onTextChanged="@{viewModel::onLoginEmailTextChanged}"
             android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
@@ -77,7 +77,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing5"
-            android:hint="@string/password_input_text"
+            android:hint="@string/password"
             android:inputType="textPassword"
             android:onTextChanged="@{viewModel::onLoginPasswordTextChanged}"
             android:paddingVertical="@dimen/spacing12"
@@ -96,10 +96,10 @@
                 android:layout_marginTop="@dimen/spacingBase"
                 android:enabled="@{viewModel.loginEmail.length() > 0 &amp;&amp; viewModel.loginPassword.length() > 0}"
                 android:onClick="@{() -> viewModel.signIn()}"
-                android:text="@{viewModel.signProcessStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.login_btn_text)}"
+                android:text="@{viewModel.signProcessStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.sign_in)}"
                 android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/login_btn_text"/>
+                tools:text="@string/sign_in"/>
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/loading_lottie"

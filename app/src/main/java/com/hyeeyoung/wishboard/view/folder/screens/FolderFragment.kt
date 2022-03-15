@@ -69,7 +69,7 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
     private fun addObservers() {
         viewModel.getIsCompleteDeletion().observe(viewLifecycleOwner) { isDeleted ->
             if (isDeleted) {
-                CustomSnackbar.make(binding.layout, getString(R.string.folder_delete_toast_text)).show()
+                CustomSnackbar.make(binding.layout, getString(R.string.folder_delete_snackbar_text)).show()
                 viewModel.resetCompleteDeletion()
             }
         }
@@ -115,7 +115,7 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
     /** 폴더 삭제 다이얼로그 */
     private fun showFolderDeleteDialog(position: Int, folderItem: FolderItem) {
         val dialog = TwoButtonDialogFragment(
-            getString(R.string.folder_delete_dialog_title),
+            getString(R.string.folder_delete),
             getString(R.string.folder_delete_dialog_detail),
             getString(R.string.delete)
         ).apply {

@@ -106,13 +106,13 @@ class WishBasicFragment : Fragment() {
                     if (isEditMode) {
                         CustomSnackbar.make(
                             binding.layout,
-                            getString(R.string.wish_item_update_toast_text)
+                            getString(R.string.wish_item_update_snackbar_text)
                         ).show()
                         moveToPrevious(WishItemStatus.MODIFIED, viewModel.getWishItem())
                     } else {
                         CustomSnackbar.make(
                             binding.layout,
-                            getString(R.string.wish_item_upload_toast_text)
+                            getString(R.string.wish_item_registration_snackbar_text)
                         ).show()
                         moveToPrevious(WishItemStatus.ADDED, null)
                     }

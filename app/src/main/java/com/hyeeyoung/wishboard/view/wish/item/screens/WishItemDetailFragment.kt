@@ -87,7 +87,7 @@ class WishItemDetailFragment : Fragment() {
 
         viewModel.getIsCompleteDeletion().observe(viewLifecycleOwner) { isComplete ->
             if (isComplete == true) {
-                CustomSnackbar.make(binding.layout, getString(R.string.wish_item_deletion_toast_text)).show()
+                CustomSnackbar.make(binding.layout, getString(R.string.wish_item_deletion_snackbar_text)).show()
                 moveToPrevious(WishItemStatus.DELETED)
             }
         }

@@ -123,7 +123,7 @@ class WishLinkSharingActivity : AppCompatActivity() {
         해결 : 스낵바가 종료된 후 finish()하도록 callback 추가 */
         CustomSnackbar.make(
             binding.layout,
-            getString(R.string.wish_item_registration_toast_text),
+            getString(R.string.wish_item_registration_snackbar_text),
             false,
             object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
                 override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {

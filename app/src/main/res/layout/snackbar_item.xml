@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="@style/Widget.Snackbar.TextAppearance"
-            tools:text="@string/wish_item_registration_toast_text" />
+            tools:text="@string/wish_item_registration_snackbar_text" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 </layout>
