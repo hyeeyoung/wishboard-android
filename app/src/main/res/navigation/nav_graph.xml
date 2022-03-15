@@ -40,12 +40,6 @@
         android:label="folderFragment"
         tools:layout="@layout/fragment_folder">
         <action
-            android:id="@+id/action_folder_to_folder_add_dialog"
-            app:destination="@id/folder_add_dialog" />
-        <action
-            android:id="@+id/action_folder_to_folder_more_dialog"
-            app:destination="@id/folder_more_dialog" />
-        <action
             android:id="@+id/action_folder_to_folder_detail"
             app:destination="@id/folder_detail_fragment" />
     </fragment>
@@ -67,15 +61,4 @@
             android:id="@+id/action_folder_detail_to_wish_item_detail"
             app:destination="@id/wish_item_nav_graph" />
     </fragment>
-
-    <dialog
-        android:id="@+id/folder_add_dialog"
-        android:name="com.hyeeyoung.wishboard.view.folder.screens.FolderAddDialogFragment"
-        android:label="folderAddDialog"
-        tools:layout="@layout/dialog_new_folder_add" />
-    <dialog
-        android:id="@+id/folder_more_dialog"
-        android:name="com.hyeeyoung.wishboard.view.folder.screens.FolderMoreDialogFragment"
-        android:label="folderMoreDialog"
-        tools:layout="@layout/dialog_folder_more"/>
 </navigation>
