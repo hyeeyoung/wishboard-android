@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -15,6 +14,7 @@ import com.hyeeyoung.wishboard.databinding.FragmentFolderBinding
 import com.hyeeyoung.wishboard.model.common.DialogButtonReplyType
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.folder.FolderMoreDialogButtonReplyType
+import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.view.common.screens.DialogListener
 import com.hyeeyoung.wishboard.view.common.screens.TwoButtonDialogFragment
@@ -69,11 +69,7 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
     private fun addObservers() {
         viewModel.getIsCompleteDeletion().observe(viewLifecycleOwner) { isDeleted ->
             if (isDeleted) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.folder_delete_toast_text),
-                    Toast.LENGTH_SHORT
-                ).show()
+                CustomSnackbar.make(binding.layout, getString(R.string.folder_delete_toast_text)).show()
                 viewModel.resetCompleteDeletion()
             }
         }

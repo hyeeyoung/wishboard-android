@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentMyBinding
 import com.hyeeyoung.wishboard.model.common.DialogButtonReplyType
+import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.loadProfileImage
 import com.hyeeyoung.wishboard.view.common.screens.DialogListener
@@ -73,11 +73,7 @@ class MyFragment : Fragment() {
         }
         viewModel.getCompleteDeleteUser().observe(viewLifecycleOwner) { isComplete ->
             if (isComplete == true) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.my_delete_user_toast_text),
-                    Toast.LENGTH_SHORT
-                ).show()
+                CustomSnackbar.make(binding.layout, getString(R.string.my_delete_user_toast_text)).show()
                 startActivity(Intent(requireContext(), SignActivity::class.java))
                 requireActivity().finish()
             }

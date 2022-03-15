@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -19,6 +18,7 @@ import com.hyeeyoung.wishboard.databinding.FragmentWishBinding
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.model.wish.WishItemStatus
+import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.safeLet
 import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
@@ -104,17 +104,15 @@ class WishBasicFragment : Fragment() {
             when (isCompleted) {
                 true -> {
                     if (isEditMode) {
-                        Toast.makeText(
-                            context,
-                            getString(R.string.wish_item_update_toast_text),
-                            Toast.LENGTH_SHORT
+                        CustomSnackbar.make(
+                            binding.layout,
+                            getString(R.string.wish_item_update_toast_text)
                         ).show()
                         moveToPrevious(WishItemStatus.MODIFIED, viewModel.getWishItem())
                     } else {
-                        Toast.makeText(
-                            context,
-                            getString(R.string.wish_item_upload_toast_text),
-                            Toast.LENGTH_SHORT
+                        CustomSnackbar.make(
+                            binding.layout,
+                            getString(R.string.wish_item_upload_toast_text)
                         ).show()
                         moveToPrevious(WishItemStatus.ADDED, null)
                     }

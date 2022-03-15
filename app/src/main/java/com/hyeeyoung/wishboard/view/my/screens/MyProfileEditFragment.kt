@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
@@ -16,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentProfileEditBinding
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
+import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.loadProfileImage
 import com.hyeeyoung.wishboard.util.safeLet
@@ -82,10 +82,8 @@ class MyProfileEditFragment : Fragment() {
     private fun addObservers() {
         viewModel.getCompleteUpdateUserInfo().observe(viewLifecycleOwner) { isComplete ->
             if (isComplete == true) {
-                Toast.makeText(
-                    context,
-                    getString(R.string.my_profile_edit_completion_toast_Text),
-                    Toast.LENGTH_SHORT
+                CustomSnackbar.make(
+                    binding.layout, getString(R.string.my_profile_edit_completion_toast_Text)
                 ).show()
                 findNavController().popBackStack()
             }

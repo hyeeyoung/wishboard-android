@@ -3,16 +3,18 @@ package com.hyeeyoung.wishboard.view.wish.item.screens
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ActivityWishLinkSharingBinding
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.util.*
+import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -89,12 +91,8 @@ class WishLinkSharingActivity : AppCompatActivity() {
         }
         viewModel.isCompleteUpload().observe(this) { isComplete ->
             if (isComplete == true) {
-                Toast.makeText(
-                    this,
-                    getString(R.string.wish_item_registration_toast_text),
-                    Toast.LENGTH_SHORT
-                ).show()
-                finish()
+                binding.layout.visibility = View.INVISIBLE
+                showUploadCompleteSnackbar()
             }
         }
         viewModel.getRegistrationStatus().observe(this) {
@@ -117,6 +115,23 @@ class WishLinkSharingActivity : AppCompatActivity() {
                     View.VISIBLE
                 }
         }
+    }
+
+    private fun showUploadCompleteSnackbar() {
+        /* callback을 달아준 이유
+        문제 : snackbar 띄우고 바로 activity를 finish()하면 activity가 종료되면서 스낵바가 보이지 않음
+        해결 : 스낵바가 종료된 후 finish()하도록 callback 추가 */
+        CustomSnackbar.make(
+            binding.layout,
+            getString(R.string.wish_item_registration_toast_text),
+            false,
+            object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                    super.onDismissed(transientBottomBar, event)
+                    finish()
+                }
+            }
+        ).show()
     }
 
     companion object {
