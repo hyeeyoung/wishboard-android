@@ -1,5 +1,5 @@
 package com.hyeeyoung.wishboard.model.common
 
 enum class DialogButtonReplyType {
-    YES, NO
+    YES, NO, CLOSE
 }
