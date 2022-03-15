@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -17,6 +16,7 @@ import com.hyeeyoung.wishboard.databinding.FragmentWishItemDetailBinding
 import com.hyeeyoung.wishboard.model.common.DialogButtonReplyType
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.model.wish.WishItemStatus
+import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.safeLet
 import com.hyeeyoung.wishboard.view.common.screens.DialogListener
@@ -87,12 +87,7 @@ class WishItemDetailFragment : Fragment() {
 
         viewModel.getIsCompleteDeletion().observe(viewLifecycleOwner) { isComplete ->
             if (isComplete == true) {
-                Toast.makeText(
-                    requireContext(),
-                    getString(R.string.wish_item_deletion_toast_text),
-                    Toast.LENGTH_SHORT
-                ).show()
-
+                CustomSnackbar.make(binding.layout, getString(R.string.wish_item_deletion_toast_text)).show()
                 moveToPrevious(WishItemStatus.DELETED)
             }
         }

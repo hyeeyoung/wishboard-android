@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.DialogNewFolderAddBinding
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.model.folder.FolderItem
+import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.viewmodel.FolderViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -73,8 +73,7 @@ class FolderAddDialogFragment : DialogFragment() {
                     true -> R.string.folder_name_update_toast_text
                     else -> R.string.folder_add_toast_text
                 }
-                Toast.makeText(requireContext(), getString(toastMessageRes), Toast.LENGTH_SHORT)
-                    .show()
+                CustomSnackbar.make(binding.layout, getString(toastMessageRes)).show()
             }
         }
         viewModel.getRegistrationStatus().observe(this) {
