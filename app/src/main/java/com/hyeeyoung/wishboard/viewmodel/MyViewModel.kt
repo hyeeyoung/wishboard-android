@@ -80,11 +80,11 @@ class MyViewModel @Inject constructor(
         }
     }
 
-    fun updatePushNotiSettings() {
+    fun updatePushState() {
         if (token == null || pushState.value == null) return
         pushState.value = !pushState.value!!
         viewModelScope.launch {
-            notiRepository.updatePushNotiSettings(token, pushState.value!!)
+            notiRepository.updatePushState(token, pushState.value!!)
         }
     }
 
