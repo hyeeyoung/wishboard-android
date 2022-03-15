@@ -85,7 +85,7 @@
                     android:fontFamily="@font/suit_r"
                     android:gravity="center"
                     android:lineSpacingExtra="@dimen/spacingMicro"
-                    android:text="@string/sign_in_email_guide_text"
+                    android:text="@string/sign_in_email_guide"
                     android:textColor="@color/gray_700"
                     android:textSize="@dimen/typographyDescription" />
             </LinearLayout>
@@ -100,7 +100,7 @@
                     style="@style/Widget.EditText.Basic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/email_input_text"
+                    android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:onTextChanged="@{viewModel::onLoginEmailTextChanged}"
                     android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
@@ -119,7 +119,7 @@
                     android:minHeight="0dp"
                     android:onClick="@{() -> viewModel.requestVerificationMail()}"
                     android:paddingHorizontal="@dimen/spacing10"
-                    android:text="@string/sign_in_verification_email_resend_button_text"
+                    android:text="@string/sign_in_email_resend_email_button_text"
                     android:textColor="@drawable/selector_text_button_color"
                     android:visibility="@{viewModel.isCompletedSendMail() == true ? View.VISIBLE : View.GONE}"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -132,10 +132,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacingBase"
                 android:layout_marginTop="@dimen/spacing5"
-                android:text="@{viewModel.validEmailFormat == false ? context.getString(R.string.sign_email_format_detail_text) : viewModel.isUnregisteredUser == true ? context.getString(R.string.sign_email_unregistered_user_detail_text) : ``}"
+                android:text="@{viewModel.validEmailFormat == false ? context.getString(R.string.sign_email_format_detail) : viewModel.isUnregisteredUser == true ? context.getString(R.string.sign_in_unregistered_user_detail) : ``}"
                 android:textAppearance="@style/Widget.TextAppearance.Detail"
                 android:visibility="@{viewModel.loginEmail.length() > 0 &amp;&amp; (viewModel.validEmailFormat == false || viewModel.isUnregisteredUser() == true) ? View.VISIBLE : View.GONE}"
-                tools:text="@string/sign_email_unregistered_user_detail_text" />
+                tools:text="@string/sign_in_unregistered_user_detail" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -149,7 +149,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacingBase"
-                    android:hint="@string/verification_code_input_text"
+                    android:hint="@string/sign_in_email_verification_code_hint"
                     android:inputType="textPassword"
                     android:onTextChanged="@{viewModel::onVerificationCodeTextChanged}"
                     android:textAppearance="@style/Widget.EditText.Basic.TextAppearance" />
@@ -159,7 +159,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/spacingBase"
                     android:layout_marginTop="@dimen/spacing5"
-                    android:text="@string/sign_verification_code_toast_text"
+                    android:text="@string/sign_in_email_verification_code_detail"
                     android:textAppearance="@style/Widget.TextAppearance.Detail"
                     android:visibility="@{viewModel.isCorrectedVerificationCode() == false &amp;&amp; viewModel.isCorrectedVerificationCode() != null ? View.VISIBLE : View.GONE}" />
 
@@ -173,7 +173,7 @@
             android:layout_marginBottom="@dimen/spacingBase"
             android:enabled="@{viewModel.validEmailFormat == true}"
             android:onClick="@{() -> viewModel.requestVerificationMail()}"
-            android:text="@string/sign_in_verification_email_send_button_text"
+            android:text="@string/sign_in_email_send_email_button_text"
             android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
             android:visibility="@{viewModel.isCompletedSendMail() == false ? View.VISIBLE : View.GONE}"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -186,11 +186,11 @@
             android:layout_marginBottom="@dimen/spacingBase"
             android:enabled="@{viewModel.isEnabledVerificationCodeButton() == true}"
             android:onClick="@{() -> viewModel.signInEmail()}"
-            android:text="@{viewModel.signProcessStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.sign_in_title)}"
+            android:text="@{viewModel.signProcessStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.sign_in)}"
             android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
             android:visibility="@{viewModel.isCompletedSendMail() == true ? View.VISIBLE : View.INVISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="@string/sign_in_title" />
+            tools:text="@string/sign_in" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading_lottie"

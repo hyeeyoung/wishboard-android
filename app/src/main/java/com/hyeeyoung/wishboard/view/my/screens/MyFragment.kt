@@ -73,7 +73,7 @@ class MyFragment : Fragment() {
         }
         viewModel.getCompleteDeleteUser().observe(viewLifecycleOwner) { isComplete ->
             if (isComplete == true) {
-                CustomSnackbar.make(binding.layout, getString(R.string.my_delete_user_toast_text)).show()
+                CustomSnackbar.make(binding.layout, getString(R.string.my_delete_user_snackbar_text)).show()
                 startActivity(Intent(requireContext(), SignActivity::class.java))
                 requireActivity().finish()
             }

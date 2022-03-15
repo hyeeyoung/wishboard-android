@@ -274,7 +274,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/suit_b"
-                android:text="@string/go_to_shop_btn_text"
+                android:text="@string/go_to_shop_button_text"
                 android:textColor="@color/white"
                 android:textSize="@dimen/typographyBase"
                 app:layout_constraintBottom_toBottomOf="parent"

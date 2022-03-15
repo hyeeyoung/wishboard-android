@@ -23,9 +23,12 @@
             style="@style/Widget.Snackbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/check_network_connection_detail"
+            android:backgroundTint="@color/pink"
+            android:text="@string/check_network_connection_snackbar_text"
             android:textAppearance="@style/Widget.Snackbar.TextAppearance"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textColor="@color/black"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="gone" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav"

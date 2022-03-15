@@ -70,8 +70,8 @@ class FolderAddDialogFragment : DialogFragment() {
             if (isComplete == true) {
                 dismiss()
                 val toastMessageRes = when (viewModel.getEditMode().value) {
-                    true -> R.string.folder_name_update_toast_text
-                    else -> R.string.folder_add_toast_text
+                    true -> R.string.folder_name_update_snackbar_text
+                    else -> R.string.folder_add_snackbar_text
                 }
                 CustomSnackbar.make(binding.layout, getString(toastMessageRes)).show()
             }

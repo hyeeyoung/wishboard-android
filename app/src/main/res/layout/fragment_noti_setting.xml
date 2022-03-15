@@ -262,7 +262,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacingBase"
                     android:fontFamily="@font/suit_r"
-                    android:text="@string/item_registration_noti_setting_guide_text"
+                    android:text="@string/item_registration_noti_setting_guide"
                     android:textColor="@color/gray_300"
                     android:textSize="@dimen/typographyBaseDetail"
                     app:layout_constraintTop_toBottomOf="@id/noti_date_container"
