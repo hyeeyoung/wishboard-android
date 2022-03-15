@@ -20,17 +20,12 @@
 
         <TextView
             android:id="@+id/networkView"
+            style="@style/Widget.Snackbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/black"
-            android:fontFamily="@font/suit_r"
-            android:paddingHorizontal="@dimen/typographyDescription"
-            android:paddingVertical="@dimen/spacing20"
             android:text="@string/check_network_connection_detail"
-            android:textColor="@color/white"
-            android:textSize="@dimen/typographyBase"
-            app:layout_constraintBottom_toTopOf="@id/bottom_nav"
-            tools:visibility="gone" />
+            android:textAppearance="@style/Widget.Snackbar.TextAppearance"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_nav"
