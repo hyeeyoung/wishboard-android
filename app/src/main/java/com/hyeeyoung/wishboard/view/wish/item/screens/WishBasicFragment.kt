@@ -88,9 +88,6 @@ class WishBasicFragment : Fragment() {
         binding.addPhoto.setOnClickListener {
             requestStorage.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
-        binding.editPhoto.setOnClickListener {
-            requestStorage.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
         binding.folderContainer.setOnClickListener {
             findNavController().navigateSafe(R.id.action_wish_to_folder_list)
         }
