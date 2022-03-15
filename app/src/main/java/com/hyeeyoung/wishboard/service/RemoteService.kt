@@ -170,7 +170,7 @@ interface RemoteService {
     ): Response<RequestResult>
 
     @PUT("user/push-state/{push}")
-    suspend fun updatePushNotiSettings(
+    suspend fun updatePushState(
         @Header("Authorization") token: String,
         @Path("push") push: Boolean,
     ): Response<RequestResult>
