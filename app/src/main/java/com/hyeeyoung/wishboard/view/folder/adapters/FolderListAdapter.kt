@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.databinding.ItemFolderHorizontalBinding
-import com.hyeeyoung.wishboard.databinding.ItemFolderSquareBinding
+import com.hyeeyoung.wishboard.databinding.ItemFolderVerticalBinding
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.folder.FolderListViewType
 
@@ -40,7 +40,7 @@ class FolderListAdapter(
         this.folderMoreDialogListener = listener
     }
 
-    inner class SquareViewHolder(private val binding: ItemFolderSquareBinding) :
+    inner class SquareViewHolder(private val binding: ItemFolderVerticalBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             val item = dataSet[position]
@@ -87,7 +87,7 @@ class FolderListAdapter(
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         when (folderListViewType) {
             FolderListViewType.SQUARE_VIEW_TYPE -> {
-                val binding = ItemFolderSquareBinding.inflate(
+                val binding = ItemFolderVerticalBinding.inflate(
                     LayoutInflater.from(viewGroup.context),
                     viewGroup,
                     false
