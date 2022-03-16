@@ -28,11 +28,12 @@ class FolderViewModel @Inject constructor(
         FolderListAdapter(FolderListViewType.SQUARE_VIEW_TYPE)
     private var folderName = MutableLiveData<String?>()
     private var folderItem: FolderItem? = null
+    private var folderPosition: Int? = null
 
     private var isCompleteUpload = MutableLiveData<Boolean?>()
     private var isCompleteDeletion = MutableLiveData<Boolean>()
     private var isExistFolderName = MutableLiveData<Boolean?>()
-    private var isEditMode = MutableLiveData<Boolean>()
+    private var isEditMode: Boolean = false
 
     private var folderRegistrationStatus = MutableLiveData<ProcessStatus>()
 
@@ -59,16 +60,25 @@ class FolderViewModel @Inject constructor(
         }
     }
 
-    fun createNewFolder() {
+    fun uploadFolder() {
         if (folderRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return
-        val folderName = folderName.value?.trim()
-        if (token == null || folderName == null) return
+        if (token == null) return
+        val folderName = folderName.value?.trim() ?: return
 
+        if (isEditMode) {
+            updateFolderName(folderItem!!, folderPosition ?: return, folderName)
+        } else {
+            createNewFolder(folderName)
+        }
+    }
+
+    private fun createNewFolder(folderName: String) {
         folderRegistrationStatus.value = ProcessStatus.IN_PROGRESS
         val folderInfo = FolderItem(name = folderName)
+
         viewModelScope.launch {
             folderItem = folderInfo
-            val result = folderRepository.createNewFolder(token, folderInfo)
+            val result = folderRepository.createNewFolder(token!!, folderInfo)
             isCompleteUpload.value = result?.first?.first
             isExistFolderName.value = result?.first?.second == 409
             result?.second?.let { folderId ->
@@ -80,14 +90,12 @@ class FolderViewModel @Inject constructor(
         }
     }
 
-    fun updateFolderName(folder: FolderItem?, position: Int?) {
-        if (folderRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return
-        val folderName = folderName.value?.trim()
-        if (token == null || folder?.id == null || position == null || folderName == null) return
-
+    private fun updateFolderName(folder: FolderItem, position: Int, folderName: String) {
+        if (folder.id == null) return
         folderRegistrationStatus.value = ProcessStatus.IN_PROGRESS
+
         viewModelScope.launch {
-            val result = folderRepository.updateFolderName(token, folder.id, folderName)
+            val result = folderRepository.updateFolderName(token!!, folder.id, folderName)
             if (result?.first == true) {
                 folder.name = folderName
                 folderListAdapter.updateData(position, folder)
@@ -130,12 +138,14 @@ class FolderViewModel @Inject constructor(
         folderName.value = null
     }
 
-    fun setFolderName(name: String) {
-        folderName.value = name
+    fun setFolderInfo(position: Int?, folder: FolderItem?) {
+        this.folderPosition = position
+        folderItem = folder
+        folderName.value = folder?.name
     }
 
     fun setEditMode(isEditable: Boolean) {
-        isEditMode.value = isEditable
+        isEditMode = isEditable
     }
 
     fun getFolderList(): LiveData<List<FolderItem>?> = folderList
@@ -144,7 +154,7 @@ class FolderViewModel @Inject constructor(
     fun getIsCompleteUpload(): LiveData<Boolean?> = isCompleteUpload
     fun getIsCompleteDeletion(): LiveData<Boolean> = isCompleteDeletion
     fun getIsExistFolderName(): LiveData<Boolean?> = isExistFolderName
-    fun getEditMode(): LiveData<Boolean> = isEditMode
+    fun getEditMode(): Boolean = isEditMode
     fun getRegistrationStatus(): LiveData<ProcessStatus> = folderRegistrationStatus
 
     companion object {

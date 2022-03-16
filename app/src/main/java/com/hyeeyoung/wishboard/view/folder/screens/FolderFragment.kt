@@ -27,6 +27,7 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
     FolderListAdapter.OnFolderMoreDialogListener {
     private lateinit var binding: FragmentFolderBinding
     private val viewModel: FolderViewModel by activityViewModels()
+    private var folderAddDialog: FolderAddDialogFragment? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,7 +59,7 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
 
     private fun addListeners() {
         binding.newFolder.setOnClickListener {
-            findNavController().navigateSafe(R.id.action_folder_to_folder_add_dialog)
+            showFolderUploadDialog()
         }
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.fetchFolderList()
@@ -71,6 +72,16 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
             if (isDeleted) {
                 CustomSnackbar.make(binding.layout, getString(R.string.folder_delete_snackbar_text)).show()
                 viewModel.resetCompleteDeletion()
+            }
+        }
+        viewModel.getIsCompleteUpload().observe(viewLifecycleOwner) { isComplete ->
+            if (isComplete == true) {
+                folderAddDialog?.dismiss()
+                val toastMessageRes = when (viewModel.getEditMode()) {
+                    true -> R.string.folder_name_update_snackbar_text
+                    else -> R.string.folder_add_snackbar_text
+                }
+                CustomSnackbar.make(binding.layout, getString(toastMessageRes)).show()
             }
         }
     }
@@ -94,12 +105,7 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
                 override fun onButtonClicked(clicked: String) {
                     when (clicked) {
                         FolderMoreDialogButtonReplyType.UPDATE.name -> {
-                            findNavController().navigateSafe(
-                                R.id.action_folder_to_folder_add_dialog, bundleOf(
-                                    ARG_FOLDER_ITEM to folderItem,
-                                    ARG_FOLDER_POSITION to position
-                                )
-                            )
+                            showFolderUploadDialog(position, folderItem)
                         }
                         FolderMoreDialogButtonReplyType.DELETE.name -> {
                             showFolderDeleteDialog(position, folderItem)
@@ -110,6 +116,25 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
             })
         }
         dialog.show(parentFragmentManager, "FolderMoreDialog")
+    }
+
+    /** 폴더 업로드 다이얼로그 */
+    private fun showFolderUploadDialog(position: Int? = null, folderItem: FolderItem? = null) {
+        viewModel.resetFolderData()
+        viewModel.setFolderInfo(position, folderItem)
+        viewModel.setEditMode(folderItem != null)
+
+        folderAddDialog = FolderAddDialogFragment().apply {
+            setListener(object : DialogListener {
+                override fun onButtonClicked(clicked: String) {
+                    when (clicked) {
+                        DialogButtonReplyType.YES.name -> viewModel.uploadFolder()
+                        else -> dismiss()
+                    }
+                }
+            })
+        }
+        folderAddDialog?.show(parentFragmentManager, "FolderUploadDialog")
     }
 
     /** 폴더 삭제 다이얼로그 */
@@ -134,6 +159,5 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
     companion object {
         private const val TAG = "FolderFragment"
         private const val ARG_FOLDER_ITEM = "folderItem"
-        private const val ARG_FOLDER_POSITION = "folderPosition"
     }
 }
