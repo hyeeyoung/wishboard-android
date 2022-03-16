@@ -4,8 +4,11 @@
     <color name="white">#ffffff</color>
     <color name="pink">#FA5DBB</color>
 
+    <!-- TODO rename -->
     <color name="transparent">#00000000</color>
     <color name="semi_transparent">#0D626056</color>
+    <color name="transparent_300">#4D000000</color>
+    <color name="transparent_700">#B3000000</color>
     <color name="ultra_semi_transparent">#10000000</color>
     <color name="black_transparent">#38000000</color>
 
