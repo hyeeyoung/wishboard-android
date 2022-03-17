@@ -7,14 +7,17 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ActivityWishLinkSharingBinding
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
+import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.util.NetworkConnection
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
+import com.hyeeyoung.wishboard.view.folder.adapters.FolderListAdapter
 import com.hyeeyoung.wishboard.view.folder.screens.FolderUploadBottomDialogFragment
 import com.hyeeyoung.wishboard.view.noti.screens.NotiSettingBottomDialogFragment
 import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
@@ -23,7 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class WishLinkSharingActivity : AppCompatActivity() {
+class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemClickListener, FolderListAdapter.OnNewFolderClickListener {
     private val viewModel: WishItemRegistrationViewModel by viewModels()
     private lateinit var binding: ActivityWishLinkSharingBinding
     private var folderAddDialog: FolderUploadBottomDialogFragment? = null
@@ -58,6 +61,16 @@ class WishLinkSharingActivity : AppCompatActivity() {
 
     private fun initializeView() {
         binding.itemImage.clipToOutline = true
+
+        val adapter = viewModel.getFolderListSquareAdapter()
+        adapter.setOnItemClickListener(this)
+        adapter.setOnNewFolderClickListener(this)
+        binding.folderList.run {
+            this.adapter = adapter
+            itemAnimator = null
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            setItemViewCacheSize(20)
+        }
     }
 
     private fun addListeners() {
@@ -71,10 +84,6 @@ class WishLinkSharingActivity : AppCompatActivity() {
         }
         binding.notiInfoContainer.setOnClickListener {
             NotiSettingBottomDialogFragment().show(supportFragmentManager, "NotiSettingDialog")
-        }
-        binding.newFolder.setOnClickListener {
-            folderAddDialog = FolderUploadBottomDialogFragment()
-            folderAddDialog?.show(supportFragmentManager, "NewFolderAddDialog")
         }
     }
 
@@ -126,6 +135,15 @@ class WishLinkSharingActivity : AppCompatActivity() {
                 }
             }
         ).show()
+    }
+
+    override fun onItemClick(item: FolderItem) {
+        viewModel.setFolderItem(item)
+    }
+
+    override fun onItemClick() {
+        folderAddDialog = FolderUploadBottomDialogFragment()
+        folderAddDialog?.show(supportFragmentManager, "NewFolderAddDialog")
     }
 
     companion object {

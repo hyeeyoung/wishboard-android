@@ -56,7 +56,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var notiMinuteVal = MutableLiveData<Int>()
 
     private var folderName = MutableLiveData<String?>()
-    
+
     private var isEnabledSaveButton = MediatorLiveData<Boolean>()
     private var isCompleteUpload = MutableLiveData<Boolean?>()
     private var isExistFolderName = MutableLiveData<Boolean?>()
@@ -67,8 +67,10 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var selectedGalleryImageUri = MutableLiveData<Uri?>()
     private var imageFile: File? = null
 
-    private val folderListAdapter =
+    private val folderListHorizontalAdapter =
         FolderListAdapter(FolderListViewType.HORIZONTAL_VIEW_TYPE)
+    private val folderListSquareAdapter =
+        FolderListAdapter(FolderListViewType.SQUARE_VIEW_TYPE)
 
     private val token = prefs?.getUserToken()
 
@@ -220,7 +222,9 @@ class WishItemRegistrationViewModel @Inject constructor(
                 }
             }
             withContext(Dispatchers.Main) {
-                folderListAdapter.setData(items ?: return@withContext)
+                if (items == null) return@withContext
+                folderListHorizontalAdapter.setData(items)
+                folderListSquareAdapter.setDataForSquareViewType(items)
             }
         }
     }
@@ -411,11 +415,11 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun getNotiHourVal(): LiveData<Int?> = notiHourVal
     fun getNotiMinuteVal(): LiveData<Int?> = notiMinuteVal
 
-    fun getSelectedGalleryImageUri(): LiveData<Uri?> = selectedGalleryImageUri
     fun getWishItem(): WishItem? = wishItem
     fun getFolderName(): LiveData<String?> = folderName
 
-    fun getFolderListAdapter(): FolderListAdapter = folderListAdapter
+    fun getFolderListHorizontalAdapter(): FolderListAdapter = folderListHorizontalAdapter
+    fun getFolderListSquareAdapter(): FolderListAdapter = folderListSquareAdapter
 
     fun isEnabledSaveButton(): LiveData<Boolean> = isEnabledSaveButton
     fun isCompleteUpload(): LiveData<Boolean?> = isCompleteUpload

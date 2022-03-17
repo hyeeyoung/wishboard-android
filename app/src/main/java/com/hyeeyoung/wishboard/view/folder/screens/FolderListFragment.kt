@@ -32,7 +32,7 @@ class FolderListFragment : Fragment(), FolderListAdapter.OnItemClickListener {
     }
 
     private fun initializeView() {
-        val adapter = viewModel.getFolderListAdapter()
+        val adapter = viewModel.getFolderListHorizontalAdapter()
         adapter.setOnItemClickListener(this)
         binding.folderList.run {
             this.adapter = adapter

@@ -124,50 +124,20 @@
                     tools:visibility="visible" />
             </LinearLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/new_folder"
-                android:layout_width="@dimen/widgetSquareFolder"
-                android:layout_height="@dimen/widgetSquareFolder"
-                android:layout_marginStart="@dimen/spacingBase"
-                android:layout_marginBottom="@dimen/spacingBase"
-                android:background="@drawable/shape_border_rectangle_radius_10"
-                android:outlineProvider="none"
-                app:layout_constraintBottom_toTopOf="@id/add"
-                app:layout_constraintStart_toStartOf="parent">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacingSmall"
-                    android:src="@drawable/ic_plus_circle_gray"
-                    app:layout_constraintBottom_toTopOf="@id/folder_add_title"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <TextView
-                    android:id="@+id/folder_add_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/spacing5"
-                    android:fontFamily="@font/suit_b"
-                    android:text="@string/add_folder"
-                    android:textColor="@color/gray_300"
-                    android:textSize="@dimen/typographyDescription"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/folder_list"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="@dimen/spacing5"
-                android:paddingEnd="@dimen/spacing5"
-                app:layout_constraintBottom_toBottomOf="@id/new_folder"
+                android:layout_height="@dimen/widgetSquareFolder"
+                android:layout_marginStart="@dimen/spacingBase"
+                android:layout_marginBottom="@dimen/spacingBase"
+                android:layout_weight="1"
+                android:clipToPadding="false"
+                android:nestedScrollingEnabled="false"
+                android:overScrollMode="never"
+                android:paddingEnd="6dp"
+                app:layout_constraintBottom_toTopOf="@id/add"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/new_folder"
-                app:layout_constraintTop_toTopOf="@id/new_folder" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <!-- 추후 ui 변경 시 메모가 사용될 수 있으므로 주석처리함 -->
             <!--            <EditText-->

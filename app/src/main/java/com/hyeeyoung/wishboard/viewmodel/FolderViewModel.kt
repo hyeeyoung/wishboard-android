@@ -25,7 +25,7 @@ class FolderViewModel @Inject constructor(
 
     private val folderList = MutableLiveData<List<FolderItem>?>(listOf())
     private val folderListAdapter =
-        FolderListAdapter(FolderListViewType.SQUARE_VIEW_TYPE)
+        FolderListAdapter(FolderListViewType.VERTICAL_VIEW_TYPE)
     private var folderName = MutableLiveData<String?>()
     private var folderItem: FolderItem? = null
     private var folderPosition: Int? = null

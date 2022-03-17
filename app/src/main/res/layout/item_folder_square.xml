@@ -14,7 +14,7 @@
         android:id="@+id/container"
         android:layout_width="@dimen/widgetSquareFolder"
         android:layout_height="@dimen/widgetSquareFolder"
-        android:layout_marginHorizontal="@dimen/spacing5">
+        android:layout_marginEnd="@dimen/spacing10">
 
         <ImageView
             android:id="@+id/thumbnail"
@@ -31,12 +31,8 @@
         <ImageView
             android:id="@+id/foreground"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
             android:background="@drawable/shape_border_radius_10"
-            app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
             tools:backgroundTint="@color/transparent_700" />
 
         <ImageView
