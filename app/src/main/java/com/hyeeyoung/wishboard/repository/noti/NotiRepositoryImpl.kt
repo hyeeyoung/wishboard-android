@@ -35,9 +35,9 @@ class NotiRepositoryImpl : NotiRepository {
         }
     }
 
-    override suspend fun updatePushNotiSettings(token: String, isSet: Boolean) {
+    override suspend fun updatePushState(token: String, isSet: Boolean) {
         try {
-            val response = api.updatePushNotiSettings(token, isSet)
+            val response = api.updatePushState(token, isSet)
 
             val onOff = if (isSet) {
                 "켜기"

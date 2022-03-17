@@ -52,7 +52,7 @@ class MyFragment : Fragment() {
 
     private fun addListeners() {
         binding.notiSwitch.setOnClickListener {
-            viewModel.updatePushNotiSettings()
+            viewModel.updatePushState()
         }
         binding.logout.setOnClickListener {
             showLogoutDialog()
