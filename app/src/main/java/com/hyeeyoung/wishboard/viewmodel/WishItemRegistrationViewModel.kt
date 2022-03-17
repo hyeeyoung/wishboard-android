@@ -59,9 +59,11 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     private var isEnabledSaveButton = MediatorLiveData<Boolean>()
     private var isCompleteUpload = MutableLiveData<Boolean?>()
+    private var isCompleteFolderUpload = MutableLiveData<Boolean?>()
     private var isExistFolderName = MutableLiveData<Boolean?>()
 
     private var itemRegistrationStatus = MutableLiveData<ProcessStatus>()
+    private var folderRegistrationStatus = MutableLiveData<ProcessStatus>()
 
     private val galleryImageUris = MutableLiveData<PagingData<Uri>>()
     private var selectedGalleryImageUri = MutableLiveData<Uri?>()
@@ -136,6 +138,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                     price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                     url = siteUrl,
                     memo = itemMemo.value?.trim(),
+                    folderId = folderItem?.id,
                     notiType = notiType.value,
                     notiDate = notiDate.value
                 )
@@ -209,6 +212,23 @@ class WishItemRegistrationViewModel @Inject constructor(
         itemRegistrationStatus.postValue(ProcessStatus.IDLE)
     }
 
+    fun createNewFolder() {
+        if (folderName.value == null) return
+        folderRegistrationStatus.value = ProcessStatus.IN_PROGRESS
+        val folderInfo = FolderItem(name = folderName.value)
+
+        viewModelScope.launch {
+            val result = folderRepository.createNewFolder(token!!, folderInfo)
+            isCompleteFolderUpload.value = result?.first?.first
+            isExistFolderName.value = result?.first?.second == 409
+            result?.second?.let { folderId ->
+                val folder = FolderItem(folderId, folderName.value)
+                folderListSquareAdapter.addData(folder)
+            }
+            folderRegistrationStatus.postValue(ProcessStatus.IDLE)
+        }
+    }
+
     private fun fetchFolderList() {
         if (token == null) return
         viewModelScope.launch {
@@ -224,7 +244,7 @@ class WishItemRegistrationViewModel @Inject constructor(
             withContext(Dispatchers.Main) {
                 if (items == null) return@withContext
                 folderListHorizontalAdapter.setData(items)
-                folderListSquareAdapter.setDataForSquareViewType(items)
+                folderListSquareAdapter.setData(items)
             }
         }
     }
@@ -386,8 +406,8 @@ class WishItemRegistrationViewModel @Inject constructor(
         this.imageFile = imageFile
     }
 
-    fun setCompletedUpload(isCompleted: Boolean?) {
-        isCompleteUpload.value = isCompleted
+    fun resetCompleteFolderUpload() {
+        isCompleteFolderUpload.value = null
     }
 
     /*
@@ -423,8 +443,11 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     fun isEnabledSaveButton(): LiveData<Boolean> = isEnabledSaveButton
     fun isCompleteUpload(): LiveData<Boolean?> = isCompleteUpload
+    fun isCompleteFolderUpload(): LiveData<Boolean?> = isCompleteFolderUpload
+
     fun getIsExistFolderName(): LiveData<Boolean?> = isExistFolderName
     fun getRegistrationStatus(): LiveData<ProcessStatus> = itemRegistrationStatus
+    fun getFolderRegistrationStatus(): LiveData<ProcessStatus> = folderRegistrationStatus
 
     companion object {
         private const val TAG = "WishItemRegistrationViewModel"

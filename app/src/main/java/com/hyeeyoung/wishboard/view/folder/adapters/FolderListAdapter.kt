@@ -27,6 +27,10 @@ class FolderListAdapter(
 
     init {
         setHasStableIds(true)
+        if (folderListViewType == FolderListViewType.SQUARE_VIEW_TYPE) {
+            dataSet.add(FolderItem()) // "폴더 추가" 뷰를 위한 더미 데이터 삽입
+            notifyItemChanged(0)
+        }
     }
 
     interface OnItemClickListener {
@@ -119,10 +123,8 @@ class FolderListAdapter(
                     Glide.with(thumbnail.context).load(url).into(thumbnail)
                 }
                 container.setOnClickListener {
-                    val unselectedPosition = selectedFolderPosition
                     selectedFolderPosition = position
-                    unselectedPosition?.let { notifyItemChanged(it) }
-                    notifyItemChanged(position)
+                    notifyItemRangeChanged(1, itemCount-1)
                     listener.onItemClick(item)
                 }
             }
@@ -190,34 +192,6 @@ class FolderListAdapter(
 
     override fun getItemId(position: Int): Long = dataSet[position].id ?: 0
 
-    fun addData(folderItem: FolderItem) {
-        dataSet.add(0, folderItem)
-        notifyItemInserted(0)
-    }
-
-    fun updateData(position: Int, folderItem: FolderItem) {
-        dataSet[position] = folderItem
-        notifyItemChanged(position)
-    }
-
-    fun deleteData(position: Int, folderItem: FolderItem) {
-        dataSet.remove(folderItem)
-        notifyItemRemoved(position)
-    }
-
-    fun setData(items: List<FolderItem>?) {
-        dataSet.clear()
-        items?.let { dataSet.addAll(it) }
-        notifyDataSetChanged()
-    }
-
-    fun setDataForSquareViewType(items: List<FolderItem>?) {
-        dataSet.clear()
-        dataSet.add(FolderItem()) // "폴더 추가" 뷰를 위한 더미 데이터 삽입
-        items?.let { dataSet.addAll(it) }
-        notifyDataSetChanged()
-    }
-
     override fun getItemViewType(position: Int): Int {
         return when (folderListViewType) {
             FolderListViewType.SQUARE_VIEW_TYPE -> {
@@ -231,6 +205,34 @@ class FolderListAdapter(
                 folderListViewType
             }
         }.ordinal
+    }
+
+    fun addData(folderItem: FolderItem) {
+        if (folderListViewType == FolderListViewType.SQUARE_VIEW_TYPE) {
+            dataSet.add(1, folderItem) // 0번 포지션인 "폴더 추가" 다음에 폴더 삽입
+            notifyItemInserted(1)
+        } else {
+            dataSet.add(0, folderItem)
+            notifyItemInserted(0)
+        }
+    }
+
+    fun updateData(position: Int, folderItem: FolderItem) {
+        dataSet[position] = folderItem
+        notifyItemChanged(position)
+    }
+
+    fun deleteData(position: Int, folderItem: FolderItem) {
+        dataSet.remove(folderItem)
+        notifyItemRemoved(position)
+    }
+
+    fun setData(items: List<FolderItem>?) {
+        if (folderListViewType != FolderListViewType.SQUARE_VIEW_TYPE) {
+            dataSet.clear()
+        }
+        items?.let { dataSet.addAll(it) }
+        notifyDataSetChanged()
     }
 
     companion object {
