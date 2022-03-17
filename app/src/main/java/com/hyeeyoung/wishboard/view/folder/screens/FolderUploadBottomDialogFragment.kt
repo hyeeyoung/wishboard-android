@@ -25,6 +25,7 @@ class FolderUploadBottomDialogFragment : DialogFragment() { // TODO rename
         binding.lifecycleOwner = this@FolderUploadBottomDialogFragment
 
         viewModel.resetFolderName()
+        viewModel.resetCompleteFolderUpload()
 
         addListeners()
         addObservers()
@@ -44,8 +45,7 @@ class FolderUploadBottomDialogFragment : DialogFragment() { // TODO rename
 
     private fun addListeners() {
         binding.add.setOnClickListener {
-            // TODO 폴더 추가 요청
-            dismiss()
+            viewModel.createNewFolder()
         }
         binding.back.setOnClickListener {
             dismiss()
@@ -53,7 +53,7 @@ class FolderUploadBottomDialogFragment : DialogFragment() { // TODO rename
     }
 
     private fun addObservers() {
-        viewModel.getRegistrationStatus().observe(this) {
+        viewModel.getFolderRegistrationStatus().observe(this) {
             when (it) {
                 ProcessStatus.IDLE -> {
                     binding.loadingLottie.visibility = View.GONE
@@ -62,6 +62,11 @@ class FolderUploadBottomDialogFragment : DialogFragment() { // TODO rename
                     binding.loadingLottie.visibility = View.VISIBLE
                     binding.loadingLottie.playAnimation()
                 }
+            }
+        }
+        viewModel.isCompleteFolderUpload().observe(this) { isComplete ->
+            if (isComplete == true) {
+                dismiss()
             }
         }
     }
