@@ -103,6 +103,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress"
+                android:maxLines="1"
                 android:onTextChanged="@{viewModel::onRegistrationEmailTextChanged}"
                 android:text="@{viewModel.registrationEmail}"
                 android:textAppearance="@style/Widget.EditText.Basic.TextAppearance">
