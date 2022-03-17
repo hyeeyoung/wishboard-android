@@ -10,7 +10,9 @@
     <dimen name="spacingBase">16dp</dimen>
 
     <!-- Widget -->
+    <dimen name="widgetBottomDialogHeightBase">312dp</dimen>
     <dimen name="widgetHeightBase">50dp</dimen>
+    <dimen name="widgetSquareFolder">80dp</dimen>
 
     <!-- Typography -->
     <dimen name="typographyBaseDetail">12sp</dimen>

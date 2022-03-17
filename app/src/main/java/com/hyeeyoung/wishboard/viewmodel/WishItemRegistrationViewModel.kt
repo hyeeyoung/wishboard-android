@@ -55,9 +55,11 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var notiHourVal = MutableLiveData<Int>()
     private var notiMinuteVal = MutableLiveData<Int>()
 
-    private var isVisibleNotiSettingDialog = MutableLiveData(false)
+    private var folderName = MutableLiveData<String?>()
+
     private var isEnabledSaveButton = MediatorLiveData<Boolean>()
     private var isCompleteUpload = MutableLiveData<Boolean?>()
+    private var isExistFolderName = MutableLiveData<Boolean?>()
 
     private var itemRegistrationStatus = MutableLiveData<ProcessStatus>()
 
@@ -65,8 +67,10 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var selectedGalleryImageUri = MutableLiveData<Uri?>()
     private var imageFile: File? = null
 
-    private val folderListAdapter =
+    private val folderListHorizontalAdapter =
         FolderListAdapter(FolderListViewType.HORIZONTAL_VIEW_TYPE)
+    private val folderListSquareAdapter =
+        FolderListAdapter(FolderListViewType.SQUARE_VIEW_TYPE)
 
     private val token = prefs?.getUserToken()
 
@@ -218,7 +222,9 @@ class WishItemRegistrationViewModel @Inject constructor(
                 }
             }
             withContext(Dispatchers.Main) {
-                folderListAdapter.setData(items ?: return@withContext)
+                if (items == null) return@withContext
+                folderListHorizontalAdapter.setData(items)
+                folderListSquareAdapter.setDataForSquareViewType(items)
             }
         }
     }
@@ -343,13 +349,9 @@ class WishItemRegistrationViewModel @Inject constructor(
         notiMinuteVal.value = newVal
     }
 
-    fun toggleVisibilityNotiSettingDialog() {
-        if (isVisibleNotiSettingDialog.value == null) return
-        isVisibleNotiSettingDialog.value = !isVisibleNotiSettingDialog.value!!
-    }
-
-    fun setVisibilityNotiSettingDialog(isVisible: Boolean) {
-        isVisibleNotiSettingDialog.value = isVisible
+    fun onFolderNameTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        folderName.value = s.toString()
+        isExistFolderName.value = false
     }
 
     fun setFolderItem(folder: FolderItem) {
@@ -369,6 +371,10 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun resetNotiInfo() {
         this.notiType.value = null
         this.notiDate.value = null
+    }
+
+    fun resetFolderName() {
+        folderName.value = null
     }
 
     fun setItemUrl(url: String) {
@@ -409,15 +415,15 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun getNotiHourVal(): LiveData<Int?> = notiHourVal
     fun getNotiMinuteVal(): LiveData<Int?> = notiMinuteVal
 
-    fun getSelectedGalleryImageUri(): LiveData<Uri?> = selectedGalleryImageUri
     fun getWishItem(): WishItem? = wishItem
+    fun getFolderName(): LiveData<String?> = folderName
 
-    fun getFolderListAdapter(): FolderListAdapter = folderListAdapter
+    fun getFolderListHorizontalAdapter(): FolderListAdapter = folderListHorizontalAdapter
+    fun getFolderListSquareAdapter(): FolderListAdapter = folderListSquareAdapter
 
-    fun isVisibleNotiSettingDialog(): LiveData<Boolean> = isVisibleNotiSettingDialog
     fun isEnabledSaveButton(): LiveData<Boolean> = isEnabledSaveButton
     fun isCompleteUpload(): LiveData<Boolean?> = isCompleteUpload
-
+    fun getIsExistFolderName(): LiveData<Boolean?> = isExistFolderName
     fun getRegistrationStatus(): LiveData<ProcessStatus> = itemRegistrationStatus
 
     companion object {

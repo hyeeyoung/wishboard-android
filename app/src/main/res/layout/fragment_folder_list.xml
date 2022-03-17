@@ -58,7 +58,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/folder_no_item_view"
-            android:visibility="@{viewModel.folderListAdapter.itemCount > 0 ? View.GONE : View.VISIBLE}"
+            android:visibility="@{viewModel.folderListHorizontalAdapter.itemCount > 0 ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

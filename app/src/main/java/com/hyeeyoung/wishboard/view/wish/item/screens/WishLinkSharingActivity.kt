@@ -7,23 +7,29 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ActivityWishLinkSharingBinding
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
-import com.hyeeyoung.wishboard.util.*
+import com.hyeeyoung.wishboard.model.folder.FolderItem
+import com.hyeeyoung.wishboard.util.NetworkConnection
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
+import com.hyeeyoung.wishboard.view.folder.adapters.FolderListAdapter
+import com.hyeeyoung.wishboard.view.folder.screens.FolderUploadBottomDialogFragment
+import com.hyeeyoung.wishboard.view.noti.screens.NotiSettingBottomDialogFragment
 import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class WishLinkSharingActivity : AppCompatActivity() {
+class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemClickListener, FolderListAdapter.OnNewFolderClickListener {
     private val viewModel: WishItemRegistrationViewModel by viewModels()
     private lateinit var binding: ActivityWishLinkSharingBinding
+    private var folderAddDialog: FolderUploadBottomDialogFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,13 +60,17 @@ class WishLinkSharingActivity : AppCompatActivity() {
     }
 
     private fun initializeView() {
-        // 알림 유형 및 날짜 넘버피커 설정
-        setTypePicker(binding.typePicker)
-        setDatePicker(binding.datePicker)
-        setHourPicker(binding.hourPicker)
-        setMinutePicker(binding.minutePicker)
-
         binding.itemImage.clipToOutline = true
+
+        val adapter = viewModel.getFolderListSquareAdapter()
+        adapter.setOnItemClickListener(this)
+        adapter.setOnNewFolderClickListener(this)
+        binding.folderList.run {
+            this.adapter = adapter
+            itemAnimator = null
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            setItemViewCacheSize(20)
+        }
     }
 
     private fun addListeners() {
@@ -72,15 +82,8 @@ class WishLinkSharingActivity : AppCompatActivity() {
         binding.cancel.setOnClickListener {
             finish()
         }
-        binding.complete.setOnClickListener {
-            viewModel.setVisibilityNotiSettingDialog(false)
-            val type = getTypePickerValue(binding.typePicker.value)
-            val date = getDatePickerValue(
-                binding.datePicker.value,
-                binding.hourPicker.value,
-                binding.minutePicker.value
-            )
-            viewModel.setNotiInfo(true, type, date)
+        binding.notiInfoContainer.setOnClickListener {
+            NotiSettingBottomDialogFragment().show(supportFragmentManager, "NotiSettingDialog")
         }
     }
 
@@ -89,6 +92,7 @@ class WishLinkSharingActivity : AppCompatActivity() {
             if (image == null) return@observe
             Glide.with(this).load(image).into(binding.itemImage)
         }
+        // TODO 폴더 추가 완료 observer 추가 및 dialog dismiss()
         viewModel.isCompleteUpload().observe(this) { isComplete ->
             if (isComplete == true) {
                 binding.layout.visibility = View.INVISIBLE
@@ -106,7 +110,6 @@ class WishLinkSharingActivity : AppCompatActivity() {
                 }
             }
         }
-
         NetworkConnection(this).observe(this) { isConnected ->
             binding.networkView.visibility =
                 if (isConnected == true) {
@@ -132,6 +135,15 @@ class WishLinkSharingActivity : AppCompatActivity() {
                 }
             }
         ).show()
+    }
+
+    override fun onItemClick(item: FolderItem) {
+        viewModel.setFolderItem(item)
+    }
+
+    override fun onItemClick() {
+        folderAddDialog = FolderUploadBottomDialogFragment()
+        folderAddDialog?.show(supportFragmentManager, "NewFolderAddDialog")
     }
 
     companion object {
