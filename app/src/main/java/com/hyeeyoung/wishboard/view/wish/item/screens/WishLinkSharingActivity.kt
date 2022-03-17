@@ -92,7 +92,6 @@ class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemCli
             if (image == null) return@observe
             Glide.with(this).load(image).into(binding.itemImage)
         }
-        // TODO 폴더 추가 완료 observer 추가 및 dialog dismiss()
         viewModel.isCompleteUpload().observe(this) { isComplete ->
             if (isComplete == true) {
                 binding.layout.visibility = View.INVISIBLE
