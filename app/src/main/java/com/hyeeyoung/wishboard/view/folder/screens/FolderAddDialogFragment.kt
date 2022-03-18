@@ -71,6 +71,11 @@ class FolderAddDialogFragment : DialogFragment() {
         this.listener = listener
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.resetFolderData()
+    }
+
     companion object {
         const val TAG = "FolderAdditionDialogFragment"
     }
