@@ -83,6 +83,7 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
                 }
                 CustomSnackbar.make(binding.layout, getString(toastMessageRes)).show()
             }
+            return@observe
         }
     }
 
@@ -120,7 +121,6 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
 
     /** 폴더 업로드 다이얼로그 */
     private fun showFolderUploadDialog(position: Int? = null, folderItem: FolderItem? = null) {
-        viewModel.resetFolderData()
         viewModel.setFolderInfo(position, folderItem)
         viewModel.setEditMode(folderItem != null)
 
