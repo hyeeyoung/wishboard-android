@@ -63,9 +63,8 @@ class FolderListAdapter(
             with(binding) {
                 this.item = folder
                 thumbnail.clipToOutline = true
-                item.thumbnailUrl?.let { url ->
-                    Glide.with(thumbnail.context).load(url).into(thumbnail)
-                }
+                Glide.with(thumbnail.context).load(folder.thumbnailUrl).into(thumbnail)
+
                 container.setOnClickListener {
                     listener.onItemClick(folder)
                 }
@@ -87,9 +86,8 @@ class FolderListAdapter(
                     View.INVISIBLE
                 }
                 thumbnail.clipToOutline = true
-                item.thumbnailUrl?.let { url ->
-                    Glide.with(thumbnail.context).load(url).into(thumbnail)
-                }
+                Glide.with(thumbnail.context).load(folder.thumbnailUrl).into(thumbnail)
+
                 container.setOnClickListener {
                     selectedFolder = folder
                     listener.onItemClick(folder)
@@ -114,9 +112,8 @@ class FolderListAdapter(
                         ContextCompat.getColorStateList(foreground.context, R.color.transparent_300)
                 }
                 thumbnail.clipToOutline = true
-                folder.thumbnailUrl?.let { url ->
-                    Glide.with(thumbnail.context).load(url).into(thumbnail)
-                }
+                Glide.with(thumbnail.context).load(folder.thumbnailUrl).into(thumbnail)
+
                 container.setOnClickListener {
                     val unselectedFolder = selectedFolder
                     selectedFolder = folder
