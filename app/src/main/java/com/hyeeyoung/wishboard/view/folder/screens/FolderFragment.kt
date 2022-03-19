@@ -95,21 +95,21 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
     }
 
     /** 폴더 아이템의 더보기 버튼 클릭 시 폴더 더보기 다이얼로그 띄우기 */
-    override fun onItemMoreButtonClick(position: Int, item: FolderItem) {
-        showFolderMoreDialog(position, item)
+    override fun onItemMoreButtonClick(item: FolderItem) {
+        showFolderMoreDialog(item)
     }
 
     /** 폴더 더보기 다이얼로그 */
-    private fun showFolderMoreDialog(position: Int, folderItem: FolderItem) {
+    private fun showFolderMoreDialog(folderItem: FolderItem) {
         val dialog = FolderMoreDialogFragment().apply {
             setListener(object : DialogListener {
                 override fun onButtonClicked(clicked: String) {
                     when (clicked) {
                         FolderMoreDialogButtonReplyType.UPDATE.name -> {
-                            showFolderUploadDialog(position, folderItem)
+                            showFolderUploadDialog(folderItem)
                         }
                         FolderMoreDialogButtonReplyType.DELETE.name -> {
-                            showFolderDeleteDialog(position, folderItem)
+                            showFolderDeleteDialog(folderItem)
                         }
                     }
                     dismiss()
@@ -120,8 +120,8 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
     }
 
     /** 폴더 업로드 다이얼로그 */
-    private fun showFolderUploadDialog(position: Int? = null, folderItem: FolderItem? = null) {
-        viewModel.setFolderInfo(position, folderItem)
+    private fun showFolderUploadDialog(folderItem: FolderItem? = null) {
+        viewModel.setFolderInfo(folderItem)
         viewModel.setEditMode(folderItem != null)
 
         folderAddDialog = FolderAddDialogFragment().apply {
@@ -138,7 +138,7 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
     }
 
     /** 폴더 삭제 다이얼로그 */
-    private fun showFolderDeleteDialog(position: Int, folderItem: FolderItem) {
+    private fun showFolderDeleteDialog(folderItem: FolderItem) {
         val dialog = TwoButtonDialogFragment(
             getString(R.string.folder_delete),
             getString(R.string.folder_delete_dialog_detail),
@@ -147,7 +147,7 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
             setListener(object : DialogListener {
                 override fun onButtonClicked(clicked: String) {
                     if (clicked == DialogButtonReplyType.YES.name) {
-                        viewModel.deleteFolder(folderItem, position)
+                        viewModel.deleteFolder(folderItem)
                     }
                     dismiss()
                 }
