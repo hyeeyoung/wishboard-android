@@ -66,7 +66,7 @@ class FolderViewModel @Inject constructor(
         val folderName = folderName.value?.trim() ?: return
 
         if (isEditMode) {
-            updateFolderName(folderItem!!, folderPosition ?: return, folderName)
+            updateFolderName(folderItem!!, folderName)
         } else {
             createNewFolder(folderName)
         }
@@ -74,11 +74,8 @@ class FolderViewModel @Inject constructor(
 
     private fun createNewFolder(folderName: String) {
         folderRegistrationStatus.value = ProcessStatus.IN_PROGRESS
-        val folderInfo = FolderItem(name = folderName)
-
         viewModelScope.launch {
-            folderItem = folderInfo
-            val result = folderRepository.createNewFolder(token!!, folderInfo)
+            val result = folderRepository.createNewFolder(token!!, FolderItem(name = folderName))
             isCompleteUpload.value = result?.first?.first
             isExistFolderName.value = result?.first?.second == 409
             result?.second?.let { folderId ->
@@ -90,15 +87,18 @@ class FolderViewModel @Inject constructor(
         }
     }
 
-    private fun updateFolderName(folder: FolderItem, position: Int, folderName: String) {
-        if (folder.id == null) return
+    private fun updateFolderName(oldFolder: FolderItem, folderName: String) {
+        if (oldFolder.id == null) return
         folderRegistrationStatus.value = ProcessStatus.IN_PROGRESS
 
+        val newFolder = oldFolder.apply {
+            this.name = folderName
+        }
+
         viewModelScope.launch {
-            val result = folderRepository.updateFolderName(token!!, folder.id, folderName)
+            val result = folderRepository.updateFolderName(token!!, oldFolder.id, folderName)
             if (result?.first == true) {
-                folder.name = folderName
-                folderListAdapter.updateData(position, folder)
+                folderListAdapter.updateData(oldFolder, newFolder)
             }
             isCompleteUpload.value = result?.first
             isExistFolderName.value = result?.second == 409
@@ -106,12 +106,12 @@ class FolderViewModel @Inject constructor(
         }
     }
 
-    fun deleteFolder(folder: FolderItem?, position: Int?) {
-        if (token == null || folder?.id == null || position == null) return
+    fun deleteFolder(folder: FolderItem?) {
+        if (token == null || folder?.id == null) return
         viewModelScope.launch {
             val result = folderRepository.deleteFolder(token, folder.id)
             if (result) {
-                folderListAdapter.deleteData(position, folder)
+                folderListAdapter.deleteData(folder)
                 folderList.value = folderListAdapter.getData()
             }
             isCompleteDeletion.postValue(result)
@@ -138,8 +138,7 @@ class FolderViewModel @Inject constructor(
         folderName.value = null
     }
 
-    fun setFolderInfo(position: Int?, folder: FolderItem?) {
-        this.folderPosition = position
+    fun setFolderInfo(folder: FolderItem?) {
         folderItem = folder
         folderName.value = folder?.name
     }
