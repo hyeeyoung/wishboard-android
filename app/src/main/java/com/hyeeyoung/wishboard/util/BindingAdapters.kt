@@ -42,6 +42,7 @@ fun TextView.setTimeFormat(regTime: Long?) {
             diffTime.toString() + context.getString(R.string.time_months_ago)
         }
         else -> {
+            diffTime /= TimeUtil.MONTH
             diffTime.toString() + context.getString(R.string.time_years_ago)
         }
     }
