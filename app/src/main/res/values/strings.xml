@@ -37,7 +37,7 @@
     <string name="wish_item_deletion_snackbar_text">아이템을 위시리스트에서 삭제했어요!🗑</string>
     <string name="my_profile_edit_completion_snackbar_text">프로필이 수정되었어요!👩‍🎤</string>
     <string name="my_delete_user_snackbar_text">탈퇴 완료되었어요. 이용해주셔서 감사합니다!☺️</string>
-    <string name="check_network_connection_snackbar_text">네트워크 연결 상태를 확인해 주세요!👀</string>
+    <string name="check_network_connection_snackbar_text">네트워크 연결 상태를 확인해 주세요.</string>
 
     <!-- Onboarding -->
     <string name="onboarding_welcome_guide">흩어져있는 위시리스트를\n위시보드로 간편하게 통합 관리해 보세요!️</string>
