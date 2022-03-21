@@ -35,6 +35,7 @@
     <string name="wish_item_registration_snackbar_text">아이템을 위시리스트에 추가했어요!👜</string>
     <string name="wish_item_update_snackbar_text">아이템을 수정했어요!✍️️</string>
     <string name="wish_item_deletion_snackbar_text">아이템을 위시리스트에서 삭제했어요!🗑</string>
+    <string name="noti_item_url_snackbar_text">쇼핑몰 링크를 등록해 주세요!🛍️️</string>
     <string name="my_profile_edit_completion_snackbar_text">프로필이 수정되었어요!👩‍🎤</string>
     <string name="my_delete_user_snackbar_text">탈퇴 완료되었어요. 이용해주셔서 감사합니다!☺️</string>
     <string name="check_network_connection_snackbar_text">네트워크 연결 상태를 확인해 주세요!👀</string>
