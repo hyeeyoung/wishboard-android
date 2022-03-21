@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentNotiBinding
 import com.hyeeyoung.wishboard.model.noti.NotiItem
+import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.view.noti.adapters.NotiListAdapter
 import com.hyeeyoung.wishboard.viewmodel.NotiViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -57,9 +59,12 @@ class NotiFragment : Fragment(), NotiListAdapter.OnItemClickListener {
     }
 
     override fun onItemClick(position: Int, item: NotiItem) {
-        if (item.itemUrl == null) return
-        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item.itemUrl)))
         viewModel.updateNotiReadState(position, item.itemId)
+        if (item.itemUrl == null) {
+            CustomSnackbar.make(binding.layout, getString(R.string.noti_item_url_snackbar_text)).show()
+        } else {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item.itemUrl)))
+        }
     }
 
     companion object {
