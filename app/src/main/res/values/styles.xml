@@ -204,8 +204,8 @@
         <item name="android:gravity">center</item>
         <item name="android:paddingStart">32dp</item>
         <item name="android:paddingEnd">32dp</item>
-        <item name="android:paddingTop">24dp</item>
-        <item name="android:paddingBottom">24dp</item>
+        <item name="android:paddingTop">@dimen/spacing12</item>
+        <item name="android:paddingBottom">@dimen/spacing12</item>
         <item name="android:layout_marginStart">24dp</item>
         <item name="android:layout_marginEnd">24dp</item>
         <item name="android:layout_marginTop">@dimen/spacingBase</item>
