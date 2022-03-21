@@ -213,17 +213,16 @@ class WishItemRegistrationViewModel @Inject constructor(
     }
 
     fun createNewFolder() {
-        if (folderName.value == null) return
+        val folderName = folderName.value?.trim() ?: return
         folderRegistrationStatus.value = ProcessStatus.IN_PROGRESS
-        val folderInfo = FolderItem(name = folderName.value)
+        val folder = FolderItem(name = folderName)
 
         viewModelScope.launch {
-            val result = folderRepository.createNewFolder(token!!, folderInfo)
+            val result = folderRepository.createNewFolder(token!!, folder)
             isCompleteFolderUpload.value = result?.first?.first
             isExistFolderName.value = result?.first?.second == 409
             result?.second?.let { folderId ->
-                val folder = FolderItem(folderId, folderName.value)
-                folderListSquareAdapter.addData(folder)
+                folderListSquareAdapter.addData(FolderItem(folderId, folderName))
             }
             folderRegistrationStatus.postValue(ProcessStatus.IDLE)
         }

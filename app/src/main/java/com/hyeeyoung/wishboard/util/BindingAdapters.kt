@@ -35,13 +35,19 @@ fun TextView.setTimeFormat(regTime: Long?) {
         TimeUtil.MIN.let { diffTime /= it; diffTime } < TimeUtil.HOUR -> {
             diffTime.toString() + context.getString(R.string.time_hours_ago)
         }
-        TimeUtil.HOUR.let { diffTime /= it; diffTime } < TimeUtil.DAY -> {
-            diffTime.toString() + context.getString(R.string.time_days_ago)
+        TimeUtil.HOUR.let { diffTime /= it; diffTime } < TimeUtil.DAY_OF_MONTH -> {
+            if (diffTime < TimeUtil.DAY_OF_WEEK) {
+                diffTime.toString() + context.getString(R.string.time_days_ago)
+            } else {
+                diffTime /= TimeUtil.DAY_OF_WEEK
+                diffTime.toString() + context.getString(R.string.time_weeks_ago)
+            }
         }
-        TimeUtil.DAY.let { diffTime /= it; diffTime } < TimeUtil.MONTH -> {
+        TimeUtil.DAY_OF_MONTH.let { diffTime /= it; diffTime } < TimeUtil.MONTH -> {
             diffTime.toString() + context.getString(R.string.time_months_ago)
         }
         else -> {
+            diffTime /= TimeUtil.MONTH
             diffTime.toString() + context.getString(R.string.time_years_ago)
         }
     }

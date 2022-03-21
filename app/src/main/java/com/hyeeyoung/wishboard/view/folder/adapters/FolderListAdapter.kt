@@ -23,7 +23,7 @@ class FolderListAdapter(
     private lateinit var listener: OnItemClickListener
     private var folderMoreDialogListener: OnFolderMoreDialogListener? = null
     private var newFolderListener: OnNewFolderClickListener? = null
-    private var selectedFolderPosition: Int? = null
+    private var selectedFolder: FolderItem? = null
 
     init {
         setHasStableIds(true)
@@ -42,7 +42,7 @@ class FolderListAdapter(
     }
 
     interface OnFolderMoreDialogListener {
-        fun onItemMoreButtonClick(position: Int, item: FolderItem)
+        fun onItemMoreButtonClick(item: FolderItem)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -59,20 +59,17 @@ class FolderListAdapter(
 
     inner class VerticalViewHolder(private val binding: ItemFolderVerticalBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(position: Int) {
-            val item = dataSet[position]
-
+        fun bind(folder: FolderItem) {
             with(binding) {
-                this.item = item
+                this.item = folder
                 thumbnail.clipToOutline = true
-                item.thumbnailUrl?.let { url ->
-                    Glide.with(thumbnail.context).load(url).into(thumbnail)
-                }
+                Glide.with(thumbnail.context).load(folder.thumbnailUrl).into(thumbnail)
+
                 container.setOnClickListener {
-                    listener.onItemClick(item)
+                    listener.onItemClick(folder)
                 }
                 more.setOnClickListener {
-                    folderMoreDialogListener?.onItemMoreButtonClick(position, item)
+                    folderMoreDialogListener?.onItemMoreButtonClick(folder)
                 }
             }
         }
@@ -80,22 +77,20 @@ class FolderListAdapter(
 
     inner class HorizontalViewHolder(private val binding: ItemFolderHorizontalBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(position: Int) {
-            val item = dataSet[position]
+        fun bind(folder: FolderItem) {
             with(binding) {
-                this.item = item
-                check.visibility = if (selectedFolderPosition == position) {
+                this.item = folder
+                check.visibility = if (selectedFolder == folder) {
                     View.VISIBLE
                 } else {
                     View.INVISIBLE
                 }
                 thumbnail.clipToOutline = true
-                item.thumbnailUrl?.let { url ->
-                    Glide.with(thumbnail.context).load(url).into(thumbnail)
-                }
+                Glide.with(thumbnail.context).load(folder.thumbnailUrl).into(thumbnail)
+
                 container.setOnClickListener {
-                    selectedFolderPosition = position
-                    listener.onItemClick(item)
+                    selectedFolder = folder
+                    listener.onItemClick(folder)
                 }
             }
         }
@@ -103,13 +98,11 @@ class FolderListAdapter(
 
     inner class SquareViewHolder(private val binding: ItemFolderSquareBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(position: Int) {
-            val item = dataSet[position]
-
+        fun bind(folder: FolderItem) {
             with(binding) {
-                this.item = item
+                this.item = folder
 
-                if (selectedFolderPosition == position) {
+                if (selectedFolder == folder) {
                     check.visibility = View.VISIBLE
                     foreground.backgroundTintList =
                         ContextCompat.getColorStateList(foreground.context, R.color.transparent_700)
@@ -119,13 +112,14 @@ class FolderListAdapter(
                         ContextCompat.getColorStateList(foreground.context, R.color.transparent_300)
                 }
                 thumbnail.clipToOutline = true
-                item.thumbnailUrl?.let { url ->
-                    Glide.with(thumbnail.context).load(url).into(thumbnail)
-                }
+                Glide.with(thumbnail.context).load(folder.thumbnailUrl).into(thumbnail)
+
                 container.setOnClickListener {
-                    selectedFolderPosition = position
-                    notifyItemRangeChanged(1, itemCount-1)
-                    listener.onItemClick(item)
+                    val unselectedFolder = selectedFolder
+                    selectedFolder = folder
+                    notifyItemChanged(dataSet.indexOf(unselectedFolder))
+                    notifyItemChanged(dataSet.indexOf(selectedFolder))
+                    listener.onItemClick(folder)
                 }
             }
         }
@@ -178,10 +172,11 @@ class FolderListAdapter(
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
+        val folder = dataSet[position]
         when (viewHolder) {
-            is FolderListAdapter.VerticalViewHolder -> viewHolder.bind(position)
-            is FolderListAdapter.HorizontalViewHolder -> viewHolder.bind(position)
-            is FolderListAdapter.SquareViewHolder -> viewHolder.bind(position)
+            is FolderListAdapter.VerticalViewHolder -> viewHolder.bind(folder)
+            is FolderListAdapter.HorizontalViewHolder -> viewHolder.bind(folder)
+            is FolderListAdapter.SquareViewHolder -> viewHolder.bind(folder)
             is FolderListAdapter.NewFolderViewHolder -> viewHolder.bind()
         }
     }
@@ -217,12 +212,14 @@ class FolderListAdapter(
         }
     }
 
-    fun updateData(position: Int, folderItem: FolderItem) {
-        dataSet[position] = folderItem
+    fun updateData(oldFolder: FolderItem, newFolder: FolderItem) {
+         val position = dataSet.indexOf(oldFolder)
+        dataSet[position] = newFolder
         notifyItemChanged(position)
     }
 
-    fun deleteData(position: Int, folderItem: FolderItem) {
+    fun deleteData(folderItem: FolderItem) {
+        val position = dataSet.indexOf(folderItem)
         dataSet.remove(folderItem)
         notifyItemRemoved(position)
     }

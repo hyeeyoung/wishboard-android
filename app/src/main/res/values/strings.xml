@@ -21,7 +21,8 @@
     <string name="time_minutes_ago">분 전</string>
     <string name="time_hours_ago">시간 전</string>
     <string name="time_days_ago">일 전</string>
-    <string name="time_months_ago">달 전</string>
+    <string name="time_weeks_ago">주 전</string>
+    <string name="time_months_ago">개월 전</string>
     <string name="time_years_ago">년 전</string>
 
     <string name="length_format">(%d/%d자)</string>
@@ -38,7 +39,7 @@
     <string name="noti_item_url_snackbar_text">쇼핑몰 링크를 등록해 주세요!🛍️️</string>
     <string name="my_profile_edit_completion_snackbar_text">프로필이 수정되었어요!👩‍🎤</string>
     <string name="my_delete_user_snackbar_text">탈퇴 완료되었어요. 이용해주셔서 감사합니다!☺️</string>
-    <string name="check_network_connection_snackbar_text">네트워크 연결 상태를 확인해 주세요!👀</string>
+    <string name="check_network_connection_snackbar_text">네트워크 연결 상태를 확인해 주세요.</string>
 
     <!-- Onboarding -->
     <string name="onboarding_welcome_guide">흩어져있는 위시리스트를\n위시보드로 간편하게 통합 관리해 보세요!️</string>

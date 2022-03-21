@@ -68,6 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/folder_name"
+                android:inputType="text"
                 android:maxLength="10"
                 android:maxLines="1"
                 android:onTextChanged="@{viewModel::onFolderNameTextChanged}"
@@ -92,7 +93,7 @@
                 android:id="@+id/folder_name_length"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{String.format(@string/length_format, viewModel.folderName.length(), 10)}"
+                android:text="@{String.format(@string/length_format, viewModel.folderName.trim().length(), 10)}"
                 android:textAppearance="@style/Widget.TextAppearance.Detail"
                 android:textColor="@color/gray_200"
                 app:layout_constraintEnd_toEndOf="@id/folder_name"
@@ -118,11 +119,11 @@
             android:layout_width="match_parent"
             android:layout_marginHorizontal="@dimen/spacingBase"
             android:layout_marginTop="@dimen/spacingBase"
-            android:enabled="@{viewModel.folderName.length() > 0}"
+            android:enabled="@{viewModel.folderName.trim().length() > 0}"
             android:text="@{viewModel.folderRegistrationStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.add)}"
             android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="@string/complete" />
+            tools:text="@string/add" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading_lottie"
