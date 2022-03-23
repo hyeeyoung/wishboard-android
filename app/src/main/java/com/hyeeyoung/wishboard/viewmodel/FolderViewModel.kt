@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.folder.FolderListViewType
-import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.repository.folder.FolderRepository
+import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.util.prefs
 import com.hyeeyoung.wishboard.view.folder.adapters.FolderListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -28,7 +28,6 @@ class FolderViewModel @Inject constructor(
         FolderListAdapter(FolderListViewType.VERTICAL_VIEW_TYPE)
     private var folderName = MutableLiveData<String?>()
     private var folderItem: FolderItem? = null
-    private var folderPosition: Int? = null
 
     private var isCompleteUpload = MutableLiveData<Boolean?>()
     private var isCompleteDeletion = MutableLiveData<Boolean>()

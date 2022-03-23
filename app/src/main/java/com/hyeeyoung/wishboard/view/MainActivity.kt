@@ -38,7 +38,6 @@ class MainActivity : AppCompatActivity() {
                     R.id.cart_fragment,
                     R.id.wish_fragment,
                     R.id.wish_item_detail_fragment,
-                    R.id.folder_list_fragment,
                     R.id.gallery_image_fragment,
                     R.id.profile_edit_fragment
                     -> binding.bottomNav.visibility = View.GONE

@@ -23,7 +23,11 @@ class FolderListAdapter(
     private lateinit var listener: OnItemClickListener
     private var folderMoreDialogListener: OnFolderMoreDialogListener? = null
     private var newFolderListener: OnNewFolderClickListener? = null
+    /** 링크 공유 전용, 선택된 폴더를 저장 */
     private var selectedFolder: FolderItem? = null
+    /** 폴더리스트 다이얼로그 전용, 선택된 폴더 id를 저장
+    TODO need refactoring : selectedFolder로 합치기 */
+    private var selectedFolderId: Long? = null
 
     init {
         setHasStableIds(true)
@@ -80,7 +84,7 @@ class FolderListAdapter(
         fun bind(folder: FolderItem) {
             with(binding) {
                 this.item = folder
-                check.visibility = if (selectedFolder == folder) {
+                check.visibility = if (selectedFolderId == folder.id) {
                     View.VISIBLE
                 } else {
                     View.INVISIBLE
@@ -89,7 +93,6 @@ class FolderListAdapter(
                 Glide.with(thumbnail.context).load(folder.thumbnailUrl).into(thumbnail)
 
                 container.setOnClickListener {
-                    selectedFolder = folder
                     listener.onItemClick(folder)
                 }
             }
@@ -182,7 +185,6 @@ class FolderListAdapter(
     }
 
     fun getData(): List<FolderItem> = dataSet
-
     override fun getItemCount(): Int = dataSet.size
 
     override fun getItemId(position: Int): Long = dataSet[position].id ?: 0
@@ -202,6 +204,14 @@ class FolderListAdapter(
         }.ordinal
     }
 
+    fun setData(items: List<FolderItem>?) {
+        if (folderListViewType != FolderListViewType.SQUARE_VIEW_TYPE) {
+            dataSet.clear()
+        }
+        items?.let { dataSet.addAll(it) }
+        notifyDataSetChanged()
+    }
+
     fun addData(folderItem: FolderItem) {
         if (folderListViewType == FolderListViewType.SQUARE_VIEW_TYPE) {
             dataSet.add(1, folderItem) // 0번 포지션인 "폴더 추가" 다음에 폴더 삽입
@@ -213,7 +223,7 @@ class FolderListAdapter(
     }
 
     fun updateData(oldFolder: FolderItem, newFolder: FolderItem) {
-         val position = dataSet.indexOf(oldFolder)
+        val position = dataSet.indexOf(oldFolder)
         dataSet[position] = newFolder
         notifyItemChanged(position)
     }
@@ -224,16 +234,13 @@ class FolderListAdapter(
         notifyItemRemoved(position)
     }
 
-    fun setData(items: List<FolderItem>?) {
-        if (folderListViewType != FolderListViewType.SQUARE_VIEW_TYPE) {
-            dataSet.clear()
-        }
-        items?.let { dataSet.addAll(it) }
-        notifyDataSetChanged()
+    fun setSelectedFolder(folderId: Long) {
+        selectedFolderId = folderId
     }
 
     companion object {
         private const val TAG = "FolderListAdapter"
+        // 현재 사용되고 있지 않음. submitList()로 초기화하지 않고, dataSet 관련 override 함수를 사용할 경우, 콜백 실행 안됨.
         private val diffCallback = object : DiffUtil.ItemCallback<FolderItem>() {
             override fun areItemsTheSame(
                 oldItem: FolderItem,

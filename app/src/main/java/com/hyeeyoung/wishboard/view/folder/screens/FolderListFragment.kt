@@ -10,12 +10,13 @@ import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentFolderListBinding
 import com.hyeeyoung.wishboard.model.folder.FolderItem
+import com.hyeeyoung.wishboard.model.folder.FolderListViewType
 import com.hyeeyoung.wishboard.view.folder.adapters.FolderListAdapter
 import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FolderListFragment : Fragment(), FolderListAdapter.OnItemClickListener {
+class FolderListFragment : Fragment(), FolderListAdapter.OnItemClickListener { // 현재 사용되지 않는 뷰이지만, 추후 사용될 가능성이 있기 때문에 삭제하지 않음
     private lateinit var binding: FragmentFolderListBinding
     private val viewModel: WishItemRegistrationViewModel by hiltNavGraphViewModels(R.id.wish_item_registration_nav_graph)
 
@@ -32,7 +33,8 @@ class FolderListFragment : Fragment(), FolderListAdapter.OnItemClickListener {
     }
 
     private fun initializeView() {
-        val adapter = viewModel.getFolderListHorizontalAdapter()
+        val adapter = FolderListAdapter(FolderListViewType.HORIZONTAL_VIEW_TYPE)
+//        viewModel.getFolderListHorizontalAdapter()
         adapter.setOnItemClickListener(this)
         binding.folderList.run {
             this.adapter = adapter

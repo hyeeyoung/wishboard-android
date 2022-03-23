@@ -14,9 +14,6 @@
             android:id="@+id/action_wish_to_gallery_image"
             app:destination="@id/gallery_image_fragment" />
         <action
-            android:id="@+id/action_wish_to_folder_list"
-            app:destination="@id/folder_list_fragment" />
-        <action
             android:id="@+id/action_wish_to_noti_setting"
             app:destination="@id/noti_setting_fragment" />
     </fragment>
@@ -26,12 +23,6 @@
         android:name="com.hyeeyoung.wishboard.view.common.screens.GalleryImageFragment"
         android:label="galleryImageFragment"
         tools:layout="@layout/fragment_gallery_image" />
-
-    <fragment
-        android:id="@+id/folder_list_fragment"
-        android:name="com.hyeeyoung.wishboard.view.folder.screens.FolderListFragment"
-        android:label="folderListFragment"
-        tools:layout="@layout/fragment_folder_list"/>
 
     <fragment
         android:id="@+id/noti_setting_fragment"
