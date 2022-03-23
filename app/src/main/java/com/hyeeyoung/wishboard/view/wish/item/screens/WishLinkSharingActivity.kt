@@ -26,7 +26,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemClickListener, FolderListAdapter.OnNewFolderClickListener {
+class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemClickListener,
+    FolderListAdapter.OnNewFolderClickListener {
     private val viewModel: WishItemRegistrationViewModel by viewModels()
     private lateinit var binding: ActivityWishLinkSharingBinding
     private var folderAddDialog: FolderUploadBottomDialogFragment? = null
@@ -83,7 +84,10 @@ class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemCli
             finish()
         }
         binding.notiInfoContainer.setOnClickListener {
-            NotiSettingBottomDialogFragment().show(supportFragmentManager, "NotiSettingDialog")
+            NotiSettingBottomDialogFragment(viewModel).show(
+                supportFragmentManager,
+                "NotiSettingDialog"
+            )
         }
     }
 

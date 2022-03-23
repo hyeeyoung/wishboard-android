@@ -1,19 +1,18 @@
 package com.hyeeyoung.wishboard.view.noti.screens
 
 import android.os.Bundle
-import android.view.*
-import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.activityViewModels
-import com.hyeeyoung.wishboard.R
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hyeeyoung.wishboard.databinding.DialogBottomNotiSettingBinding
 import com.hyeeyoung.wishboard.util.*
 import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NotiSettingBottomDialogFragment : DialogFragment() {
+class NotiSettingBottomDialogFragment(private val viewModel: WishItemRegistrationViewModel) : BottomSheetDialogFragment() {
     private lateinit var binding: DialogBottomNotiSettingBinding
-    private val viewModel: WishItemRegistrationViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,16 +27,6 @@ class NotiSettingBottomDialogFragment : DialogFragment() {
         addListeners()
 
         return binding.root
-    }
-
-    override fun onStart() {
-        super.onStart()
-        dialog?.window?.setLayout(
-            WindowManager.LayoutParams.MATCH_PARENT,
-            resources.getDimensionPixelSize(R.dimen.widgetBottomDialogHeightBase)
-        )
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog?.window?.setGravity(Gravity.BOTTOM)
     }
 
     private fun initializeView() {

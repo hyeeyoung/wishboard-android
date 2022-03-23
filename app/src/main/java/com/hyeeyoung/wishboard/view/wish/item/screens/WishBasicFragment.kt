@@ -24,6 +24,7 @@ import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.safeLet
 import com.hyeeyoung.wishboard.view.folder.FolderListDialogListener
 import com.hyeeyoung.wishboard.view.folder.screens.FolderListBottomDialogFragment
+import com.hyeeyoung.wishboard.view.noti.screens.NotiSettingBottomDialogFragment
 import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -96,7 +97,7 @@ class WishBasicFragment : Fragment() {
             showFolderListDialog()
         }
         binding.notiContainer.setOnClickListener {
-            findNavController().navigateSafe(R.id.action_wish_to_noti_setting)
+            NotiSettingBottomDialogFragment(viewModel).show(parentFragmentManager, "NotiSettingDialog")
         }
     }
 

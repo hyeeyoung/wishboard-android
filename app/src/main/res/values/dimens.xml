@@ -11,6 +11,7 @@
 
     <!-- Widget -->
     <dimen name="widgetBottomDialogHeightBase">312dp</dimen>
+    <dimen name="widgetBottomDialogContentHeightBase">264dp</dimen>
     <dimen name="widgetHeightBase">50dp</dimen>
     <dimen name="widgetSquareFolder">80dp</dimen>
 
