@@ -1,17 +1,18 @@
 package com.hyeeyoung.wishboard.view.folder.screens
 
 import android.os.Bundle
-import android.view.*
-import androidx.fragment.app.DialogFragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import com.hyeeyoung.wishboard.R
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hyeeyoung.wishboard.databinding.DialogBottomFolderUploadBinding
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FolderUploadBottomDialogFragment : DialogFragment() { // TODO rename
+class FolderUploadBottomDialogFragment() : BottomSheetDialogFragment() { // TODO rename
     private lateinit var binding: DialogBottomFolderUploadBinding
     private val viewModel: WishItemRegistrationViewModel by activityViewModels()
 
@@ -31,16 +32,6 @@ class FolderUploadBottomDialogFragment : DialogFragment() { // TODO rename
         addObservers()
 
         return binding.root
-    }
-
-    override fun onStart() {
-        super.onStart()
-        dialog?.window?.setLayout(
-            WindowManager.LayoutParams.MATCH_PARENT,
-            resources.getDimensionPixelSize(R.dimen.widgetBottomDialogHeightBase)
-        )
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
-        dialog?.window?.setGravity(Gravity.BOTTOM)
     }
 
     private fun addListeners() {
