@@ -46,7 +46,8 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var itemImage = MutableLiveData<String>()
     private var itemMemo = MutableLiveData<String>()
     private var itemUrl = MutableLiveData<String>()
-    private var folderItem: FolderItem? = null
+    private var folderItem = MutableLiveData<FolderItem>()
+    private var folderName = MutableLiveData<String?>()
     private var notiType = MutableLiveData<NotiType?>()
     private var notiDate = MutableLiveData<String?>()
 
@@ -54,8 +55,6 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var notiDateVal = MutableLiveData<Int>()
     private var notiHourVal = MutableLiveData<Int>()
     private var notiMinuteVal = MutableLiveData<Int>()
-
-    private var folderName = MutableLiveData<String?>()
 
     private var isEnabledSaveButton = MediatorLiveData<Boolean>()
     private var isCompleteUpload = MutableLiveData<Boolean?>()
@@ -69,8 +68,6 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var selectedGalleryImageUri = MutableLiveData<Uri?>()
     private var imageFile: File? = null
 
-    private val folderListHorizontalAdapter =
-        FolderListAdapter(FolderListViewType.HORIZONTAL_VIEW_TYPE)
     private val folderListSquareAdapter =
         FolderListAdapter(FolderListViewType.SQUARE_VIEW_TYPE)
 
@@ -138,7 +135,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                     price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                     url = siteUrl,
                     memo = itemMemo.value?.trim(),
-                    folderId = folderItem?.id,
+                    folderId = folderItem.value?.id,
                     notiType = notiType.value,
                     notiDate = notiDate.value
                 )
@@ -167,8 +164,8 @@ class WishItemRegistrationViewModel @Inject constructor(
                 price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                 url = itemUrl.value,
                 memo = itemMemo.value?.trim(),
-                folderId = folderItem?.id,
-                folderName = folderItem?.name, // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
+                folderId = folderItem.value?.id,
+                folderName = folderItem.value?.name, // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
                 notiType = notiType.value,
                 notiDate = notiDate.value
             )
@@ -199,8 +196,8 @@ class WishItemRegistrationViewModel @Inject constructor(
                 price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                 url = itemUrl.value,
                 memo = itemMemo.value?.trim(),
-                folderId = folderItem?.id ?: wishItem?.folderId,
-                folderName = folderItem?.name
+                folderId = folderItem.value?.id ?: wishItem?.folderId,
+                folderName = folderItem.value?.name
                     ?: wishItem?.folderName, // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
                 notiType = notiType.value,
                 notiDate = notiDate.value
@@ -241,9 +238,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                 }
             }
             withContext(Dispatchers.Main) {
-                if (items == null) return@withContext
-                folderListHorizontalAdapter.setData(items)
-                folderListSquareAdapter.setData(items)
+                items?.let { folderListSquareAdapter.setData(it) }
             }
         }
     }
@@ -374,7 +369,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     }
 
     fun setFolderItem(folder: FolderItem) {
-        folderItem = folder
+        folderItem.value = folder
     }
 
     fun setNotiInfo(isNotiSwitchChecked: Boolean, notiType: NotiType?, notiDate: String?) {
@@ -425,7 +420,7 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     fun getItemUrl(): LiveData<String> = itemUrl
     fun getItemMemo(): LiveData<String> = itemMemo
-    fun getFolderItem(): FolderItem? = folderItem
+    fun getFolderItem(): LiveData<FolderItem?> = folderItem
     fun getNotiType(): LiveData<NotiType?> = notiType
     fun getNotiDate(): LiveData<String?> = notiDate
 
@@ -437,7 +432,6 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun getWishItem(): WishItem? = wishItem
     fun getFolderName(): LiveData<String?> = folderName
 
-    fun getFolderListHorizontalAdapter(): FolderListAdapter = folderListHorizontalAdapter
     fun getFolderListSquareAdapter(): FolderListAdapter = folderListSquareAdapter
 
     fun isEnabledSaveButton(): LiveData<Boolean> = isEnabledSaveButton

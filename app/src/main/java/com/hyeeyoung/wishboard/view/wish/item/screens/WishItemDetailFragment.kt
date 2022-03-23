@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentWishItemDetailBinding
 import com.hyeeyoung.wishboard.model.common.DialogButtonReplyType
+import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.model.wish.WishItemStatus
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
@@ -21,6 +22,8 @@ import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.safeLet
 import com.hyeeyoung.wishboard.view.common.screens.DialogListener
 import com.hyeeyoung.wishboard.view.common.screens.TwoButtonDialogFragment
+import com.hyeeyoung.wishboard.view.folder.FolderListDialogListener
+import com.hyeeyoung.wishboard.view.folder.screens.FolderListBottomDialogFragment
 import com.hyeeyoung.wishboard.viewmodel.WishItemViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,7 +31,8 @@ import dagger.hilt.android.AndroidEntryPoint
 class WishItemDetailFragment : Fragment() {
     private lateinit var binding: FragmentWishItemDetailBinding
     private val viewModel: WishItemViewModel by viewModels()
-    private var position: Int? = null
+    private var wishItem: WishItem? = null
+    private var position: Int? = null // TODO delete
     private var itemStatus: WishItemStatus? = null
 
     override fun onCreateView(
@@ -40,9 +44,12 @@ class WishItemDetailFragment : Fragment() {
         binding.lifecycleOwner = this@WishItemDetailFragment
 
         arguments?.let {
-            val wishItem = it[ARG_WISH_ITEM] as? WishItem
             position = it[ARG_WISH_ITEM_POSITION] as? Int
-            wishItem?.let { item -> viewModel.setWishItem(item) }
+
+            (it[ARG_WISH_ITEM] as? WishItem)?.let { item ->
+                wishItem = item
+                viewModel.setWishItem(item)
+            }
         }
 
         initializeView()
@@ -73,6 +80,9 @@ class WishItemDetailFragment : Fragment() {
                 null -> findNavController().popBackStack()
                 else -> moveToPrevious(itemStatus!!)
             }
+        }
+        binding.folderName.setOnClickListener {
+            showFolderListDialog()
         }
     }
 
@@ -135,6 +145,19 @@ class WishItemDetailFragment : Fragment() {
             })
         }
         dialog.show(parentFragmentManager, "ItemDeleteDialog")
+    }
+
+    private fun showFolderListDialog() {
+        val folderId = wishItem?.folderId
+        val dialog = FolderListBottomDialogFragment(folderId).apply {
+            setListener(object : FolderListDialogListener {
+                override fun onButtonClicked(folder: FolderItem) {
+                    viewModel.updateWishItemFolder(folder)
+                    dismiss()
+                }
+            })
+        }
+        dialog.show(parentFragmentManager, "FolderListDialog")
     }
 
     companion object {

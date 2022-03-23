@@ -85,9 +85,9 @@
                         android:id="@+id/item_image"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:foreground="@color/semi_transparent"
                         android:background="@drawable/shape_border_radius_32"
                         android:backgroundTint="@color/gray_150"
+                        android:foreground="@color/semi_transparent"
                         android:scaleType="centerCrop"
                         app:layout_constraintDimensionRatio="3:4"
                         app:layout_constraintStart_toStartOf="parent"
@@ -136,7 +136,6 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:paddingVertical="@dimen/spacing20"
                     app:layout_constraintTop_toBottomOf="@id/image_container">
 
                     <androidx.constraintlayout.widget.Guideline
@@ -153,37 +152,45 @@
                         android:orientation="vertical"
                         app:layout_constraintGuide_end="@dimen/spacingBase" />
 
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guild_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_begin="@dimen/spacing20" />
+
                     <TextView
                         android:id="@+id/folder_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/suit_r"
+                        android:paddingHorizontal="@dimen/spacingBase"
+                        android:paddingVertical="@dimen/spacing10"
                         android:text="@{String.format(context.getString(R.string.go_to_folder), viewModel.wishItem.folderName == null ? context.getString(R.string.setting_folder) : viewModel.wishItem.folderName)}"
                         android:textColor="@color/gray_300"
                         android:textSize="@dimen/typographyDescription"
-                        app:layout_constraintStart_toStartOf="@id/guild_start"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="@id/create_at"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/create_at"
                         tools:text="상의>" />
 
-                    <!-- TODO 날짜 포맷 변경 필요 -->
                     <TextView
                         android:id="@+id/create_at"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginEnd="20dp"
                         android:fontFamily="@font/suit_r"
-                        app:timeFormat="@{DateFormatUtilKt.convertStrTimeToDate(viewModel.wishItem.createAt)}"
                         android:textColor="@color/gray_300"
                         android:textSize="@dimen/typographyDescription"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/guild_top"
+                        app:timeFormat="@{DateFormatUtilKt.convertStrTimeToDate(viewModel.wishItem.createAt)}"
                         tools:text="1시간 전" />
 
                     <TextView
                         android:id="@+id/item_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing10"
                         android:fontFamily="@font/suit_sb"
                         android:text="@{viewModel.wishItem.name}"
                         android:textColor="@color/gray_700"

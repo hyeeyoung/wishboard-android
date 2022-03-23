@@ -16,11 +16,14 @@ import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentWishBinding
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
+import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.model.wish.WishItemStatus
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.safeLet
+import com.hyeeyoung.wishboard.view.folder.FolderListDialogListener
+import com.hyeeyoung.wishboard.view.folder.screens.FolderListBottomDialogFragment
 import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -33,6 +36,7 @@ class WishBasicFragment : Fragment() {
 
     /** 아이템 수정 여부에 따라 아이템을 update 또는 upload를 진행 (등록 및 수정 시 동일한 뷰를 사용하고 있기 때문) */
     private var isEditMode = false
+    private var folder: FolderItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +93,7 @@ class WishBasicFragment : Fragment() {
             requestStorage.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
         binding.folderContainer.setOnClickListener {
-            findNavController().navigateSafe(R.id.action_wish_to_folder_list)
+            showFolderListDialog()
         }
         binding.notiContainer.setOnClickListener {
             findNavController().navigateSafe(R.id.action_wish_to_noti_setting)
@@ -140,6 +144,20 @@ class WishBasicFragment : Fragment() {
                 viewModel.setSelectedGalleryImage(imageUri, imageFile)
             }
         }
+    }
+
+    private fun showFolderListDialog() {
+        val folderId = folder?.id ?: viewModel.getWishItem()?.folderId
+        val dialog = FolderListBottomDialogFragment(folderId).apply {
+            setListener(object : FolderListDialogListener {
+                override fun onButtonClicked(folder: FolderItem) {
+                    this@WishBasicFragment.folder = folder // TODO need refactoring
+                    viewModel.setFolderItem(folder)
+                    dismiss()
+                }
+            })
+        }
+        dialog.show(parentFragmentManager, "FolderListDialog")
     }
 
     /** 아이템 추가 또는 수정에 성공한 경우, UI 업데이트를 위해 변경된 아이템 정보를 이전 프래그먼트로 전달 */

@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.repository.wish.WishRepository
 import com.hyeeyoung.wishboard.service.AWSS3Service
@@ -20,6 +21,7 @@ class WishItemViewModel @Inject constructor(
 
     private var wishItem = MutableLiveData<WishItem>()
     private var isCompleteDeletion = MutableLiveData<Boolean>()
+    private var isCompleteFolderUpdate = MutableLiveData<Boolean>()
 
     fun deleteWishItem() {
         if (token == null) return
@@ -41,6 +43,23 @@ class WishItemViewModel @Inject constructor(
             }
         } else {
             wishItem.value = item
+        }
+    }
+
+    fun updateWishItemFolder(folder: FolderItem) {
+        if (token == null) return
+        val itemId = wishItem.value?.id ?: return
+        val item = wishItem.value?.apply {
+            folderId = folder.id
+            folderName = folder.name
+        } ?: return
+        viewModelScope.launch {
+            // TODO 폴더 지정 api 생성되면 폴더만 업데이트 되도록 변경 예정. 현재는 아이템 정보 모두 업데이트 됨
+            isCompleteFolderUpdate.value = wishRepository.updateWishItem(token, itemId, item)
+            // 아이템이 삭제 완료된 경우, s3에서도 이미지 객체 삭제
+            if (isCompleteFolderUpdate.value == true) {
+                wishItem.postValue(item)
+            }
         }
     }
 

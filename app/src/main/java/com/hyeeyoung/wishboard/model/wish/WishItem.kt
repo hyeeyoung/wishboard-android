@@ -8,9 +8,9 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class WishItem(
     @SerializedName("folder_id")
-    val folderId: Long? = null,
+    var folderId: Long? = null,
     @SerializedName("folder_name")
-    val folderName: String? = null,
+    var folderName: String? = null,
     @SerializedName("item_id")
     val id: Long? = null,
     @SerializedName("item_img")
