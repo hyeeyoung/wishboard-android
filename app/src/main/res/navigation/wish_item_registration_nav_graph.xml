@@ -13,9 +13,6 @@
         <action
             android:id="@+id/action_wish_to_gallery_image"
             app:destination="@id/gallery_image_fragment" />
-        <action
-            android:id="@+id/action_wish_to_noti_setting"
-            app:destination="@id/noti_setting_fragment" />
     </fragment>
 
     <fragment
@@ -23,10 +20,4 @@
         android:name="com.hyeeyoung.wishboard.view.common.screens.GalleryImageFragment"
         android:label="galleryImageFragment"
         tools:layout="@layout/fragment_gallery_image" />
-
-    <fragment
-        android:id="@+id/noti_setting_fragment"
-        android:name="com.hyeeyoung.wishboard.view.noti.screens.NotiSettingFragment"
-        android:label="notiSettingFragment"
-        tools:layout="@layout/fragment_noti_setting"/>
 </navigation>
