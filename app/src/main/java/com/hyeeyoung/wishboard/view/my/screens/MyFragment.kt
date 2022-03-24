@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.BaseTransientBottomBar
+import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentMyBinding
 import com.hyeeyoung.wishboard.model.common.DialogButtonReplyType
@@ -73,9 +75,16 @@ class MyFragment : Fragment() {
         }
         viewModel.getCompleteDeleteUser().observe(viewLifecycleOwner) { isComplete ->
             if (isComplete == true) {
-                CustomSnackbar.make(binding.layout, getString(R.string.my_delete_user_snackbar_text)).show()
-                startActivity(Intent(requireContext(), SignActivity::class.java))
-                requireActivity().finish()
+                CustomSnackbar.make(binding.layout,
+                    getString(R.string.my_delete_user_snackbar_text),
+                    true,
+                    object : BaseTransientBottomBar.BaseCallback<Snackbar>() {
+                        override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                            super.onDismissed(transientBottomBar, event)
+                            startActivity(Intent(requireContext(), SignActivity::class.java))
+                            requireActivity().finish()
+                        }
+                    }).show()
             }
         }
     }
@@ -101,17 +110,14 @@ class MyFragment : Fragment() {
     }
 
     private fun showMembershipExitDialog() {
-        val dialog = TwoButtonDialogFragment(
-            getString(R.string.my_membership_exit_dialog_title),
-            getString(R.string.my_membership_exit_dialog_description),
-            getString(R.string.my_membership_exit_dialog_title)
+        val dialog = MyExitDialogFragment(
         ).apply {
             setListener(object : DialogListener {
                 override fun onButtonClicked(clicked: String) {
                     if (clicked == DialogButtonReplyType.YES.name) {
                         viewModel.deleteUserAccount()
+                        dismiss()
                     }
-                    dismiss()
                 }
             })
         }

@@ -3,9 +3,9 @@ package com.hyeeyoung.wishboard.viewmodel
 import android.net.Uri
 import androidx.lifecycle.*
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
-import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.repository.noti.NotiRepository
 import com.hyeeyoung.wishboard.repository.user.UserRepository
+import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.util.prefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -23,12 +23,14 @@ class MyViewModel @Inject constructor(
     private var userProfileImage = MutableLiveData<String?>()
 
     private var inputUserNickName = MutableLiveData<String?>()
+    private var inputUserEmail = MutableLiveData<String?>()
     private var userProfileImageUri = MutableLiveData<Uri?>()
     private var userProfileImageFile = MutableLiveData<File?>()
 
     private var isCompleteUpdateUserInfo = MutableLiveData<Boolean?>()
     private var isCompleteUserDelete = MutableLiveData<Boolean?>()
     private var isExistNickname = MutableLiveData<Boolean?>()
+    private var isCorrectedEmail = MutableLiveData<Boolean?>()
     private var isEnabledEditCompleteButton = MediatorLiveData<Boolean>()
     private var isValidNicknameFormat = MutableLiveData<Boolean?>()
     private var pushState = MutableLiveData<Boolean?>()
@@ -91,7 +93,7 @@ class MyViewModel @Inject constructor(
     fun signOut() {
         if (token == null) return
         viewModelScope.launch {
-            userRepository.registerFCMToken(token,null)
+            userRepository.registerFCMToken(token, null)
         }
         prefs?.clearUserInfo()
     }
@@ -106,7 +108,7 @@ class MyViewModel @Inject constructor(
 
     /** 서버에서 전달받은 push_state 값은 Int타입으로, 알림 스위치 on/off를 위해 Boolean타입으로 변경 */
     private fun convertIntToBooleanPushState(pushState: Int?): Boolean? {
-        return when(pushState) {
+        return when (pushState) {
             0 -> false
             1 -> true
             else -> null
@@ -116,7 +118,8 @@ class MyViewModel @Inject constructor(
     private fun checkNicknameFormatValidation(nickname: String?) {
         val nicknamePattern =
             Pattern.compile("^[가-힣ㄱ-ㅎa-zA-Z0-9]+\$")
-        isValidNicknameFormat.value = nicknamePattern.matcher(nickname).matches() && !nickname.isNullOrEmpty()
+        isValidNicknameFormat.value =
+            nicknamePattern.matcher(nickname).matches() && !nickname.isNullOrEmpty()
     }
 
     fun onNicknameTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -125,11 +128,20 @@ class MyViewModel @Inject constructor(
         isExistNickname.value = null
     }
 
+    fun onEmailTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        inputUserEmail.value = s.toString().trim()
+        isCorrectedEmail.value = null
+    }
+
     fun resetUserInfo() {
         inputUserNickName.value = userNickname.value
         isExistNickname.value = null
         userProfileImageUri.value = null
         isCompleteUpdateUserInfo.value = null
+    }
+
+    fun resetCorrectedEmail() {
+        isCorrectedEmail.value = null
     }
 
     private fun setUserInfo() {
@@ -143,19 +155,41 @@ class MyViewModel @Inject constructor(
         userProfileImageFile.value = imageFile
     }
 
+    fun checkCorrectedEmail(): Boolean {
+        val isCorrected = inputUserEmail.value == userEmail.value
+        isCorrectedEmail.value = isCorrected
+        return isCorrected
+    }
+
     private fun initEnabledEditCompleteButton() {
         isEnabledEditCompleteButton.addSource(inputUserNickName) { nickname ->
-            combineEnabledEditCompleteButton(nickname, userProfileImageUri.value, isValidNicknameFormat.value)
+            combineEnabledEditCompleteButton(
+                nickname,
+                userProfileImageUri.value,
+                isValidNicknameFormat.value
+            )
         }
         isEnabledEditCompleteButton.addSource(userProfileImageUri) { imageUri ->
-            combineEnabledEditCompleteButton(inputUserNickName.value, imageUri, isValidNicknameFormat.value)
+            combineEnabledEditCompleteButton(
+                inputUserNickName.value,
+                imageUri,
+                isValidNicknameFormat.value
+            )
         }
         isEnabledEditCompleteButton.addSource(isValidNicknameFormat) { isValid ->
-            combineEnabledEditCompleteButton(inputUserNickName.value, userProfileImageUri.value, isValid)
+            combineEnabledEditCompleteButton(
+                inputUserNickName.value,
+                userProfileImageUri.value,
+                isValid
+            )
         }
     }
 
-    private fun combineEnabledEditCompleteButton(nickname: String?, imageUri: Uri?, isValidNickname: Boolean?) {
+    private fun combineEnabledEditCompleteButton(
+        nickname: String?,
+        imageUri: Uri?,
+        isValidNickname: Boolean?
+    ) {
         isEnabledEditCompleteButton.value =
             !(nickname == userNickname.value && imageUri == null) && isValidNickname == true
     }
@@ -167,8 +201,11 @@ class MyViewModel @Inject constructor(
 
     fun getInputUserNickname(): LiveData<String?> = inputUserNickName
     fun getUserProfileImageUri(): LiveData<Uri?> = userProfileImageUri
+
     fun isExistNickname(): LiveData<Boolean?> = isExistNickname
     fun isEnabledEditCompleteButton(): LiveData<Boolean> = isEnabledEditCompleteButton
+    fun isCorrectedEmail(): LiveData<Boolean?> = isCorrectedEmail
+
     fun getCompleteUpdateUserInfo(): LiveData<Boolean?> = isCompleteUpdateUserInfo
     fun getCompleteDeleteUser(): LiveData<Boolean?> = isCompleteUserDelete
     fun isValidNicknameFormat(): LiveData<Boolean?> = isValidNicknameFormat

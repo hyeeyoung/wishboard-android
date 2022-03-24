@@ -160,8 +160,10 @@
     <string name="my_section_sub_title_logout">로그아웃</string>
     <string name="my_logout_dialog_description">정말 로그아웃 하시겠어요?</string>
     <string name="my_section_sub_title_exit">탈퇴하기</string>
-    <string name="my_membership_exit_dialog_title">탈퇴</string>
-    <string name="my_membership_exit_dialog_description">정말 탈퇴하시겠어요? 탈퇴 시 회원정보는 7일 후 파기되고, 파기된 데이터는 복구 불가능합니다.</string>
+    <string name="my_membership_exit">탈퇴</string>
+    <string name="my_membership_exit_email_hint">이메일을 입력해 주세요.</string>
+    <string name="my_membership_exit_email_detail">이메일을 다시 확인해 주세요.</string>
+    <string name="my_membership_exit_dialog_description">탈퇴하시면 회원정보는 7일 후\n파기돠며 파기된 데이터는 복구 불가능합니다.</string>
 
     <string name="my_profile_edit_title">프로필 수정</string>
     <string name="my_profile_edit_nickname_hint">닉네임</string>
