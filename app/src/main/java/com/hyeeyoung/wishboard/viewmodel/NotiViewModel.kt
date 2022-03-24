@@ -13,6 +13,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.joda.time.DateTime
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +25,8 @@ class NotiViewModel @Inject constructor(
 
     private var notiList = MutableLiveData<List<NotiItem>?>(listOf())
     private val notiListAdapter = NotiListAdapter()
+    private val calendarMonthTitle = MutableLiveData<String>()
+
 
     fun fetchNotiList() {
         if (token == null) return
@@ -49,8 +53,14 @@ class NotiViewModel @Inject constructor(
         }
     }
 
+    /** 캘린더 년도 및 월 타이틀 초기화 */
+    fun setCalendarMonthTitle(millis: Long) {
+        calendarMonthTitle.value = DateTime(millis).toString("MMMM yyyy", Locale("en"))
+    }
+
     fun getNotiList(): LiveData<List<NotiItem>?> = notiList
     fun getNotiListAdapter(): NotiListAdapter = notiListAdapter
+    fun getCalendarMonthTitle(): LiveData<String> = calendarMonthTitle
 
     companion object {
         private const val TAG = "NotiViewModel"

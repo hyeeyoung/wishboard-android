@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/noti_calendar_nav_graph"
+    app:startDestination="@id/noti_calendar_fragment">
+
+    <fragment
+        android:id="@+id/noti_calendar_fragment"
+        android:name="com.hyeeyoung.wishboard.view.noti.screens.NotiCalendarFragment"
+        android:label="notiCalendarFragment"
+        tools:layout="@layout/fragment_noti_calendar">
+    </fragment>
+</navigation>

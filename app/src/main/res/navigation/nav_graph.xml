@@ -8,6 +8,7 @@
     <include app:graph="@navigation/wish_item_nav_graph" />
     <include app:graph="@navigation/wish_item_registration_nav_graph" />
     <include app:graph="@navigation/my_nav_graph" />
+    <include app:graph="@navigation/noti_calendar_nav_graph" />
 
     <fragment
         android:id="@+id/home_fragment"
