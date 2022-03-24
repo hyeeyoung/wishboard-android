@@ -31,29 +31,27 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
-                android:id="@+id/witch_icon"
+                android:id="@+id/onboarding_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:paddingStart="@dimen/spacing10"
-                android:src="@drawable/wishlist_clothes"
+                android:src="@drawable/ic_hand"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
+            <ImageView
                 android:id="@+id/logo_text"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing20"
-                android:fontFamily="@font/montserrat_eb"
-                android:text="@string/logo_text"
-                android:textColor="@color/gray_700"
-                android:textSize="32sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/witch_icon" />
+                android:paddingHorizontal="@dimen/spacing20"
+                android:src="@drawable/ic_app_text_logo"
+                app:layout_constraintEnd_toEndOf="@id/onboarding_guide"
+                app:layout_constraintStart_toStartOf="@id/onboarding_guide"
+                app:layout_constraintTop_toBottomOf="@id/onboarding_icon" />
 
             <TextView
+                android:id="@+id/onboarding_guide"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacingBase"
