@@ -64,7 +64,6 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var itemRegistrationStatus = MutableLiveData<ProcessStatus>()
     private var folderRegistrationStatus = MutableLiveData<ProcessStatus>()
 
-    private val galleryImageUris = MutableLiveData<PagingData<Uri>>()
     private var selectedGalleryImageUri = MutableLiveData<Uri?>()
     private var imageFile: File? = null
 
@@ -162,7 +161,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                 name = name,
                 image = imageFile!!.name,
                 price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
-                url = itemUrl.value,
+                url = getRefinedItemUrl(itemUrl.value),
                 memo = itemMemo.value?.trim(),
                 folderId = folderItem.value?.id,
                 folderName = folderItem.value?.name, // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
@@ -194,7 +193,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                 name = itemName,
                 image = imageFile?.name ?: wishItem?.image,
                 price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
-                url = itemUrl.value,
+                url = getRefinedItemUrl(itemUrl.value),
                 memo = itemMemo.value?.trim(),
                 folderId = folderItem.value?.id ?: wishItem?.folderId,
                 folderName = folderItem.value?.name
@@ -404,12 +403,13 @@ class WishItemRegistrationViewModel @Inject constructor(
         isCompleteFolderUpload.value = null
     }
 
-    /*
-     갤러리 이미지 선택 화면 진입 -> 아이템 등록 화면 복귀 -> 갤러리 이미지 선택 화면 재진입 concurrentmodificationexception 발생
-     해당 예외 발생을 방지하고자 갤러리 이미지 선택 화면 진입 시 기존 이미지 clear
-     */
-    fun clearGalleryImageUris() {
-        galleryImageUris.value = null
+    private fun getRefinedItemUrl(siteUrl: String?): String? {
+        val url = siteUrl?.trim()
+        return if (url.isNullOrBlank()) {
+            null
+        } else {
+            url
+        }
     }
 
     fun getItemName(): LiveData<String> = itemName

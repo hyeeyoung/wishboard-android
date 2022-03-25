@@ -175,7 +175,6 @@ class WishBasicFragment : Fragment() {
     private val requestStorage =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) {
-                viewModel.clearGalleryImageUris()
                 findNavController().navigateSafe(R.id.action_wish_to_gallery_image)
             }
         }
