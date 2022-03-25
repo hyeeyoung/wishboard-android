@@ -2,6 +2,7 @@ package com.hyeeyoung.wishboard.view.sign.screens
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.LinkMovementMethod
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,9 +34,14 @@ class SignUpPasswordFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this@SignUpPasswordFragment
 
+        initializeView()
         addObservers()
 
         return binding.root
+    }
+
+    private fun initializeView() {
+        binding.signTerm.movementMethod = LinkMovementMethod.getInstance()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
