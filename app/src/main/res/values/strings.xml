@@ -154,6 +154,7 @@
     <string name="my_section_title_service_info">서비스 정보</string>
     <string name="my_section_sub_title_how_to_use">위시보드 이용방법</string>
     <string name="my_section_sub_title_terms">이용약관</string>
+    <string name="my_section_sub_title_personal_info">개인정보 처리방침</string>
     <string name="my_section_sub_title_opensource_license">오픈소스 라이브러리</string>
     <string name="my_section_sub_title_version_info">버전정보</string>
     <string name="service_version">1.0.0</string>

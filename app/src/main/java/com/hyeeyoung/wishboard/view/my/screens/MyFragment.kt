@@ -1,6 +1,7 @@
 package com.hyeeyoung.wishboard.view.my.screens
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -56,6 +57,44 @@ class MyFragment : Fragment() {
     private fun addListeners() {
         binding.notiSwitch.setOnClickListener {
             viewModel.updatePushState()
+        }
+
+        binding.howToUse.setOnClickListener {
+            // 노션에서 보안 문제로 노션 페이지를 웹뷰를 띄울 수 없다고 함. 임의로 새창에서 띄우는 것으로 수정
+//            moveWebViewActivity(
+//                "https://www.notion.so/30af073d15db4fbcb7c149288719e592",
+//                R.string.my_section_sub_title_how_to_use
+//            )
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.notion.so/30af073d15db4fbcb7c149288719e592")
+                )
+            )
+        }
+        binding.terms.setOnClickListener {
+//            moveWebViewActivity(
+//                "https://www.notion.so/1-0-0-6738bc44f9624f5781fb026a6f165317",
+//                R.string.my_section_sub_title_terms
+//            )
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.notion.so/1-0-0-6738bc44f9624f5781fb026a6f165317")
+                )
+            )
+        }
+        binding.personalInfo.setOnClickListener {
+//            moveWebViewActivity(
+//                "https://www.notion.so/1-0-0-7d381fdc9515431fa43fc69d820aba0a",
+//                R.string.my_section_sub_title_personal_info
+//            )
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.notion.so/1-0-0-7d381fdc9515431fa43fc69d820aba0a")
+                )
+            )
         }
         binding.opensourceLicense.setOnClickListener {
             moveWebViewActivity(
