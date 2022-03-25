@@ -3,6 +3,7 @@ package com.hyeeyoung.wishboard.view.wish.item.screens
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -78,11 +79,14 @@ class WishBasicFragment : Fragment() {
                 }
             )
 
-        Glide.with(binding.itemImage).load(viewModel.getWishItem()?.imageUrl).into(binding.itemImage)
+        Glide.with(binding.itemImage).load(viewModel.getWishItem()?.imageUrl)
+            .into(binding.itemImage)
     }
 
     private fun addListeners() {
         binding.save.setOnClickListener {
+            if (isValidItemUrl() == false) return@setOnClickListener
+
             lifecycleScope.launch {
                 when (isEditMode) {
                     false -> viewModel.uploadWishItemByBasics()
@@ -97,7 +101,10 @@ class WishBasicFragment : Fragment() {
             showFolderListDialog()
         }
         binding.notiContainer.setOnClickListener {
-            NotiSettingBottomDialogFragment(viewModel).show(parentFragmentManager, "NotiSettingDialog")
+            NotiSettingBottomDialogFragment(viewModel).show(
+                parentFragmentManager,
+                "NotiSettingDialog"
+            )
         }
     }
 
@@ -166,9 +173,10 @@ class WishBasicFragment : Fragment() {
         val navController = findNavController()
         navController.previousBackStackEntry?.savedStateHandle?.set(
             ARG_WISH_ITEM_INFO, bundleOf(
-            ARG_ITEM_STATUS to itemStatus,
-            ARG_WISH_ITEM to wishItem,
-        ))
+                ARG_ITEM_STATUS to itemStatus,
+                ARG_WISH_ITEM to wishItem,
+            )
+        )
         navController.popBackStack()
     }
 
@@ -178,6 +186,21 @@ class WishBasicFragment : Fragment() {
                 findNavController().navigateSafe(R.id.action_wish_to_gallery_image)
             }
         }
+
+    // 아이템 등록 전 url 유효성을 검증, TODO need refactoring
+    private fun isValidItemUrl(): Boolean? {
+        val url = viewModel.getRefinedItemUrl(binding.itemUrl.text.toString()) ?: return null
+
+        return if (Patterns.WEB_URL.matcher(url).matches()) {
+            true
+        } else {
+            CustomSnackbar.make(
+                binding.layout,
+                requireContext().getString(R.string.wish_basic_invalid_site_snackbar_text)
+            ).show()
+            false
+        }
+    }
 
     companion object {
         private const val TAG = "WishBasicFragment"

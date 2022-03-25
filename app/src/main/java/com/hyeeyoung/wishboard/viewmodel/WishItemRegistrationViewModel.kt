@@ -403,7 +403,7 @@ class WishItemRegistrationViewModel @Inject constructor(
         isCompleteFolderUpload.value = null
     }
 
-    private fun getRefinedItemUrl(siteUrl: String?): String? {
+    fun getRefinedItemUrl(siteUrl: String?): String? {
         val url = siteUrl?.trim()
         return if (url.isNullOrBlank()) {
             null
