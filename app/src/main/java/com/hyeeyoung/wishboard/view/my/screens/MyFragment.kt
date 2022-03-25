@@ -19,6 +19,7 @@ import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.loadProfileImage
 import com.hyeeyoung.wishboard.view.common.screens.DialogListener
 import com.hyeeyoung.wishboard.view.common.screens.TwoButtonDialogFragment
+import com.hyeeyoung.wishboard.view.common.screens.WebViewActivity
 import com.hyeeyoung.wishboard.view.sign.screens.SignActivity
 import com.hyeeyoung.wishboard.viewmodel.MyViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,6 +57,13 @@ class MyFragment : Fragment() {
         binding.notiSwitch.setOnClickListener {
             viewModel.updatePushState()
         }
+        binding.opensourceLicense.setOnClickListener {
+            moveWebViewActivity(
+                "file:///android_asset/www/opensource_license.html",
+                R.string.my_section_sub_title_opensource_license
+            )
+        }
+
         binding.logout.setOnClickListener {
             showLogoutDialog()
         }
@@ -86,6 +94,15 @@ class MyFragment : Fragment() {
                         }
                     }).show()
             }
+        }
+    }
+
+    private fun moveWebViewActivity(link: String, titleRes: Int) {
+        Intent(requireContext(), WebViewActivity::class.java).apply {
+            putExtra(ARG_WEB_VIEW_LINK, link)
+            putExtra(ARG_WEB_VIEW_TITLE, context?.getString(titleRes))
+        }.let {
+            startActivity(it)
         }
     }
 
@@ -122,5 +139,11 @@ class MyFragment : Fragment() {
             })
         }
         dialog.show(parentFragmentManager, "MembershipExitDialog")
+    }
+
+    companion object {
+        private const val TAG = "MyFragment"
+        private const val ARG_WEB_VIEW_LINK = "link"
+        private const val ARG_WEB_VIEW_TITLE = "title"
     }
 }
