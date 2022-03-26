@@ -40,6 +40,8 @@
     <string name="my_profile_edit_completion_snackbar_text">프로필이 수정되었어요!👩‍🎤</string>
     <string name="my_delete_user_snackbar_text">탈퇴 완료되었어요. 이용해주셔서 감사합니다!☺️</string>
     <string name="check_network_connection_snackbar_text">네트워크 연결 상태를 확인해 주세요.</string>
+    <string name="item_detail_invalid_site_snackbar_text">앗, 사이트를 찾을 수 없어요!🥲</string>
+    <string name="wish_basic_invalid_site_snackbar_text">쇼핑몰 링크를 다시 확인해 주세요!👀</string>
 
     <!-- Onboarding -->
     <string name="onboarding_welcome_guide">흩어져있는 위시리스트를\n위시보드로 간편하게 통합 관리해 보세요!️</string>
