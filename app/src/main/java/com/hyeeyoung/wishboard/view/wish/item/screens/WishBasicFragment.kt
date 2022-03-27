@@ -48,6 +48,7 @@ class WishBasicFragment : Fragment() {
             }
             (it[ARG_WISH_ITEM] as? WishItem)?.let { item ->
                 viewModel.setWishItem(item)
+                viewModel.copyItemUrlToInputUrl()
             }
         }
     }

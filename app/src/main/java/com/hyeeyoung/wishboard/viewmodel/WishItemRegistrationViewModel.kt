@@ -435,6 +435,10 @@ class WishItemRegistrationViewModel @Inject constructor(
         itemUrl.value = url
     }
 
+    /** 쇼핑몰 링크가 존재하는 아이템을 수정할 경우, 쇼핑몰 링크 EditText에 기존 링크를 보여주기 위함 */
+    fun copyItemUrlToInputUrl() {
+        itemUrlInput.value = wishItem?.url
+    }
     fun resetValidItemUrl() {
         isValidItemUrl.value = null
     }
