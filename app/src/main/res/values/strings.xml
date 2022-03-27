@@ -116,7 +116,6 @@
     <string name="price_for_basic_hint">가격(필수)</string>
     <string name="item_name_hint">상품명을 입력해 주세요.</string>
     <string name="price_hint">가격을 입력해 주세요.</string>
-    <string name="shop_link_hint">쇼핑몰 링크를 입력해 보세요!</string>
     <string name="shop_link_guide">복사한 링크로 아이템 정보를 불러올 수 있어요!</string>
     <string name="memo_short_hint">메모를 입력해 보세요.</string>
     <string name="memo_hint">브랜드, 사이즈, 컬러 등 아이템 정보를 메모로 남겨보세요!😉</string>
