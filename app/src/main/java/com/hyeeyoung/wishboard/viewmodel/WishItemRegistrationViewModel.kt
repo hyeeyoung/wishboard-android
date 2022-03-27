@@ -45,6 +45,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var itemName = MutableLiveData<String?>()
     private var itemPrice = MutableLiveData<String?>()
     private var itemImage = MutableLiveData<String?>()
+    private var itemImageUrl = MutableLiveData<String?>()
     private var itemMemo = MutableLiveData<String?>()
     private var itemUrl = MutableLiveData<String?>()
     private var itemUrlInput = MutableLiveData<String?>()
@@ -357,7 +358,7 @@ class WishItemRegistrationViewModel @Inject constructor(
             itemId = item.id
             itemName.value = item.name
             itemImage.value = item.image
-            itemImage.value = item.imageUrl
+            itemImageUrl.value = item.imageUrl
             itemPrice.value = item.price.toString()
             itemMemo.value = item.memo
             itemUrl.value = item.url
@@ -463,6 +464,7 @@ class WishItemRegistrationViewModel @Inject constructor(
         }
     }
 
+    fun getItemImageUrl(): LiveData<String?> = itemImageUrl
     fun getItemUrlInput(): LiveData<String?> = itemUrlInput
     fun getItemMemo(): LiveData<String?> = itemMemo
     fun getFolderItem(): LiveData<FolderItem?> = folderItem

@@ -145,12 +145,23 @@ class WishBasicFragment : Fragment() {
             }
         }
 
-        viewModel.getItemImage().observe(viewLifecycleOwner) {
+        // TODO need refactoring
+        // 수정 전 기존 이미지
+        viewModel.getItemImageUrl().observe(viewLifecycleOwner) {
             it?.let {
                 Glide.with(binding.itemImage).load(it).into(binding.itemImage)
             }
         }
 
+        // 파싱으로 가져온 이미지
+        viewModel.getItemImage().observe(viewLifecycleOwner) {
+            // TODO 정규 표현식으로 바꿔서 조건 하나로 만들기
+            if (it?.contains("http://") == true || it?.contains("https://") == true) {
+                Glide.with(binding.itemImage).load(it).into(binding.itemImage)
+            }
+        }
+
+        // 갤러리에서 가져온 이미지
         viewModel.getSelectedGalleryUri().observe(viewLifecycleOwner) {
             it?.let {
                 Glide.with(binding.itemImage).load(it).into(binding.itemImage)
