@@ -4,18 +4,19 @@ import android.app.Application
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
+import android.util.Patterns
+import android.webkit.URLUtil
 import android.widget.NumberPicker
 import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.*
-import androidx.paging.PagingData
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.folder.FolderListViewType
 import com.hyeeyoung.wishboard.model.noti.NotiType
 import com.hyeeyoung.wishboard.model.wish.WishItem
-import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.repository.folder.FolderRepository
 import com.hyeeyoung.wishboard.repository.wish.WishRepository
+import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.util.getTimestamp
 import com.hyeeyoung.wishboard.util.prefs
 import com.hyeeyoung.wishboard.util.safeLet
@@ -41,11 +42,14 @@ class WishItemRegistrationViewModel @Inject constructor(
 ) : ViewModel() {
     private var wishItem: WishItem? = null
     private var itemId: Long? = null
-    private var itemName = MutableLiveData<String>()
-    private var itemPrice = MutableLiveData<String>()
-    private var itemImage = MutableLiveData<String>()
-    private var itemMemo = MutableLiveData<String>()
-    private var itemUrl = MutableLiveData<String>()
+    private var itemName = MutableLiveData<String?>()
+    private var itemPrice = MutableLiveData<String?>()
+    private var itemImage = MutableLiveData<String?>()
+    private var itemImageUrl = MutableLiveData<String?>()
+    private var itemMemo = MutableLiveData<String?>()
+    private var itemUrl = MutableLiveData<String?>()
+    /** 유효하지 않은 url인 경우 또는 사이트 url 수정을 시도할 경우 원본 url을 보존하기위 위한 변수 */
+    private var itemUrlInput = MutableLiveData<String?>()
     private var folderItem = MutableLiveData<FolderItem>()
     private var folderName = MutableLiveData<String?>()
     private var notiType = MutableLiveData<NotiType?>()
@@ -60,6 +64,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var isCompleteUpload = MutableLiveData<Boolean?>()
     private var isCompleteFolderUpload = MutableLiveData<Boolean?>()
     private var isExistFolderName = MutableLiveData<Boolean?>()
+    private var isValidItemUrl = MutableLiveData<Boolean?>()
 
     private var itemRegistrationStatus = MutableLiveData<ProcessStatus>()
     private var folderRegistrationStatus = MutableLiveData<ProcessStatus>()
@@ -153,15 +158,22 @@ class WishItemRegistrationViewModel @Inject constructor(
         itemRegistrationStatus.postValue(ProcessStatus.IN_PROGRESS)
 
         withContext(Dispatchers.IO) {
-            if (imageFile == null) return@withContext
-            val isSuccessful = AWSS3Service().uploadFile(imageFile!!.name, imageFile!!)
-            if (!isSuccessful) return@withContext
+            // 파싱으로 아이템 이미지 불러온 경우 비트맵이미지로 이미지 파일 만들기
+            itemImage.value?.let { imageUrl ->
+                val bitmap = getBitmapFromURL(imageUrl) ?: return@let
+                imageFile = saveBitmapToInternalStorage(bitmap) ?: return@let
+            }
+
+            imageFile?.let {
+                val isSuccessful = AWSS3Service().uploadFile(imageFile!!.name, imageFile!!)
+                if (!isSuccessful) return@withContext
+            }
 
             wishItem = WishItem(
                 name = name,
-                image = imageFile!!.name,
+                image = imageFile?.name, // TODO 널처리 필요
                 price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
-                url = getRefinedItemUrl(itemUrl.value),
+                url = itemUrl.value,
                 memo = itemMemo.value?.trim(),
                 folderId = folderItem.value?.id,
                 folderName = folderItem.value?.name, // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
@@ -175,13 +187,19 @@ class WishItemRegistrationViewModel @Inject constructor(
         itemRegistrationStatus.postValue(ProcessStatus.IDLE)
     }
 
-    suspend fun updateWishItem() {
+    suspend fun updateWishItem() { // TODO need refactoring, uploadWishItemByBasics()와 합치기
         if (itemRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return
         if (itemId == null || token == null) return
         val itemName = itemName.value?.trim() ?: return
         itemRegistrationStatus.postValue(ProcessStatus.IN_PROGRESS)
 
         withContext(Dispatchers.IO) {
+            // 파싱으로 아이템 이미지 불러온 경우 비트맵이미지로 이미지 파일 만들기
+            itemImage.value?.let { imageUrl ->
+                val bitmap = getBitmapFromURL(imageUrl) ?: return@let
+                imageFile = saveBitmapToInternalStorage(bitmap) ?: return@let
+            }
+
             imageFile?.let {
                 val isSuccessful = AWSS3Service().uploadFile(it.name, it)
                 if (!isSuccessful) return@withContext
@@ -193,7 +211,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                 name = itemName,
                 image = imageFile?.name ?: wishItem?.image,
                 price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
-                url = getRefinedItemUrl(itemUrl.value),
+                url = itemUrl.value,
                 memo = itemMemo.value?.trim(),
                 folderId = folderItem.value?.id ?: wishItem?.folderId,
                 folderName = folderItem.value?.name
@@ -280,6 +298,34 @@ class WishItemRegistrationViewModel @Inject constructor(
         return file
     }
 
+    /** 입력한 쇼핑몰 링크의 포맷을 검증 후, 유효한 url일 때 아이템 정보 파싱 */
+    fun loadWishItemInfo() {
+        val url = itemUrlInput.value?.trim()
+
+        val isValid = checkValidationItemUrl(url) // url null 검증 반드시 필요
+        isValidItemUrl.value = isValid
+        if (!isValid) return
+
+        selectedGalleryImageUri.value = null // 파싱한 이미지를 적용할 것이기 때문에 기존에 선택된 이미지를 제거
+        viewModelScope.launch(Dispatchers.IO) {
+            getWishItemInfo(url!!)
+        }
+    }
+
+    /** url 유효성 검증 */
+   private fun checkValidationItemUrl(url: String?): Boolean {
+        if (url.isNullOrBlank()) {
+            return false
+        }
+
+        return if (URLUtil.isValidUrl(url) && Patterns.WEB_URL.matcher(url).matches()) {
+            itemUrl.value = url
+            true
+        } else {
+            false
+        }
+    }
+
     /** 가격 데이터에 천단위 구분자를 적용 */
     private fun applyPriceFormat(price: String): String? {
         // 천단위 구분자 포함 11자리 이상인 경우, 입력 불가하도록 바로 직전에 입력한 값을 반환
@@ -294,21 +340,16 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     private fun initEnabledSaveButton() {
         isEnabledSaveButton.addSource(itemName) { name ->
-            combineEnabledSaveButton(name, itemPrice.value, selectedGalleryImageUri.value)
+            combineEnabledSaveButton(name, itemPrice.value)
         }
 
         isEnabledSaveButton.addSource(itemPrice) { price ->
-            combineEnabledSaveButton(itemName.value, price, selectedGalleryImageUri.value)
-        }
-
-        isEnabledSaveButton.addSource(selectedGalleryImageUri) { imageUri ->
-            combineEnabledSaveButton(itemName.value, itemPrice.value, imageUri)
+            combineEnabledSaveButton(itemName.value, price)
         }
     }
 
-    private fun combineEnabledSaveButton(name: String?, price: String?, imageUrl: Uri?) {
-        val image = wishItem?.image ?: imageUrl
-        isEnabledSaveButton.value = !(name.isNullOrBlank() || price.isNullOrBlank() || image == null)
+    private fun combineEnabledSaveButton(name: String?, price: String?) {
+        isEnabledSaveButton.value = !(name.isNullOrBlank() || price.isNullOrBlank())
     }
 
     fun setWishItem(wishItem: WishItem) {
@@ -322,6 +363,7 @@ class WishItemRegistrationViewModel @Inject constructor(
             itemId = item.id
             itemName.value = item.name
             itemImage.value = item.image
+            itemImageUrl.value = item.imageUrl
             itemPrice.value = item.price.toString()
             itemMemo.value = item.memo
             itemUrl.value = item.url
@@ -338,8 +380,9 @@ class WishItemRegistrationViewModel @Inject constructor(
         itemPrice.value = s.toString()
     }
 
-    fun onItemUrlTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        itemUrl.value = s.toString().trim()
+    fun onItemUrlInputTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+        itemUrlInput.value = s.toString().trim()
+        isValidItemUrl.value = null
     }
 
     fun onItemMemoTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -390,12 +433,32 @@ class WishItemRegistrationViewModel @Inject constructor(
         folderName.value = null
     }
 
+    fun resetItemUrlInput() {
+        itemUrlInput.value = null
+    }
+
     fun setItemUrl(url: String) {
         itemUrl.value = url
     }
 
+    /** 쇼핑몰 링크가 존재하는 아이템을 수정할 경우, 쇼핑몰 링크 EditText에 기존 링크를 보여주기 위함 */
+    fun copyItemUrlToInputUrl() {
+        itemUrlInput.value = wishItem?.url
+    }
+
+    /** 초기화 전 url 검증 실패 시 기존 url로 원상 복구 */
+    fun resetValidItemUrl() {
+        if (isValidItemUrl.value == false || itemUrlInput.value.isNullOrBlank()) {
+            itemUrlInput.value = itemUrl.value
+        }
+
+        isValidItemUrl.value = null
+    }
+
     fun setSelectedGalleryImage(imageUri: Uri, imageFile: File) {
+        // 갤러리 이미지를 적용할 것이기 때문에 기존에 파싱한 이미지를 제거
         selectedGalleryImageUri.value = imageUri
+        itemImage.value = null // TODO need refactoring, 아이템 정보 파싱 후 갤러리에서 이미지 선택 하지 않아도 이전에 갤러리에서 이미지를 선택한 적이 있는 경우, 갤러리 이미지가 보이는 버그를 방지하기 위함
         this.imageFile = imageFile
     }
 
@@ -403,23 +466,18 @@ class WishItemRegistrationViewModel @Inject constructor(
         isCompleteFolderUpload.value = null
     }
 
-    fun getRefinedItemUrl(siteUrl: String?): String? {
-        val url = siteUrl?.trim()
-        return if (url.isNullOrBlank()) {
-            null
-        } else {
-            url
+    fun getItemName(): LiveData<String?> = itemName
+    fun getItemImage(): LiveData<String?> = itemImage
+    fun getSelectedGalleryUri(): LiveData<Uri?> = selectedGalleryImageUri
+    fun getItemPrice(): LiveData<String> = Transformations.map(itemPrice) { price ->
+        price?.let {
+            applyPriceFormat(price)
         }
     }
 
-    fun getItemName(): LiveData<String> = itemName
-    fun getItemImage(): LiveData<String> = itemImage
-    fun getItemPrice(): LiveData<String> = Transformations.map(itemPrice) { price ->
-        applyPriceFormat(price)
-    }
-
-    fun getItemUrl(): LiveData<String> = itemUrl
-    fun getItemMemo(): LiveData<String> = itemMemo
+    fun getItemImageUrl(): LiveData<String?> = itemImageUrl
+    fun getItemUrlInput(): LiveData<String?> = itemUrlInput
+    fun getItemMemo(): LiveData<String?> = itemMemo
     fun getFolderItem(): LiveData<FolderItem?> = folderItem
     fun getNotiType(): LiveData<NotiType?> = notiType
     fun getNotiDate(): LiveData<String?> = notiDate
@@ -439,6 +497,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun isCompleteFolderUpload(): LiveData<Boolean?> = isCompleteFolderUpload
 
     fun getIsExistFolderName(): LiveData<Boolean?> = isExistFolderName
+    fun getIsValidItemUrl(): LiveData<Boolean?> = isValidItemUrl
     fun getRegistrationStatus(): LiveData<ProcessStatus> = itemRegistrationStatus
     fun getFolderRegistrationStatus(): LiveData<ProcessStatus> = folderRegistrationStatus
 

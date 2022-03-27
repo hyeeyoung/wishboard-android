@@ -3,7 +3,6 @@ package com.hyeeyoung.wishboard.view.wish.item.screens
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
-import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -49,6 +48,7 @@ class WishBasicFragment : Fragment() {
             }
             (it[ARG_WISH_ITEM] as? WishItem)?.let { item ->
                 viewModel.setWishItem(item)
+                viewModel.copyItemUrlToInputUrl()
             }
         }
     }
@@ -85,8 +85,6 @@ class WishBasicFragment : Fragment() {
 
     private fun addListeners() {
         binding.save.setOnClickListener {
-            if (isValidItemUrl() == false) return@setOnClickListener
-
             lifecycleScope.launch {
                 when (isEditMode) {
                     false -> viewModel.uploadWishItemByBasics()
@@ -104,6 +102,12 @@ class WishBasicFragment : Fragment() {
             NotiSettingBottomDialogFragment(viewModel).show(
                 parentFragmentManager,
                 "NotiSettingDialog"
+            )
+        }
+        binding.itemUrlContainer.setOnClickListener {
+            ShopLinkInputBottomDialogFragment().show(
+                parentFragmentManager,
+                "ShopLinkInputDialog"
             )
         }
     }
@@ -141,6 +145,29 @@ class WishBasicFragment : Fragment() {
             }
         }
 
+        // TODO need refactoring
+        // 수정 전 기존 이미지
+        viewModel.getItemImageUrl().observe(viewLifecycleOwner) {
+            it?.let {
+                Glide.with(binding.itemImage).load(it).into(binding.itemImage)
+            }
+        }
+
+        // 파싱으로 가져온 이미지
+        viewModel.getItemImage().observe(viewLifecycleOwner) {
+            // TODO 정규 표현식으로 바꿔서 조건 하나로 만들기
+            if (it?.contains("http://") == true || it?.contains("https://") == true) {
+                Glide.with(binding.itemImage).load(it).into(binding.itemImage)
+            }
+        }
+
+        // 갤러리에서 가져온 이미지
+        viewModel.getSelectedGalleryUri().observe(viewLifecycleOwner) {
+            it?.let {
+                Glide.with(binding.itemImage).load(it).into(binding.itemImage)
+            }
+        }
+
         // 갤러리에서 선택한 이미지 전달받기
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
             ARG_IMAGE_INFO
@@ -148,8 +175,8 @@ class WishBasicFragment : Fragment() {
             safeLet(
                 it[ARG_IMAGE_URI] as? Uri, it[ARG_IMAGE_FILE] as? File
             ) { imageUri, imageFile ->
-                Glide.with(binding.itemImage).load(imageUri).into(binding.itemImage)
                 viewModel.setSelectedGalleryImage(imageUri, imageFile)
+                it.clear()
             }
         }
     }
@@ -186,21 +213,6 @@ class WishBasicFragment : Fragment() {
                 findNavController().navigateSafe(R.id.action_wish_to_gallery_image)
             }
         }
-
-    // 아이템 등록 전 url 유효성을 검증, TODO need refactoring
-    private fun isValidItemUrl(): Boolean? {
-        val url = viewModel.getRefinedItemUrl(binding.itemUrl.text.toString()) ?: return null
-
-        return if (Patterns.WEB_URL.matcher(url).matches()) {
-            true
-        } else {
-            CustomSnackbar.make(
-                binding.layout,
-                requireContext().getString(R.string.wish_basic_invalid_site_snackbar_text)
-            ).show()
-            false
-        }
-    }
 
     companion object {
         private const val TAG = "WishBasicFragment"
