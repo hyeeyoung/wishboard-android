@@ -56,9 +56,13 @@ class ShopLinkInputBottomDialogFragment: BottomSheetDialogFragment() {
         viewModel.getIsValidItemUrl().observe(viewLifecycleOwner) {
             if (it == true) {
                 dismiss()
-                viewModel.resetValidItemUrl()
             }
         }
+    }
+
+    override fun dismiss() {
+        super.dismiss()
+        viewModel.resetValidItemUrl()
     }
 
     companion object {

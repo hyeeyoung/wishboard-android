@@ -14,9 +14,9 @@ import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.folder.FolderListViewType
 import com.hyeeyoung.wishboard.model.noti.NotiType
 import com.hyeeyoung.wishboard.model.wish.WishItem
-import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.repository.folder.FolderRepository
 import com.hyeeyoung.wishboard.repository.wish.WishRepository
+import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.util.getTimestamp
 import com.hyeeyoung.wishboard.util.prefs
 import com.hyeeyoung.wishboard.util.safeLet
@@ -48,6 +48,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var itemImageUrl = MutableLiveData<String?>()
     private var itemMemo = MutableLiveData<String?>()
     private var itemUrl = MutableLiveData<String?>()
+    /** 유효하지 않은 url인 경우 또는 사이트 url 수정을 시도할 경우 원본 url을 보존하기위 위한 변수 */
     private var itemUrlInput = MutableLiveData<String?>()
     private var folderItem = MutableLiveData<FolderItem>()
     private var folderName = MutableLiveData<String?>()
@@ -299,26 +300,30 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     /** 입력한 쇼핑몰 링크의 포맷을 검증 후, 유효한 url일 때 아이템 정보 파싱 */
     fun loadWishItemInfo() {
-        val url = itemUrlInput.value?.trim() ?: return
+        val url = itemUrlInput.value?.trim()
 
-        val isValid = checkValidationItemUrl(url)
+        val isValid = checkValidationItemUrl(url) // url null 검증 반드시 필요
         isValidItemUrl.value = isValid
         if (!isValid) return
 
-        itemUrl.value = url
         selectedGalleryImageUri.value = null // 파싱한 이미지를 적용할 것이기 때문에 기존에 선택된 이미지를 제거
         viewModelScope.launch(Dispatchers.IO) {
-            getWishItemInfo(url)
+            getWishItemInfo(url!!)
         }
     }
 
     /** url 유효성 검증 */
-    private fun checkValidationItemUrl(url: String): Boolean {
-        if (url.isBlank()) {
+   private fun checkValidationItemUrl(url: String?): Boolean {
+        if (url.isNullOrBlank()) {
             return false
         }
 
-        return URLUtil.isValidUrl(url) && Patterns.WEB_URL.matcher(url).matches()
+        return if (URLUtil.isValidUrl(url) && Patterns.WEB_URL.matcher(url).matches()) {
+            itemUrl.value = url
+            true
+        } else {
+            false
+        }
     }
 
     /** 가격 데이터에 천단위 구분자를 적용 */
@@ -440,7 +445,13 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun copyItemUrlToInputUrl() {
         itemUrlInput.value = wishItem?.url
     }
+
+    /** 초기화 전 url 검증 실패 시 기존 url로 원상 복구 */
     fun resetValidItemUrl() {
+        if (isValidItemUrl.value == false || itemUrlInput.value.isNullOrBlank()) {
+            itemUrlInput.value = itemUrl.value
+        }
+
         isValidItemUrl.value = null
     }
 
