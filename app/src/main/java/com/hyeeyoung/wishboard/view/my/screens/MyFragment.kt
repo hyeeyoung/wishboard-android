@@ -73,27 +73,15 @@ class MyFragment : Fragment() {
             )
         }
         binding.terms.setOnClickListener {
-//            moveWebViewActivity(
-//                "https://www.notion.so/1-0-0-6738bc44f9624f5781fb026a6f165317",
-//                R.string.my_section_sub_title_terms
-//            )
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://www.notion.so/1-0-0-6738bc44f9624f5781fb026a6f165317")
-                )
+            moveWebViewActivity(
+                "file:///android_asset/www/terms.html",
+                R.string.my_section_sub_title_terms
             )
         }
         binding.personalInfo.setOnClickListener {
-//            moveWebViewActivity(
-//                "https://www.notion.so/1-0-0-7d381fdc9515431fa43fc69d820aba0a",
-//                R.string.my_section_sub_title_personal_info
-//            )
-            startActivity(
-                Intent(
-                    Intent.ACTION_VIEW,
-                    Uri.parse("https://www.notion.so/1-0-0-7d381fdc9515431fa43fc69d820aba0a")
-                )
+            moveWebViewActivity(
+                "file:///android_asset/www/personal_info.html",
+                R.string.my_section_sub_title_personal_info
             )
         }
         binding.opensourceLicense.setOnClickListener {
