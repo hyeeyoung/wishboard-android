@@ -1,8 +1,10 @@
 package com.hyeeyoung.wishboard.view.wish.item.screens
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -91,13 +93,16 @@ class WishItemDetailFragment : Fragment() {
             Glide.with(binding.itemImage).load(item.imageUrl).into(binding.itemImage)
             binding.goToShopBtn.setOnClickListener {
                 if (item.url == null) return@setOnClickListener
-                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item.url)))
+                goToShop(item.url)
             }
         }
 
         viewModel.getIsCompleteDeletion().observe(viewLifecycleOwner) { isComplete ->
             if (isComplete == true) {
-                CustomSnackbar.make(binding.layout, getString(R.string.wish_item_deletion_snackbar_text)).show()
+                CustomSnackbar.make(
+                    binding.layout,
+                    getString(R.string.wish_item_deletion_snackbar_text)
+                ).show()
                 moveToPrevious(WishItemStatus.DELETED)
             }
         }
@@ -133,7 +138,8 @@ class WishItemDetailFragment : Fragment() {
         val dialog = TwoButtonDialogFragment(
             getString(R.string.item_detail_item_delete_dialog_title),
             getString(R.string.item_detail_item_delete_dialog_description),
-            getString(R.string.delete)
+            getString(R.string.delete),
+            getString(R.string.cancel)
         ).apply {
             setListener(object : DialogListener {
                 override fun onButtonClicked(clicked: String) {
@@ -158,6 +164,22 @@ class WishItemDetailFragment : Fragment() {
             })
         }
         dialog.show(parentFragmentManager, "FolderListDialog")
+    }
+
+    private fun goToShop(url: String) {
+        if (Patterns.WEB_URL.matcher(url).matches()) {
+            try {
+                startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                return
+            } catch (e: ActivityNotFoundException) {
+                e.printStackTrace()
+            }
+        }
+
+        CustomSnackbar.make(
+            binding.layout,
+            requireContext().getString(R.string.item_detail_invalid_site_snackbar_text)
+        ).show()
     }
 
     companion object {

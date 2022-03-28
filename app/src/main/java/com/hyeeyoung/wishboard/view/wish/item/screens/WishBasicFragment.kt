@@ -48,6 +48,7 @@ class WishBasicFragment : Fragment() {
             }
             (it[ARG_WISH_ITEM] as? WishItem)?.let { item ->
                 viewModel.setWishItem(item)
+                viewModel.copyItemUrlToInputUrl()
             }
         }
     }
@@ -78,7 +79,8 @@ class WishBasicFragment : Fragment() {
                 }
             )
 
-        Glide.with(binding.itemImage).load(viewModel.getWishItem()?.imageUrl).into(binding.itemImage)
+        Glide.with(binding.itemImage).load(viewModel.getWishItem()?.imageUrl)
+            .into(binding.itemImage)
     }
 
     private fun addListeners() {
@@ -97,7 +99,16 @@ class WishBasicFragment : Fragment() {
             showFolderListDialog()
         }
         binding.notiContainer.setOnClickListener {
-            NotiSettingBottomDialogFragment(viewModel).show(parentFragmentManager, "NotiSettingDialog")
+            NotiSettingBottomDialogFragment(viewModel).show(
+                parentFragmentManager,
+                "NotiSettingDialog"
+            )
+        }
+        binding.itemUrlContainer.setOnClickListener {
+            ShopLinkInputBottomDialogFragment().show(
+                parentFragmentManager,
+                "ShopLinkInputDialog"
+            )
         }
     }
 
@@ -134,6 +145,29 @@ class WishBasicFragment : Fragment() {
             }
         }
 
+        // TODO need refactoring
+        // 수정 전 기존 이미지
+        viewModel.getItemImageUrl().observe(viewLifecycleOwner) {
+            it?.let {
+                Glide.with(binding.itemImage).load(it).into(binding.itemImage)
+            }
+        }
+
+        // 파싱으로 가져온 이미지
+        viewModel.getItemImage().observe(viewLifecycleOwner) {
+            // TODO 정규 표현식으로 바꿔서 조건 하나로 만들기
+            if (it?.contains("http://") == true || it?.contains("https://") == true) {
+                Glide.with(binding.itemImage).load(it).into(binding.itemImage)
+            }
+        }
+
+        // 갤러리에서 가져온 이미지
+        viewModel.getSelectedGalleryUri().observe(viewLifecycleOwner) {
+            it?.let {
+                Glide.with(binding.itemImage).load(it).into(binding.itemImage)
+            }
+        }
+
         // 갤러리에서 선택한 이미지 전달받기
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
             ARG_IMAGE_INFO
@@ -141,8 +175,8 @@ class WishBasicFragment : Fragment() {
             safeLet(
                 it[ARG_IMAGE_URI] as? Uri, it[ARG_IMAGE_FILE] as? File
             ) { imageUri, imageFile ->
-                Glide.with(binding.itemImage).load(imageUri).into(binding.itemImage)
                 viewModel.setSelectedGalleryImage(imageUri, imageFile)
+                it.clear()
             }
         }
     }
@@ -166,16 +200,16 @@ class WishBasicFragment : Fragment() {
         val navController = findNavController()
         navController.previousBackStackEntry?.savedStateHandle?.set(
             ARG_WISH_ITEM_INFO, bundleOf(
-            ARG_ITEM_STATUS to itemStatus,
-            ARG_WISH_ITEM to wishItem,
-        ))
+                ARG_ITEM_STATUS to itemStatus,
+                ARG_WISH_ITEM to wishItem,
+            )
+        )
         navController.popBackStack()
     }
 
     private val requestStorage =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) {
             if (it) {
-                viewModel.clearGalleryImageUris()
                 findNavController().navigateSafe(R.id.action_wish_to_gallery_image)
             }
         }

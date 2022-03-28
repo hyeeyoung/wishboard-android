@@ -1,6 +1,7 @@
 package com.hyeeyoung.wishboard.view.my.screens
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,7 @@ import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.loadProfileImage
 import com.hyeeyoung.wishboard.view.common.screens.DialogListener
 import com.hyeeyoung.wishboard.view.common.screens.TwoButtonDialogFragment
+import com.hyeeyoung.wishboard.view.common.screens.WebViewActivity
 import com.hyeeyoung.wishboard.view.sign.screens.SignActivity
 import com.hyeeyoung.wishboard.viewmodel.MyViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -56,6 +58,39 @@ class MyFragment : Fragment() {
         binding.notiSwitch.setOnClickListener {
             viewModel.updatePushState()
         }
+
+        binding.howToUse.setOnClickListener {
+            // 노션에서 보안 문제로 노션 페이지를 웹뷰를 띄울 수 없다고 함. 임의로 새창에서 띄우는 것으로 수정
+//            moveWebViewActivity(
+//                "https://www.notion.so/30af073d15db4fbcb7c149288719e592",
+//                R.string.my_section_sub_title_how_to_use
+//            )
+            startActivity(
+                Intent(
+                    Intent.ACTION_VIEW,
+                    Uri.parse("https://www.notion.so/30af073d15db4fbcb7c149288719e592")
+                )
+            )
+        }
+        binding.terms.setOnClickListener {
+            moveWebViewActivity(
+                "file:///android_asset/www/terms.html",
+                R.string.my_section_sub_title_terms
+            )
+        }
+        binding.personalInfo.setOnClickListener {
+            moveWebViewActivity(
+                "file:///android_asset/www/personal_info.html",
+                R.string.my_section_sub_title_personal_info
+            )
+        }
+        binding.opensourceLicense.setOnClickListener {
+            moveWebViewActivity(
+                "file:///android_asset/www/opensource_license.html",
+                R.string.my_section_sub_title_opensource_license
+            )
+        }
+
         binding.logout.setOnClickListener {
             showLogoutDialog()
         }
@@ -89,11 +124,21 @@ class MyFragment : Fragment() {
         }
     }
 
+    private fun moveWebViewActivity(link: String, titleRes: Int) {
+        Intent(requireContext(), WebViewActivity::class.java).apply {
+            putExtra(ARG_WEB_VIEW_LINK, link)
+            putExtra(ARG_WEB_VIEW_TITLE, context?.getString(titleRes))
+        }.let {
+            startActivity(it)
+        }
+    }
+
     private fun showLogoutDialog() {
         val dialog = TwoButtonDialogFragment(
             getString(R.string.my_section_sub_title_logout),
             getString(R.string.my_logout_dialog_description),
-            getString(R.string.my_section_sub_title_logout)
+            getString(R.string.my_section_sub_title_logout),
+            getString(R.string.cancel)
         ).apply {
             setListener(object : DialogListener {
                 override fun onButtonClicked(clicked: String) {
@@ -122,5 +167,11 @@ class MyFragment : Fragment() {
             })
         }
         dialog.show(parentFragmentManager, "MembershipExitDialog")
+    }
+
+    companion object {
+        private const val TAG = "MyFragment"
+        private const val ARG_WEB_VIEW_LINK = "link"
+        private const val ARG_WEB_VIEW_TITLE = "title"
     }
 }

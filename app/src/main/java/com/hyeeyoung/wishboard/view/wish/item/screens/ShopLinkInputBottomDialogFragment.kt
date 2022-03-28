@@ -1,32 +1,31 @@
-package com.hyeeyoung.wishboard.view.folder.screens
+package com.hyeeyoung.wishboard.view.wish.item.screens
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.activityViewModels
+import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hyeeyoung.wishboard.R
-import com.hyeeyoung.wishboard.databinding.DialogBottomFolderUploadBinding
-import com.hyeeyoung.wishboard.model.common.ProcessStatus
+import com.hyeeyoung.wishboard.databinding.DialogBottomShopLinkInputBinding
 import com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FolderUploadBottomDialogFragment() : BottomSheetDialogFragment() { // TODO rename
-    private lateinit var binding: DialogBottomFolderUploadBinding
-    private val viewModel: WishItemRegistrationViewModel by activityViewModels()
+class ShopLinkInputBottomDialogFragment: BottomSheetDialogFragment() {
+    private lateinit var binding: DialogBottomShopLinkInputBinding
+    private val viewModel: WishItemRegistrationViewModel by hiltNavGraphViewModels(R.id.wish_item_registration_nav_graph)
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DialogBottomFolderUploadBinding.inflate(inflater, container, false)
+        binding = DialogBottomShopLinkInputBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@FolderUploadBottomDialogFragment
+        binding.lifecycleOwner = this@ShopLinkInputBottomDialogFragment
 
         // 키보드 위로 다이얼로그를 띄우기 위함
         dialog?.setOnShowListener {
@@ -38,9 +37,6 @@ class FolderUploadBottomDialogFragment() : BottomSheetDialogFragment() { // TODO
             }
         }
 
-        viewModel.resetFolderName()
-        viewModel.resetCompleteFolderUpload()
-
         addListeners()
         addObservers()
 
@@ -48,8 +44,8 @@ class FolderUploadBottomDialogFragment() : BottomSheetDialogFragment() { // TODO
     }
 
     private fun addListeners() {
-        binding.add.setOnClickListener {
-            viewModel.createNewFolder()
+        binding.getItem.setOnClickListener {
+            viewModel.loadWishItemInfo()
         }
         binding.back.setOnClickListener {
             dismiss()
@@ -57,25 +53,19 @@ class FolderUploadBottomDialogFragment() : BottomSheetDialogFragment() { // TODO
     }
 
     private fun addObservers() {
-        viewModel.getFolderRegistrationStatus().observe(this) {
-            when (it) {
-                ProcessStatus.IDLE -> {
-                    binding.loadingLottie.visibility = View.GONE
-                }
-                ProcessStatus.IN_PROGRESS -> {
-                    binding.loadingLottie.visibility = View.VISIBLE
-                    binding.loadingLottie.playAnimation()
-                }
-            }
-        }
-        viewModel.isCompleteFolderUpload().observe(this) { isComplete ->
-            if (isComplete == true) {
+        viewModel.getIsValidItemUrl().observe(viewLifecycleOwner) {
+            if (it == true) {
                 dismiss()
             }
         }
     }
 
+    override fun dismiss() {
+        super.dismiss()
+        viewModel.resetValidItemUrl()
+    }
+
     companion object {
-        const val TAG = "FolderUploadBottomDialogFragment"
+        const val TAG = "ShopLinkInputBottomDialogFragment"
     }
 }

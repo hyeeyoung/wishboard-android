@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.hyeeyoung.wishboard.view.wish.item.screens.ShopLinkInputBottomDialogFragment">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_dialog_top_corner"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/shop_link"
+                android:textAppearance="@style/Widget.Dialog.TextAppearance.Title"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/back"
+                style="@style/Widget.Button.Icon.Navigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_close"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/widgetBottomDialogContentHeightBase"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/shop_link_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_dialog"
+                app:layout_constraintBottom_toTopOf="@id/get_item"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <EditText
+                    android:id="@+id/shop_link"
+                    style="@style/Widget.EditText.Basic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/shop_link"
+                    android:inputType="textUri"
+                    android:maxLines="1"
+                    android:onTextChanged="@{viewModel::onItemUrlInputTextChanged}"
+                    android:paddingEnd="40dp"
+                    android:text="@{viewModel.itemUrlInput}"
+                    android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/delete"
+                    style="@style/Widget.Button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:onClick="@{() -> viewModel.resetItemUrlInput()}"
+                    android:padding="@dimen/spacing10"
+                    android:src="@drawable/ic_delete_circle"
+                    app:layout_constraintBottom_toBottomOf="@id/shop_link"
+                    app:layout_constraintEnd_toEndOf="@id/shop_link"
+                    app:layout_constraintTop_toTopOf="@id/shop_link" />
+
+                <TextView
+                    android:id="@+id/shop_link_detail_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing5"
+                    android:text="@string/wish_basic_invalid_shop_link_detail"
+                    android:textAppearance="@style/Widget.TextAppearance.Detail"
+                    android:visibility="@{viewModel.isValidItemUrl == false &amp;&amp; viewModel.isValidItemUrl != null ? View.VISIBLE : View.INVISIBLE}"
+                    app:layout_constraintStart_toStartOf="@id/shop_link"
+                    app:layout_constraintTop_toBottomOf="@id/shop_link" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/get_item"
+                style="@style/Widget.Button.Activate.Green"
+                android:layout_width="match_parent"
+                android:layout_margin="@dimen/spacingBase"
+                android:enabled="@{viewModel.itemUrlInput.length() > 0}"
+                android:text="@string/wish_basic_get_item_info_button_text"
+                android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

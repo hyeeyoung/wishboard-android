@@ -69,6 +69,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui-ktx:2.4.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.4.0'
     implementation 'android.arch.work:work-runtime:1.0.1'
+    implementation 'androidx.work:work-runtime-ktx:2.7.0'
 
     // jsoup
     implementation 'org.jsoup:jsoup:1.14.1'

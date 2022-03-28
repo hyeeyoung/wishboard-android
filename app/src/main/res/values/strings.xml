@@ -10,6 +10,8 @@
     <string name="edit">수정</string>
     <string name="add">추가</string>
     <string name="delete">삭제</string>
+    <string name="later">나중에</string>
+    <string name="allow">허용</string>
     <string name="next">다음</string>
     <string name="close">닫기</string>
     <string name="all">전체</string>
@@ -40,6 +42,8 @@
     <string name="my_profile_edit_completion_snackbar_text">프로필이 수정되었어요!👩‍🎤</string>
     <string name="my_delete_user_snackbar_text">탈퇴 완료되었어요. 이용해주셔서 감사합니다!☺️</string>
     <string name="check_network_connection_snackbar_text">네트워크 연결 상태를 확인해 주세요.</string>
+    <string name="item_detail_invalid_site_snackbar_text">앗, 사이트를 찾을 수 없어요!🥲</string>
+    <string name="wish_basic_invalid_site_snackbar_text">쇼핑몰 링크를 다시 확인해 주세요!👀</string>
 
     <!-- Onboarding -->
     <string name="onboarding_welcome_guide">흩어져있는 위시리스트를\n위시보드로 간편하게 통합 관리해 보세요!️</string>
@@ -67,6 +71,7 @@
     <string name="sign_in_email_resend_email_button_text">재요청</string>
     <string name="sign_in_email_guide">가입하신 이메일을 입력해주세요!\n로그인을 위해 인증코드가 포함된 이메일을 보내드려요!</string>
     <string name="sign_in_email_verification_code_detail">인증코드를 다시 확인해 주세요.</string>
+    <string name="sign_term">가입 시 <a href="https://www.notion.so/1-0-0-6738bc44f9624f5781fb026a6f165317"><font color="#73F87C">이용약관</font></a>과 <a href="https://www.notion.so/1-0-0-7d381fdc9515431fa43fc69d820aba0a"><font color="#73F87C">개인정보취급방침</font></a>에 동의하는 것으로 간주됩니다.</string>
 
     <!-- Home -->
     <string name="home_no_item_view">앗, 아이템이 없어요!\n갖고 싶은 아이템을 등록해보세요!</string>
@@ -109,11 +114,14 @@
     <string name="wish_item_registration_gallery_image_title">사진 선택하기</string>
     <string name="item_registration_noti_setting_title">상품 알림 설정하기</string>
 
+    <string name="item_name_for_basic_hint">상품명(필수)</string>
+    <string name="price_for_basic_hint">가격(필수)</string>
     <string name="item_name_hint">상품명을 입력해 주세요.</string>
     <string name="price_hint">가격을 입력해 주세요.</string>
-    <string name="shop_link_hint">쇼핑몰 링크를 입력해 보세요!</string>
+    <string name="shop_link_guide">복사한 링크로 아이템 정보를 불러올 수 있어요!</string>
     <string name="memo_short_hint">메모를 입력해 보세요.</string>
     <string name="memo_hint">브랜드, 사이즈, 컬러 등 아이템 정보를 메모로 남겨보세요!😉</string>
+    <string name="wish_basic_invalid_shop_link_detail">쇼핑몰 링크를 다시 확인해 주세요.</string>
 
     <string name="item_registration_noti_setting_guide">30분 전에 상품 일정을 알려드려요! 시간은 30분 단위로 설정할 수 있어요.</string>
     <string name="wish_list_registration_button_text">위시리스트에 추가</string>
@@ -127,6 +135,7 @@
 
     <!-- Notification -->
     <string name="noti_setting">알림 설정</string>
+    <string name="noti_push_state_allow">알림 허용</string>
     <string name="noti_type">알림 유형</string>
     <string name="noti_date">알림 날짜</string>
 
@@ -135,6 +144,7 @@
     <string name="item_schedule_notification_setting_title">상품 알림 설정</string>
     <string name="default_notification_channel_id">fcm_default_channel</string>
     <string name="noti_no_item_view">앗, 알림이 없어요!\n상품 일정을 지정하고 알림을 받아보세요!</string>
+    <string name="noti_push_state_setting_dialog_description">알림을 받아보시겠어요?\n직접 등록하신 아이템의 재입고 날짜 등의\n상품 일정 알림을 받으실 거에요.</string>
 
     <string name="restock">재입고</string>
     <string name="open_day">오픈일</string>
@@ -153,6 +163,8 @@
     <string name="my_section_title_service_info">서비스 정보</string>
     <string name="my_section_sub_title_how_to_use">위시보드 이용방법</string>
     <string name="my_section_sub_title_terms">이용약관</string>
+    <string name="my_section_sub_title_personal_info">개인정보 처리방침</string>
+    <string name="my_section_sub_title_opensource_license">오픈소스 라이브러리</string>
     <string name="my_section_sub_title_version_info">버전정보</string>
     <string name="service_version">1.0.0</string>
 
@@ -177,5 +189,6 @@
     <string name="navigation_menu_title_notice">NOTICE</string>
     <string name="navigation_menu_title_my">MY</string>
     <string name="add_folder">폴더 추가</string>
+    <string name="wish_basic_get_item_info_button_text">아이템 불러오기</string>
 
 </resources>
