@@ -10,6 +10,8 @@
     <string name="edit">수정</string>
     <string name="add">추가</string>
     <string name="delete">삭제</string>
+    <string name="later">나중에</string>
+    <string name="allow">허용</string>
     <string name="next">다음</string>
     <string name="close">닫기</string>
     <string name="all">전체</string>
@@ -133,6 +135,7 @@
 
     <!-- Notification -->
     <string name="noti_setting">알림 설정</string>
+    <string name="noti_push_state_allow">알림 허용</string>
     <string name="noti_type">알림 유형</string>
     <string name="noti_date">알림 날짜</string>
 
@@ -141,6 +144,7 @@
     <string name="item_schedule_notification_setting_title">상품 알림 설정</string>
     <string name="default_notification_channel_id">fcm_default_channel</string>
     <string name="noti_no_item_view">앗, 알림이 없어요!\n상품 일정을 지정하고 알림을 받아보세요!</string>
+    <string name="noti_push_state_setting_dialog_description">알림을 받아보시겠어요?\n직접 등록하신 아이템의 재입고 날짜 등의\n상품 일정 알림을 받으실 거에요.</string>
 
     <string name="restock">재입고</string>
     <string name="open_day">오픈일</string>

@@ -137,7 +137,8 @@ class MyFragment : Fragment() {
         val dialog = TwoButtonDialogFragment(
             getString(R.string.my_section_sub_title_logout),
             getString(R.string.my_logout_dialog_description),
-            getString(R.string.my_section_sub_title_logout)
+            getString(R.string.my_section_sub_title_logout),
+            getString(R.string.cancel)
         ).apply {
             setListener(object : DialogListener {
                 override fun onButtonClicked(clicked: String) {

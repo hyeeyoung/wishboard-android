@@ -8,11 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
-import com.hyeeyoung.wishboard.view.MainActivity
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentSignUpPasswordBinding
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.util.showKeyboard
+import com.hyeeyoung.wishboard.view.MainActivity
 import com.hyeeyoung.wishboard.viewmodel.SignViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -52,8 +52,7 @@ class SignUpPasswordFragment : Fragment() {
     private fun addObservers() {
         viewModel.getCompletedSignUp().observe(viewLifecycleOwner) { isCompleted ->
             if (isCompleted) {
-                startActivity(Intent(requireContext(), MainActivity::class.java))
-                requireActivity().finish()
+                moveToMain()
             }
         }
         viewModel.getSignProcessStatus().observe(viewLifecycleOwner) {
@@ -67,5 +66,19 @@ class SignUpPasswordFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun moveToMain() {
+        Intent(this.context, MainActivity::class.java).apply {
+            putExtra(ARG_SUCCESS_SIGN_UP, true)
+        }.let {
+            startActivity(it)
+            requireActivity().finish()
+        }
+    }
+
+    companion object {
+        private const val TAG = "SignUpPasswordFragment"
+        private const val ARG_SUCCESS_SIGN_UP = "successSignup"
     }
 }

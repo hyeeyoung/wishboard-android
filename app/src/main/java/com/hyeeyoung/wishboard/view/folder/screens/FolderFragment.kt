@@ -142,7 +142,9 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
         val dialog = TwoButtonDialogFragment(
             getString(R.string.folder_delete),
             getString(R.string.folder_delete_dialog_detail),
-            getString(R.string.delete)
+            getString(R.string.delete),
+            getString(R.string.cancel),
+
         ).apply {
             setListener(object : DialogListener {
                 override fun onButtonClicked(clicked: String) {
