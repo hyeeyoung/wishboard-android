@@ -73,7 +73,8 @@ class MainActivity : AppCompatActivity() {
         val dialog = TwoButtonDialogFragment(
             getString(R.string.noti_push_state_allow),
             getString(R.string.noti_push_state_setting_dialog_description),
-            getString(R.string.allow)
+            getString(R.string.allow),
+            getString(R.string.later)
         ).apply {
             setListener(object : DialogListener {
                 override fun onButtonClicked(clicked: String) {

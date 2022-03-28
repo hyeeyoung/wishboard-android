@@ -10,6 +10,7 @@ class TwoButtonDialogFragment(
     private val title: String,
     private val description: String?,
     private val yesValue: String,
+    private val noValue: String,
 ) : DialogFragment() {
     private lateinit var binding: DialogTwoButtonBinding
     private lateinit var listener: DialogListener
@@ -26,6 +27,7 @@ class TwoButtonDialogFragment(
         binding.title.text = title
         binding.description.text = description
         binding.yes.text = yesValue
+        binding.no.text = noValue
 
         addListener()
 
