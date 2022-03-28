@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import com.hyeeyoung.wishboard.repository.noti.NotiRepository
 import com.hyeeyoung.wishboard.repository.user.UserRepository
 import com.hyeeyoung.wishboard.util.prefs
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +16,9 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(
     private val userRepository: UserRepository,
+    private val notiRepository: NotiRepository,
 ) : ViewModel() {
+    private val token = prefs?.getUserToken()
 
     fun initFCMToken() {
         val userToken = prefs?.getUserToken() ?: return
@@ -35,6 +38,13 @@ class MainViewModel @Inject constructor(
                 }
             }
         })
+    }
+
+    fun updatePushState() {
+        if (token == null) return
+        viewModelScope.launch {
+            notiRepository.updatePushState(token, true)
+        }
     }
 
     companion object {

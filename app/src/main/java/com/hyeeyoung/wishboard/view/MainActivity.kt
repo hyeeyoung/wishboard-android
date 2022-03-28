@@ -9,7 +9,10 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ActivityMainBinding
+import com.hyeeyoung.wishboard.model.common.DialogButtonReplyType
 import com.hyeeyoung.wishboard.util.NetworkConnection
+import com.hyeeyoung.wishboard.view.common.screens.DialogListener
+import com.hyeeyoung.wishboard.view.common.screens.TwoButtonDialogFragment
 import com.hyeeyoung.wishboard.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,6 +26,13 @@ class MainActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         viewModel.initFCMToken()
+
+        // 회원가입 성공 시 알림 설정 다이얼로그 띄우기
+        intent.getBooleanExtra(ARG_SUCCESS_SIGN_UP, false).let {
+            if (it) {
+                showPushStateSettingDialog()
+            }
+        }
 
         initializeView()
         addObservers()
@@ -58,7 +68,27 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /** 푸시 알림 설정 다이얼로그 */
+    private fun showPushStateSettingDialog() {
+        val dialog = TwoButtonDialogFragment(
+            getString(R.string.noti_push_state_allow),
+            getString(R.string.noti_push_state_setting_dialog_description),
+            getString(R.string.allow)
+        ).apply {
+            setListener(object : DialogListener {
+                override fun onButtonClicked(clicked: String) {
+                    if (clicked == DialogButtonReplyType.YES.name) {
+                        viewModel.updatePushState()
+                    }
+                    dismiss()
+                }
+            })
+        }
+        dialog.show(supportFragmentManager, "FolderDeleteDialog")
+    }
+
     companion object {
         private const val TAG = "MainActivity"
+        private const val ARG_SUCCESS_SIGN_UP = "successSignup"
     }
 }
