@@ -8,7 +8,11 @@
 
         <import type="android.view.View" />
 
+        <import type="com.hyeeyoung.wishboard.R" />
+
         <import type="androidx.navigation.Navigation" />
+
+        <import type="com.hyeeyoung.wishboard.util.DateFormatUtilKt" />
 
         <variable
             name="viewModel"
@@ -131,7 +135,7 @@
                 android:layout_marginStart="@dimen/spacing12"
                 android:layout_marginTop="@dimen/spacing20"
                 android:fontFamily="@font/suit_b"
-                android:text="일정"
+                android:text="@{viewModel.selectedDate != null ? String.format(context.getString(R.string.noti_calendar_selected_date_title), DateFormatUtilKt.convertYMDHMToMD(viewModel.selectedDate)) : ``}"
                 android:textColor="@color/gray_700"
                 android:textSize="@dimen/typographyBase"
                 app:layout_constraintStart_toStartOf="parent"
@@ -154,7 +158,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:visibility="@{viewModel.notiList.size() > 0 ? View.GONE : View.VISIBLE}"
+                android:visibility="@{viewModel.selectedNotiList.size() > 0 ? View.GONE : View.VISIBLE}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

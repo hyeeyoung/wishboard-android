@@ -4,9 +4,9 @@ import org.joda.time.DateTime
 import org.joda.time.DateTimeConstants
 
 class CalendarUtils {
-
     companion object {
         const val WEEKS_PER_MONTH = 6
+        private var TODAY = DateTime().toString("yyyy-MM-dd")
 
         /** 선택된 날짜에 해당하는 월간 달력을 반환 */
         fun getMonthList(dateTime: DateTime): List<DateTime> {
@@ -37,5 +37,9 @@ class CalendarUtils {
         /** 동일한 달인지 체크 */
         fun isSameMonth(first: DateTime, second: DateTime): Boolean =
             first.year == second.year && first.monthOfYear == second.monthOfYear
+
+        /** 동일한 날짜인지 체크 */
+        fun isSameDate(dateTime: DateTime): Boolean =
+            TODAY == dateTime.toString("yyyy-MM-dd")
     }
 }

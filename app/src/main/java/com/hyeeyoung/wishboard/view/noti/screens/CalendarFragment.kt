@@ -39,7 +39,7 @@ class CalendarFragment : Fragment() {
     }
 
     private fun initializeView() {
-        binding.calendarView.initCalendar(DateTime(millis), getMonthList(DateTime(millis)))
+        binding.calendarView.initCalendar(DateTime(millis), getMonthList(DateTime(millis)), viewModel)
     }
 
     override fun onResume() {

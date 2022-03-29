@@ -58,7 +58,7 @@
             android:layout_marginTop="@dimen/spacingSmall"
             android:ellipsize="end"
             android:fontFamily="@font/suit_r"
-            android:maxLines="2"
+            android:maxLines="1"
             android:text="@{item.itemName}"
             android:textColor="@color/gray_700"
             android:textSize="14sp"

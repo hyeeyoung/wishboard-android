@@ -16,6 +16,7 @@ import com.hyeeyoung.wishboard.view.noti.adapters.CalendarAdapter
 import com.hyeeyoung.wishboard.view.noti.adapters.NotiListAdapter
 import com.hyeeyoung.wishboard.viewmodel.NotiViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import org.joda.time.LocalDate
 
 @AndroidEntryPoint
 class NotiCalendarFragment : Fragment(), NotiListAdapter.OnItemClickListener {
@@ -37,6 +38,7 @@ class NotiCalendarFragment : Fragment(), NotiListAdapter.OnItemClickListener {
         binding.lifecycleOwner = this@NotiCalendarFragment
 
         initializeView()
+        addObservers()
 
         return binding.root
     }
@@ -56,6 +58,12 @@ class NotiCalendarFragment : Fragment(), NotiListAdapter.OnItemClickListener {
             this.adapter = adapter
             itemAnimator = null
             setItemViewCacheSize(20)
+        }
+    }
+
+    private fun addObservers() {
+        viewModel.getNotiList().observe(viewLifecycleOwner) {
+            viewModel.setSelectedNotiList(LocalDate.now().toString())
         }
     }
 

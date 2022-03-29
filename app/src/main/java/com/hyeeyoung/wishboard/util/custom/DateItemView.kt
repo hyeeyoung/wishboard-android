@@ -13,6 +13,7 @@ import androidx.annotation.StyleRes
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.withStyledAttributes
 import com.hyeeyoung.wishboard.R
+import com.hyeeyoung.wishboard.util.CalendarUtils.Companion.isSameDate
 import com.hyeeyoung.wishboard.util.CalendarUtils.Companion.isSameMonth
 import org.joda.time.DateTime
 
@@ -43,10 +44,12 @@ class DayItemView @JvmOverloads constructor(
                 if (!isSameMonth(date, firstDayOfMonth)) {
                     alpha = 50
                 }
-            }
 
-            this@DayItemView.setOnClickListener {
-                // TODO Not yet implemented
+                // 오늘 날짜 표기
+                if (isSameDate(date)) {
+                    background = ResourcesCompat.getDrawable(resources, R.drawable.shape_circle, null)
+//                    backgroundTintList = ContextCompat.getColorStateList(this@DayItemView.context, R.color.green_700)
+                }
             }
         }
     }

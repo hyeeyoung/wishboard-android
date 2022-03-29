@@ -10,6 +10,7 @@ import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.util.CalendarUtils.Companion.WEEKS_PER_MONTH
+import com.hyeeyoung.wishboard.viewmodel.NotiViewModel
 import org.joda.time.DateTime
 import org.joda.time.DateTimeConstants.DAYS_PER_WEEK
 import kotlin.math.max
@@ -58,14 +59,18 @@ class CalendarView @JvmOverloads constructor(
      * @param firstDayOfMonth : 한 달의 시작 요일
      * @param list : 월별 날짜와 이벤트 목록 (총 42개)
      */
-    fun initCalendar(firstDayOfMonth: DateTime, list: List<DateTime>) {
+    fun initCalendar(firstDayOfMonth: DateTime, list: List<DateTime>, viewModel: NotiViewModel) {
         list.forEach { date ->
+            val view = DayItemView(
+                context = context,
+                date = date,
+                firstDayOfMonth = firstDayOfMonth
+            )
+            view.setOnClickListener {
+                viewModel.setSelectedNotiList(date.toString("yyyy-MM-dd"))
+            }
             addView(
-                DayItemView(
-                    context = context,
-                    date = date,
-                    firstDayOfMonth = firstDayOfMonth
-                )
+                view
             )
         }
     }

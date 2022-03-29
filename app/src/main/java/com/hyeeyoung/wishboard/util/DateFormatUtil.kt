@@ -28,6 +28,22 @@ fun convertDateToYMD(date: Date): String? {
     }
 }
 
+/** 날짜를 "yy년 M월 d일" 포맷으로 변경 */
+fun convertYMDHMToMD(date: String?): String? {
+    val inputDateFormat = SimpleDateFormat("yyyy-MM-dd")
+    val outputDateFormat = SimpleDateFormat("M월 d일")
+    val inputDate: Date?
+    val outputDate: String
+    try {
+        inputDate = inputDateFormat.parse(date)
+        outputDate = outputDateFormat.format(inputDate)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+        return null
+    }
+    return outputDate
+}
+
 /** 날짜를 "yy. M. d a h:mm" 포맷으로 변경 */
 fun convertYMDHMToYMDAHM(date: String?): String? {
     val inputDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
