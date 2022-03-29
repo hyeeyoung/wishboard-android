@@ -139,6 +139,11 @@ interface RemoteService {
         @Header("Authorization") token: String,
     ): Response<List<NotiItem>>?
 
+    @GET("noti/calendar")
+    suspend fun fetchAllNotiList(
+        @Header("Authorization") token: String,
+    ): Response<List<NotiItem>>?
+
     @PUT("noti/{item_id}/read-state")
     suspend fun updateNotiReadState(
         @Header("Authorization") token: String,

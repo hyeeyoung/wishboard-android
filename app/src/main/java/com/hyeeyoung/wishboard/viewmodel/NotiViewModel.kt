@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.model.noti.NotiItem
-import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.repository.noti.NotiRepository
+import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.util.prefs
 import com.hyeeyoung.wishboard.view.noti.adapters.NotiListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -41,6 +41,22 @@ class NotiViewModel @Inject constructor(
             withContext(Dispatchers.Main) {
                 notiList.postValue(items)
                 notiListAdapter.setData(items)
+            }
+        }
+    }
+
+    fun fetchAllNotiList() {
+        if (token == null) return
+        viewModelScope.launch {
+            var items: List<NotiItem>?
+            withContext(Dispatchers.IO) {
+                items = notiRepository.fetchAllNotiList(token)
+                items?.forEach { item ->
+                    item.itemImg?.let { item.itemImageUrl = AWSS3Service().getImageUrl(it) }
+                }
+            }
+            withContext(Dispatchers.Main) {
+                notiList.postValue(items)
             }
         }
     }

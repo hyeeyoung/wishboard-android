@@ -22,6 +22,21 @@ class NotiRepositoryImpl : NotiRepository {
         }
     }
 
+    override suspend fun fetchAllNotiList(token: String): List<NotiItem>? {
+        try {
+            val response = api.fetchAllNotiList(token) ?: return null
+            if (response.isSuccessful) {
+                Log.d(TAG, "모든 알림 가져오기 성공")
+            } else {
+                Log.e(TAG, "모든 알림 가져오기 실패: ${response.code()}")
+            }
+            return response.body()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
+    }
+
     override suspend fun updateNotiReadState(token: String, itemId: Long) {
         try {
             val response = api.updateNotiReadState(token, itemId)
