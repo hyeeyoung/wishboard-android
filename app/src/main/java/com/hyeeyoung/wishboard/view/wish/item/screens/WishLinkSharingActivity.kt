@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.R
@@ -30,6 +31,8 @@ class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemCli
     FolderListAdapter.OnNewFolderClickListener {
     private val viewModel: WishItemRegistrationViewModel by viewModels()
     private lateinit var binding: ActivityWishLinkSharingBinding
+
+    private lateinit var notiSettingBottomDialog: BottomSheetDialogFragment
     private var folderAddDialog: FolderUploadBottomDialogFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,6 +40,8 @@ class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemCli
         binding = DataBindingUtil.setContentView(this, R.layout.activity_wish_link_sharing)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this@WishLinkSharingActivity
+
+        notiSettingBottomDialog = NotiSettingBottomDialogFragment(viewModel)
 
         // 링크 공유로 데이터 받기
         val intent = intent
@@ -84,10 +89,8 @@ class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemCli
             finish()
         }
         binding.notiInfoContainer.setOnClickListener {
-            NotiSettingBottomDialogFragment(viewModel).show(
-                supportFragmentManager,
-                "NotiSettingDialog"
-            )
+            if (notiSettingBottomDialog.isAdded) return@setOnClickListener
+            notiSettingBottomDialog.show(supportFragmentManager, "NotiSettingDialog")
         }
     }
 
