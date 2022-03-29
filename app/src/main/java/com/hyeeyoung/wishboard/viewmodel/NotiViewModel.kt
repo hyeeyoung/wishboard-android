@@ -5,14 +5,17 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.model.noti.NotiItem
-import com.hyeeyoung.wishboard.service.AWSS3Service
+import com.hyeeyoung.wishboard.model.noti.NotiListViewType
 import com.hyeeyoung.wishboard.repository.noti.NotiRepository
+import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.util.prefs
 import com.hyeeyoung.wishboard.view.noti.adapters.NotiListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.joda.time.DateTime
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,14 +25,23 @@ class NotiViewModel @Inject constructor(
     private val token = prefs?.getUserToken()
 
     private var notiList = MutableLiveData<List<NotiItem>?>(listOf())
-    private val notiListAdapter = NotiListAdapter()
+    private var selectedNotiList = MutableLiveData<List<NotiItem>?>(listOf())
+    private var notiDateList = MutableLiveData<List<String>?>(listOf())
+    private val notiListAdapter = NotiListAdapter(NotiListViewType.NOTI_TAB_VIEW_TYPE)
+    private val calendarNotiListAdapter = NotiListAdapter(NotiListViewType.CALENDAR_VIEW_TYPE)
+    private val calendarMonthTitle = MutableLiveData<String>()
+    private val selectedDate = MutableLiveData<String>()
 
-    fun fetchNotiList() {
+    init {
+        fetchAllNotiList()
+    }
+
+    fun fetchPreviousNotiList() {
         if (token == null) return
         viewModelScope.launch {
             var items: List<NotiItem>?
             withContext(Dispatchers.IO) {
-                items = notiRepository.fetchNotiList(token)
+                items = notiRepository.fetchPreviousNotiList(token)
                 items?.forEach { item ->
                     item.itemImg?.let { item.itemImageUrl = AWSS3Service().getImageUrl(it) }
                 }
@@ -37,6 +49,25 @@ class NotiViewModel @Inject constructor(
             withContext(Dispatchers.Main) {
                 notiList.postValue(items)
                 notiListAdapter.setData(items)
+            }
+        }
+    }
+
+    fun fetchAllNotiList() {
+        if (token == null) return
+        viewModelScope.launch {
+            var items: List<NotiItem>?
+            withContext(Dispatchers.IO) {
+                items = notiRepository.fetchAllNotiList(token)
+                items?.forEach { item ->
+                    item.itemImg?.let { item.itemImageUrl = AWSS3Service().getImageUrl(it) }
+                }
+            }
+            withContext(Dispatchers.Main) {
+                notiList.postValue(items)
+
+                // 캘린더 뷰 알림 날짜 표시를 위한 notiDateList 만들기
+                setNotiDateList(items)
             }
         }
     }
@@ -49,8 +80,33 @@ class NotiViewModel @Inject constructor(
         }
     }
 
+    fun setSelectedNotiList(targetDate: String) {
+        selectedDate.value = targetDate
+        val items = notiList.value?.filter {
+            targetDate == it.notiDate.substring(0, 10)
+        }
+        selectedNotiList.value = items
+        calendarNotiListAdapter.setData(items)
+    }
+
+    private fun setNotiDateList(notiList: List<NotiItem>?) {
+        notiDateList.value = notiList?.map {
+            it.notiDate.substring(0, 10)
+        }
+    }
+
+    /** 캘린더 년도 및 월 타이틀 초기화 */
+    fun setCalendarMonthTitle(millis: Long) {
+        calendarMonthTitle.value = DateTime(millis).toString("MMMM yyyy", Locale("en"))
+    }
+
     fun getNotiList(): LiveData<List<NotiItem>?> = notiList
+    fun getSelectedNotiList(): LiveData<List<NotiItem>?> = selectedNotiList
+    fun getNotiDateList(): LiveData<List<String>?> = notiDateList
     fun getNotiListAdapter(): NotiListAdapter = notiListAdapter
+    fun getCalendarNotiListAdapter(): NotiListAdapter = calendarNotiListAdapter
+    fun getCalendarMonthTitle(): LiveData<String> = calendarMonthTitle
+    fun getSelectedDate(): LiveData<String> = selectedDate
 
     companion object {
         private const val TAG = "NotiViewModel"

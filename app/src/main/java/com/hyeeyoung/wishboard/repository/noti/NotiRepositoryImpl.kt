@@ -7,13 +7,28 @@ import com.hyeeyoung.wishboard.service.RemoteService
 class NotiRepositoryImpl : NotiRepository {
     private val api = RemoteService.api
 
-    override suspend fun fetchNotiList(token: String): List<NotiItem>? {
+    override suspend fun fetchPreviousNotiList(token: String): List<NotiItem>? {
         try {
-            val response = api.fetchNotiList(token) ?: return null
+            val response = api.fetchPreviousNotiList(token) ?: return null
             if (response.isSuccessful) {
-                Log.d(TAG, "알림 가져오기 성공")
+                Log.d(TAG, "지난 알림 가져오기 성공")
             } else {
-                Log.e(TAG, "알림 가져오기 실패: ${response.code()}")
+                Log.e(TAG, "지난 알림 가져오기 실패: ${response.code()}")
+            }
+            return response.body()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return null
+        }
+    }
+
+    override suspend fun fetchAllNotiList(token: String): List<NotiItem>? {
+        try {
+            val response = api.fetchAllNotiList(token) ?: return null
+            if (response.isSuccessful) {
+                Log.d(TAG, "모든 알림 가져오기 성공")
+            } else {
+                Log.e(TAG, "모든 알림 가져오기 실패: ${response.code()}")
             }
             return response.body()
         } catch (e: Exception) {

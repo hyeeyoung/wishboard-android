@@ -28,6 +28,22 @@ fun convertDateToYMD(date: Date): String? {
     }
 }
 
+/** 날짜를 "yy년 M월 d일" 포맷으로 변경 */
+fun convertYMDHMToMD(date: String?): String? {
+    val inputDateFormat = SimpleDateFormat("yyyy-MM-dd")
+    val outputDateFormat = SimpleDateFormat("M월 d일")
+    val inputDate: Date?
+    val outputDate: String
+    try {
+        inputDate = inputDateFormat.parse(date)
+        outputDate = outputDateFormat.format(inputDate)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+        return null
+    }
+    return outputDate
+}
+
 /** 날짜를 "yy. M. d a h:mm" 포맷으로 변경 */
 fun convertYMDHMToYMDAHM(date: String?): String? {
     val inputDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
@@ -89,6 +105,28 @@ fun convertYMDHMToHourMinute(date: Date): String {
         "${hour}시"
     } else {
         "${hour}시 ${minute}분"
+    }
+}
+
+/** 날짜를 "a h시 mm분" 포맷으로 변경 */
+fun convertYMDHMToAHM(date: String?): String {
+    val inputDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
+    val outputDateFormat = SimpleDateFormat("a h시 m분")
+    val inputDate: Date?
+    val outputDate: String
+    try {
+        inputDate = inputDateFormat.parse(date)
+        outputDate = outputDateFormat.format(inputDate)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+        return ""
+    }
+
+    val hourIndex = outputDate.indexOf("시")
+    return if (outputDate.endsWith("0분")) {
+        outputDate.substring(0, hourIndex + 1)
+    } else {
+        outputDate
     }
 }
 

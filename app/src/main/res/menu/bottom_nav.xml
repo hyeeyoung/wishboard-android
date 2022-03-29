@@ -5,7 +5,6 @@
         android:icon="@drawable/ic_nav_wish_list"
         android:state_selected="false"
         android:title="@string/navigation_menu_title_wishlist" />
-    <!-- TODO id값 snake case로 통일 -->
     <item
         android:id="@+id/folder_fragment"
         android:icon="@drawable/ic_nav_folder"

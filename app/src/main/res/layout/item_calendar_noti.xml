@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hyeeyoung.wishboard.model.noti.NotiItem" />
+
+        <import type="com.hyeeyoung.wishboard.model.noti.ReadStateType" />
+
+        <import type="com.hyeeyoung.wishboard.util.DateFormatUtilKt" />
+
+        <import type="android.view.View" />
+
+        <import type="com.hyeeyoung.wishboard.R" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/noti_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="3dp"
+        android:background="@drawable/shape_border_radius_24"
+        android:backgroundTint="#EFEFEF"
+        android:padding="@dimen/spacingBase">
+
+        <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:background="@drawable/shape_border_radius_40"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:clipToOutline="true"
+            tools:src="@drawable/sample" />
+
+        <TextView
+            android:id="@+id/noti_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing12"
+            android:fontFamily="@font/suit_b"
+            android:text="@{String.format(context.getString(R.string.noti_item_type), context.getString(item.notiType.strRes))}"
+            android:textColor="@color/gray_700"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/item_image"
+            app:layout_constraintTop_toTopOf="@id/item_image"
+            tools:text="재입고 알림" />
+
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacingSmall"
+            android:ellipsize="end"
+            android:fontFamily="@font/suit_r"
+            android:maxLines="1"
+            android:text="@{item.itemName}"
+            android:textColor="@color/gray_700"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/noti_type"
+            app:layout_constraintTop_toBottomOf="@id/noti_type"
+            tools:text="아이템명" />
+
+        <TextView
+            android:id="@+id/noti_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/suit_r"
+            android:textColor="@color/gray_300"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="@id/noti_type"
+            app:text="@{DateFormatUtilKt.convertYMDHMToAHM(item.notiDate)}"
+            tools:text="오전 10시" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

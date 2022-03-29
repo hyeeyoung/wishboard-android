@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
             it.navController.addOnDestinationChangedListener { _, destination, _ ->
                 when (destination.id) {
                     R.id.cart_fragment,
+                    R.id.noti_calendar_fragment,
                     R.id.wish_fragment,
                     R.id.wish_item_detail_fragment,
                     R.id.gallery_image_fragment,
