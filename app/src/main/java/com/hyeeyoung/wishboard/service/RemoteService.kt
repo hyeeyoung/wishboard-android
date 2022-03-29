@@ -135,7 +135,7 @@ interface RemoteService {
 
     // 알림
     @GET("noti")
-    suspend fun fetchNotiList(
+    suspend fun fetchPreviousNotiList(
         @Header("Authorization") token: String,
     ): Response<List<NotiItem>>?
 

@@ -28,12 +28,12 @@ class NotiViewModel @Inject constructor(
     private val calendarMonthTitle = MutableLiveData<String>()
 
 
-    fun fetchNotiList() {
+    fun fetchPreviousNotiList() {
         if (token == null) return
         viewModelScope.launch {
             var items: List<NotiItem>?
             withContext(Dispatchers.IO) {
-                items = notiRepository.fetchNotiList(token)
+                items = notiRepository.fetchPreviousNotiList(token)
                 items?.forEach { item ->
                     item.itemImg?.let { item.itemImageUrl = AWSS3Service().getImageUrl(it) }
                 }

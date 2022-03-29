@@ -23,7 +23,7 @@ class NotiFragment : Fragment(), NotiListAdapter.OnItemClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.fetchNotiList()
+        viewModel.fetchPreviousNotiList()
     }
 
     override fun onCreateView(
@@ -53,7 +53,7 @@ class NotiFragment : Fragment(), NotiListAdapter.OnItemClickListener {
 
     private fun addListeners() {
         binding.swipeRefresh.setOnRefreshListener {
-            viewModel.fetchNotiList()
+            viewModel.fetchPreviousNotiList()
             binding.swipeRefresh.isRefreshing = false
         }
     }
