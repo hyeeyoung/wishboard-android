@@ -92,6 +92,28 @@ fun convertYMDHMToHourMinute(date: Date): String {
     }
 }
 
+/** 날짜를 "a h시 mm분" 포맷으로 변경 */
+fun convertYMDHMToAHM(date: String?): String {
+    val inputDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
+    val outputDateFormat = SimpleDateFormat("a h시 m분")
+    val inputDate: Date?
+    val outputDate: String
+    try {
+        inputDate = inputDateFormat.parse(date)
+        outputDate = outputDateFormat.format(inputDate)
+    } catch (e: ParseException) {
+        e.printStackTrace()
+        return ""
+    }
+
+    val hourIndex = outputDate.indexOf("시")
+    return if (outputDate.endsWith("0분")) {
+        outputDate.substring(0, hourIndex + 1)
+    } else {
+        outputDate
+    }
+}
+
 /** 날짜를 "yy년 M월 d일 H시 m분" 포맷으로 변경 */
 fun convertKoreanDate(date: String?): String? {
     val inputDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm")
