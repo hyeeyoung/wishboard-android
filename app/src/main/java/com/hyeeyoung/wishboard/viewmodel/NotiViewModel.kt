@@ -26,10 +26,15 @@ class NotiViewModel @Inject constructor(
 
     private var notiList = MutableLiveData<List<NotiItem>?>(listOf())
     private var selectedNotiList = MutableLiveData<List<NotiItem>?>(listOf())
+    private var notiDateList = MutableLiveData<List<String>?>(listOf())
     private val notiListAdapter = NotiListAdapter(NotiListViewType.NOTI_TAB_VIEW_TYPE)
     private val calendarNotiListAdapter = NotiListAdapter(NotiListViewType.CALENDAR_VIEW_TYPE)
     private val calendarMonthTitle = MutableLiveData<String>()
     private val selectedDate = MutableLiveData<String>()
+
+    init {
+        fetchAllNotiList()
+    }
 
     fun fetchPreviousNotiList() {
         if (token == null) return
@@ -60,6 +65,9 @@ class NotiViewModel @Inject constructor(
             }
             withContext(Dispatchers.Main) {
                 notiList.postValue(items)
+
+                // 캘린더 뷰 알림 날짜 표시를 위한 notiDateList 만들기
+                setNotiDateList(items)
             }
         }
     }
@@ -81,6 +89,12 @@ class NotiViewModel @Inject constructor(
         calendarNotiListAdapter.setData(items)
     }
 
+    private fun setNotiDateList(notiList: List<NotiItem>?) {
+        notiDateList.value = notiList?.map {
+            it.notiDate.substring(0, 10)
+        }
+    }
+
     /** 캘린더 년도 및 월 타이틀 초기화 */
     fun setCalendarMonthTitle(millis: Long) {
         calendarMonthTitle.value = DateTime(millis).toString("MMMM yyyy", Locale("en"))
@@ -88,6 +102,7 @@ class NotiViewModel @Inject constructor(
 
     fun getNotiList(): LiveData<List<NotiItem>?> = notiList
     fun getSelectedNotiList(): LiveData<List<NotiItem>?> = selectedNotiList
+    fun getNotiDateList(): LiveData<List<String>?> = notiDateList
     fun getNotiListAdapter(): NotiListAdapter = notiListAdapter
     fun getCalendarNotiListAdapter(): NotiListAdapter = calendarNotiListAdapter
     fun getCalendarMonthTitle(): LiveData<String> = calendarMonthTitle

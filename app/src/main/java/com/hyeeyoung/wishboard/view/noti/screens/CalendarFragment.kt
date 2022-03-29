@@ -34,12 +34,21 @@ class CalendarFragment : Fragment() {
         binding.lifecycleOwner = this@CalendarFragment
 
         initializeView()
+        addObservers()
 
         return binding.root
     }
 
     private fun initializeView() {
         binding.calendarView.initCalendar(DateTime(millis), getMonthList(DateTime(millis)), viewModel)
+    }
+
+    private fun addObservers() {
+        viewModel.getNotiDateList().observe(viewLifecycleOwner) {
+            it?.let {
+                if (it.isNotEmpty()) binding.calendarView.showNotiMark(it)
+            }
+        }
     }
 
     override fun onResume() {

@@ -10,6 +10,7 @@ import android.view.ContextThemeWrapper
 import android.view.View
 import androidx.annotation.AttrRes
 import androidx.annotation.StyleRes
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.content.withStyledAttributes
 import com.hyeeyoung.wishboard.R
@@ -23,10 +24,12 @@ class DayItemView @JvmOverloads constructor(
     @AttrRes private val defStyleAttr: Int = R.attr.itemViewStyle,
     @StyleRes private val defStyleRes: Int = R.style.Calendar_ItemViewStyle,
     private val date: DateTime = DateTime(),
-    private val firstDayOfMonth: DateTime = DateTime()
+    private val firstDayOfMonth: DateTime = DateTime(),
 ) : View(ContextThemeWrapper(context, defStyleRes), attrs, defStyleAttr) {
     private val bounds = Rect()
     private var paint: Paint = Paint()
+    private var isExistNoti: Boolean = false
+//    private var isSelected: Boolean? = null
 
     init {
         // Attributes
@@ -38,7 +41,7 @@ class DayItemView @JvmOverloads constructor(
                 isAntiAlias = true
                 textSize = dayTextSize
                 color = ResourcesCompat.getColor(resources, R.color.gray_700, null)
-                typeface = ResourcesCompat.getFont(context, R.font.montserrat_r)
+                paint.typeface = ResourcesCompat.getFont(context, R.font.montserrat_r)
 
                 // 이전 및 다음달 날짜 미리보기
                 if (!isSameMonth(date, firstDayOfMonth)) {
@@ -48,7 +51,7 @@ class DayItemView @JvmOverloads constructor(
                 // 오늘 날짜 표기
                 if (isSameDate(date)) {
                     background = ResourcesCompat.getDrawable(resources, R.drawable.shape_circle, null)
-//                    backgroundTintList = ContextCompat.getColorStateList(this@DayItemView.context, R.color.green_700)
+                    backgroundTintList = ContextCompat.getColorStateList(this@DayItemView.context, R.color.green_500)
                 }
             }
         }
@@ -66,5 +69,25 @@ class DayItemView @JvmOverloads constructor(
             (height / 2 + bounds.height() / 2).toFloat(),
             paint
         )
+
+        if (!isSameDate(this.date) && isExistNoti) {
+            background = ResourcesCompat.getDrawable(resources, R.drawable.shape_circle, null)
+            backgroundTintList = ContextCompat.getColorStateList(this@DayItemView.context, R.color.green_200)
+        }
     }
+
+    fun getDate(): String {
+        return date.toString("yyyy-MM-dd")
+    }
+
+    fun setExistNoti(isExist: Boolean) {
+        isExistNoti = isExist
+        invalidate()
+    }
+
+    // TODO 선택된 날짜 글씨 두껍게 처리
+//    fun setSelectedView(isSelected: Boolean) {
+//        this.isSelected = isSelected
+//        invalidate()
+//    }
 }

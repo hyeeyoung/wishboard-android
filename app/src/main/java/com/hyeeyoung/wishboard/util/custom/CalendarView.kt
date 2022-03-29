@@ -22,6 +22,8 @@ class CalendarView @JvmOverloads constructor(
     @StyleRes defStyleRes: Int = R.style.Calendar_CalendarViewStyle
 ) : ViewGroup(ContextThemeWrapper(context, defStyleRes), attrs, defStyleAttr) {
     private var _height: Float = 0f
+    private val dayViews: MutableList<DayItemView> = mutableListOf()
+//    private var selectedDate: DayItemView? = null
 
     init {
         context.withStyledAttributes(attrs, R.styleable.CalendarView, defStyleAttr, defStyleRes) {
@@ -48,7 +50,12 @@ class CalendarView @JvmOverloads constructor(
         children.forEach { view ->
             val left = (index % DAYS_PER_WEEK) * itemWidth
             val top = (index / DAYS_PER_WEEK) * itemHeight
-            view.layout(left.toInt(), top.toInt(), (left + itemWidth).toInt(), (top + itemHeight).toInt())
+            view.layout(
+                left.toInt(),
+                top.toInt(),
+                (left + itemWidth).toInt(),
+                (top + itemHeight).toInt()
+            )
 
             index++
         }
@@ -64,14 +71,27 @@ class CalendarView @JvmOverloads constructor(
             val view = DayItemView(
                 context = context,
                 date = date,
-                firstDayOfMonth = firstDayOfMonth
+                firstDayOfMonth = firstDayOfMonth,
             )
             view.setOnClickListener {
                 viewModel.setSelectedNotiList(date.toString("yyyy-MM-dd"))
+                // TODO 선택된 날짜 글씨 두껍게 하기
+//                selectedDate?.let { view.setSelectedView(false) }
+//                selectedDate = view
+//                view.setSelectedView(true)
             }
+            dayViews.add(view)
             addView(
                 view
             )
+        }
+    }
+
+    fun showNotiMark(notiDateList: List<String>) {
+        dayViews.forEach {
+            if (notiDateList.contains(it.getDate())) {
+                it.setExistNoti(true)
+            }
         }
     }
 }
