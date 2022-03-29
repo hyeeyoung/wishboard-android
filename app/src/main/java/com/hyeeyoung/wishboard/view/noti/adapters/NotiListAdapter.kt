@@ -6,11 +6,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.hyeeyoung.wishboard.databinding.ItemCalendarNotiBinding
 import com.hyeeyoung.wishboard.databinding.ItemNotiBinding
 import com.hyeeyoung.wishboard.model.noti.NotiItem
+import com.hyeeyoung.wishboard.model.noti.NotiListViewType
 import com.hyeeyoung.wishboard.model.noti.ReadStateType
 
-class NotiListAdapter : ListAdapter<NotiItem, RecyclerView.ViewHolder>(diffCallback) {
+class NotiListAdapter(
+    private val notiListViewType: NotiListViewType,
+) : ListAdapter<NotiItem, RecyclerView.ViewHolder>(diffCallback) {
     private val dataSet = arrayListOf<NotiItem>()
     private lateinit var listener: OnItemClickListener
 
@@ -26,7 +30,7 @@ class NotiListAdapter : ListAdapter<NotiItem, RecyclerView.ViewHolder>(diffCallb
         this.listener = listener
     }
 
-    inner class ViewHolder(private val binding: ItemNotiBinding) :
+    inner class NotiTabViewHolder(private val binding: ItemNotiBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int) {
             val item = dataSet[position]
@@ -45,19 +49,50 @@ class NotiListAdapter : ListAdapter<NotiItem, RecyclerView.ViewHolder>(diffCallb
         }
     }
 
+    inner class CalendarViewHolder(private val binding: ItemCalendarNotiBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(position: Int) { // TODO need refactoring
+            val item = dataSet[position]
+            with(binding) {
+                this.item = item
+
+                itemImage.clipToOutline = true
+                item.itemImageUrl?.let {
+                    Glide.with(itemImage.context).load(it).into(itemImage)
+                }
+
+                notiContainer.setOnClickListener {
+                    listener.onItemClick(position, item)
+                }
+            }
+        }
+    }
+
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return ViewHolder(
-            ItemNotiBinding.inflate(
-                LayoutInflater.from(viewGroup.context),
-                viewGroup,
-                false
-            )
-        )
+        when (notiListViewType) {
+            NotiListViewType.NOTI_TAB_VIEW_TYPE -> {
+                val binding = ItemNotiBinding.inflate(
+                    LayoutInflater.from(viewGroup.context),
+                    viewGroup,
+                    false
+                )
+                return NotiTabViewHolder(binding)
+            }
+            NotiListViewType.CALENDAR_VIEW_TYPE -> {
+                val binding = ItemCalendarNotiBinding.inflate(
+                    LayoutInflater.from(viewGroup.context),
+                    viewGroup,
+                    false
+                )
+                return CalendarViewHolder(binding)
+            }
+        }
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         when (viewHolder) {
-            is ViewHolder -> viewHolder.bind(position)
+            is NotiTabViewHolder -> viewHolder.bind(position)
+            is CalendarViewHolder -> viewHolder.bind(position)
         }
     }
 
