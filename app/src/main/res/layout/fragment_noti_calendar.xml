@@ -6,6 +6,8 @@
 
     <data>
 
+        <import type="androidx.navigation.Navigation" />
+
         <variable
             name="viewModel"
             type="com.hyeeyoung.wishboard.viewmodel.NotiViewModel" />
@@ -19,34 +21,34 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/spacingBase"
             app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/title"
-                style="@style/Widget.Tab.TextAppearance.Title"
+            <ImageButton
+                android:id="@+id/back"
+                style="@style/Widget.Button.Icon.Navigation"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="캘린더"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:onClick="@{(v) -> Navigation.findNavController(v).popBackStack()}"
+                android:src="@drawable/ic_back"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/millis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_eb"
+                android:gravity="center"
+                android:text="@{viewModel.calendarMonthTitle}"
+                android:textColor="@color/gray_700"
+                android:textSize="20sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="March 2022" />
 
-        <TextView
-            android:id="@+id/millis"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_eb"
-            android:gravity="center"
-            android:text="@{viewModel.calendarMonthTitle}"
-            android:textColor="@color/gray_700"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
-            tools:text="March 2022" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <GridLayout
             android:id="@+id/day_of_the_week"
@@ -55,7 +57,7 @@
             android:layout_marginTop="@dimen/spacing12"
             android:columnCount="7"
             android:rowCount="1"
-            app:layout_constraintTop_toBottomOf="@id/millis">
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
 
             <TextView
                 style="@style/Calendar.DayOfTheWeek"

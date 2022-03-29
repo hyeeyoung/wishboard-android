@@ -58,6 +58,9 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
         binding.cart.setOnClickListener {
             findNavController().navigateSafe(R.id.action_home_to_cart)
         }
+        binding.calendar.setOnClickListener {
+            findNavController().navigateSafe(R.id.action_home_to_calendar)
+        }
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.fetchWishList()
             binding.swipeRefresh.isRefreshing = false

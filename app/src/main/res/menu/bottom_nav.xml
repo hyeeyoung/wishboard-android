@@ -5,7 +5,6 @@
         android:icon="@drawable/ic_nav_wish_list"
         android:state_selected="false"
         android:title="@string/navigation_menu_title_wishlist" />
-    <!-- TODO id값 snake case로 통일 -->
     <item
         android:id="@+id/folder_fragment"
         android:icon="@drawable/ic_nav_folder"
@@ -17,15 +16,10 @@
         android:state_selected="false"
         android:title="@string/navigation_menu_title_add" />
     <item
-        android:id="@+id/noti_calendar_nav_graph"
+        android:id="@+id/noti_fragment"
         android:icon="@drawable/ic_nav_notice"
         android:state_selected="false"
         android:title="@string/navigation_menu_title_notice" />
-<!--    <item-->
-<!--        android:id="@+id/noti_fragment"-->
-<!--        android:icon="@drawable/ic_nav_notice"-->
-<!--        android:state_selected="false"-->
-<!--        android:title="@string/navigation_menu_title_notice" />-->
     <item
         android:id="@+id/my_nav_graph"
         android:icon="@drawable/ic_nav_my"

@@ -40,7 +40,17 @@
             <ImageButton
                 android:id="@+id/cart"
                 style="@style/Widget.Button.Icon.Navigation"
+                android:paddingEnd="@dimen/spacingSmall"
                 android:src="@drawable/ic_cart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/calendar"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/calendar"
+                style="@style/Widget.Button.Icon.Navigation"
+                android:paddingStart="@dimen/spacingSmall"
+                android:src="@drawable/ic_calendar"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

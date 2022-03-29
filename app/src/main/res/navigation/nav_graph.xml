@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_home_to_wish_item_detail"
             app:destination="@id/wish_item_nav_graph" />
+        <action
+            android:id="@+id/action_home_to_calendar"
+            app:destination="@id/noti_calendar_nav_graph" />
     </fragment>
     <fragment
         android:id="@+id/cart_fragment"
