@@ -66,14 +66,10 @@ class MyFragment : Fragment() {
         }
         binding.howToUse.setOnClickListener {
             // 노션에서 보안 문제로 노션 페이지를 웹뷰를 띄울 수 없다고 함. 임의로 새창에서 띄우는 것으로 수정
-//            moveWebViewActivity(
-//                "https://www.notion.so/30af073d15db4fbcb7c149288719e592",
-//                R.string.my_section_sub_title_how_to_use
-//            )
             startActivity(
                 Intent(
                     Intent.ACTION_VIEW,
-                    Uri.parse("https://www.notion.so/30af073d15db4fbcb7c149288719e592")
+                    Uri.parse("https://hushed-bolt-fd4.notion.site/383c308f256f4f189b7c0b68a8f68d9f")
                 )
             )
         }
