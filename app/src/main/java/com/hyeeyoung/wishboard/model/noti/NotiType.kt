@@ -4,8 +4,8 @@ import com.hyeeyoung.wishboard.R
 
 enum class NotiType(val strRes: Int) {
     RESTOCK(R.string.restock),
-    OPEN_DAY(R.string.open_day),
-    PREORDER_CLOSE(R.string.preorder_close),
+    OPEN(R.string.open_day),
+    PREORDER(R.string.preorder),
     SALE_START(R.string.sale_start),
     SALE_CLOSE(R.string.sale_close)
 }
