@@ -13,6 +13,7 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentWishBinding
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
@@ -39,6 +40,9 @@ class WishBasicFragment : Fragment() {
     private var isEditMode = false
     private var folder: FolderItem? = null
 
+    private lateinit var notiSettingBottomDialog: BottomSheetDialogFragment
+    private val shopLinkInputDialog = ShopLinkInputBottomDialogFragment()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -51,6 +55,8 @@ class WishBasicFragment : Fragment() {
                 viewModel.copyItemUrlToInputUrl()
             }
         }
+
+        notiSettingBottomDialog = NotiSettingBottomDialogFragment(viewModel)
     }
 
     override fun onCreateView(
@@ -99,16 +105,12 @@ class WishBasicFragment : Fragment() {
             showFolderListDialog()
         }
         binding.notiContainer.setOnClickListener {
-            NotiSettingBottomDialogFragment(viewModel).show(
-                parentFragmentManager,
-                "NotiSettingDialog"
-            )
+            if (notiSettingBottomDialog.isAdded) return@setOnClickListener
+            notiSettingBottomDialog.show(parentFragmentManager, "NotiSettingDialog")
         }
         binding.itemUrlContainer.setOnClickListener {
-            ShopLinkInputBottomDialogFragment().show(
-                parentFragmentManager,
-                "ShopLinkInputDialog"
-            )
+            if (shopLinkInputDialog.isAdded) return@setOnClickListener
+            shopLinkInputDialog.show(parentFragmentManager, "ShopLinkInputDialog")
         }
     }
 
