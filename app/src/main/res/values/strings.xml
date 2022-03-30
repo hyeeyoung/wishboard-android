@@ -148,8 +148,8 @@
     <string name="noti_push_state_setting_dialog_description">알림을 받아보시겠어요?\n직접 등록하신 아이템의 재입고 날짜 등의\n상품 일정 알림을 받으실 거에요.</string>
 
     <string name="restock">재입고</string>
-    <string name="open_day">오픈일</string>
-    <string name="preorder_close">프리오더 마감</string>
+    <string name="open_day">오픈</string>
+    <string name="preorder">프리오더</string>
     <string name="sale_start">세일 시작</string>
     <string name="sale_close">세일 마감</string>
 
