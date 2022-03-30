@@ -58,7 +58,12 @@ class MyFragment : Fragment() {
         binding.notiSwitch.setOnClickListener {
             viewModel.updatePushState()
         }
-
+        binding.contactUs.setOnClickListener {
+            val email = Intent(Intent.ACTION_SEND)
+            email.type = "plain/text"
+            email.putExtra(Intent.EXTRA_EMAIL, arrayOf("wishboard2022@gmail.com"))
+            startActivity(email)
+        }
         binding.howToUse.setOnClickListener {
             // 노션에서 보안 문제로 노션 페이지를 웹뷰를 띄울 수 없다고 함. 임의로 새창에서 띄우는 것으로 수정
 //            moveWebViewActivity(
