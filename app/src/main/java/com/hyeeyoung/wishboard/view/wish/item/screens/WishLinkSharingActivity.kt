@@ -148,6 +148,7 @@ class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemCli
     }
 
     override fun onItemClick() {
+        if (folderAddDialog?.isAdded == true) return
         folderAddDialog = FolderUploadBottomDialogFragment()
         folderAddDialog?.show(supportFragmentManager, "NewFolderAddDialog")
     }
