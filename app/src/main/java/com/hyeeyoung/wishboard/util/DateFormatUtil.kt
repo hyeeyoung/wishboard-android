@@ -70,14 +70,15 @@ fun calculateDday(date: String): String? {
         e.printStackTrace()
         return null
     }
-    val today = Calendar.getInstance().time
-    val dday = (endDate.time - today.time) / (24 * 60 * 60 * 1000)
+
+    val today = getIgnoredTimeDays(Calendar.getInstance().time.time)
+    val dday = (today - getIgnoredTimeDays(endDate.time)) / (24 * 60 * 60 * 1000)
 
     return when {
-        dday > 0L -> { // 디데이 경과 전 -> ex) "D-6"
+        dday < 0L -> { // 디데이 경과 전 -> ex) "D-6"
             "D-${dday}"
         }
-        dday < 0L -> { // 디데이 경과 후 -> ex) "21년 1월 1일"
+        dday > 0L -> { // 디데이 경과 후 -> ex) "21년 1월 1일"
             convertDateToYMD(endDate)
         }
         else -> { // 디데이 당일 -> ex) "오늘 15시 30분"
@@ -142,4 +143,15 @@ fun convertKoreanDate(date: String?): String? {
     }
 
     return convertDateToYMD(inputDate) + " " + convertYMDHMToHourMinute(inputDate)
+}
+
+/** 시간, 분, 초 제거 */
+fun getIgnoredTimeDays(time: Long): Long {
+    return Calendar.getInstance().apply {
+        timeInMillis = time
+        set(Calendar.HOUR_OF_DAY, 0)
+        set(Calendar.MINUTE, 0)
+        set(Calendar.SECOND, 0)
+        set(Calendar.MILLISECOND, 0)
+    }.timeInMillis
 }
