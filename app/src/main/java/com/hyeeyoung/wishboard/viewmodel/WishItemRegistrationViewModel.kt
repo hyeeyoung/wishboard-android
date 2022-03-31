@@ -7,7 +7,6 @@ import android.net.Uri
 import android.util.Patterns
 import android.webkit.URLUtil
 import android.widget.NumberPicker
-import androidx.core.text.isDigitsOnly
 import androidx.lifecycle.*
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.model.folder.FolderItem
@@ -17,6 +16,7 @@ import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.repository.folder.FolderRepository
 import com.hyeeyoung.wishboard.repository.wish.WishRepository
 import com.hyeeyoung.wishboard.service.AWSS3Service
+import com.hyeeyoung.wishboard.util.ParsingUtils
 import com.hyeeyoung.wishboard.util.getTimestamp
 import com.hyeeyoung.wishboard.util.prefs
 import com.hyeeyoung.wishboard.util.safeLet
@@ -25,7 +25,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.jsoup.Jsoup
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -84,38 +83,10 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     /** 오픈그래프 메타태그 파싱을 통해 아이템 정보 가져오기 */
     suspend fun getWishItemInfo(url: String) {
-        try {
-            val doc = Jsoup.connect(url).get()
-            val ogTags = doc.select("meta[property^=og:]")
-            val priceTags = doc.select("meta[property^=product:]")
-
-            if (ogTags.size <= 0) return
-            for (idx in ogTags.indices) {
-                val tag = ogTags[idx]
-                val text = tag.attr("property")
-                when (text) {
-                    "og:title" -> itemName.postValue(tag.attr("content")) // 상품명 데이터 파싱
-                    "og:image" -> itemImage.postValue(tag.attr("content")) // 상품 이미지 데이터 파싱
-                }
-            }
-
-            // 가격 데이터 파싱
-            if (priceTags.size > 0) {
-                for (i in priceTags.indices) {
-                    val priceTag = priceTags[i]
-                    val text = priceTag.attr("property")
-                    if (text.matches(Regex(".*[pP]rice.*"))) {
-                        val price = priceTag.attr("content")
-                        if (price.isDigitsOnly()) {
-                            itemPrice.postValue(price)
-                            break
-                        }
-                    }
-                }
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+        val result = ParsingUtils().onBindParsingType(url)
+        itemName.postValue(result.name)
+        itemPrice.postValue(result.price.toString())
+        itemImage.postValue(result.image)
     }
 
     suspend fun uploadWishItemByLinkSharing() {
