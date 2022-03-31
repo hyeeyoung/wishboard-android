@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hyeeyoung.wishboard.model.wish.WishItem" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp">
+
+        <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:foreground="@color/semi_transparent"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="@dimen/spacing10"
+            android:paddingTop="@dimen/spacing10"
+            app:layout_constraintTop_toBottomOf="@id/item_image">
+
+            <TextView
+                android:id="@+id/item_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:fontFamily="@font/suit_r"
+                android:maxLines="2"
+                android:text="@{item.name}"
+                android:textColor="@color/gray_700"
+                android:textSize="@dimen/typographyDescription"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="21SS KEILY JACHKT" />
+
+            <TextView
+                android:id="@+id/item_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:fontFamily="@font/montserrat_b"
+                android:textColor="@color/gray_700"
+                android:textSize="@dimen/typographyBase"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/item_name"
+                app:priceFormat="@{item.price}"
+                tools:text="127,000" />
+
+            <TextView
+                android:id="@+id/won"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:fontFamily="@font/suit_r"
+                android:text="@string/won"
+                android:textColor="@color/gray_700"
+                android:textSize="@dimen/typographyDescription"
+                app:layout_constraintBottom_toBottomOf="@id/item_price"
+                app:layout_constraintStart_toEndOf="@id/item_price" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/cart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:background="@drawable/selector_background_cart_button"
+            android:fontFamily="@font/suit_r"
+            android:text="@string/cart"
+            android:textAllCaps="false"
+            android:textColor="@color/gray_700"
+            android:textSize="@dimen/typographyBaseDetail"
+            app:layout_constraintBottom_toBottomOf="@id/item_image"
+            app:layout_constraintRight_toRightOf="@id/item_image" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

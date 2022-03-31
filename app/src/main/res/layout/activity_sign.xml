@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.sign.screens.SignActivity">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hyeeyoung.wishboard.viewmodel.SignViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/sign_nav_host_fragment_container"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:defaultNavHost="true"
+            app:navGraph="@navigation/sign_nav_graph" />
+
+        <TextView
+            android:id="@+id/networkView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            android:fontFamily="@font/suit_r"
+            android:paddingHorizontal="@dimen/typographyDescription"
+            android:paddingVertical="@dimen/spacing20"
+            android:text="@string/check_network_connection_snackbar_text"
+            android:textColor="@color/white"
+            android:textSize="@dimen/typographyBase"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:visibility="gone" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Spacing -->
+    <dimen name="spacingMicro">4dp</dimen>
+    <dimen name="spacing5">5dp</dimen>
+    <dimen name="spacingSmall">8dp</dimen>
+    <dimen name="spacing10">10dp</dimen>
+    <dimen name="spacing12">12dp</dimen>
+    <dimen name="spacing14">14dp</dimen>
+    <dimen name="spacingBase">16dp</dimen>
+
+    <!-- Widget -->
+    <dimen name="widgetBottomDialogHeightBase">312dp</dimen>
+    <dimen name="widgetBottomDialogContentHeightBase">264dp</dimen>
+    <dimen name="widgetHeightBase">50dp</dimen>
+    <dimen name="widgetSquareFolder">80dp</dimen>
+
+    <!-- Typography -->
+    <dimen name="typographyBaseDetail">12sp</dimen>
+    <dimen name="typographyDescription">14sp</dimen>
+    <dimen name="typographyBase">16sp</dimen>
+
+    <!-- Radius -->
+    <dimen name="radiusMicro">5dp</dimen>
+    <dimen name="radiusSmall">10dp</dimen>
+    <dimen name="radiusLarge">32dp</dimen>
+    <dimen name="spacing20">20dp</dimen>
+
+
+</resources>

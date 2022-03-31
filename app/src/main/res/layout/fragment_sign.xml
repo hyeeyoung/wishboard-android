@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.sign.screens.SignFragment">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hyeeyoung.wishboard.viewmodel.SignViewModel" />
+
+        <import type="com.hyeeyoung.wishboard.R" />
+
+        <import type="androidx.navigation.Navigation" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toTopOf="@id/sign_up"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/onboarding_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_hand"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/logo_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing20"
+                android:paddingHorizontal="@dimen/spacing20"
+                android:src="@drawable/ic_app_text_logo"
+                app:layout_constraintEnd_toEndOf="@id/onboarding_guide"
+                app:layout_constraintStart_toStartOf="@id/onboarding_guide"
+                app:layout_constraintTop_toBottomOf="@id/onboarding_icon" />
+
+            <TextView
+                android:id="@+id/onboarding_guide"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacingBase"
+                android:fontFamily="@font/suit_r"
+                android:gravity="center"
+                android:lineSpacingExtra="@dimen/spacingMicro"
+                android:text="@string/onboarding_welcome_guide"
+                android:textColor="@color/gray_700"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/logo_text" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <Button
+            android:id="@+id/sign_up"
+            style="@style/Widget.Button.Basic.Green"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginBottom="@dimen/spacingSmall"
+            android:onClick="@{v -> Navigation.findNavController(v).navigate(R.id.action_sign_to_email)}"
+            android:text="@string/sign_up"
+            android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
+            app:layout_constraintBottom_toTopOf="@id/sign_in"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/sign_in"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacingSmall"
+            android:padding="@dimen/spacing12"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <TextView
+                android:id="@+id/already_have_an_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/suit_m"
+                android:text="@string/onboarding_already_have_an_account"
+                android:textColor="@color/gray_300"
+                android:textSize="@dimen/typographyDescription"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacingMicro"
+                android:fontFamily="@font/suit_b"
+                android:text="@string/sign_in_underline"
+                android:textColor="@color/green_700"
+                android:textSize="@dimen/typographyDescription"
+                app:layout_constraintStart_toEndOf="@id/already_have_an_account"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

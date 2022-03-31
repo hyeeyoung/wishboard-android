@@ -1,3 +1,195 @@
 <resources>
-    <string name="app_name">Wishboard</string>
+    <string name="app_name">WishBoard</string>
+    <string name="logo_text">Wish Board</string>
+
+    <!-- Global -->
+    <string name="confirm">확인</string>
+    <string name="complete">완료</string>
+    <string name="cancel">취소</string>
+    <string name="save">저장</string>
+    <string name="edit">수정</string>
+    <string name="add">추가</string>
+    <string name="delete">삭제</string>
+    <string name="later">나중에</string>
+    <string name="allow">허용</string>
+    <string name="next">다음</string>
+    <string name="close">닫기</string>
+    <string name="all">전체</string>
+    <string name="colon">:</string>
+    <string name="count">개</string>
+
+    <!-- Format -->
+    <string name="time_a_moment_ago">방금 전</string>
+    <string name="time_minutes_ago">분 전</string>
+    <string name="time_hours_ago">시간 전</string>
+    <string name="time_days_ago">일 전</string>
+    <string name="time_weeks_ago">주 전</string>
+    <string name="time_months_ago">개월 전</string>
+    <string name="time_years_ago">년 전</string>
+
+    <string name="length_format">(%d/%d자)</string>
+    <string name="step_format">%d/%d 단계</string>
+
+    <!-- Snackbar -->
+    <string name="sign_in_failed_snackbar_text">아이디 또는 비밀번호를 다시 확인해 주세요.</string>
+    <string name="folder_add_snackbar_text">폴더를 추가했어요!😉</string>
+    <string name="folder_name_update_snackbar_text">폴더명을 수정했어요!📁️</string>
+    <string name="folder_delete_snackbar_text">폴더를 삭제했어요!🗑</string>
+    <string name="wish_item_registration_snackbar_text">아이템을 위시리스트에 추가했어요!👜</string>
+    <string name="wish_item_update_snackbar_text">아이템을 수정했어요!✍️️</string>
+    <string name="wish_item_deletion_snackbar_text">아이템을 위시리스트에서 삭제했어요!🗑</string>
+    <string name="noti_item_url_snackbar_text">쇼핑몰 링크를 등록해 주세요!🛍️️</string>
+    <string name="my_profile_edit_completion_snackbar_text">프로필이 수정되었어요!👩‍🎤</string>
+    <string name="my_delete_user_snackbar_text">탈퇴 완료되었어요. 이용해주셔서 감사합니다!☺️</string>
+    <string name="check_network_connection_snackbar_text">네트워크 연결 상태를 확인해 주세요.</string>
+    <string name="item_detail_invalid_site_snackbar_text">앗, 사이트를 찾을 수 없어요!🥲</string>
+    <string name="wish_basic_invalid_site_snackbar_text">쇼핑몰 링크를 다시 확인해 주세요!👀</string>
+
+    <!-- Onboarding -->
+    <string name="onboarding_welcome_guide">흩어져있는 위시리스트를\n위시보드로 간편하게 통합 관리해 보세요!️</string>
+    <string name="onboarding_already_have_an_account">이미 계정이 있으신가요?</string>
+
+    <!-- Sign -->
+    <string name="email">이메일</string>
+    <string name="password">비밀번호</string>
+    <string name="sign_email_format_detail">이메일 주소를 정확하게 입력해 주세요.</string>
+    <string name="sign_password_detail">8자리 이상의 영문자, 숫자, 특수 문자 조합으로 입력해주세요.</string>
+
+    <string name="sign_up">가입하기</string>
+    <string name="sign_up_email_guide">이메일 인증으로 비밀번호를 찾을 수 있어요.\n실제 사용될 이메일로 입력해주세요!</string>
+    <string name="sign_up_password_guide">마지막 비밀번호 입력 단계예요!\n입력된 비밀번호로 바로 가입되니 신중히 입력해 주세요.</string>
+    <string name="sign_up_email_registered_user_detail">앗, 이미 가입된 계정이에요! 로그인으로 진행해 주세요.</string>
+
+    <string name="sign_in">로그인하기</string>
+    <string name="sign_in_button_text">로그인</string>
+    <string name="sign_in_underline"><u>로그인</u></string>
+    <string name="sign_in_forgot_your_password"><u>비밀번호를 잊으셨나요?</u></string>
+    <string name="sign_in_unregistered_user_detail">앗, 가입되지 않은 계정이에요! 가입하기부터 진행해 주세요.</string>
+    <string name="sign_in_email_title">이메일로 로그인하기</string>
+    <string name="sign_in_email_verification_code_hint">인증 코드</string>
+    <string name="sign_in_email_send_email_button_text">인증메일 받기</string>
+    <string name="sign_in_email_resend_email_button_text">재요청</string>
+    <string name="sign_in_email_guide">가입하신 이메일을 입력해주세요!\n로그인을 위해 인증코드가 포함된 이메일을 보내드려요!</string>
+    <string name="sign_in_email_verification_code_detail">인증코드를 다시 확인해 주세요.</string>
+    <string name="sign_term">가입 시 이용약관과 개인정보취급방침에 동의하는 것으로 간주됩니다.</string>
+
+    <!-- Home -->
+    <string name="home_no_item_view">앗, 아이템이 없어요!\n갖고 싶은 아이템을 등록해보세요!</string>
+
+    <!-- Cart -->
+    <string name="won">원</string>
+    <string name="cart">Cart</string>
+    <string name="cart_title">장바구니</string>
+    <string name="cart_no_item_view">앗, 장바구니가 비어있어요!\n구매할 아이템을 장바구니에 담아보세요!</string>
+
+    <!-- Folder -->
+    <string name="folder">폴더</string>
+    <string name="folder_name">폴더명</string>
+    <string name="folder_name_edit">폴더명 수정</string>
+    <string name="folder_list_title">폴더 지정</string>
+    <string name="folder_item_count_format">%d 아이템</string>
+    <string name="folder_no_item_view">앗, 폴더가 없어요!\n폴더를 추가해서 아이템을 정리해 보세요!</string>
+    <string name="folder_detail_no_item_view">앗, 아이템이 없어요!\n폴더에 아이템을 담아보세요!</string>
+
+    <string name="folder_add_dialog_title">새 폴더 추가</string>
+    <string name="folder_add_dialog_folder_name_edit_title">폴더명 수정</string>
+    <string name="folder_upload_name_already_exist_detail">같은 이름의 폴더가 있어요!</string>
+
+    <string name="folder_delete">폴더 삭제</string>
+    <string name="folder_delete_dialog_detail">정말 폴더를 삭제하시겠어요?\n폴더가 삭제되어도 아이템은 사라지지 않아요.</string>
+
+    <string name="folder_more_dialog_title">옵션 더보기</string>
+
+    <!-- Item Registration -->
+    <string name="item_name">상품명</string>
+    <string name="price">가격</string>
+    <string name="memo">메모</string>
+    <string name="shop_link">쇼핑몰 링크</string>
+    <string name="item_schedule_notification">상품 일정 알림</string>
+    <string name="item_notification_info_short">%s %s</string>
+    <string name="item_notification_info">[%s 알림] %s</string>
+
+    <string name="wish_basic_item_add_title">아이템 추가</string>
+    <string name="wish_basic_item_edit_title">아이템 수정</string>
+    <string name="wish_item_registration_gallery_image_title">사진 선택하기</string>
+    <string name="item_registration_noti_setting_title">상품 알림 설정하기</string>
+
+    <string name="item_name_for_basic_hint">상품명(필수)</string>
+    <string name="price_for_basic_hint">가격(필수)</string>
+    <string name="item_name_hint">상품명을 입력해 주세요.</string>
+    <string name="price_hint">가격을 입력해 주세요.</string>
+    <string name="shop_link_guide">복사한 링크로 아이템 정보를 불러올 수 있어요!</string>
+    <string name="memo_short_hint">메모를 입력해 보세요.</string>
+    <string name="memo_hint">브랜드, 사이즈, 컬러 등 아이템 정보를 메모로 남겨보세요!😉</string>
+    <string name="wish_basic_invalid_shop_link_detail">쇼핑몰 링크를 다시 확인해 주세요.</string>
+
+    <string name="item_registration_noti_setting_guide">30분 전에 상품 일정을 알려드려요! 시간은 30분 단위로 설정할 수 있어요.</string>
+    <string name="wish_list_registration_button_text">위시리스트에 추가</string>
+
+    <!-- Detail -->
+    <string name="go_to_folder">%s></string>
+    <string name="setting_folder">폴더를 지정해 보세요!</string>
+    <string name="go_to_shop_button_text">쇼핑몰로 이동하기</string>
+    <string name="item_detail_item_delete_dialog_title">아이템 삭제</string>
+    <string name="item_detail_item_delete_dialog_description">정말 아이템을 삭제하시겠어요?\n삭제된 아이템은 다시 복구할 수 없어요.</string>
+
+    <!-- Notification -->
+    <string name="noti_setting">알림 설정</string>
+    <string name="noti_push_state_allow">알림 허용</string>
+    <string name="noti_type">알림 유형</string>
+    <string name="noti_date">알림 날짜</string>
+
+    <string name="noti_title">알림</string>
+    <string name="noti_item_type">%s 알림</string>
+    <string name="noti_calendar_selected_date_title">%s 일정</string>
+    <string name="item_schedule_notification_setting_title">상품 알림 설정</string>
+    <string name="default_notification_channel_id">fcm_default_channel</string>
+    <string name="noti_no_item_view">앗, 알림이 없어요!\n상품 일정을 지정하고 알림을 받아보세요!</string>
+    <string name="noti_push_state_setting_dialog_description">알림을 받아보시겠어요?\n직접 등록하신 아이템의 재입고 날짜 등의\n상품 일정 알림을 받으실 거에요.</string>
+
+    <string name="restock">재입고</string>
+    <string name="open_day">오픈</string>
+    <string name="preorder">프리오더</string>
+    <string name="sale_start">세일 시작</string>
+    <string name="sale_close">세일 마감</string>
+
+    <!-- My -->
+    <string name="my_title">마이페이지</string>
+    <string name="my_section_title_settings">설정</string>
+    <string name="my_section_sub_title_edit_password">비밀번호 변경</string>
+
+    <string name="my_section_title_customer_support">고객 지원</string>
+    <string name="my_section_sub_title_contact_us">문의하기</string>
+
+    <string name="my_section_title_service_info">서비스 정보</string>
+    <string name="my_section_sub_title_how_to_use">위시보드 이용방법</string>
+    <string name="my_section_sub_title_terms">이용약관</string>
+    <string name="my_section_sub_title_personal_info">개인정보 처리방침</string>
+    <string name="my_section_sub_title_opensource_license">오픈소스 라이브러리</string>
+    <string name="my_section_sub_title_version_info">버전정보</string>
+    <string name="service_version">1.0.0</string>
+
+    <string name="my_section_title_account_management">계정 관리</string>
+    <string name="my_section_sub_title_logout">로그아웃</string>
+    <string name="my_logout_dialog_description">정말 로그아웃 하시겠어요?</string>
+    <string name="my_section_sub_title_exit">탈퇴하기</string>
+    <string name="my_membership_exit">탈퇴</string>
+    <string name="my_membership_exit_email_hint">이메일을 입력해 주세요.</string>
+    <string name="my_membership_exit_email_detail">이메일을 다시 확인해 주세요.</string>
+    <string name="my_membership_exit_dialog_description">탈퇴하시면 회원정보는 7일 후\n파기돠며 파기된 데이터는 복구 불가능합니다.</string>
+
+    <string name="my_profile_edit_title">프로필 수정</string>
+    <string name="my_profile_edit_nickname_hint">닉네임</string>
+    <string name="my_nickname_condition_detail">닉네임은 한글, 영문, 숫자만 가능해요.</string>
+    <string name="my_nickname_already_exist_detail">이미 사용 중인 닉네임이에요!</string>
+
+    <!-- Navigation Menu -->
+    <string name="navigation_menu_title_wishlist">WISHLIST</string>
+    <string name="navigation_menu_title_folder">FOLDER</string>
+    <string name="navigation_menu_title_add">ADD</string>
+    <string name="navigation_menu_title_notice">NOTICE</string>
+    <string name="navigation_menu_title_my">MY</string>
+    <string name="add_folder">폴더 추가</string>
+    <string name="wish_basic_get_item_info_button_text">아이템 불러오기</string>
+
 </resources>

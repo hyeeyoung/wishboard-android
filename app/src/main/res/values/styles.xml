@@ -1,10 +1,266 @@
 <resources>
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+    <!-- v23이하에서 적용 -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/green_500</item>
+        <item name="colorPrimaryDark">@color/black</item>
+        <item name="colorAccent">@color/gray_100</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialogStyle</item>
     </style>
 
+    <style name="AppThemePopup" parent="AppTheme">
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:windowBackground">@color/semi_transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+    </style>
+
+    <style name="TextAppearance.BottomNavigation.Tab.Text" parent="">
+        <item name="android:fontFamily">@font/montserrat_r</item>
+        <item name="android:textSize">9sp</item>
+    </style>
+
+    <style name="AppTheme.NumberPicker">
+        <item name="android:textSize">@dimen/typographyBase</item>
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="android:fontFamily">@font/suit_m</item>
+        <item name="android:colorControlNormal">@color/transparent</item>
+    </style>
+
+    <style name="BottomSheetDialogStyle" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/bottomSheetBackground</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+    </style>
+
+    <style name="bottomSheetBackground" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="Widget.Dialog" parent="">
+        <item name="android:background">@drawable/shape_border_radius_32</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="android:paddingTop">24dp</item>
+    </style>
+
+    <style name="Widget.Dialog.Description" parent="">
+        <item name="android:gravity">center</item>
+        <item name="android:lineSpacingExtra">@dimen/spacingMicro</item>
+        <item name="android:paddingStart">24dp</item>
+        <item name="android:paddingEnd">24dp</item>
+        <item name="android:layout_marginTop">@dimen/spacingSmall</item>
+    </style>
+
+    <style name="Widget.Dialog.TextAppearance.Title" parent="">
+        <item name="android:fontFamily">@font/suit_b</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">@dimen/typographyBase</item>
+    </style>
+
+    <style name="Widget.Dialog.TextAppearance.Description" parent="">
+        <item name="android:fontFamily">@font/suit_r</item>
+        <item name="android:textColor">@color/gray_300</item>
+        <item name="android:textSize">@dimen/typographyBase</item>
+    </style>
+
+    <style name="Widget.BottomSheetDialog.Option.TextAppearance" parent="">
+        <item name="android:fontFamily">@font/suit_m</item>
+        <item name="android:textColor">@color/gray_600</item>
+        <item name="android:textSize">@dimen/typographyBase</item>
+    </style>
+
+    <style name="Widget.BottomSheetDialog.Option" parent="">
+        <item name="android:gravity">center</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:paddingTop">@dimen/spacingBase</item>
+        <item name="android:paddingBottom">@dimen/spacingBase</item>
+    </style>
+
+    <style name="Widget.Button" parent="">
+        <item name="android:background">@color/transparent</item>
+    </style>
+
+    <style name="Widget.Button.Basic" parent="">
+        <item name="android:paddingTop">@dimen/spacingBase</item>
+        <item name="android:paddingBottom">@dimen/spacingBase</item>
+        <item name="android:outlineProvider">none</item>
+        <item name="android:layout_marginEnd">@dimen/spacingBase</item>
+        <item name="android:layout_marginStart">@dimen/spacingBase</item>
+    </style>
+
+    <style name="Widget.Button.Dialog" parent="Widget.Button">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:outlineProvider">none</item>
+        <item name="android:padding">@dimen/spacingBase</item>
+    </style>
+
+    <style name="Widget.Button.Icon.Navigation" parent="Widget.Button">
+        <item name="android:padding">@dimen/spacingBase</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
+    <style name="Widget.Button.Basic.Green" parent="Widget.Button.Basic">
+        <item name="android:background">@drawable/shape_border_radius_32</item>
+        <item name="android:backgroundTint">@color/green_500</item>
+    </style>
+
+    <style name="Widget.Button.Activate.Green" parent="Widget.Button.Basic">
+        <item name="android:background">@drawable/selector_button</item>
+        <item name="android:layout_height">@dimen/widgetHeightBase</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Widget.Button.Basic.TextAppearance" parent="">
+        <item name="android:fontFamily">@font/suit_b</item>
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="android:textSize">@dimen/typographyBase</item>
+    </style>
+
+    <style name="Widget.Button.Dialog.TextAppearance" parent="">
+        <item name="android:fontFamily">@font/suit_m</item>
+        <item name="android:textColor">@color/green_600</item>
+        <item name="android:textSize">@dimen/typographyBase</item>
+    </style>
+
+    <style name="Widget.EditText.Divider.Full" parent="">
+        <item name="android:background">@color/gray_150</item>
+        <item name="android:layout_marginStart">@dimen/spacing20</item>
+        <item name="android:layout_marginEnd">@dimen/spacing20</item>
+        <item name="android:layout_height">1dp</item>
+    </style>
+
+    <style name="Widget.Tab.TextAppearance.Title" parent="">
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/suit_b</item>
+        <item name="android:layout_marginStart">@dimen/spacingBase</item>
+    </style>
+
+    <style name="Widget.Tab.Detail.TextAppearance.Title" parent="">
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="android:textSize">@dimen/typographyBase</item>
+        <item name="fontFamily">@font/suit_b</item>
+    </style>
+
+    <style name="Widget.TextAppearance.Detail" parent="">
+        <item name="android:textColor">@color/pink</item>
+        <item name="android:textSize">@dimen/typographyDescription</item>
+        <item name="fontFamily">@font/suit_r</item>
+        <item name="android:layout_marginTop">@dimen/spacing5</item>
+    </style>
+
+    <style name="Widget.TextAppearance.NoItemView.Detail" parent="">
+        <item name="android:gravity">center</item>
+        <item name="android:lineSpacingExtra">@dimen/spacingMicro</item>
+        <item name="android:textColor">@color/gray_200</item>
+        <item name="android:textSize">@dimen/typographyBase</item>
+        <item name="fontFamily">@font/suit_r</item>
+    </style>
+
+    <!-- TODO need refacotring -->
+    <style name="Widget.EditText.Input" parent="Widget.MaterialComponents.TextView">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:paddingTop">@dimen/spacing20</item>
+        <item name="android:paddingBottom">@dimen/spacing20</item>
+    </style>
+
+    <style name="Widget.EditText" parent="">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="Widget.EditText.Basic" parent="Widget.EditText">
+        <item name="android:background">@drawable/shape_border_radius_10</item>
+        <item name="android:backgroundTint">@color/gray_25</item>
+        <item name="android:layout_marginStart">@dimen/spacingBase</item>
+        <item name="android:layout_marginEnd">@dimen/spacingBase</item>
+        <item name="android:paddingTop">@dimen/spacing12</item>
+        <item name="android:paddingBottom">@dimen/spacing12</item>
+        <item name="android:paddingStart">@dimen/spacing10</item>
+        <item name="android:paddingEnd">@dimen/spacing10</item>
+    </style>
+
+    <style name="Widget.EditText.Basic.TextAppearance" parent="">
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="android:fontFamily">@font/suit_m</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="Item.Basic.Upload.EditText.TextAppearance" parent="">
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="android:textSize">15sp</item>
+        <item name="fontFamily">@font/suit_m</item>
+    </style>
+
+    <style name="Widget.Snackbar" parent="">
+        <item name="android:background">@drawable/shape_border_radius_45</item>
+        <item name="android:backgroundTint">@color/black</item>
+        <item name="android:gravity">center</item>
+        <item name="android:lineSpacingExtra">2dp</item>
+        <item name="android:paddingStart">28dp</item>
+        <item name="android:paddingEnd">28dp</item>
+        <item name="android:paddingTop">@dimen/spacingBase</item>
+        <item name="android:paddingBottom">@dimen/spacingBase</item>
+        <item name="android:layout_marginStart">@dimen/spacingBase</item>
+        <item name="android:layout_marginEnd">@dimen/spacing20</item>
+        <item name="android:layout_marginTop">24dp</item>
+        <item name="android:layout_marginBottom">@dimen/spacingBase</item>
+    </style>
+
+    <style name="Widget.Snackbar.TextAppearance" parent="">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/typographyBase</item>
+        <item name="android:fontFamily">@font/suit_m</item>
+    </style>
+
+    <style name="My.Section.Title" parent="">
+        <item name="android:layout_marginTop">32dp</item>
+        <item name="android:layout_marginStart">@dimen/spacingBase</item>
+        <item name="android:layout_marginBottom">@dimen/spacing12</item>
+    </style>
+
+    <style name="My.Section.Title.TextAppearance" parent="">
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/suit_sb</item>
+    </style>
+
+    <style name="My.Section.SubTitle" parent="">
+        <item name="android:paddingTop">@dimen/spacing12</item>
+        <item name="android:paddingBottom">@dimen/spacing12</item>
+        <item name="android:paddingStart">@dimen/spacingBase</item>
+        <item name="android:paddingEnd">@dimen/spacingBase</item>
+    </style>
+
+    <style name="My.Section.SubTitle.TextAppearance" parent="">
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="android:textSize">@dimen/typographyBase</item>
+        <item name="android:fontFamily">@font/suit_r</item>
+    </style>
+
+    <style name="Calendar"/>
+
+    <style name="Calendar.CalendarViewStyle">
+        <item name="dayHeight">44dp</item>
+    </style>
+
+    <style name="Calendar.ItemViewStyle">
+        <item name="dayTextSize">@dimen/typographyBase</item>
+    </style>
+
+    <style name="Calendar.DayOfTheWeek" parent="">
+        <item name="android:layout_width">50dp</item>
+        <item name="android:layout_columnWeight">1</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="Calendar.DayOfTheWeek.TextAppearance" parent="">
+        <item name="android:textSize">@dimen/typographyBase</item>
+        <item name="android:fontFamily">@font/montserrat_m</item>
+        <item name="android:textColor">@color/gray_700</item>
+    </style>
 </resources>

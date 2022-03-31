@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.noti.screens.NotiCalendarFragment">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.hyeeyoung.wishboard.R" />
+
+        <import type="androidx.navigation.Navigation" />
+
+        <import type="com.hyeeyoung.wishboard.util.DateFormatUtilKt" />
+
+        <variable
+            name="viewModel"
+            type="com.hyeeyoung.wishboard.viewmodel.NotiViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/back"
+                style="@style/Widget.Button.Icon.Navigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> Navigation.findNavController(v).popBackStack()}"
+                android:src="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/millis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_eb"
+                android:gravity="center"
+                android:text="@{viewModel.calendarMonthTitle}"
+                android:textColor="@color/gray_700"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="March 2022" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <GridLayout
+            android:id="@+id/day_of_the_week"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacingSmall"
+            android:columnCount="7"
+            android:rowCount="1"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <TextView
+                style="@style/Calendar.DayOfTheWeek"
+                android:text="Sun"
+                android:textAppearance="@style/Calendar.DayOfTheWeek.TextAppearance" />
+
+            <TextView
+                style="@style/Calendar.DayOfTheWeek"
+                android:text="Mon"
+                android:textAppearance="@style/Calendar.DayOfTheWeek.TextAppearance" />
+
+            <TextView
+                style="@style/Calendar.DayOfTheWeek"
+                android:text="Tue"
+                android:textAppearance="@style/Calendar.DayOfTheWeek.TextAppearance" />
+
+            <TextView
+                style="@style/Calendar.DayOfTheWeek"
+                android:text="Wen"
+                android:textAppearance="@style/Calendar.DayOfTheWeek.TextAppearance" />
+
+            <TextView
+                style="@style/Calendar.DayOfTheWeek"
+                android:text="Thu"
+                android:textAppearance="@style/Calendar.DayOfTheWeek.TextAppearance" />
+
+            <TextView
+                style="@style/Calendar.DayOfTheWeek"
+                android:text="Fri"
+                android:textAppearance="@style/Calendar.DayOfTheWeek.TextAppearance" />
+
+            <TextView
+                style="@style/Calendar.DayOfTheWeek"
+                android:text="Sat"
+                android:textAppearance="@style/Calendar.DayOfTheWeek.TextAppearance" />
+        </GridLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/gray_100"
+            app:layout_constraintTop_toTopOf="@id/calendar" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/calendar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacingSmall"
+            app:layout_constraintTop_toBottomOf="@id/day_of_the_week" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/gray_100"
+            app:layout_constraintTop_toTopOf="@id/noti_schedule_container" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/noti_schedule_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/calendar">
+
+            <TextView
+                android:id="@+id/noti_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/spacing12"
+                android:layout_marginTop="@dimen/spacing20"
+                android:fontFamily="@font/suit_b"
+                android:text="@{viewModel.selectedDate != null ? String.format(context.getString(R.string.noti_calendar_selected_date_title), DateFormatUtilKt.convertYMDHMToMD(viewModel.selectedDate)) : ``}"
+                android:textColor="@color/gray_700"
+                android:textSize="@dimen/typographyBase"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="3월 29일 일정" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/noti_list"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginHorizontal="@dimen/spacingBase"
+                android:layout_marginTop="13dp"
+                android:clipToPadding="false"
+                android:paddingBottom="13dp"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/noti_date"
+                tools:listitem="@layout/item_calendar_noti" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.selectedNotiList.size() > 0 ? View.GONE : View.VISIBLE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/no_item_view_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_noti_large"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    style="@style/Widget.TextAppearance.NoItemView.Detail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing20"
+                    android:text="@string/noti_no_item_view"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/no_item_view_icon" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

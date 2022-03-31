@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.wish.item.screens.WishItemDetailFragment">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hyeeyoung.wishboard.viewmodel.WishItemViewModel" />
+
+        <import type="androidx.navigation.Navigation" />
+
+        <import type="com.hyeeyoung.wishboard.R" />
+
+        <import type="com.hyeeyoung.wishboard.util.DateFormatUtilKt" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/back"
+                style="@style/Widget.Button.Icon.Navigation"
+                android:src="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/delete"
+                style="@style/Widget.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:padding="@dimen/spacing10"
+                android:src="@drawable/ic_trash"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/edit"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/edit"
+                style="@style/Widget.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="6dp"
+                android:padding="@dimen/spacing10"
+                android:src="@drawable/ic_nav_add"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ScrollView
+            android:id="@+id/scroll_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/go_to_shop_btn"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/image_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="@dimen/spacingBase"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <ImageView
+                        android:id="@+id/item_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:background="@drawable/shape_border_radius_32"
+                        android:backgroundTint="@color/gray_150"
+                        android:foreground="@color/semi_transparent"
+                        android:scaleType="centerCrop"
+                        app:layout_constraintDimensionRatio="3:4"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:src="@drawable/sample" />
+
+                    <TextView
+                        android:id="@+id/noti_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacingBase"
+                        android:layout_marginBottom="@dimen/spacingBase"
+                        android:background="@drawable/shape_border_radius_16"
+                        android:backgroundTint="@color/green_500"
+                        android:fontFamily="@font/suit_sb"
+                        android:paddingHorizontal="@dimen/spacingSmall"
+                        android:paddingVertical="@dimen/spacingMicro"
+                        android:text="@{viewModel.wishItem.notiType == null ? `` : context.getString(viewModel.wishItem.notiType.strRes)}"
+                        android:textColor="@color/gray_700"
+                        android:textSize="14sp"
+                        android:visibility="@{viewModel.wishItem.notiType == null ? View.INVISIBLE : View.VISIBLE}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:text="재입고" />
+
+                    <TextView
+                        android:id="@+id/noti_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/spacingSmall"
+                        android:background="@drawable/shape_border_radius_16"
+                        android:backgroundTint="@color/green_500"
+                        android:fontFamily="@font/suit_sb"
+                        android:paddingHorizontal="@dimen/spacingSmall"
+                        android:paddingVertical="@dimen/spacingMicro"
+                        android:text="@{viewModel.wishItem.notiType == null ? `` : DateFormatUtilKt.calculateDday(viewModel.wishItem.notiDate)}"
+                        android:textColor="@color/gray_700"
+                        android:textSize="14sp"
+                        android:visibility="@{viewModel.wishItem.notiType == null ? View.INVISIBLE : View.VISIBLE}"
+                        app:layout_constraintBottom_toBottomOf="@id/noti_type"
+                        app:layout_constraintStart_toEndOf="@id/noti_type"
+                        tools:text="오늘 15시 30분" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_constraintTop_toBottomOf="@id/image_container">
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guild_start"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_begin="@dimen/spacingBase" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guild_end"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_end="@dimen/spacingBase" />
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/guild_top"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        app:layout_constraintGuide_begin="@dimen/spacing20" />
+
+                    <TextView
+                        android:id="@+id/folder_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/suit_r"
+                        android:paddingHorizontal="@dimen/spacingBase"
+                        android:paddingVertical="@dimen/spacing10"
+                        android:text="@{String.format(context.getString(R.string.go_to_folder), viewModel.wishItem.folderName == null ? context.getString(R.string.setting_folder) : viewModel.wishItem.folderName)}"
+                        android:textColor="@color/gray_300"
+                        android:textSize="@dimen/typographyDescription"
+                        app:layout_constraintBottom_toBottomOf="@id/create_at"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/create_at"
+                        tools:text="상의>" />
+
+                    <TextView
+                        android:id="@+id/create_at"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_marginEnd="20dp"
+                        android:fontFamily="@font/suit_r"
+                        android:textColor="@color/gray_300"
+                        android:textSize="@dimen/typographyDescription"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/guild_top"
+                        app:timeFormat="@{DateFormatUtilKt.convertStrTimeToDate(viewModel.wishItem.createAt)}"
+                        tools:text="1시간 전" />
+
+                    <TextView
+                        android:id="@+id/item_name"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/suit_sb"
+                        android:text="@{viewModel.wishItem.name}"
+                        android:textColor="@color/gray_700"
+                        android:textSize="18sp"
+                        app:layout_constraintEnd_toEndOf="@id/guild_end"
+                        app:layout_constraintStart_toStartOf="@id/guild_start"
+                        app:layout_constraintTop_toBottomOf="@id/folder_name"
+                        tools:text="아이템명" />
+
+                    <TextView
+                        android:id="@+id/item_price"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:fontFamily="@font/montserrat_eb"
+                        android:textColor="@color/gray_700"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="@id/guild_start"
+                        app:layout_constraintTop_toBottomOf="@id/item_name"
+                        app:priceFormat="@{viewModel.wishItem.price}"
+                        tools:text="129,000" />
+
+                    <TextView
+                        android:id="@+id/won"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/suit_r"
+                        android:text="@string/won"
+                        android:textColor="@color/gray_700"
+                        android:textSize="18sp"
+                        app:layout_constraintBottom_toBottomOf="@id/item_price"
+                        app:layout_constraintStart_toEndOf="@id/item_price"
+                        app:layout_constraintTop_toTopOf="@id/item_price" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/gray_100"
+                        android:visibility="@{viewModel.wishItem.memo == null ? View.GONE : View.VISIBLE}"
+                        app:layout_constraintTop_toTopOf="@id/memo_container" />
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/memo_container"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/spacing20"
+                        android:padding="@dimen/spacingBase"
+                        android:visibility="@{viewModel.wishItem.memo == null ? View.GONE : View.VISIBLE}"
+                        app:layout_constraintTop_toBottomOf="@id/item_price">
+
+                        <TextView
+                            android:id="@+id/memo_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/suit_sb"
+                            android:text="@string/memo"
+                            android:textColor="@color/gray_700"
+                            android:textSize="@dimen/typographyDescription"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:id="@+id/item_memo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:fontFamily="@font/suit_r"
+                            android:text="@{viewModel.wishItem.memo}"
+                            android:textColor="@color/gray_700"
+                            android:textSize="@dimen/typographyDescription"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/memo_title"
+                            tools:text="S사이즈" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/go_to_shop_btn"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:background="@{context.getColor(viewModel.wishItem.url == null ? R.color.gray_50 : R.color.black)}"
+            android:enabled="@{viewModel.wishItem.url == null ? false : true}"
+            android:fontFamily="@font/suit_b"
+            android:gravity="center"
+            android:paddingVertical="@dimen/spacingBase"
+            android:text="@string/go_to_shop_button_text"
+            android:textColor="@{context.getColor(viewModel.wishItem.url == null ? R.color.gray_300 : R.color.white)}"
+            android:textSize="@dimen/typographyBase"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.sign.screens.SignInFragment">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.hyeeyoung.wishboard.viewmodel.SignViewModel" />
+
+        <import type="com.hyeeyoung.wishboard.R" />
+
+        <import type="androidx.navigation.Navigation" />
+
+        <import type="com.hyeeyoung.wishboard.model.common.ProcessStatus" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/back"
+                style="@style/Widget.Button.Icon.Navigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="@{(v) -> Navigation.findNavController(v).popBackStack()}"
+                android:src="@drawable/ic_back"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                style="@style/Widget.Tab.Detail.TextAppearance.Title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sign_in"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <EditText
+            android:id="@+id/email_input"
+            style="@style/Widget.EditText.Basic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacingBase"
+            android:layout_marginBottom="@dimen/spacingSmall"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:onTextChanged="@{viewModel::onLoginEmailTextChanged}"
+            android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <requestFocus />
+        </EditText>
+
+        <EditText
+            android:id="@+id/password_input"
+            style="@style/Widget.EditText.Basic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing5"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:onTextChanged="@{viewModel::onLoginPasswordTextChanged}"
+            android:paddingVertical="@dimen/spacing12"
+            android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
+            app:layout_constraintTop_toBottomOf="@id/email_input" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <TextView
+                android:id="@+id/sign_in"
+                style="@style/Widget.Button.Activate.Green"
+                android:layout_width="match_parent"
+                android:layout_marginTop="@dimen/spacingBase"
+                android:enabled="@{viewModel.loginEmail.length() > 0 &amp;&amp; viewModel.loginPassword.length() > 0}"
+                android:onClick="@{() -> viewModel.signIn()}"
+                android:text="@{viewModel.signProcessStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.sign_in)}"
+                android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/sign_in"/>
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/loading_lottie"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/sign_in"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/sign_in"
+                app:lottie_fileName="lottie/loading_horizontal_black.json"
+                app:lottie_imageAssetsFolder="lottie"
+                app:lottie_loop="true" />
+
+            <TextView
+                android:id="@+id/forgot_your_password"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacingSmall"
+                android:fontFamily="@font/suit_m"
+                android:padding="@dimen/spacing12"
+                android:text="@string/sign_in_forgot_your_password"
+                android:textColor="@color/gray_300"
+                android:textSize="@dimen/typographyDescription"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sign_in" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

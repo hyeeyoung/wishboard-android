@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sign_nav_graph"
+    app:startDestination="@id/sign_fragment">
+
+    <fragment
+        android:id="@+id/sign_fragment"
+        android:name="com.hyeeyoung.wishboard.view.sign.screens.SignFragment"
+        android:label="signFragment"
+        tools:layout="@layout/fragment_sign">
+        <action
+            android:id="@+id/action_sign_to_email"
+            app:destination="@id/sign_up_email_fragment" />
+        <action
+            android:id="@+id/action_sign_to_sign_in"
+            app:destination="@id/sign_in_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/sign_in_fragment"
+        android:name="com.hyeeyoung.wishboard.view.sign.screens.SignInFragment"
+        android:label="signInFragment"
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/action_sign_in_to_sign_in_email"
+            app:destination="@id/sign_in_email_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/sign_up_email_fragment"
+        android:name="com.hyeeyoung.wishboard.view.sign.screens.SignUpEmailFragment"
+        android:label="signInFragment"
+        tools:layout="@layout/fragment_sign_up_email">
+        <action
+            android:id="@+id/action_email_to_password"
+            app:destination="@id/sign_up_password_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/sign_in_email_fragment"
+        android:name="com.hyeeyoung.wishboard.view.sign.screens.SignInEmailFragment"
+        android:label="signInFragment"
+        tools:layout="@layout/fragment_sign_in_email" />
+
+    <fragment
+        android:id="@+id/sign_up_password_fragment"
+        android:name="com.hyeeyoung.wishboard.view.sign.screens.SignUpPasswordFragment"
+        android:label="signUpPasswordFragment"
+        tools:layout="@layout/fragment_sign_up_password" />
+
+</navigation>

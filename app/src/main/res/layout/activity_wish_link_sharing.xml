@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.wish.item.screens.WishLinkSharingActivity">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="com.hyeeyoung.wishboard.R" />
+
+        <import type="com.hyeeyoung.wishboard.model.common.ProcessStatus" />
+
+        <import type="com.hyeeyoung.wishboard.util.DateFormatUtilKt" />
+
+        <variable
+            name="viewModel"
+            type="com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black_transparent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:background="@drawable/background_dialog_top_corner"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <ImageView
+                android:id="@+id/cancel"
+                style="@style/Widget.Button.Icon.Navigation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_close"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/widgetBottomDialogContentHeightBase"
+                app:layout_constraintTop_toBottomOf="@id/cancel">
+
+                <EditText
+                    android:id="@+id/item_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="@dimen/typographyBase"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/suit_r"
+                    android:gravity="center"
+                    android:hint="@string/item_name_hint"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:onTextChanged="@{viewModel::onItemNameTextChanged}"
+                    android:text="@{viewModel.itemName}"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/typographyBase"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="21SS KEILY JACHKT" />
+
+                <EditText
+                    android:id="@+id/item_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacingMicro"
+                    android:background="@null"
+                    android:fontFamily="@font/montserrat_b"
+                    android:hint="@string/price_hint"
+                    android:inputType="number"
+                    android:text="@{viewModel.itemPrice}"
+                    android:onTextChanged="@{viewModel::onItemPriceTextChanged}"
+                    android:selection="@{viewModel.itemPrice.length()}"
+                    android:textAlignment="center"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray_300"
+                    android:textSize="@dimen/typographyBase"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/item_name"
+                    tools:text="127,000" />
+
+                <LinearLayout
+                    android:id="@+id/noti_info_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing10"
+                    android:gravity="center_vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/item_price">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/spacing5"
+                        android:src="@drawable/ic_noti_small" />
+
+                    <TextView
+                        android:id="@+id/noti_info"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/suit_r"
+                        android:paddingVertical="@dimen/spacing10"
+                        android:text="@{viewModel.notiType == null ? context.getString(R.string.item_registration_noti_setting_title) : String.format(context.getString(R.string.item_notification_info_short), DateFormatUtilKt.convertKoreanDate(viewModel.notiDate), context.getString(viewModel.notiType.strRes))}"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/typographyDescription"
+                        tools:text="22년 3월 8일 10시 재입고" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{() -> viewModel.resetNotiInfo()}"
+                        android:paddingHorizontal="@dimen/spacing5"
+                        android:paddingVertical="@dimen/spacing10"
+                        android:src="@drawable/ic_delete_circle"
+                        android:visibility="@{viewModel.notiType == null ? View.GONE : View.VISIBLE}"
+                        tools:visibility="visible" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/folder_list"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/widgetSquareFolder"
+                    android:layout_marginStart="@dimen/spacingBase"
+                    android:layout_marginBottom="@dimen/spacing5"
+                    android:layout_weight="1"
+                    android:clipToPadding="false"
+                    android:nestedScrollingEnabled="false"
+                    android:overScrollMode="never"
+                    android:paddingEnd="6dp"
+                    app:layout_constraintBottom_toTopOf="@id/add"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/noti_info_container" />
+
+                <!-- 추후 ui 변경 시 메모가 사용될 수 있으므로 주석처리함 -->
+                <!--            <EditText-->
+                <!--                android:id="@+id/item_memo"-->
+                <!--                style="@style/Widget.EditText.Basic"-->
+                <!--                android:layout_width="match_parent"-->
+                <!--                android:layout_height="50dp"-->
+                <!--                android:layout_marginHorizontal="@dimen/spacingBase"-->
+                <!--                android:layout_marginTop="@dimen/spacing10"-->
+                <!--                android:hint="@string/memo_short_hint"-->
+                <!--                android:inputType="text"-->
+                <!--                android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"-->
+                <!--                android:textSize="@dimen/typographyBase"-->
+                <!--                app:layout_constraintTop_toBottomOf="@id/noti_info_container" />-->
+
+                <TextView
+                    android:id="@+id/add"
+                    style="@style/Widget.Button.Activate.Green"
+                    android:layout_width="match_parent"
+                    android:layout_marginHorizontal="@dimen/spacingBase"
+                    android:layout_marginBottom="@dimen/spacingBase"
+                    android:enabled="@{viewModel.itemName.length() > 0 ? true : false}"
+                    android:text="@{viewModel.registrationStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.wish_list_registration_button_text)}"
+                    android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    tools:text="@string/wish_list_registration_button_text" />
+
+                <com.airbnb.lottie.LottieAnimationView
+                    android:id="@+id/loading_lottie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:visibility="gone"
+                    app:layout_constraintBottom_toBottomOf="@id/add"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/add"
+                    app:lottie_fileName="lottie/loading_horizontal_black.json"
+                    app:lottie_imageAssetsFolder="lottie"
+                    app:lottie_loop="true" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="-40dp"
+            android:background="@drawable/shape_border_radius_40"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_main_round"
+            app:layout_constraintBottom_toTopOf="@id/container"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/networkView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            android:fontFamily="@font/suit_r"
+            android:paddingHorizontal="@dimen/typographyDescription"
+            android:paddingVertical="@dimen/spacing20"
+            android:text="@string/check_network_connection_snackbar_text"
+            android:textColor="@color/white"
+            android:textSize="@dimen/typographyBase"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:visibility="gone" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.my.screens.MyExitDialogFragment">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.hyeeyoung.wishboard.viewmodel.MyViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="24dp"
+            android:background="@drawable/shape_border_radius_32"
+            android:backgroundTint="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing20"
+                android:text="@string/my_section_sub_title_exit"
+                android:textAppearance="@style/Widget.Dialog.TextAppearance.Title"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/description"
+                style="@style/Widget.Dialog.Description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/my_membership_exit_dialog_description"
+                android:textAppearance="@style/Widget.Dialog.TextAppearance.Description"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/title" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/nickname_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacing20"
+                app:layout_constraintTop_toBottomOf="@id/description">
+
+                <EditText
+                    android:id="@+id/user_email"
+                    style="@style/Widget.EditText.Basic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing12"
+                    android:hint="@string/my_membership_exit_email_hint"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:onTextChanged="@{viewModel::onEmailTextChanged}"
+                    android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/nickname_detail_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/spacing5"
+                    android:text="@string/my_membership_exit_email_detail"
+                    android:textAppearance="@style/Widget.TextAppearance.Detail"
+                    android:visibility="@{viewModel.isCorrectedEmail() != null &amp;&amp; viewModel.isCorrectedEmail() == false ? View.VISIBLE : View.GONE}"
+                    app:layout_constraintStart_toStartOf="@id/user_email"
+                    app:layout_constraintTop_toBottomOf="@id/user_email"
+                    tools:visibility="gone" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/gray_100"
+                app:layout_constraintTop_toTopOf="@id/yes" />
+
+            <Button
+                android:id="@+id/no"
+                style="@style/Widget.Button.Dialog"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/spacingBase"
+                android:text="@string/cancel"
+                android:textAppearance="@style/Widget.Button.Dialog.TextAppearance"
+                app:layout_constraintEnd_toStartOf="@id/yes"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nickname_container" />
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="0dp"
+                android:background="@color/gray_100"
+                app:layout_constraintBottom_toBottomOf="@id/yes"
+                app:layout_constraintStart_toStartOf="@id/yes"
+                app:layout_constraintTop_toTopOf="@id/yes" />
+
+            <Button
+                android:id="@+id/yes"
+                style="@style/Widget.Button.Dialog"
+                android:layout_height="wrap_content"
+                android:text="@string/my_membership_exit"
+                android:textAppearance="@style/Widget.Button.Dialog.TextAppearance"
+                android:textColor="@color/gray_600"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/no"
+                app:layout_constraintTop_toTopOf="@id/no" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

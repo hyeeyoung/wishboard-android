@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="item"
+            type="com.hyeeyoung.wishboard.model.cart.CartItem" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guild_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_end="@dimen/spacingBase" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guild_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_begin="@dimen/spacingBase" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guild_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_begin="@dimen/spacingBase" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guild_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_end="@dimen/spacingBase" />
+
+
+        <ImageView
+            android:id="@+id/item_image"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/shape_border_radius_10"
+            android:foreground="@color/semi_transparent"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="@id/guild_bottom"
+            app:layout_constraintStart_toStartOf="@id/guild_start"
+            app:layout_constraintTop_toTopOf="@id/guild_top" />
+
+        <TextView
+            android:id="@+id/item_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/spacing10"
+            android:ellipsize="end"
+            android:fontFamily="@font/suit_r"
+            android:maxLines="2"
+            android:text="@{item.wishItem.name}"
+            android:textColor="@color/gray_700"
+            android:textSize="@dimen/typographyDescription"
+            app:layout_constraintEnd_toStartOf="@id/delete"
+            app:layout_constraintStart_toEndOf="@id/item_image"
+            app:layout_constraintTop_toTopOf="@id/item_image"
+            tools:text="ITEM NAME" />
+
+        <ImageView
+            android:id="@+id/delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing12"
+            android:src="@drawable/ic_delete_small"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/quantity_control_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacing10"
+            android:layout_marginBottom="11dp"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/item_image">
+
+            <ImageView
+                android:id="@+id/minus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing5"
+                android:src="@drawable/ic_cart_minus"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/item_count"
+                android:layout_width="24dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="2dp"
+                android:fontFamily="@font/suit_r"
+                android:gravity="center_horizontal"
+                android:maxLength="2"
+                android:text="@{Integer.toString(item.cartItemInfo.count)}"
+                android:textColor="@color/gray_700"
+                android:textSize="@dimen/typographyBase"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/plus"
+                app:layout_constraintStart_toEndOf="@id/minus"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="1" />
+
+            <ImageView
+                android:id="@+id/plus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/spacing5"
+                android:src="@drawable/ic_cart_plus"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/item_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_b"
+            android:textColor="@color/gray_700"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@id/won"
+            app:layout_constraintEnd_toStartOf="@id/won"
+            app:layout_constraintTop_toTopOf="@id/won"
+            app:priceFormat="@{item.wishItem.price * item.cartItemInfo.count}"
+            tools:text="238,000" />
+
+        <TextView
+            android:id="@+id/won"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/suit_r"
+            android:text="@string/won"
+            android:textColor="@color/gray_700"
+            android:textSize="@dimen/typographyBase"
+            app:layout_constraintBottom_toBottomOf="@id/guild_bottom"
+            app:layout_constraintEnd_toEndOf="@id/guild_end" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
