@@ -118,11 +118,7 @@ class FolderListAdapter(
                 Glide.with(thumbnail.context).load(folder.thumbnailUrl).into(thumbnail)
 
                 container.setOnClickListener {
-                    val unselectedFolder = selectedFolder
-                    selectedFolder = folder
-                    notifyItemChanged(dataSet.indexOf(unselectedFolder))
-                    notifyItemChanged(dataSet.indexOf(selectedFolder))
-                    listener.onItemClick(folder)
+                    changeSelectedFolder(folder)
                 }
             }
         }
@@ -216,6 +212,7 @@ class FolderListAdapter(
         if (folderListViewType == FolderListViewType.SQUARE_VIEW_TYPE) {
             dataSet.add(1, folderItem) // 0번 포지션인 "폴더 추가" 다음에 폴더 삽입
             notifyItemInserted(1)
+            changeSelectedFolder(folderItem)
         } else {
             dataSet.add(0, folderItem)
             notifyItemInserted(0)
@@ -236,6 +233,15 @@ class FolderListAdapter(
 
     fun setSelectedFolder(folderId: Long) {
         selectedFolderId = folderId
+    }
+
+    /** 링크 공유 전용 선택된 폴더 바꾸기 */
+    fun changeSelectedFolder(folder: FolderItem) {
+        val unselectedFolder = selectedFolder
+        selectedFolder = folder
+        notifyItemChanged(dataSet.indexOf(unselectedFolder))
+        notifyItemChanged(dataSet.indexOf(selectedFolder))
+        listener.onItemClick(folder)
     }
 
     companion object {
