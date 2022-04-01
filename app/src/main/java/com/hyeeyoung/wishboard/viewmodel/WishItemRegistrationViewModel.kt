@@ -109,7 +109,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                     image = imageFile?.name,
                     price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                     url = siteUrl,
-                    memo = itemMemo.value?.trim(),
+//                    memo = getRefinedMemo(itemMemo.value), // 추후 메모 추가될 가능성이 있으므로 주석처리함
                     folderId = folderItem.value?.id,
                     notiType = notiType.value,
                     notiDate = notiDate.value
@@ -145,7 +145,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                 image = imageFile?.name, // TODO 널처리 필요
                 price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                 url = itemUrl.value,
-                memo = itemMemo.value?.trim(),
+                memo = getTrimmedMemo(itemMemo.value),
                 folderId = folderItem.value?.id,
                 folderName = folderItem.value?.name, // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
                 notiType = notiType.value,
@@ -183,7 +183,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                 image = imageFile?.name ?: wishItem?.image,
                 price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
                 url = itemUrl.value,
-                memo = itemMemo.value?.trim(),
+                memo = getTrimmedMemo(itemMemo.value),
                 folderId = folderItem.value?.id ?: wishItem?.folderId,
                 folderName = folderItem.value?.name
                     ?: wishItem?.folderName, // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
@@ -435,6 +435,13 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     fun resetCompleteFolderUpload() {
         isCompleteFolderUpload.value = null
+    }
+
+    /** 입력된 메모에서 공백을 제거 */
+    private fun getTrimmedMemo(memo: String?): String? {
+        val trimmedMemo = memo?.trim()
+        if (trimmedMemo.isNullOrBlank()) return null
+        return trimmedMemo
     }
 
     fun getItemName(): LiveData<String?> = itemName

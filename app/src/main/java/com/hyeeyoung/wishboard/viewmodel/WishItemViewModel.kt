@@ -11,6 +11,8 @@ import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.util.prefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import java.net.URISyntaxException
+import java.net.URL
 import javax.inject.Inject
 
 @HiltViewModel
@@ -60,6 +62,21 @@ class WishItemViewModel @Inject constructor(
             if (isCompleteFolderUpdate.value == true) {
                 wishItem.postValue(item)
             }
+        }
+    }
+
+    /** url에서 도메인명을 추출 */
+    fun getDomainName(url: String): String? {
+        return try {
+            val domain = URL(url).host
+
+            if (domain.startsWith("www.")) {
+                domain.substring(4)
+            } else {
+                domain
+            }
+        } catch (e: URISyntaxException) {
+            null
         }
     }
 
