@@ -89,7 +89,7 @@
                         android:backgroundTint="@color/gray_150"
                         android:foreground="@color/semi_transparent"
                         android:scaleType="centerCrop"
-                        app:layout_constraintDimensionRatio="3:4"
+                        app:layout_constraintDimensionRatio="3:3.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:src="@drawable/sample" />
@@ -225,46 +225,81 @@
                         app:layout_constraintStart_toEndOf="@id/item_price"
                         app:layout_constraintTop_toTopOf="@id/item_price" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/gray_100"
-                        android:visibility="@{viewModel.wishItem.memo == null ? View.GONE : View.VISIBLE}"
-                        app:layout_constraintTop_toTopOf="@id/memo_container" />
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/memo_container"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacing20"
-                        android:padding="@dimen/spacingBase"
-                        android:visibility="@{viewModel.wishItem.memo == null ? View.GONE : View.VISIBLE}"
+                        android:orientation="vertical"
+                        android:paddingBottom="48dp"
                         app:layout_constraintTop_toBottomOf="@id/item_price">
 
-                        <TextView
-                            android:id="@+id/memo_title"
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:id="@+id/url_container"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/suit_sb"
-                            android:text="@string/memo"
-                            android:textColor="@color/gray_700"
-                            android:textSize="@dimen/typographyDescription"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            android:orientation="vertical"
+                            android:visibility="@{viewModel.wishItem.url == null ? View.GONE : View.VISIBLE}"
+                            app:layout_constraintTop_toBottomOf="@id/item_price">
 
-                        <TextView
-                            android:id="@+id/item_memo"
-                            android:layout_width="wrap_content"
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:background="@color/gray_100" />
+
+                            <TextView
+                                android:id="@+id/item_url"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginVertical="@dimen/spacingBase"
+                                android:layout_marginStart="@dimen/spacingBase"
+                                android:fontFamily="@font/suit_r"
+                                android:text="@{viewModel.wishItem.url == null ? `` : viewModel.getDomainName(viewModel.wishItem.url)}"
+                                android:textColor="@color/gray_300"
+                                android:textSize="@dimen/typographyDescription"
+                                android:visibility="@{viewModel.wishItem.url == null ? View.GONE : View.VISIBLE}"
+                                app:layout_constraintStart_toStartOf="@id/guild_start"
+                                app:layout_constraintTop_toBottomOf="@id/item_name"
+                                tools:text="grovestore.com" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/memo_container"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="6dp"
-                            android:fontFamily="@font/suit_r"
-                            android:text="@{viewModel.wishItem.memo}"
-                            android:textColor="@color/gray_700"
-                            android:textSize="@dimen/typographyDescription"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/memo_title"
-                            tools:text="S사이즈" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                            android:orientation="vertical"
+                            android:visibility="@{viewModel.wishItem.memo == null ? View.GONE : View.VISIBLE}"
+                            app:layout_constraintTop_toBottomOf="@id/url_container">
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="0.5dp"
+                                android:background="@color/gray_100" />
+
+                            <TextView
+                                android:id="@+id/memo_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/spacingBase"
+                                android:layout_marginTop="@dimen/spacingBase"
+                                android:fontFamily="@font/suit_sb"
+                                android:text="@string/memo"
+                                android:textColor="@color/gray_700"
+                                android:textSize="@dimen/typographyDescription" />
+
+                            <TextView
+                                android:id="@+id/item_memo"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/spacingBase"
+                                android:layout_marginTop="6dp"
+                                android:fontFamily="@font/suit_r"
+                                android:text="@{viewModel.wishItem.memo}"
+                                android:textColor="@color/gray_700"
+                                android:textSize="@dimen/typographyDescription"
+                                tools:text="S사이즈" />
+                        </LinearLayout>
+
+                    </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
