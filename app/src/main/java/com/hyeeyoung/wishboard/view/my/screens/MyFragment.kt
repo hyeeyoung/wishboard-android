@@ -75,19 +75,19 @@ class MyFragment : Fragment() {
         }
         binding.terms.setOnClickListener {
             moveWebViewActivity(
-                "file:///android_asset/www/terms.html",
+                "https://www.wishboard.xyz/terms.html",
                 R.string.my_section_sub_title_terms
             )
         }
         binding.personalInfo.setOnClickListener {
             moveWebViewActivity(
-                "file:///android_asset/www/personal_info.html",
+                "https://www.wishboard.xyz/privacy-policy.html",
                 R.string.my_section_sub_title_personal_info
             )
         }
         binding.opensourceLicense.setOnClickListener {
             moveWebViewActivity(
-                "file:///android_asset/www/opensource_license.html",
+                "https://www.wishboard.xyz/opensource.html",
                 R.string.my_section_sub_title_opensource_license
             )
         }
