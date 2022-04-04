@@ -52,7 +52,7 @@ class SignUpPasswordFragment : Fragment() {
         val clickableSpanTerms = object : ClickableSpan() {
             override fun onClick(widget: View) {
                 moveWebViewActivity(
-                    "file:///android_asset/www/terms.html",
+                    "https://www.wishboard.xyz/terms.html",
                     R.string.my_section_sub_title_terms
                 )
             }
@@ -60,7 +60,7 @@ class SignUpPasswordFragment : Fragment() {
         val clickableSpanPersonalInfo = object : ClickableSpan() {
             override fun onClick(widget: View) {
                 moveWebViewActivity(
-                    "file:///android_asset/www/personal_info.html",
+                    "https://www.wishboard.xyz/privacy-policy.html",
                     R.string.my_section_sub_title_personal_info
                 )
             }
