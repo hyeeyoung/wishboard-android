@@ -67,6 +67,25 @@ class WishRepositoryImpl : WishRepository {
         }
     }
 
+    override suspend fun updateFolderOfWishItem(
+        token: String,
+        itemId: Long,
+        folderId: Long
+    ): Boolean {
+        try {
+            val response = api.updateFolderOfItem(token, itemId, folderId)
+            if (response.isSuccessful) {
+                Log.d(TAG, "아이템 폴더 수정 성공")
+            } else {
+                Log.e(TAG, "아이템 폴더 수정 실패: ${response.code()}")
+            }
+            return response.isSuccessful
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        }
+    }
+
     override suspend fun deleteWishItem(token: String, itemId: Long): Boolean {
         try {
             val response = api.deleteWishItem(token, itemId)
