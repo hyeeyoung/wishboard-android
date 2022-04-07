@@ -23,7 +23,6 @@ class WishItemViewModel @Inject constructor(
 
     private var wishItem = MutableLiveData<WishItem>()
     private var isCompleteDeletion = MutableLiveData<Boolean>()
-    private var isCompleteFolderUpdate = MutableLiveData<Boolean>()
 
     fun deleteWishItem() {
         if (token == null) return
@@ -41,7 +40,8 @@ class WishItemViewModel @Inject constructor(
         if (item.imageUrl == null && item.image != null) {
             viewModelScope.launch {
                 item.imageUrl = AWSS3Service().getImageUrl(item.image)
-                wishItem.value = item // 이미지 다운로드까지 시간이 소요됨에 따라 if 문 밖에서 해당 코드 실행할 경우, imageUrl이 초기화 되기 전에 wishItem을 초기화함
+                wishItem.value =
+                    item // 이미지 다운로드까지 시간이 소요됨에 따라 if 문 밖에서 해당 코드 실행할 경우, imageUrl이 초기화 되기 전에 wishItem을 초기화함
             }
         } else {
             wishItem.value = item
@@ -56,10 +56,9 @@ class WishItemViewModel @Inject constructor(
             folderName = folder.name
         } ?: return
         viewModelScope.launch {
-            // TODO 폴더 지정 api 생성되면 폴더만 업데이트 되도록 변경 예정. 현재는 아이템 정보 모두 업데이트 됨
-            isCompleteFolderUpdate.value = wishRepository.updateWishItem(token, itemId, item)
-            // 아이템이 삭제 완료된 경우, s3에서도 이미지 객체 삭제
-            if (isCompleteFolderUpdate.value == true) {
+            val isComplete =
+                wishRepository.updateFolderOfWishItem(token, itemId, folder.id ?: return@launch)
+            if (isComplete) {
                 wishItem.postValue(item)
             }
         }
