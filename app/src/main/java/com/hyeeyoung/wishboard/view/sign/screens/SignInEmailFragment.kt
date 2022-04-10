@@ -63,4 +63,9 @@ class SignInEmailFragment : Fragment() {
             }
         }
     }
+
+    override fun onStop() {
+        super.onStop()
+        viewModel.terminateTimer()
+    }
 }
