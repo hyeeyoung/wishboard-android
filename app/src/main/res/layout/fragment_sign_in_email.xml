@@ -143,17 +143,38 @@
                 android:orientation="vertical"
                 android:visibility="@{viewModel.isCompletedSendMail() == true ? View.VISIBLE : View.INVISIBLE}">
 
-                <EditText
-                    android:id="@+id/verification_code_input"
-                    style="@style/Widget.EditText.Basic"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/verification_code_container"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacingBase"
-                    android:hint="@string/sign_in_email_verification_code_hint"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:onTextChanged="@{viewModel::onVerificationCodeTextChanged}"
-                    android:textAppearance="@style/Widget.EditText.Basic.TextAppearance" />
+                    android:layout_marginTop="@dimen/spacingBase">
+
+                    <EditText
+                        android:id="@+id/verification_code_input"
+                        style="@style/Widget.EditText.Basic"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/sign_in_email_verification_code_hint"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:onTextChanged="@{viewModel::onVerificationCodeTextChanged}"
+                        android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/spacing10"
+                        android:fontFamily="@font/suit_r"
+                        android:text="@{viewModel.timer}"
+                        android:textColor="@color/pink"
+                        android:textSize="@dimen/typographyBase"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/verification_code_input"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:text="5:00" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <TextView
                     android:layout_width="wrap_content"

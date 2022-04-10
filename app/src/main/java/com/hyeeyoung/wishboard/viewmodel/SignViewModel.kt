@@ -1,5 +1,6 @@
 package com.hyeeyoung.wishboard.viewmodel
 
+import android.os.CountDownTimer
 import android.util.Patterns
 import androidx.lifecycle.*
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
@@ -32,6 +33,16 @@ class SignViewModel @Inject constructor(
     private var isCompletedSendMail = MutableLiveData<Boolean?>(null)
 
     private var signProcessStatus = MutableLiveData<ProcessStatus>()
+    private var timerValue = MutableLiveData<String?>()
+
+    private var timer = object : CountDownTimer(300000, 1000) {
+        override fun onTick(millisUntilFinished: Long) {
+            val second = (millisUntilFinished / 1000)
+            timerValue.value = "${second / 60}:${String.format("%02d", second % 60)}"
+        }
+
+        override fun onFinish() {}
+    }
 
     init {
         initEnabledVerificationCodeButton()
@@ -58,6 +69,8 @@ class SignViewModel @Inject constructor(
     }
 
     fun signInEmail() {
+        timer.onFinish()
+
         signProcessStatus.value = ProcessStatus.IN_PROGRESS
         if (loginEmail.value == null) return
         viewModelScope.launch {
@@ -71,7 +84,9 @@ class SignViewModel @Inject constructor(
     }
 
     fun requestVerificationMail() {
-        // TODO 타이머 구현
+        timer.cancel()
+        timer.start()
+
         verificationCode.value = null
         isCorrectedVerificationCode.value = null
 
@@ -180,10 +195,16 @@ class SignViewModel @Inject constructor(
         registrationPassword.value = null
     }
 
+    fun terminateTimer() {
+        timer.cancel()
+    }
+
     fun getLoginEmail(): LiveData<String> = loginEmail
     fun getLoginPassword(): LiveData<String> = loginPassword
     fun getRegistrationEmail(): LiveData<String?> = registrationEmail
     fun getRegistrationPassword(): LiveData<String?> = registrationPassword
+    fun getTimer(): LiveData<String?> = timerValue
+
     fun getValidEmailFormat(): LiveData<Boolean> = isValidEmailFormat
     fun getValidPasswordFormat(): LiveData<Boolean> = isValidPasswordFormat
     fun getCompletedSignUp(): LiveData<Boolean> = isCompletedSignUp
