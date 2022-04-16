@@ -183,6 +183,13 @@
     <string name="my_nickname_condition_detail">닉네임은 한글, 영문, 숫자만 가능해요.</string>
     <string name="my_nickname_already_exist_detail">이미 사용 중인 닉네임이에요!</string>
 
+    <!-- How To Use -->
+    <string name="how_to_use_yes_button_text">네! 알겠어요</string>
+    <string name="how_to_use_link_sharing_title">아이템 저장</string>
+    <string name="how_to_use_link_sharing_description">웹 브라우저에서 사고 싶은 아이템이 있다면\n“공유하기”를 통해 아이템을 위시보드에 저장해보세요!</string>
+    <string name="how_to_use_folder_setting_description">아이템에 폴더를 지정해보세요!\n원하는 폴더가 없다면 새 폴더를 추가할 수 있어요.</string>
+    <string name="how_to_use_noti_setting_description">상품의 재입고, 프리오더, 세일 알림을 설정해 보세요.\n설정한 시간 30분 전에 알림 보내드려요!</string>
+
     <!-- Navigation Menu -->
     <string name="navigation_menu_title_wishlist">WISHLIST</string>
     <string name="navigation_menu_title_folder">FOLDER</string>
