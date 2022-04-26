@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.home.HowToUseFragment">
+    tools:context=".view.home.HowToLinkSharingFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
             android:layout_height="wrap_content"
             android:background="@color/gray_50"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/background_link_sharing" />
+            android:src="@drawable/backgound_folder_setting" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -32,7 +32,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/how_to_use_link_sharing_title" />
+                android:text="@string/folder_list_title" />
 
             <TextView
                 android:id="@+id/how_to_user_description"
@@ -48,7 +48,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/how_to_user_title"
-                tools:text="@string/how_to_use_link_sharing_description" />
+                android:text="@string/how_to_use_folder_setting_description" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
