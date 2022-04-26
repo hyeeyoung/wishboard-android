@@ -51,6 +51,12 @@
                     android:path="/main" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".view.home.HowToUseActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+
         <activity
             android:name=".view.wish.item.screens.WishLinkSharingActivity"
             android:exported="true"

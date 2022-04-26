@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".view.home.HowToUseActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white">
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/how_to_use"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@id/indicator"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacingSmall"
+            app:layout_constraintBottom_toTopOf="@id/yes"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:tabBackground="@drawable/selector_indicator"
+            app:tabGravity="center"
+            app:tabIndicator="@null"
+            app:tabIndicatorHeight="0dp"
+            app:tabPaddingEnd="@dimen/spacingSmall"
+            app:tabPaddingTop="@dimen/spacingSmall" />
+
+        <TextView
+            android:id="@+id/yes"
+            style="@style/Widget.Button.Activate.Green"
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/spacingBase"
+            android:text="@string/how_to_use_yes_button_text"
+            android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

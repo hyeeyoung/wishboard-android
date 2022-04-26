@@ -1,7 +1,10 @@
 package com.hyeeyoung.wishboard.view
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -13,6 +16,7 @@ import com.hyeeyoung.wishboard.model.common.DialogButtonReplyType
 import com.hyeeyoung.wishboard.util.NetworkConnection
 import com.hyeeyoung.wishboard.view.common.screens.DialogListener
 import com.hyeeyoung.wishboard.view.common.screens.TwoButtonDialogFragment
+import com.hyeeyoung.wishboard.view.home.HowToUseActivity
 import com.hyeeyoung.wishboard.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -20,17 +24,19 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         viewModel.initFCMToken()
+        setActivityResultLauncher()
 
         // 회원가입 성공 시 알림 설정 다이얼로그 띄우기
         intent.getBooleanExtra(ARG_SUCCESS_SIGN_UP, false).let {
             if (it) {
-                showPushStateSettingDialog()
+                showHowToUseDialog()
             }
         }
 
@@ -87,6 +93,19 @@ class MainActivity : AppCompatActivity() {
             })
         }
         dialog.show(supportFragmentManager, "FolderDeleteDialog")
+    }
+
+    /** 앱 이용방법 다이얼로그 */
+    private fun showHowToUseDialog() {
+        activityResultLauncher.launch(Intent(this, HowToUseActivity::class.java))
+    }
+
+    private fun setActivityResultLauncher() {
+        activityResultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode != RESULT_OK) return@registerForActivityResult
+                showPushStateSettingDialog()
+            }
     }
 
     companion object {
