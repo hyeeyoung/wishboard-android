@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.repository.noti.NotiRepository
 import com.hyeeyoung.wishboard.repository.user.UserRepository
-import com.hyeeyoung.wishboard.util.prefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,10 +18,11 @@ class MainViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val notiRepository: NotiRepository,
 ) : ViewModel() {
-    private val token = prefs?.getUserToken()
+    private val userToken = WishBoardApp.prefs.getUserToken()
+    private val fcmToken = WishBoardApp.prefs.getFCMToken()
 
     fun initFCMToken() {
-        val userToken = prefs?.getUserToken() ?: return
+        if (userToken == null) return
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w(TAG, "Fetching FCM registration token failed", task.exception)
@@ -31,8 +32,8 @@ class MainViewModel @Inject constructor(
             val fcmToken = task.result
             Log.d(TAG, fcmToken)
 
-            if (prefs?.getFCMToken() != fcmToken) {
-                prefs?.setFCMToken(fcmToken)
+            if (this.fcmToken != fcmToken) {
+                WishBoardApp.prefs.setFCMToken(fcmToken)
                 viewModelScope.launch(Dispatchers.IO) {
                     userRepository.registerFCMToken(userToken, fcmToken)
                 }
@@ -41,9 +42,9 @@ class MainViewModel @Inject constructor(
     }
 
     fun updatePushState() {
-        if (token == null) return
+        if (userToken == null) return
         viewModelScope.launch {
-            notiRepository.updatePushState(token, true)
+            notiRepository.updatePushState(userToken, true)
         }
     }
 
