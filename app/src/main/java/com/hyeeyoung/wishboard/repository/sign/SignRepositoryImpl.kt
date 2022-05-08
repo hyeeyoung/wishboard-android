@@ -1,9 +1,9 @@
 package com.hyeeyoung.wishboard.repository.sign
 
 import android.util.Log
+import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.model.user.UserInfo
 import com.hyeeyoung.wishboard.service.RemoteService
-import com.hyeeyoung.wishboard.util.prefs
 
 class SignRepositoryImpl : SignRepository {
     private val api = RemoteService.api
@@ -16,7 +16,7 @@ class SignRepositoryImpl : SignRepository {
             if (response.isSuccessful) {
                 Log.d(TAG, "회원가입 성공")
                 result?.data?.token?.let {
-                    prefs?.setUserInfo(it, email)
+                    WishBoardApp.prefs.setUserInfo(it, email)
                 }
             } else {
                 Log.e(TAG, "회원가입 실패: ${response.code()}")
@@ -35,7 +35,7 @@ class SignRepositoryImpl : SignRepository {
             if (response.isSuccessful) {
                 Log.d(TAG, "로그인 성공")
                 result?.data?.token?.let {
-                    prefs?.setUserInfo(it, email)
+                    WishBoardApp.prefs.setUserInfo(it, email)
                 }
             } else {
                 Log.e(TAG, "로그인 실패: ${response.code()}")
@@ -54,7 +54,7 @@ class SignRepositoryImpl : SignRepository {
             if (response.isSuccessful) {
                 Log.d(TAG, "이메일 인증 로그인 성공")
                 result?.data?.token?.let {
-                    prefs?.setUserInfo(it, email)
+                    WishBoardApp.prefs.setUserInfo(it, email)
                 }
                 // TODO save the pushState
             } else {

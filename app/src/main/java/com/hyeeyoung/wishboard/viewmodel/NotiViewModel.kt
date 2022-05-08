@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.model.noti.NotiItem
 import com.hyeeyoung.wishboard.model.noti.NotiListViewType
 import com.hyeeyoung.wishboard.repository.noti.NotiRepository
 import com.hyeeyoung.wishboard.service.AWSS3Service
-import com.hyeeyoung.wishboard.util.prefs
 import com.hyeeyoung.wishboard.view.noti.adapters.NotiListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class NotiViewModel @Inject constructor(
     private val notiRepository: NotiRepository,
 ) : ViewModel() {
-    private val token = prefs?.getUserToken()
+    private val token = WishBoardApp.prefs.getUserToken()
 
     private var notiList = MutableLiveData<List<NotiItem>?>(listOf())
     private var selectedNotiList = MutableLiveData<List<NotiItem>?>(listOf())
