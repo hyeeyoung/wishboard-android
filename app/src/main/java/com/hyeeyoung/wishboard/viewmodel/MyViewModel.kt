@@ -2,11 +2,11 @@ package com.hyeeyoung.wishboard.viewmodel
 
 import android.net.Uri
 import androidx.lifecycle.*
+import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.repository.noti.NotiRepository
 import com.hyeeyoung.wishboard.repository.user.UserRepository
 import com.hyeeyoung.wishboard.service.AWSS3Service
-import com.hyeeyoung.wishboard.util.prefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.File
@@ -37,7 +37,7 @@ class MyViewModel @Inject constructor(
 
     private var profileEditStatus = MutableLiveData<ProcessStatus>()
 
-    private val token = prefs?.getUserToken()
+    private val token = WishBoardApp.prefs.getUserToken()
 
     init {
         initEnabledEditCompleteButton()
@@ -47,8 +47,8 @@ class MyViewModel @Inject constructor(
         if (token == null) return
         viewModelScope.launch { // TODO 네트워크에 연결되어있지 않은 경우, 내부 저장소에서 유저 정보 가져오기
             userRepository.fetchUserInfo(token).let {
-                userEmail.value = it?.email ?: prefs?.getUserEmail()
-                userNickname.value = it?.nickname ?: prefs?.getUserNickName()
+                userEmail.value = it?.email ?: WishBoardApp.prefs.getUserEmail()
+                userNickname.value = it?.nickname ?: WishBoardApp.prefs.getUserNickName()
                 userProfileImage.value = it?.profileImage
                 pushState.value = convertIntToBooleanPushState(it?.pushState)
             }
@@ -95,7 +95,7 @@ class MyViewModel @Inject constructor(
         viewModelScope.launch {
             userRepository.registerFCMToken(token, null)
         }
-        prefs?.clearUserInfo()
+        WishBoardApp.prefs.clearUserInfo()
     }
 
     fun deleteUserAccount() {
@@ -103,7 +103,7 @@ class MyViewModel @Inject constructor(
         viewModelScope.launch {
             isCompleteUserDelete.postValue(userRepository.deleteUserAccount(token))
         }
-        prefs?.clearUserInfo()
+        WishBoardApp.prefs.clearUserInfo()
     }
 
     /** 서버에서 전달받은 push_state 값은 Int타입으로, 알림 스위치 on/off를 위해 Boolean타입으로 변경 */
@@ -145,7 +145,7 @@ class MyViewModel @Inject constructor(
     }
 
     private fun setUserInfo() {
-        prefs?.setUserNickName(inputUserNickName.value!!)
+        WishBoardApp.prefs.setUserNickName(inputUserNickName.value!!)
         userNickname.value = inputUserNickName.value
         userProfileImageFile.value?.let { file -> userProfileImage.value = file.name }
     }

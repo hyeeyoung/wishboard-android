@@ -12,10 +12,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.repository.common.GalleryPagingDataSource
 import com.hyeeyoung.wishboard.repository.common.GalleryRepository
 import com.hyeeyoung.wishboard.util.getTimestamp
-import com.hyeeyoung.wishboard.util.prefs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -30,7 +30,7 @@ class GalleryViewModel @Inject constructor(
     private val application: Application,
     private val galleryRepository: GalleryRepository,
 ) : ViewModel() {
-    private val token = prefs?.getUserToken()
+    private val token = WishBoardApp.prefs.getUserToken()
 
     private val galleryImageUris = MutableLiveData<PagingData<Uri>>()
     private var selectedGalleryImageUri = MutableLiveData<Uri?>()

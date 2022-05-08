@@ -8,6 +8,7 @@ import android.util.Patterns
 import android.webkit.URLUtil
 import android.widget.NumberPicker
 import androidx.lifecycle.*
+import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.folder.FolderListViewType
@@ -18,7 +19,6 @@ import com.hyeeyoung.wishboard.repository.wish.WishRepository
 import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.util.ParsingUtils
 import com.hyeeyoung.wishboard.util.getTimestamp
-import com.hyeeyoung.wishboard.util.prefs
 import com.hyeeyoung.wishboard.util.safeLet
 import com.hyeeyoung.wishboard.view.folder.adapters.FolderListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -39,6 +39,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private val wishRepository: WishRepository,
     private val folderRepository: FolderRepository,
 ) : ViewModel() {
+    private val token = WishBoardApp.prefs.getUserToken()
     private var wishItem: WishItem? = null
     private var itemId: Long? = null
     private var itemName = MutableLiveData<String?>()
@@ -47,6 +48,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var itemImageUrl = MutableLiveData<String?>()
     private var itemMemo = MutableLiveData<String?>()
     private var itemUrl = MutableLiveData<String?>()
+
     /** 유효하지 않은 url인 경우 또는 사이트 url 수정을 시도할 경우 원본 url을 보존하기위 위한 변수 */
     private var itemUrlInput = MutableLiveData<String?>()
     private var folderItem = MutableLiveData<FolderItem>()
@@ -73,8 +75,6 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     private val folderListSquareAdapter =
         FolderListAdapter(FolderListViewType.SQUARE_VIEW_TYPE)
-
-    private val token = prefs?.getUserToken()
 
     init {
         initEnabledSaveButton()
@@ -284,7 +284,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     }
 
     /** url 유효성 검증 */
-   private fun checkValidationItemUrl(url: String?): Boolean {
+    private fun checkValidationItemUrl(url: String?): Boolean {
         if (url.isNullOrBlank()) {
             return false
         }
@@ -429,7 +429,8 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun setSelectedGalleryImage(imageUri: Uri, imageFile: File) {
         // 갤러리 이미지를 적용할 것이기 때문에 기존에 파싱한 이미지를 제거
         selectedGalleryImageUri.value = imageUri
-        itemImage.value = null // TODO need refactoring, 아이템 정보 파싱 후 갤러리에서 이미지 선택 하지 않아도 이전에 갤러리에서 이미지를 선택한 적이 있는 경우, 갤러리 이미지가 보이는 버그를 방지하기 위함
+        itemImage.value =
+            null // TODO need refactoring, 아이템 정보 파싱 후 갤러리에서 이미지 선택 하지 않아도 이전에 갤러리에서 이미지를 선택한 적이 있는 경우, 갤러리 이미지가 보이는 버그를 방지하기 위함
         this.imageFile = imageFile
     }
 
