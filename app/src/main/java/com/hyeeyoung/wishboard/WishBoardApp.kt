@@ -6,12 +6,14 @@ import com.amplifyframework.AmplifyException
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin
+import com.hyeeyoung.wishboard.util.PreferenceUtil
 import dagger.hilt.android.HiltAndroidApp
 
 @HiltAndroidApp
 class WishBoardApp : Application() {
     override fun onCreate() {
         super.onCreate()
+        prefs = PreferenceUtil(applicationContext)
 
         try {
             Amplify.addPlugin(AWSCognitoAuthPlugin())
@@ -25,5 +27,6 @@ class WishBoardApp : Application() {
 
     companion object {
         private const val TAG = "WishBoardApp"
+        lateinit var prefs: PreferenceUtil
     }
 }

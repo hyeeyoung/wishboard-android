@@ -4,12 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.model.common.ProcessStatus
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.folder.FolderListViewType
 import com.hyeeyoung.wishboard.repository.folder.FolderRepository
 import com.hyeeyoung.wishboard.service.AWSS3Service
-import com.hyeeyoung.wishboard.util.prefs
 import com.hyeeyoung.wishboard.view.folder.adapters.FolderListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +21,7 @@ import javax.inject.Inject
 class FolderViewModel @Inject constructor(
     private val folderRepository: FolderRepository,
 ) : ViewModel() {
-    private val token = prefs?.getUserToken()
+    private val token = WishBoardApp.prefs.getUserToken()
 
     private val folderList = MutableLiveData<List<FolderItem>?>(listOf())
     private val folderListAdapter =
@@ -44,7 +44,7 @@ class FolderViewModel @Inject constructor(
         if (token == null) return
         viewModelScope.launch {
             var items: List<FolderItem>?
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 items = folderRepository.fetchFolderList(token)
                 items?.forEach { item ->
                     item.thumbnail?.let {

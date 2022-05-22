@@ -1,17 +1,17 @@
 package com.hyeeyoung.wishboard.viewmodel
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.LiveData
+import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.model.cart.CartStateType
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.wish.WishItem
-import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.repository.cart.CartRepository
 import com.hyeeyoung.wishboard.repository.folder.FolderRepository
 import com.hyeeyoung.wishboard.repository.wish.WishRepository
-import com.hyeeyoung.wishboard.util.prefs
+import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.view.wish.list.adapters.WishListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +25,7 @@ class WishListViewModel @Inject constructor(
     private val cartRepository: CartRepository,
     private val folderRepository: FolderRepository,
 ) : ViewModel() {
-    private val token = prefs?.getUserToken()
+    private val token = WishBoardApp.prefs.getUserToken()
 
     private val wishList = MutableLiveData<List<WishItem>?>(listOf())
     private val wishListAdapter = WishListAdapter()

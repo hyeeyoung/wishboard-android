@@ -1,16 +1,12 @@
 package com.hyeeyoung.wishboard.viewmodel
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.cart.CartItemButtonType
 import com.hyeeyoung.wishboard.model.wish.WishItem
-import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.repository.cart.CartRepository
-import com.hyeeyoung.wishboard.util.prefs
+import com.hyeeyoung.wishboard.service.AWSS3Service
 import com.hyeeyoung.wishboard.view.cart.adapters.CartListAdapter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +18,7 @@ import javax.inject.Inject
 class CartViewModel @Inject constructor(
     private val cartRepository: CartRepository,
 ) : ViewModel() {
-    private val token = prefs?.getUserToken()
+    private val token = WishBoardApp.prefs.getUserToken()
     private val cartList = MutableLiveData<List<CartItem>?>(listOf())
     private val cartListAdapter = CartListAdapter()
     private var totalPrice = MediatorLiveData<Int>()
