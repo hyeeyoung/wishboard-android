@@ -1,12 +1,14 @@
 package com.hyeeyoung.wishboard.service
 
 import com.hyeeyoung.wishboard.BuildConfig
+import com.hyeeyoung.wishboard.model.BaseRequestResult
 import com.hyeeyoung.wishboard.model.RequestResult
 import com.hyeeyoung.wishboard.model.RequestResultData
 import com.hyeeyoung.wishboard.model.cart.CartItem
 import com.hyeeyoung.wishboard.model.folder.FolderItem
 import com.hyeeyoung.wishboard.model.noti.NotiItem
 import com.hyeeyoung.wishboard.model.user.UserInfo
+import com.hyeeyoung.wishboard.model.wish.ItemInfo
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -77,6 +79,11 @@ interface RemoteService {
         @Header("Authorization") token: String,
         @Path("item_id") itemId: Long
     ): Response<RequestResult>
+
+    @GET("item/parse?site=")
+    suspend fun getItemParsingInfo(
+        @Query("site") site: String
+    ): Response<BaseRequestResult<ItemInfo>?>
 
     // 장바구니
     @GET("cart")

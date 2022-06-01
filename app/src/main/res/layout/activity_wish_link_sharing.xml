@@ -190,12 +190,11 @@
             android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="-40dp"
-            android:background="@drawable/shape_border_radius_40"
             android:scaleType="centerCrop"
-            android:src="@mipmap/ic_main_round"
             app:layout_constraintBottom_toTopOf="@id/container"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:src="@mipmap/ic_main" />
 
         <TextView
             android:id="@+id/networkView"
