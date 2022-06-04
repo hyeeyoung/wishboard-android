@@ -95,7 +95,7 @@ class WishItemRegistrationViewModel @Inject constructor(
         itemRegistrationStatus.postValue(ProcessStatus.IN_PROGRESS)
 
         // TODO 가격 데이터에 천단위 구분자 ',' 있는 경우 문자열 처리 필요
-        safeLet(itemName.value?.trim(), itemUrl.value) { name, siteUrl ->
+        safeLet(itemName.value?.trim(), getValidUrl(itemUrl.value)) { name, siteUrl ->
             withContext(Dispatchers.IO) {
                 itemImage.value?.let { imageUrl ->
                     val bitmap = getBitmapFromURL(imageUrl) ?: return@let
@@ -443,6 +443,32 @@ class WishItemRegistrationViewModel @Inject constructor(
         val trimmedMemo = memo?.trim()
         if (trimmedMemo.isNullOrBlank()) return null
         return trimmedMemo
+    }
+
+    private fun getValidUrl(url: String?): String? {
+        return if (checkValidationItemUrl(url)) {
+            url
+        } else {
+            getRefinedUrl(url ?: return null)
+        }
+    }
+
+    /** 쿠팡 > 앱 내 공유하기 버튼 클릭 > 위시보드로 공유할 경우 url 앞에 한글이 붙기 때문에 유효한 url만 떼어내고자 해당 함수에서 url을 가공함 */
+    private fun getRefinedUrl(url: String): String? {
+        val httpStartIdx = url.indexOf("http")
+        if (httpStartIdx == -1) return null
+        val refinedUrl = url.substring(httpStartIdx)
+
+        var httpEndIdx = refinedUrl.indexOf(" ")
+        if (httpEndIdx == -1) {
+            httpEndIdx = refinedUrl.indexOf("\n")
+        }
+
+        return if (httpEndIdx == -1) {
+            refinedUrl
+        } else {
+            refinedUrl.substring(0, httpEndIdx)
+        }
     }
 
     fun getItemName(): LiveData<String?> = itemName
