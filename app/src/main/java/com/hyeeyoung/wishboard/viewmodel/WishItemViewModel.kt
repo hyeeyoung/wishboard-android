@@ -11,7 +11,6 @@ import com.hyeeyoung.wishboard.repository.wish.WishRepository
 import com.hyeeyoung.wishboard.service.AWSS3Service
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.net.URISyntaxException
 import java.net.URL
 import javax.inject.Inject
 
@@ -74,7 +73,7 @@ class WishItemViewModel @Inject constructor(
             } else {
                 domain
             }
-        } catch (e: URISyntaxException) {
+        } catch (e: Exception) {
             null
         }
     }
