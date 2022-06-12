@@ -164,7 +164,7 @@ class SignViewModel @Inject constructor(
 
     private fun checkPasswordFormatValidation(password: String?) {
         val passwordPattern =
-            Pattern.compile("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[$@$!%*#?&]).{7,15}.$")
+            Pattern.compile("^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[{!\"#\$%&'()*+,-.:;<=>?@\\[\\]^_`{|}~/\\\\]).{7,15}.$")
         isValidPasswordFormat.value = passwordPattern.matcher(password).matches()
     }
 
