@@ -17,7 +17,6 @@ import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.repository.folder.FolderRepository
 import com.hyeeyoung.wishboard.repository.wish.WishRepository
 import com.hyeeyoung.wishboard.service.AWSS3Service
-import com.hyeeyoung.wishboard.util.ParsingUtils
 import com.hyeeyoung.wishboard.util.getTimestamp
 import com.hyeeyoung.wishboard.util.safeLet
 import com.hyeeyoung.wishboard.view.folder.adapters.FolderListAdapter
@@ -83,7 +82,7 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     /** 오픈그래프 메타태그 파싱을 통해 아이템 정보 가져오기 */
     suspend fun getWishItemInfo(url: String) {
-        val result = ParsingUtils().onBindParsingType(url)
+        val result = wishRepository.getItemParsingInfo(url) ?: return
         itemName.postValue(result.name)
         itemPrice.postValue(result.price.toString())
         itemImage.postValue(result.image)

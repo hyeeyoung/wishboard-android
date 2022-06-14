@@ -66,8 +66,6 @@ class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemCli
     }
 
     private fun initializeView() {
-        binding.itemImage.clipToOutline = true
-
         val adapter = viewModel.getFolderListSquareAdapter()
         adapter.setOnItemClickListener(this)
         adapter.setOnNewFolderClickListener(this)
@@ -97,7 +95,7 @@ class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemCli
     private fun addObservers() {
         viewModel.getItemImage().observe(this) { image ->
             if (image == null) return@observe
-            Glide.with(this).load(image).into(binding.itemImage)
+            Glide.with(this).load(image).circleCrop().error(R.mipmap.ic_main).into(binding.itemImage)
         }
         viewModel.isCompleteUpload().observe(this) { isComplete ->
             if (isComplete == true) {

@@ -1,6 +1,7 @@
 package com.hyeeyoung.wishboard.repository.wish
 
 import android.util.Log
+import com.hyeeyoung.wishboard.model.wish.ItemInfo
 import com.hyeeyoung.wishboard.model.wish.WishItem
 import com.hyeeyoung.wishboard.service.RemoteService
 
@@ -99,6 +100,18 @@ class WishRepositoryImpl : WishRepository {
             e.printStackTrace()
             return false
         }
+    }
+
+    override suspend fun getItemParsingInfo(site: String): ItemInfo? {
+        return runCatching {
+            api.getItemParsingInfo(site)
+        }.fold({
+            Log.d(TAG, "아이템 파싱 성공")
+            it.body()?.data
+        }, {
+            Log.d(TAG, "아이템 파싱 실패: ${it.message}")
+            null
+        })
     }
 
     companion object {
