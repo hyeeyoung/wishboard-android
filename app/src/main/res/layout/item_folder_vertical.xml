@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.hyeeyoung.wishboard.model.folder.FolderItem" />
+            type="com.hyeeyoung.wishboard.data.model.folder.FolderItem" />
 
         <import type="com.hyeeyoung.wishboard.R" />
     </data>

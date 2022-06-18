@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.hyeeyoung.wishboard.model.cart.CartItem" />
+            type="com.hyeeyoung.wishboard.data.model.cart.CartItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

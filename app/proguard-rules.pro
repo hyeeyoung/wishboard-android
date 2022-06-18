@@ -20,4 +20,4 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
--keep class com.hyeeyoung.wishboard.model.** { *; }
+-keep class com.hyeeyoung.wishboard.data.model.** { *; }

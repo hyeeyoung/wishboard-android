@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.wish.item.screens.WishBasicFragment">
+    tools:context=".presentation.wishitem.screens.WishBasicFragment">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel" />
+            type="com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel" />
 
         <import type="androidx.navigation.Navigation" />
 

@@ -2,17 +2,17 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.hyeeyoung.wishboard.view.noti.screens.NotiSettingBottomDialogFragment">
+    tools:context="com.hyeeyoung.wishboard.presentation.noti.screens.NotiSettingBottomDialogFragment">
 
     <data>
 
         <import type="com.hyeeyoung.wishboard.R" />
 
-        <import type="com.hyeeyoung.wishboard.model.common.ProcessStatus" />
+        <import type="com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus" />
 
         <variable
             name="viewModel"
-            type="com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel" />
+            type="com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel" />
     </data>
 
 

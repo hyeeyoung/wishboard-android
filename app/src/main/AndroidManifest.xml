@@ -21,12 +21,12 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".view.sign.screens.SignActivity"
+            android:name=".presentation.sign.screens.SignActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize" />
 
         <activity
-            android:name=".view.SplashActivity"
+            android:name=".presentation.splash.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -37,7 +37,7 @@
         </activity>
 
         <activity
-            android:name=".view.MainActivity"
+            android:name=".presentation.main.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize">
@@ -53,12 +53,12 @@
         </activity>
 
         <activity
-            android:name=".view.home.HowToUseActivity"
+            android:name=".presentation.howtouse.screens.HowToUseActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
 
         <activity
-            android:name=".view.wish.item.screens.WishLinkSharingActivity"
+            android:name=".presentation.wishitem.screens.WishLinkSharingActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/AppThemePopup"
@@ -71,7 +71,7 @@
         </activity>
 
         <activity
-            android:name=".view.common.screens.WebViewActivity"
+            android:name=".presentation.common.screens.WebViewActivity"
             android:exported="true"/>
 
         <provider
@@ -86,7 +86,7 @@
 
         <!-- FCM -->
         <service
-            android:name=".service.FireBaseMessagingService"
+            android:name="com.hyeeyoung.wishboard.data.services.FireBaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

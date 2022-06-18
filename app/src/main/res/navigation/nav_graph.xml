@@ -12,7 +12,7 @@
 
     <fragment
         android:id="@+id/home_fragment"
-        android:name="com.hyeeyoung.wishboard.view.wish.list.screens.HomeFragment"
+        android:name="com.hyeeyoung.wishboard.presentation.home.HomeFragment"
         android:label="homeFragment"
         tools:layout="@layout/fragment_home">
         <argument
@@ -31,7 +31,7 @@
     </fragment>
     <fragment
         android:id="@+id/cart_fragment"
-        android:name="com.hyeeyoung.wishboard.view.cart.screens.CartFragment"
+        android:name="com.hyeeyoung.wishboard.presentation.cart.CartFragment"
         android:label="cartFragment"
         tools:layout="@layout/fragment_cart">
         <action
@@ -40,7 +40,7 @@
     </fragment>
     <fragment
         android:id="@+id/folder_fragment"
-        android:name="com.hyeeyoung.wishboard.view.folder.screens.FolderFragment"
+        android:name="com.hyeeyoung.wishboard.presentation.folder.screens.FolderFragment"
         android:label="folderFragment"
         tools:layout="@layout/fragment_folder">
         <action
@@ -49,7 +49,7 @@
     </fragment>
     <fragment
         android:id="@+id/noti_fragment"
-        android:name="com.hyeeyoung.wishboard.view.noti.screens.NotiFragment"
+        android:name="com.hyeeyoung.wishboard.presentation.noti.screens.NotiFragment"
         android:label="notiFragment"
         tools:layout="@layout/fragment_noti">
         <action
@@ -58,7 +58,7 @@
     </fragment>
     <fragment
         android:id="@+id/folder_detail_fragment"
-        android:name="com.hyeeyoung.wishboard.view.folder.screens.FolderDetailFragment"
+        android:name="com.hyeeyoung.wishboard.presentation.folder.screens.FolderDetailFragment"
         android:label="folderDetailFragment"
         tools:layout="@layout/fragment_folder_detail" >
         <action

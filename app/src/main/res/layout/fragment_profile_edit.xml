@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.my.screens.MyProfileEditFragment">
+    tools:context=".presentation.my.screens.MyProfileEditFragment">
 
     <data>
 
@@ -12,11 +12,11 @@
 
         <import type="android.view.View" />
 
-        <import type="com.hyeeyoung.wishboard.model.common.ProcessStatus" />
+        <import type="com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus" />
 
         <variable
             name="viewModel"
-            type="com.hyeeyoung.wishboard.viewmodel.MyViewModel" />
+            type="com.hyeeyoung.wishboard.presentation.my.MyViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
