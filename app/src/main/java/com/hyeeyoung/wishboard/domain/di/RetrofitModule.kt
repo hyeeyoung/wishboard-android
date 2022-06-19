@@ -1,7 +1,6 @@
 package com.hyeeyoung.wishboard.domain.di
 
 import com.hyeeyoung.wishboard.BuildConfig
-import com.hyeeyoung.wishboard.data.services.RemoteService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,8 +14,8 @@ import javax.inject.Singleton
 object RetrofitModule {
     @Singleton
     @Provides
-    fun bindRetrofitService(): RemoteService =
+    fun provideRetrofit(): Retrofit =
         Retrofit.Builder().baseUrl(BuildConfig.BASE_URL).addConverterFactory(
             GsonConverterFactory.create()
-        ).build().create(RemoteService::class.java)
+        ).build()
 }

@@ -3,15 +3,15 @@ package com.hyeeyoung.wishboard.data.repositories
 import android.util.Log
 import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.data.model.user.UserInfo
+import com.hyeeyoung.wishboard.data.services.retrofit.AuthService
 import com.hyeeyoung.wishboard.domain.repositories.SignRepository
-import com.hyeeyoung.wishboard.data.services.RemoteService
+import javax.inject.Inject
 
-class SignRepositoryImpl : SignRepository {
-    private val api = RemoteService.api
-
+class SignRepositoryImpl @Inject constructor(private val authService: AuthService) :
+    SignRepository {
     override suspend fun signUp(email: String, password: String): Boolean {
         try {
-            val response = api.signUpUser(UserInfo(email = email, password = password))
+            val response = authService.signUpUser(UserInfo(email = email, password = password))
             val result = response.body()
             // TODO 네트워크에 연결되지 않은 경우 예외처리 필요
             if (response.isSuccessful) {
@@ -31,7 +31,7 @@ class SignRepositoryImpl : SignRepository {
 
     override suspend fun signIn(email: String, password: String): Boolean {
         try {
-            val response = api.signInUser(UserInfo(email = email, password = password))
+            val response = authService.signInUser(UserInfo(email = email, password = password))
             val result = response.body()
             if (response.isSuccessful) {
                 Log.d(TAG, "로그인 성공")
@@ -50,7 +50,7 @@ class SignRepositoryImpl : SignRepository {
 
     override suspend fun signInEmail(email: String): Boolean {
         try {
-            val response = api.signInEmail(true, email)
+            val response = authService.signInEmail(true, email)
             val result = response.body()
             if (response.isSuccessful) {
                 Log.d(TAG, "이메일 인증 로그인 성공")
@@ -70,7 +70,7 @@ class SignRepositoryImpl : SignRepository {
 
     override suspend fun requestVerificationMail(email: String): Pair<Pair<Boolean, String?>, Int>? {
         try {
-            val response = api.requestVerificationMail(email)
+            val response = authService.requestVerificationMail(email)
             val result = response.body()
             if (response.isSuccessful) {
                 Log.d(TAG, "인증메일 요청 성공")
@@ -89,7 +89,7 @@ class SignRepositoryImpl : SignRepository {
 
     override suspend fun checkRegisteredUser(email: String): Pair<Boolean, Int>? {
         try {
-            val response = api.checkRegisteredUser(email)
+            val response = authService.checkRegisteredUser(email)
             if (response.isSuccessful) {
                 Log.d(TAG, "가입 가능 검사 성공")
             } else {

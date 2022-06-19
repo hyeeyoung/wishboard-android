@@ -2,15 +2,15 @@ package com.hyeeyoung.wishboard.data.repositories
 
 import android.util.Log
 import com.hyeeyoung.wishboard.data.model.user.UserInfo
+import com.hyeeyoung.wishboard.data.services.retrofit.UserService
 import com.hyeeyoung.wishboard.domain.repositories.UserRepository
-import com.hyeeyoung.wishboard.data.services.RemoteService
+import javax.inject.Inject
 
-class UserRepositoryImpl : UserRepository {
-    private val api = RemoteService.api
-
+class UserRepositoryImpl @Inject constructor(private val userService: UserService) :
+    UserRepository {
     override suspend fun fetchUserInfo(userToken: String): UserInfo? {
         try {
-            val response = api.fetchUserInfo(userToken) ?: return null
+            val response = userService.fetchUserInfo(userToken) ?: return null
             if (response.isSuccessful) {
                 Log.d(TAG, "사용자 정보 불러오기 성공")
             } else {
@@ -25,7 +25,7 @@ class UserRepositoryImpl : UserRepository {
 
     override suspend fun registerFCMToken(userToken: String, fcmToken: String?): Boolean {
         try {
-            val response = api.updateFCMToken(userToken, fcmToken)
+            val response = userService.updateFCMToken(userToken, fcmToken)
             if (response.isSuccessful) {
                 Log.d(TAG, "FCM 토큰 등록 성공")
             } else {
@@ -45,7 +45,7 @@ class UserRepositoryImpl : UserRepository {
     ): Pair<Boolean, Int>? {
         try {
             val userInfo = UserInfo(nickname = nickname, profileImage = imageFileName)
-            val response = api.updateUserInfo(userToken, userInfo)
+            val response = userService.updateUserInfo(userToken, userInfo)
             if (response.isSuccessful) {
                 Log.d(TAG, "사용자 정보 수정 성공")
             } else {
@@ -60,7 +60,7 @@ class UserRepositoryImpl : UserRepository {
 
     override suspend fun deleteUserAccount(userToken: String): Boolean {
         try {
-            val response = api.deleteUserAccount(userToken)
+            val response = userService.deleteUserAccount(userToken)
             if (response.isSuccessful) {
                 Log.d(TAG, "사용자 탈퇴 처리 성공")
             } else {

@@ -3,15 +3,15 @@ package com.hyeeyoung.wishboard.data.repositories
 import android.util.Log
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
+import com.hyeeyoung.wishboard.data.services.retrofit.FolderService
 import com.hyeeyoung.wishboard.domain.repositories.FolderRepository
-import com.hyeeyoung.wishboard.data.services.RemoteService
+import javax.inject.Inject
 
-class FolderRepositoryImpl : FolderRepository {
-    private val api = RemoteService.api
-
+class FolderRepositoryImpl @Inject constructor(private val folderService: FolderService) :
+    FolderRepository {
     override suspend fun fetchFolderList(token: String): List<FolderItem>? {
         try {
-            val response = api.fetchFolderList(token) ?: return null
+            val response = folderService.fetchFolderList(token) ?: return null
             if (response.isSuccessful) {
                 Log.d(TAG, "폴더 가져오기 성공")
             } else {
@@ -26,7 +26,7 @@ class FolderRepositoryImpl : FolderRepository {
 
     override suspend fun fetchFolderListSummary(token: String): List<FolderItem>? {
         try {
-            val response = api.fetchFolderListSummary(token) ?: return null
+            val response = folderService.fetchFolderListSummary(token) ?: return null
             if (response.isSuccessful) {
                 Log.d(TAG, "폴더 요약본 가져오기 성공")
             } else {
@@ -41,7 +41,7 @@ class FolderRepositoryImpl : FolderRepository {
 
     override suspend fun fetchItemsInFolder(token: String, folderId: Long): List<WishItem>? {
         try {
-            val response = api.fetchItemsInFolder(token, folderId) ?: return null
+            val response = folderService.fetchItemsInFolder(token, folderId) ?: return null
             if (response.isSuccessful) {
                 Log.d(TAG, "폴더 내 아이템 가져오기 성공")
             } else {
@@ -59,7 +59,7 @@ class FolderRepositoryImpl : FolderRepository {
         folderItemInfo: FolderItem
     ): Pair<Pair<Boolean, Int>, Long?>? {
         try {
-            val response = api.createNewFolder(token, folderItemInfo)
+            val response = folderService.createNewFolder(token, folderItemInfo)
             if (response.isSuccessful) {
                 Log.d(TAG, "폴더 추가 성공")
             } else {
@@ -78,7 +78,7 @@ class FolderRepositoryImpl : FolderRepository {
         folderName: String
     ): Pair<Boolean, Int>? {
         try {
-            val response = api.updateFolderName(token, folderId, folderName)
+            val response = folderService.updateFolderName(token, folderId, folderName)
 
             if (response.isSuccessful) {
                 Log.d(TAG, "폴더명 수정 성공")
@@ -94,7 +94,7 @@ class FolderRepositoryImpl : FolderRepository {
 
     override suspend fun deleteFolder(token: String, folderId: Long): Boolean {
         try {
-            val response = api.deleteFolder(token, folderId)
+            val response = folderService.deleteFolder(token, folderId)
             if (response.isSuccessful) {
                 Log.d(TAG, "폴더 삭제 성공")
             } else {

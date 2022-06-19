@@ -2,15 +2,18 @@ package com.hyeeyoung.wishboard.data.repositories
 
 import android.util.Log
 import com.hyeeyoung.wishboard.data.model.noti.NotiItem
+import com.hyeeyoung.wishboard.data.services.retrofit.NotiService
+import com.hyeeyoung.wishboard.data.services.retrofit.UserService
 import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
-import com.hyeeyoung.wishboard.data.services.RemoteService
+import javax.inject.Inject
 
-class NotiRepositoryImpl : NotiRepository {
-    private val api = RemoteService.api
-
+class NotiRepositoryImpl @Inject constructor(
+    private val notiService: NotiService,
+    private val userService: UserService
+) : NotiRepository {
     override suspend fun fetchPreviousNotiList(token: String): List<NotiItem>? {
         try {
-            val response = api.fetchPreviousNotiList(token) ?: return null
+            val response = notiService.fetchPreviousNotiList(token) ?: return null
             if (response.isSuccessful) {
                 Log.d(TAG, "지난 알림 가져오기 성공")
             } else {
@@ -25,7 +28,7 @@ class NotiRepositoryImpl : NotiRepository {
 
     override suspend fun fetchAllNotiList(token: String): List<NotiItem>? {
         try {
-            val response = api.fetchAllNotiList(token) ?: return null
+            val response = notiService.fetchAllNotiList(token) ?: return null
             if (response.isSuccessful) {
                 Log.d(TAG, "모든 알림 가져오기 성공")
             } else {
@@ -40,7 +43,7 @@ class NotiRepositoryImpl : NotiRepository {
 
     override suspend fun updateNotiReadState(token: String, itemId: Long) {
         try {
-            val response = api.updateNotiReadState(token, itemId)
+            val response = notiService.updateNotiReadState(token, itemId)
             if (response.isSuccessful) {
                 Log.d(TAG, "알림 읽음 처리 성공")
             } else {
@@ -53,7 +56,7 @@ class NotiRepositoryImpl : NotiRepository {
 
     override suspend fun updatePushState(token: String, isSet: Boolean) {
         try {
-            val response = api.updatePushState(token, isSet)
+            val response = userService.updatePushState(token, isSet)
 
             val onOff = if (isSet) {
                 "켜기"

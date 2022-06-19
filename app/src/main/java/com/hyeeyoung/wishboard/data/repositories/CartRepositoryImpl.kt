@@ -2,15 +2,15 @@ package com.hyeeyoung.wishboard.data.repositories
 
 import android.util.Log
 import com.hyeeyoung.wishboard.data.model.cart.CartItem
+import com.hyeeyoung.wishboard.data.services.retrofit.CartService
 import com.hyeeyoung.wishboard.domain.repositories.CartRepository
-import com.hyeeyoung.wishboard.data.services.RemoteService
+import javax.inject.Inject
 
-class CartRepositoryImpl : CartRepository {
-    private val api = RemoteService.api
-
+class CartRepositoryImpl @Inject constructor(private val cartService: CartService) :
+    CartRepository {
     override suspend fun addToCart(token: String, itemId: Long): Boolean {
         try {
-            val response = api.addToCart(token, itemId)
+            val response = cartService.addToCart(token, itemId)
             if (response.isSuccessful) {
                 Log.d(TAG, "장바구니에서 추가 성공")
             } else {
@@ -26,7 +26,7 @@ class CartRepositoryImpl : CartRepository {
     override suspend fun updateCartItemCount(token: String, item: CartItem): Boolean {
         try {
             if (item.wishItem.id == null) return false
-            val response = api.updateToCart(token, item.wishItem.id!!, item.cartItemInfo.count)
+            val response = cartService.updateToCart(token, item.wishItem.id!!, item.cartItemInfo.count)
             if (response.isSuccessful) {
                 Log.d(TAG, "장바구니 수정 성공")
             } else {
@@ -41,7 +41,7 @@ class CartRepositoryImpl : CartRepository {
 
     override suspend fun removeToCart(token: String, itemId: Long): Boolean {
         try {
-            val response = api.removeToCart(token, itemId)
+            val response = cartService.removeToCart(token, itemId)
             if (response.isSuccessful) {
                 Log.d(TAG, "장바구니에서 제거 성공")
             } else {
@@ -56,7 +56,7 @@ class CartRepositoryImpl : CartRepository {
 
     override suspend fun fetchCartList(token: String): List<CartItem>? {
         try {
-            val response = api.fetchCart(token) ?: return null
+            val response = cartService.fetchCart(token) ?: return null
             if (response.isSuccessful) {
                 Log.d(TAG, "장바구니 가져오기 성공")
             } else {

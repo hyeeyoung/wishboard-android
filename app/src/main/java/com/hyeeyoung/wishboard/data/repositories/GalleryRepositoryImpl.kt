@@ -5,10 +5,11 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import com.hyeeyoung.wishboard.domain.repositories.GalleryRepository
+import javax.inject.Inject
 import kotlin.math.min
 
 // TODO rename ~~Impl class name
-class GalleryRepositoryImpl : GalleryRepository {
+class GalleryRepositoryImpl @Inject constructor(): GalleryRepository {
     private var imageUris = mutableListOf<Uri>()
     private var pageIndex: Int = 0
 

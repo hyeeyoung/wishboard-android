@@ -1,67 +1,33 @@
 package com.hyeeyoung.wishboard.domain.di
 
-import com.hyeeyoung.wishboard.domain.repositories.CartRepository
-import com.hyeeyoung.wishboard.data.repositories.CartRepositoryImpl
-import com.hyeeyoung.wishboard.domain.repositories.GalleryRepository
-import com.hyeeyoung.wishboard.data.repositories.GalleryRepositoryImpl
-import com.hyeeyoung.wishboard.domain.repositories.FolderRepository
-import com.hyeeyoung.wishboard.data.repositories.FolderRepositoryImpl
-import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
-import com.hyeeyoung.wishboard.data.repositories.NotiRepositoryImpl
-import com.hyeeyoung.wishboard.domain.repositories.WishRepository
-import com.hyeeyoung.wishboard.data.repositories.WishRepositoryImpl
-import com.hyeeyoung.wishboard.domain.repositories.SignRepository
-import com.hyeeyoung.wishboard.data.repositories.SignRepositoryImpl
-import com.hyeeyoung.wishboard.domain.repositories.UserRepository
-import com.hyeeyoung.wishboard.data.repositories.UserRepositoryImpl
+import com.hyeeyoung.wishboard.data.repositories.*
+import com.hyeeyoung.wishboard.domain.repositories.*
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import dagger.hilt.android.components.ViewModelComponent
 
 @Module
-@InstallIn(SingletonComponent::class)
-object RepositoryModule {
-    @Singleton
-    @Provides
-    fun provideSignRepository(): SignRepository {
-        return SignRepositoryImpl()
-    }
+@InstallIn(ViewModelComponent::class)
+abstract class RepositoryModule {
+    @Binds
+    abstract fun bindSignRepository(signRepositoryImpl: SignRepositoryImpl): SignRepository
 
-    @Singleton
-    @Provides
-    fun provideWishRepository(): WishRepository {
-        return WishRepositoryImpl()
-    }
+    @Binds
+    abstract fun bindWishRepository(wishRepositoryImpl: WishRepositoryImpl): WishRepository
 
-    @Singleton
-    @Provides
-    fun provideCartRepository(): CartRepository {
-        return CartRepositoryImpl()
-    }
+    @Binds
+    abstract fun bindCartRepository(cartRepositoryImpl: CartRepositoryImpl): CartRepository
 
-    @Singleton
-    @Provides
-    fun provideFolderRepository(): FolderRepository {
-        return FolderRepositoryImpl()
-    }
+    @Binds
+    abstract fun bindFolderRepository(folderRepositoryImpl: FolderRepositoryImpl): FolderRepository
 
-    @Singleton
-    @Provides
-    fun provideGalleryRepository(): GalleryRepository {
-        return GalleryRepositoryImpl()
-    }
+    @Binds
+    abstract fun bindGalleryRepository(galleryRepositoryImpl: GalleryRepositoryImpl): GalleryRepository
 
-    @Singleton
-    @Provides
-    fun provideNotiRepository(): NotiRepository {
-        return NotiRepositoryImpl()
-    }
+    @Binds
+    abstract fun bindNotiRepository(notiRepositoryImpl: NotiRepositoryImpl): NotiRepository
 
-    @Singleton
-    @Provides
-    fun provideUserRepository(): UserRepository {
-        return UserRepositoryImpl()
-    }
+    @Binds
+    abstract fun bindUserRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository
 }

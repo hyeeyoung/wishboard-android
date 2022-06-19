@@ -3,15 +3,15 @@ package com.hyeeyoung.wishboard.data.repositories
 import android.util.Log
 import com.hyeeyoung.wishboard.data.model.wish.ItemInfo
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
+import com.hyeeyoung.wishboard.data.services.retrofit.WishItemService
 import com.hyeeyoung.wishboard.domain.repositories.WishRepository
-import com.hyeeyoung.wishboard.data.services.RemoteService
+import javax.inject.Inject
 
-class WishRepositoryImpl : WishRepository {
-    private val api = RemoteService.api
-
+class WishRepositoryImpl @Inject constructor(private val wishItemService: WishItemService) :
+    WishRepository {
     override suspend fun fetchWishList(token: String): List<WishItem>? {
         try {
-            val response = api.fetchWishList(token) ?: return null
+            val response = wishItemService.fetchWishList(token) ?: return null
             if (response.isSuccessful) {
                 Log.d(TAG, "아이템 가져오기 성공")
             } else {
@@ -26,7 +26,7 @@ class WishRepositoryImpl : WishRepository {
 
     override suspend fun fetchLatestWishItem(token: String): WishItem? {
         try {
-            val response = api.fetchLatestWishItem(token) ?: return null
+            val response = wishItemService.fetchLatestWishItem(token) ?: return null
             if (response.isSuccessful) {
                 Log.d(TAG, "가장 최근 등록된 아이템 가져오기 성공")
             } else {
@@ -41,7 +41,7 @@ class WishRepositoryImpl : WishRepository {
 
     override suspend fun uploadWishItem(token: String, wishItem: WishItem): Boolean {
         try {
-            val response = api.uploadWishItem(token, wishItem)
+            val response = wishItemService.uploadWishItem(token, wishItem)
             if (response.isSuccessful) {
                 Log.d(TAG, "아이템 등록 성공")
             } else {
@@ -56,7 +56,7 @@ class WishRepositoryImpl : WishRepository {
 
     override suspend fun updateWishItem(token: String, itemId: Long, wishItem: WishItem): Boolean {
         try {
-            val response = api.updateToWishItem(token, itemId, wishItem)
+            val response = wishItemService.updateToWishItem(token, itemId, wishItem)
             if (response.isSuccessful) {
                 Log.d(TAG, "아이템 수정 성공")
             } else {
@@ -75,7 +75,7 @@ class WishRepositoryImpl : WishRepository {
         folderId: Long
     ): Boolean {
         try {
-            val response = api.updateFolderOfItem(token, itemId, folderId)
+            val response = wishItemService.updateFolderOfItem(token, itemId, folderId)
             if (response.isSuccessful) {
                 Log.d(TAG, "아이템 폴더 수정 성공")
             } else {
@@ -90,7 +90,7 @@ class WishRepositoryImpl : WishRepository {
 
     override suspend fun deleteWishItem(token: String, itemId: Long): Boolean {
         try {
-            val response = api.deleteWishItem(token, itemId)
+            val response = wishItemService.deleteWishItem(token, itemId)
             if (response.isSuccessful) {
                 Log.d(TAG, "아이템 삭제 성공")
             } else {
@@ -105,7 +105,7 @@ class WishRepositoryImpl : WishRepository {
 
     override suspend fun getItemParsingInfo(site: String): ItemInfo? {
         return runCatching {
-            api.getItemParsingInfo(site)
+            wishItemService.getItemParsingInfo(site)
         }.fold({
             Log.d(TAG, "아이템 파싱 성공")
             it.body()?.data
