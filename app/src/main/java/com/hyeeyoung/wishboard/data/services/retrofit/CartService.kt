@@ -1,6 +1,7 @@
 package com.hyeeyoung.wishboard.data.services.retrofit
 
-import com.hyeeyoung.wishboard.data.model.RequestResult
+import com.hyeeyoung.wishboard.data.model.base.BaseResponseData
+import com.hyeeyoung.wishboard.data.model.base.BaseResponseResult
 import com.hyeeyoung.wishboard.data.model.cart.CartItem
 import retrofit2.Response
 import retrofit2.http.*
@@ -14,13 +15,13 @@ interface CartService {
     suspend fun addToCart(
         @Header("Authorization") token: String,
         @Field("item_id") itemId: Long
-    ): Response<RequestResult>
+    ): Response<BaseResponseResult<BaseResponseData?>>
 
     @DELETE("cart/{item_id}")
     suspend fun removeToCart(
         @Header("Authorization") token: String,
         @Path("item_id") itemId: Long
-    ): Response<RequestResult>
+    ): Response<BaseResponseResult<BaseResponseData?>>
 
     @FormUrlEncoded
     @PUT("cart/{item_id}")
@@ -28,5 +29,5 @@ interface CartService {
         @Header("Authorization") token: String,
         @Path("item_id") itemId: Long,
         @Field("item_count") itemCount: Int
-    ): Response<RequestResult>
+    ): Response<BaseResponseResult<BaseResponseData?>>
 }

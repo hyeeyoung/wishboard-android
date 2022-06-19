@@ -1,7 +1,7 @@
 package com.hyeeyoung.wishboard.data.services.retrofit
 
-import com.hyeeyoung.wishboard.data.model.BaseRequestResult
-import com.hyeeyoung.wishboard.data.model.RequestResult
+import com.hyeeyoung.wishboard.data.model.base.BaseResponseData
+import com.hyeeyoung.wishboard.data.model.base.BaseResponseResult
 import com.hyeeyoung.wishboard.data.model.wish.ItemInfo
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import retrofit2.Response
@@ -18,30 +18,30 @@ interface WishItemService {
     suspend fun uploadWishItem(
         @Header("Authorization") token: String,
         @Body wishItem: WishItem
-    ): Response<RequestResult>
+    ): Response<BaseResponseResult<BaseResponseData?>>
 
     @PUT("item/{item_id}")
     suspend fun updateToWishItem(
         @Header("Authorization") token: String,
         @Path("item_id") itemId: Long,
         @Body wishItem: WishItem
-    ): Response<RequestResult>
+    ): Response<BaseResponseResult<BaseResponseData?>>
 
     @PUT("item/{item_id}/folder/{folder_id}")
     suspend fun updateFolderOfItem(
         @Header("Authorization") token: String,
         @Path("item_id") itemId: Long,
         @Path("folder_id") folderId: Long
-    ): Response<RequestResult>
+    ): Response<BaseResponseResult<BaseResponseData?>>
 
     @DELETE("item/{item_id}")
     suspend fun deleteWishItem(
         @Header("Authorization") token: String,
         @Path("item_id") itemId: Long
-    ): Response<RequestResult>
+    ): Response<BaseResponseResult<BaseResponseData?>>
 
     @GET("item/parse?site=")
     suspend fun getItemParsingInfo(
         @Query("site") site: String
-    ): Response<BaseRequestResult<ItemInfo>?>
+    ): Response<BaseResponseResult<ItemInfo>?>
 }

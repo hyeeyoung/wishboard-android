@@ -1,6 +1,7 @@
 package com.hyeeyoung.wishboard.data.services.retrofit
 
-import com.hyeeyoung.wishboard.data.model.RequestResult
+import com.hyeeyoung.wishboard.data.model.base.BaseResponseData
+import com.hyeeyoung.wishboard.data.model.base.BaseResponseResult
 import com.hyeeyoung.wishboard.data.model.noti.NotiItem
 import retrofit2.Response
 import retrofit2.http.GET
@@ -23,5 +24,5 @@ interface NotiService {
     suspend fun updateNotiReadState(
         @Header("Authorization") token: String,
         @Path("item_id") itemId: Long,
-    ): Response<RequestResult>
+    ): Response<BaseResponseResult<BaseResponseData?>>
 }

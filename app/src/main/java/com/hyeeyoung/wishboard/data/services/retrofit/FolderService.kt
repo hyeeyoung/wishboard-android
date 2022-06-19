@@ -1,7 +1,7 @@
 package com.hyeeyoung.wishboard.data.services.retrofit
 
-import com.hyeeyoung.wishboard.data.model.RequestResult
-import com.hyeeyoung.wishboard.data.model.RequestResultData
+import com.hyeeyoung.wishboard.data.model.base.BaseResponseData
+import com.hyeeyoung.wishboard.data.model.base.BaseResponseResult
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import retrofit2.Response
@@ -28,7 +28,7 @@ interface FolderService {
     suspend fun createNewFolder(
         @Header("Authorization") token: String,
         @Body folderItem: FolderItem
-    ): Response<RequestResultData>
+    ): Response<BaseResponseResult<BaseResponseData>>
 
     @FormUrlEncoded
     @PUT("folder/{folder_id}")
@@ -36,11 +36,11 @@ interface FolderService {
         @Header("Authorization") token: String,
         @Path("folder_id") folderId: Long,
         @Field("folder_name") folderName: String
-    ): Response<RequestResult>
+    ): Response<BaseResponseResult<BaseResponseData?>>
 
     @DELETE("folder/{folder_id}")
     suspend fun deleteFolder(
         @Header("Authorization") token: String,
         @Path("folder_id") folderId: Long,
-    ): Response<RequestResult>
+    ): Response<BaseResponseResult<BaseResponseData?>>
 }
