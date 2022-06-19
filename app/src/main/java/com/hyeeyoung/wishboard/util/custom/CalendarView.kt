@@ -10,7 +10,7 @@ import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.util.CalendarUtils.Companion.WEEKS_PER_MONTH
-import com.hyeeyoung.wishboard.viewmodel.NotiViewModel
+import com.hyeeyoung.wishboard.presentation.noti.NotiViewModel
 import org.joda.time.DateTime
 import org.joda.time.DateTimeConstants.DAYS_PER_WEEK
 import kotlin.math.max

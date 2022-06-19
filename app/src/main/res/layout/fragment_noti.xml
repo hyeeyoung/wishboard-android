@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.noti.screens.NotiFragment">
+    tools:context=".presentation.noti.screens.NotiFragment">
 
     <data>
 
@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.hyeeyoung.wishboard.viewmodel.NotiViewModel" />
+            type="com.hyeeyoung.wishboard.presentation.noti.NotiViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

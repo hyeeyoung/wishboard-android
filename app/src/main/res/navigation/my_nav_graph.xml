@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/my_fragment"
-        android:name="com.hyeeyoung.wishboard.view.my.screens.MyFragment"
+        android:name="com.hyeeyoung.wishboard.presentation.my.screens.MyFragment"
         android:label="myFragment"
         tools:layout="@layout/fragment_my">
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/profile_edit_fragment"
-        android:name="com.hyeeyoung.wishboard.view.my.screens.MyProfileEditFragment"
+        android:name="com.hyeeyoung.wishboard.presentation.my.screens.MyProfileEditFragment"
         android:label="profileEditFragment"
         tools:layout="@layout/fragment_profile_edit">
         <action
@@ -27,7 +27,7 @@
 
     <fragment
         android:id="@+id/gallery_image_fragment"
-        android:name="com.hyeeyoung.wishboard.view.common.screens.GalleryImageFragment"
+        android:name="com.hyeeyoung.wishboard.presentation.common.screens.GalleryImageFragment"
         android:label="galleryImageFragment"
         tools:layout="@layout/fragment_gallery_image" />
 

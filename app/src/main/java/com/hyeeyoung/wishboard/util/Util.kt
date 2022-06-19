@@ -8,7 +8,7 @@ import android.widget.ImageView
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
-import com.hyeeyoung.wishboard.service.AWSS3Service
+import com.hyeeyoung.wishboard.data.services.AWSS3Service
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.TimeZone

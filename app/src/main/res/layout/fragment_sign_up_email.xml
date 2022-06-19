@@ -2,19 +2,19 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.sign.screens.SignUpEmailFragment">
+    tools:context=".presentation.sign.screens.SignUpEmailFragment">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.hyeeyoung.wishboard.viewmodel.SignViewModel" />
+            type="com.hyeeyoung.wishboard.presentation.sign.SignViewModel" />
 
         <import type="com.hyeeyoung.wishboard.R" />
 
         <import type="android.view.View" />
 
-        <import type="com.hyeeyoung.wishboard.model.common.ProcessStatus" />
+        <import type="com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus" />
 
         <import type="androidx.navigation.Navigation" />
     </data>

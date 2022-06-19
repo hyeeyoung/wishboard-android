@@ -1,7 +1,7 @@
 package com.hyeeyoung.wishboard.util
 
 import android.util.Log
-import com.hyeeyoung.wishboard.model.wish.WishItem
+import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import org.jsoup.Jsoup
 
 class ParsingUtils {

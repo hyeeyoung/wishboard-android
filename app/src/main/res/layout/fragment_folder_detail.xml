@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.hyeeyoung.wishboard.view.folder.screens.FolderDetailFragment">
+    tools:context="com.hyeeyoung.wishboard.presentation.folder.screens.FolderDetailFragment">
 
     <data>
 
@@ -12,7 +12,7 @@
 
         <variable
             name="viewModel"
-            type="com.hyeeyoung.wishboard.viewmodel.WishListViewModel" />
+            type="com.hyeeyoung.wishboard.presentation.home.WishListViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

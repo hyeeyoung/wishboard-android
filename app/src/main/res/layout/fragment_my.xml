@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.my.screens.MyFragment">
+    tools:context=".presentation.my.screens.MyFragment">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.hyeeyoung.wishboard.viewmodel.MyViewModel" />
+            type="com.hyeeyoung.wishboard.presentation.my.MyViewModel" />
 
         <import type="com.hyeeyoung.wishboard.R" />
     </data>
