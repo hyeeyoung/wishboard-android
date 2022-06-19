@@ -3,7 +3,7 @@ package com.hyeeyoung.wishboard.data.model.wish
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiType
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class WishItem(
