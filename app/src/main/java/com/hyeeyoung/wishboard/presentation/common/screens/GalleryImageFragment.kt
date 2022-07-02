@@ -13,18 +13,17 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import com.hyeeyoung.wishboard.BuildConfig.APPLICATION_ID
 import com.hyeeyoung.wishboard.databinding.FragmentGalleryImageBinding
 import com.hyeeyoung.wishboard.presentation.common.adapters.GalleryPagingAdapter
 import com.hyeeyoung.wishboard.presentation.common.viewmodels.GalleryViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.io.File
 
 @AndroidEntryPoint
-class GalleryImageFragment : Fragment(),
-    GalleryPagingAdapter.OnItemClickListener {
+class GalleryImageFragment : Fragment() {
     private lateinit var binding: FragmentGalleryImageBinding
     private lateinit var adapter: GalleryPagingAdapter
     private val viewModel: GalleryViewModel by viewModels()
@@ -38,22 +37,17 @@ class GalleryImageFragment : Fragment(),
 
         initializeView()
         addListeners()
-        addObservers()
+        addCollectors()
 
         return binding.root
     }
 
     private fun initializeView() {
-        adapter = GalleryPagingAdapter(requireContext())
-        adapter.setOnItemClickListener(this)
-
-        binding.imageList.layoutManager = GridLayoutManager(requireContext(), 4)
+        adapter = GalleryPagingAdapter(::onItemClick)
         binding.imageList.adapter = adapter
-
-        viewModel.fetchGalleryImageUris(requireActivity().contentResolver)
     }
 
-    override fun onItemClick(imageUri: Uri) {
+    fun onItemClick(imageUri: Uri) {
         moveToPrevious(imageUri, viewModel.copyImageToInternalStorage(imageUri))
     }
 
@@ -63,11 +57,10 @@ class GalleryImageFragment : Fragment(),
         }
     }
 
-    private fun addObservers() {
-        viewModel.getGalleryImageUris().observe(viewLifecycleOwner) {
-            if (it == null) return@observe
-            lifecycleScope.launch {
-                adapter.submitData(it)
+    private fun addCollectors() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.imageList.collectLatest { image ->
+                adapter.submitData(image)
             }
         }
     }

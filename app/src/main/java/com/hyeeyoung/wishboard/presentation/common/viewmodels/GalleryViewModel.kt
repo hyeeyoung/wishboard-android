@@ -1,10 +1,8 @@
 package com.hyeeyoung.wishboard.presentation.common.viewmodels
 
 import android.app.Application
-import android.content.ContentResolver
 import android.net.Uri
 import android.os.Environment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,12 +11,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.hyeeyoung.wishboard.WishBoardApp
-import com.hyeeyoung.wishboard.data.datasources.GalleryPagingDataSource
+import com.hyeeyoung.wishboard.data.model.GalleryData
 import com.hyeeyoung.wishboard.domain.repositories.GalleryRepository
 import com.hyeeyoung.wishboard.util.getTimestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -31,21 +28,13 @@ class GalleryViewModel @Inject constructor(
     private val galleryRepository: GalleryRepository,
 ) : ViewModel() {
     private val token = WishBoardApp.prefs.getUserToken()
+    val imageList: Flow<PagingData<GalleryData>> =
+        Pager(PagingConfig(pageSize = 40)) {
+            galleryRepository.galleryPagingSource()
+        }.flow.cachedIn(viewModelScope)
 
-    private val galleryImageUris = MutableLiveData<PagingData<Uri>>()
     private var selectedGalleryImageUri = MutableLiveData<Uri?>()
     private var imageFile: File? = null
-
-    fun fetchGalleryImageUris(contentResolver: ContentResolver) {
-        viewModelScope.launch {
-            Pager(PagingConfig(pageSize = 10)) {
-                GalleryPagingDataSource(contentResolver, galleryRepository)
-            }.flow.cachedIn(viewModelScope)
-                .collect { images ->
-                    galleryImageUris.postValue(images)
-                }
-        }
-    }
 
     fun createCameraImageFile(): File? {
         val file = File(application.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "wishtem")
@@ -91,8 +80,6 @@ class GalleryViewModel @Inject constructor(
         selectedGalleryImageUri.value = imageUri
     }
 
-    fun getGalleryImageUris(): LiveData<PagingData<Uri>?> = galleryImageUris
-    fun getSelectedGalleryImageUri(): LiveData<Uri?> = selectedGalleryImageUri
     fun getImageFile(): File? = imageFile
 
     companion object {
