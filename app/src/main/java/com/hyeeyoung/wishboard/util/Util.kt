@@ -28,6 +28,20 @@ inline fun <T1 : Any, T2 : Any, T3 : Any, R : Any> safeLet(
     return if (p1 != null && p2 != null && p3 != null) block(p1, p2, p3) else null
 }
 
+inline fun View.setOnSingleClickListener(
+    delay: Long = 500L,
+    crossinline block: (View) -> Unit
+) {
+    var previousClickedTime = 0L
+    setOnClickListener { view ->
+        val clickedTime = System.currentTimeMillis()
+        if (clickedTime - previousClickedTime >= delay) {
+            block(view)
+            previousClickedTime = clickedTime
+        }
+    }
+}
+
 fun getTimestamp(): String {
     val pattern = "yyyyMMdd'T'HHmmss'Z'"
     val timeZone = TimeZone.getTimeZone("UTC")
