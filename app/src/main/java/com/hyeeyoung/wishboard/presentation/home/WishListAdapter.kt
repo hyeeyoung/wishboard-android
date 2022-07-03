@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.databinding.ItemWishBinding
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.presentation.cart.types.CartStateType
+import com.hyeeyoung.wishboard.util.setOnSingleClickListener
 
 class WishListAdapter : ListAdapter<WishItem, RecyclerView.ViewHolder>(diffCallback) {
     private val dataSet = arrayListOf<WishItem>()
@@ -44,7 +45,7 @@ class WishListAdapter : ListAdapter<WishItem, RecyclerView.ViewHolder>(diffCallb
                     listener.onItemClick(position, item)
                 }
 
-                cart.setOnClickListener {
+                cart.setOnSingleClickListener {
                     listener.onCartBtnClick(position, item)
                 }
             }
