@@ -7,9 +7,9 @@
 
         <variable
             name="item"
-            type="com.hyeeyoung.wishboard.model.noti.NotiItem" />
+            type="com.hyeeyoung.wishboard.data.model.noti.NotiItem" />
 
-        <import type="com.hyeeyoung.wishboard.model.noti.ReadStateType" />
+        <import type="com.hyeeyoung.wishboard.presentation.noti.types.ReadStateType" />
 
         <import type="com.hyeeyoung.wishboard.util.DateFormatUtilKt" />
 

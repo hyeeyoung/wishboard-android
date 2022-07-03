@@ -2,13 +2,13 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.sign.screens.SignActivity">
+    tools:context=".presentation.sign.screens.SignActivity">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.hyeeyoung.wishboard.viewmodel.SignViewModel" />
+            type="com.hyeeyoung.wishboard.presentation.sign.SignViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

@@ -8,7 +8,7 @@ import android.widget.ImageView
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
-import com.hyeeyoung.wishboard.service.AWSS3Service
+import com.hyeeyoung.wishboard.data.services.AWSS3Service
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.TimeZone
@@ -26,6 +26,20 @@ inline fun <T1 : Any, T2 : Any, T3 : Any, R : Any> safeLet(
     block: (T1, T2, T3) -> R?
 ): R? {
     return if (p1 != null && p2 != null && p3 != null) block(p1, p2, p3) else null
+}
+
+inline fun View.setOnSingleClickListener(
+    delay: Long = 500L,
+    crossinline block: (View) -> Unit
+) {
+    var previousClickedTime = 0L
+    setOnClickListener { view ->
+        val clickedTime = System.currentTimeMillis()
+        if (clickedTime - previousClickedTime >= delay) {
+            block(view)
+            previousClickedTime = clickedTime
+        }
+    }
 }
 
 fun getTimestamp(): String {

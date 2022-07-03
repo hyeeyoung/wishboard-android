@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.wish.item.screens.WishLinkSharingActivity">
+    tools:context=".presentation.wishitem.screens.WishLinkSharingActivity">
 
     <data>
 
@@ -10,13 +10,13 @@
 
         <import type="com.hyeeyoung.wishboard.R" />
 
-        <import type="com.hyeeyoung.wishboard.model.common.ProcessStatus" />
+        <import type="com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus" />
 
         <import type="com.hyeeyoung.wishboard.util.DateFormatUtilKt" />
 
         <variable
             name="viewModel"
-            type="com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel" />
+            type="com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -190,12 +190,11 @@
             android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="-40dp"
-            android:background="@drawable/shape_border_radius_40"
             android:scaleType="centerCrop"
-            android:src="@mipmap/ic_main_round"
             app:layout_constraintBottom_toTopOf="@id/container"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:src="@mipmap/ic_main" />
 
         <TextView
             android:id="@+id/networkView"

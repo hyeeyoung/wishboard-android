@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.hyeeyoung.wishboard.model.wish.WishItem" />
+            type="com.hyeeyoung.wishboard.data.model.wish.WishItem" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

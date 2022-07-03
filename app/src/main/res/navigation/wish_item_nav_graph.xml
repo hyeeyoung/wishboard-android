@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/wish_item_detail_fragment"
-        android:name="com.hyeeyoung.wishboard.view.wish.item.screens.WishItemDetailFragment"
+        android:name="com.hyeeyoung.wishboard.presentation.wishitem.screens.WishItemDetailFragment"
         android:label="wishItemDetailFragment"
         tools:layout="@layout/fragment_wish_item_detail">
         <action

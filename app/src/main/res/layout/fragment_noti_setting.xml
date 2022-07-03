@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.hyeeyoung.wishboard.view.noti.screens.NotiSettingFragment">
+    tools:context="com.hyeeyoung.wishboard.presentation.noti.screens.NotiSettingFragment">
 
     <data>
 
@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.hyeeyoung.wishboard.viewmodel.WishItemRegistrationViewModel" />
+            type="com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

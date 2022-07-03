@@ -1,7 +1,7 @@
 package com.hyeeyoung.wishboard.util
 
 import android.widget.NumberPicker
-import com.hyeeyoung.wishboard.model.noti.NotiType
+import com.hyeeyoung.wishboard.presentation.noti.types.NotiType
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.Calendar

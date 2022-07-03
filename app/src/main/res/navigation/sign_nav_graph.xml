@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/sign_fragment"
-        android:name="com.hyeeyoung.wishboard.view.sign.screens.SignFragment"
+        android:name="com.hyeeyoung.wishboard.presentation.sign.screens.SignFragment"
         android:label="signFragment"
         tools:layout="@layout/fragment_sign">
         <action
@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/sign_in_fragment"
-        android:name="com.hyeeyoung.wishboard.view.sign.screens.SignInFragment"
+        android:name="com.hyeeyoung.wishboard.presentation.sign.screens.SignInFragment"
         android:label="signInFragment"
         tools:layout="@layout/fragment_sign_in">
         <action
@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/sign_up_email_fragment"
-        android:name="com.hyeeyoung.wishboard.view.sign.screens.SignUpEmailFragment"
+        android:name="com.hyeeyoung.wishboard.presentation.sign.screens.SignUpEmailFragment"
         android:label="signInFragment"
         tools:layout="@layout/fragment_sign_up_email">
         <action
@@ -40,13 +40,13 @@
 
     <fragment
         android:id="@+id/sign_in_email_fragment"
-        android:name="com.hyeeyoung.wishboard.view.sign.screens.SignInEmailFragment"
+        android:name="com.hyeeyoung.wishboard.presentation.sign.screens.SignInEmailFragment"
         android:label="signInFragment"
         tools:layout="@layout/fragment_sign_in_email" />
 
     <fragment
         android:id="@+id/sign_up_password_fragment"
-        android:name="com.hyeeyoung.wishboard.view.sign.screens.SignUpPasswordFragment"
+        android:name="com.hyeeyoung.wishboard.presentation.sign.screens.SignUpPasswordFragment"
         android:label="signUpPasswordFragment"
         tools:layout="@layout/fragment_sign_up_password" />
 

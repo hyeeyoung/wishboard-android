@@ -2,15 +2,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".view.folder.screens.FolderAddDialogFragment">
+    tools:context=".presentation.folder.screens.FolderAddDialogFragment">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.hyeeyoung.wishboard.viewmodel.FolderViewModel" />
+            type="com.hyeeyoung.wishboard.presentation.folder.FolderViewModel" />
 
-        <import type="com.hyeeyoung.wishboard.model.common.ProcessStatus" />
+        <import type="com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus" />
 
         <import type="android.view.View" />
 

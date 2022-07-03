@@ -8,7 +8,7 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
-import com.hyeeyoung.wishboard.view.MainActivity
+import com.hyeeyoung.wishboard.presentation.main.MainActivity
 import com.hyeeyoung.wishboard.R
 import java.util.*
 
