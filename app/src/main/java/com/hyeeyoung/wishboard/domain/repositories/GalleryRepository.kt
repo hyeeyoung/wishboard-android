@@ -1,8 +1,7 @@
 package com.hyeeyoung.wishboard.domain.repositories
 
-import android.content.ContentResolver
-import android.net.Uri
+import com.hyeeyoung.wishboard.data.datasources.GalleryPagingDataSource
 
 interface GalleryRepository {
-    suspend fun fetchGalleryImage(startPagingIndex: Int, contentResolver: ContentResolver): Pair<List<Uri>, Int>
+    fun galleryPagingSource(): GalleryPagingDataSource
 }
