@@ -19,6 +19,7 @@ import com.hyeeyoung.wishboard.databinding.FragmentWishBinding
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
+import com.hyeeyoung.wishboard.presentation.common.screens.OneButtonDialogFragment
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
@@ -181,6 +182,18 @@ class WishBasicFragment : Fragment() {
                 it.clear()
             }
         }
+
+        viewModel.isShownItemNonUpdateDialog.observe(viewLifecycleOwner) { isShown ->
+            if (isShown == true) showItemNonUpdateDialog()
+        }
+    }
+
+    private fun showItemNonUpdateDialog() {
+        val dialog = OneButtonDialogFragment(
+            getString(R.string.item_non_update_dialog_title),
+            getString(R.string.item_non_update_dialog_description)
+        )
+        dialog.show(parentFragmentManager, "ItemNonUpdateDialog")
     }
 
     private fun showFolderListDialog() {

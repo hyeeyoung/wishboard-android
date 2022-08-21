@@ -66,6 +66,9 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var isExistFolderName = MutableLiveData<Boolean?>()
     private var isValidItemUrl = MutableLiveData<Boolean?>()
 
+    private var _isShownItemNonUpdateDialog = MutableLiveData<Boolean?>()
+    val isShownItemNonUpdateDialog: LiveData<Boolean?> get() = _isShownItemNonUpdateDialog
+
     private var itemRegistrationStatus = MutableLiveData<ProcessStatus>()
     private var folderRegistrationStatus = MutableLiveData<ProcessStatus>()
 
@@ -161,39 +164,39 @@ class WishItemRegistrationViewModel @Inject constructor(
         if (itemRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return
         if (itemId == null || token == null) return
         val itemName = itemName.value?.trim() ?: return
-        itemRegistrationStatus.postValue(ProcessStatus.IN_PROGRESS)
+        itemRegistrationStatus.value = ProcessStatus.IN_PROGRESS
 
-        withContext(Dispatchers.IO) {
-            // 파싱으로 아이템 이미지 불러온 경우 비트맵이미지로 이미지 파일 만들기
-            itemImage.value?.let { imageUrl ->
-                val bitmap = getBitmapFromURL(imageUrl) ?: return@let
-                imageFile = saveBitmapToInternalStorage(bitmap) ?: return@let
-            }
-
-            imageFile?.let {
-                val isSuccessful = AWSS3Service().uploadFile(it.name, it)
-                if (!isSuccessful) return@withContext
-            }
-
-            wishItem = WishItem(
-                id = itemId,
-                createAt = wishItem?.createAt,
-                name = itemName,
-                image = imageFile?.name ?: wishItem?.image,
-                price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
-                url = itemUrl.value,
-                memo = getTrimmedMemo(itemMemo.value),
-                folderId = folderItem.value?.id ?: wishItem?.folderId,
-                folderName = folderItem.value?.name
-                    ?: wishItem?.folderName, // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
-                notiType = notiType.value,
-                notiDate = notiDate.value
-            )
-
-            val isComplete = wishRepository.updateWishItem(token, itemId!!, wishItem!!)
-            isCompleteUpload.postValue(isComplete)
+        // 파싱으로 아이템 이미지 불러온 경우 비트맵이미지로 이미지 파일 만들기
+        itemImage.value?.let { imageUrl ->
+            val bitmap = getBitmapFromURL(imageUrl) ?: return@let
+            imageFile = saveBitmapToInternalStorage(bitmap) ?: return@let
         }
-        itemRegistrationStatus.postValue(ProcessStatus.IDLE)
+
+        imageFile?.let {
+            val isSuccessful = AWSS3Service().uploadFile(it.name, it)
+            if (!isSuccessful) return
+        }
+
+        wishItem = WishItem(
+            id = itemId,
+            createAt = wishItem?.createAt,
+            name = itemName,
+            image = imageFile?.name ?: wishItem?.image,
+            price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
+            url = itemUrl.value,
+            memo = getTrimmedMemo(itemMemo.value),
+            folderId = folderItem.value?.id ?: wishItem?.folderId,
+            folderName = folderItem.value?.name
+                ?: wishItem?.folderName, // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
+            notiType = notiType.value,
+            notiDate = notiDate.value
+        )
+
+        val result = wishRepository.updateWishItem(token, itemId!!, wishItem!!)
+        _isShownItemNonUpdateDialog.value = result?.second == 404
+        isCompleteUpload.value = result?.first
+
+        itemRegistrationStatus.value = ProcessStatus.IDLE
     }
 
     fun createNewFolder() {

@@ -54,18 +54,18 @@ class WishRepositoryImpl @Inject constructor(private val wishItemService: WishIt
         }
     }
 
-    override suspend fun updateWishItem(token: String, itemId: Long, wishItem: WishItem): Boolean {
-        try {
+    override suspend fun updateWishItem(token: String, itemId: Long, wishItem: WishItem): Pair<Boolean, Int>? {
+        return try {
             val response = wishItemService.updateToWishItem(token, itemId, wishItem)
             if (response.isSuccessful) {
                 Log.d(TAG, "아이템 수정 성공")
             } else {
                 Log.e(TAG, "아이템 수정 실패: ${response.code()}")
             }
-            return response.isSuccessful
+            Pair(response.isSuccessful, response.code())
         } catch (e: Exception) {
             e.printStackTrace()
-            return false
+            null
         }
     }
 

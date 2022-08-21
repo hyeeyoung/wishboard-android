@@ -126,6 +126,9 @@
     <string name="item_registration_noti_setting_guide">30분 전에 상품 일정을 알려드려요! 시간은 30분 단위로 설정할 수 있어요.</string>
     <string name="wish_list_registration_button_text">위시리스트에 추가</string>
 
+    <string name="item_non_update_dialog_description">앗, 삭제된 아이템은 수정할 수 없어요.\n홈탭에서 새로고침을 시도해 주세요!</string>
+    <string name="item_non_update_dialog_title">아이템 수정 오류</string>
+
     <!-- Detail -->
     <string name="go_to_folder">%s></string>
     <string name="setting_folder">폴더를 지정해 보세요!</string>
