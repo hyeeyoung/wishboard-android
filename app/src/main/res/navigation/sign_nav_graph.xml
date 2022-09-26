@@ -42,7 +42,17 @@
         android:id="@+id/sign_in_email_fragment"
         android:name="com.hyeeyoung.wishboard.presentation.sign.screens.SignInEmailFragment"
         android:label="signInFragment"
-        tools:layout="@layout/fragment_sign_in_email" />
+        tools:layout="@layout/fragment_sign_in_email">
+        <action
+            android:id="@+id/action_email_to_verification_code"
+            app:destination="@id/sign_in_verification_code_fragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/sign_in_verification_code_fragment"
+        android:name="com.hyeeyoung.wishboard.presentation.sign.screens.SignInVerificationFragment"
+        android:label="signInVerificationCodeFragment"
+        tools:layout="@layout/fragment_sign_in_verification_code" />
 
     <fragment
         android:id="@+id/sign_up_password_fragment"

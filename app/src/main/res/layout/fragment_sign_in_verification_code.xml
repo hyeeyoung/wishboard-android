@@ -55,13 +55,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacingBase"
                 android:fontFamily="@font/suit_r"
-                android:text="@{String.format(context.getString(R.string.step_format), 1, 2)}"
+                android:text="@{String.format(context.getString(R.string.step_format), 2, 2)}"
                 android:textColor="@color/gray_700"
                 android:textSize="@dimen/typographyBase"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="1/2 단계" />
+                tools:text="2/2 단계" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -82,43 +82,55 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:id="@+id/email_icon"
+                    android:id="@+id/lock_icon"
                     android:layout_width="48dp"
                     android:layout_height="48dp"
-                    android:src="@drawable/ic_email" />
+                    android:src="@drawable/ic_lock" />
 
                 <TextView
-                    android:id="@+id/password_detail"
+                    android:id="@+id/verification_code_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/spacing10"
                     android:fontFamily="@font/suit_r"
                     android:gravity="center"
                     android:lineSpacingExtra="@dimen/spacingMicro"
-                    android:text="@string/sign_in_email_guide"
+                    android:text="@string/sign_in_email_verification_code_guide"
                     android:textColor="@color/gray_700"
                     android:textSize="@dimen/typographyDescription" />
             </LinearLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/verification_code_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacingBase">
 
                 <EditText
-                    android:id="@+id/email_input"
+                    android:id="@+id/verification_code_input"
                     style="@style/Widget.EditText.Basic"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/email"
-                    android:inputType="textEmailAddress"
+                    android:hint="@string/sign_in_email_verification_code_hint"
+                    android:inputType="textPassword"
                     android:maxLines="1"
-                    android:onTextChanged="@{viewModel::onLoginEmailTextChanged}"
+                    android:onTextChanged="@{viewModel::onVerificationCodeTextChanged}"
                     android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <requestFocus />
-                </EditText>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/spacing10"
+                    android:fontFamily="@font/suit_r"
+                    android:text="@{viewModel.timer}"
+                    android:textColor="@color/pink"
+                    android:textSize="@dimen/typographyBase"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="@id/verification_code_input"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="5:00" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
@@ -126,32 +138,32 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/spacingBase"
                 android:layout_marginTop="@dimen/spacing5"
-                android:text="@{viewModel.validEmailFormat == false ? context.getString(R.string.sign_email_format_detail) : viewModel.isUnregisteredUser == true ? context.getString(R.string.sign_in_unregistered_user_detail) : ``}"
+                android:text="@string/sign_in_email_verification_code_detail"
                 android:textAppearance="@style/Widget.TextAppearance.Detail"
-                android:visibility="@{viewModel.loginEmail.length() > 0 &amp;&amp; (viewModel.validEmailFormat == false || viewModel.isUnregisteredUser() == true) ? View.VISIBLE : View.GONE}"
-                tools:text="@string/sign_in_unregistered_user_detail" />
+                android:visibility="@{viewModel.isCorrectedVerificationCode() == false &amp;&amp; viewModel.isCorrectedVerificationCode() != null ? View.VISIBLE : View.GONE}" />
         </LinearLayout>
 
         <TextView
-            android:id="@+id/send_mail"
+            android:id="@+id/login"
             style="@style/Widget.Button.Activate.Green"
             android:layout_width="match_parent"
             android:layout_marginBottom="@dimen/spacingBase"
-            android:enabled="@{viewModel.validEmailFormat == true}"
-            android:onClick="@{() -> viewModel.requestVerificationMail()}"
-            android:text="@string/sign_in_email_send_email_button_text"
+            android:enabled="@{viewModel.isEnabledVerificationCodeButton() == true}"
+            android:onClick="@{() -> viewModel.signInEmail()}"
+            android:text="@{viewModel.signProcessStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.sign_in)}"
             android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="@string/sign_in" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading_lottie"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/send_mail"
+            app:layout_constraintBottom_toBottomOf="@id/login"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/send_mail"
+            app:layout_constraintTop_toTopOf="@id/login"
             app:lottie_fileName="lottie/loading_horizontal_black.json"
             app:lottie_imageAssetsFolder="lottie"
             app:lottie_loop="true" />
