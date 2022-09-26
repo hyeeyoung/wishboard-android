@@ -44,6 +44,7 @@
     <string name="check_network_connection_snackbar_text">네트워크 연결 상태를 확인해 주세요.</string>
     <string name="item_detail_invalid_site_snackbar_text">앗, 사이트를 찾을 수 없어요!🥲</string>
     <string name="wish_basic_invalid_site_snackbar_text">쇼핑몰 링크를 다시 확인해 주세요!👀</string>
+    <string name="wish_item_parsing_failure_snackbar_text">앗, 아이템 정보를 불러오지 못했어요🥲</string>
 
     <!-- Onboarding -->
     <string name="onboarding_welcome_guide">흩어져있는 위시리스트를\n위시보드로 간편하게 통합 관리해 보세요!️</string>
@@ -70,6 +71,7 @@
     <string name="sign_in_email_send_email_button_text">인증메일 받기</string>
     <string name="sign_in_email_resend_email_button_text">재요청</string>
     <string name="sign_in_email_guide">가입하신 이메일을 입력해주세요!\n로그인을 위해 인증코드가 포함된 이메일을 보내드려요!</string>
+    <string name="sign_in_email_verification_code_guide">인증코드가 전송되었어요!\n이메일을 확인해주세요.</string>
     <string name="sign_in_email_verification_code_detail">인증코드를 다시 확인해 주세요.</string>
     <string name="sign_term">가입 시 이용약관과 개인정보취급방침에 동의하는 것으로 간주됩니다.</string>
 
