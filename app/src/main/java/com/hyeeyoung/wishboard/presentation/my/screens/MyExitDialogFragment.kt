@@ -22,7 +22,7 @@ class MyExitDialogFragment() : DialogFragment() {
     ): View {
         binding = DialogMyExitBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@MyExitDialogFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         viewModel.resetCorrectedEmail()
 

@@ -28,7 +28,7 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
     ): View {
         binding = FragmentCartBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@CartFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addObservers()

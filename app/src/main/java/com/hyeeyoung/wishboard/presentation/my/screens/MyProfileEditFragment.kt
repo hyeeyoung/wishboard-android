@@ -40,7 +40,7 @@ class MyProfileEditFragment : Fragment() {
     ): View {
         binding = FragmentProfileEditBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@MyProfileEditFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         // 갤러리에서 선택한 이미지 전달받기
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(

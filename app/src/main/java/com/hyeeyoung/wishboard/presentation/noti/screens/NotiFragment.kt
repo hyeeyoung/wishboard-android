@@ -32,7 +32,7 @@ class NotiFragment : Fragment(), NotiListAdapter.OnItemClickListener {
     ): View {
         binding = FragmentNotiBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@NotiFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addListeners()

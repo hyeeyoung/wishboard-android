@@ -29,7 +29,7 @@ class SignInFragment : Fragment() {
     ): View {
         binding = FragmentSignInBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@SignInFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         addListeners()
         addObservers()

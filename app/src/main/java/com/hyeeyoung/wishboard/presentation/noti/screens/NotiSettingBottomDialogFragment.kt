@@ -21,7 +21,7 @@ class NotiSettingBottomDialogFragment(private val viewModel: WishItemRegistratio
     ): View {
         binding = DialogBottomNotiSettingBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@NotiSettingBottomDialogFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addListeners()

@@ -66,7 +66,7 @@ class WishBasicFragment : Fragment() {
     ): View {
         binding = FragmentWishBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@WishBasicFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addListeners()
