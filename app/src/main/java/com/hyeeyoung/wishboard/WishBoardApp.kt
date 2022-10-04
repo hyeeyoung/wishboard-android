@@ -1,6 +1,7 @@
 package com.hyeeyoung.wishboard
 
 import android.app.Application
+import androidx.appcompat.app.AppCompatDelegate
 import com.amplifyframework.AmplifyException
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
 import com.amplifyframework.core.Amplify
@@ -15,6 +16,8 @@ class WishBoardApp : Application() {
     override fun onCreate() {
         super.onCreate()
         prefs = PreferenceUtil(applicationContext)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         setUpTimber()
 
         try {
