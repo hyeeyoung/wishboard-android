@@ -25,7 +25,7 @@ class SignInEmailFragment : Fragment() {
     ): View {
         binding = FragmentSignInEmailBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@SignInEmailFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         addObservers()
 

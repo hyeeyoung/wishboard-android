@@ -40,7 +40,7 @@ class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener {
     ): View {
         binding = FragmentFolderDetailBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@FolderDetailFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addObservers()

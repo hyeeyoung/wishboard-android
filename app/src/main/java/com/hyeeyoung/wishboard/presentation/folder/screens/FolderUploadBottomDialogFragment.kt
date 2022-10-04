@@ -26,7 +26,7 @@ class FolderUploadBottomDialogFragment() : BottomSheetDialogFragment() { // TODO
     ): View {
         binding = DialogBottomFolderUploadBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@FolderUploadBottomDialogFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         // 키보드 위로 다이얼로그를 띄우기 위함
         dialog?.setOnShowListener {

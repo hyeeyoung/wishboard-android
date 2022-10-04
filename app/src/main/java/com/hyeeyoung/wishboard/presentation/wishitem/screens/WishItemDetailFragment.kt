@@ -43,7 +43,7 @@ class WishItemDetailFragment : Fragment() {
     ): View {
         binding = FragmentWishItemDetailBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@WishItemDetailFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         arguments?.let {
             position = it[ARG_WISH_ITEM_POSITION] as? Int

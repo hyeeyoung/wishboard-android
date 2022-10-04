@@ -41,7 +41,7 @@ class MyFragment : Fragment() {
     ): View {
         binding = FragmentMyBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@MyFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addListeners()

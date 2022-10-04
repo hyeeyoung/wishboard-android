@@ -32,7 +32,7 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
     ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@HomeFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addListeners()

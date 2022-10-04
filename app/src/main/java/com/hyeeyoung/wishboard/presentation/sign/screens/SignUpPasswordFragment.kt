@@ -38,7 +38,7 @@ class SignUpPasswordFragment : Fragment() {
     ): View {
         binding = FragmentSignUpPasswordBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@SignUpPasswordFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addObservers()

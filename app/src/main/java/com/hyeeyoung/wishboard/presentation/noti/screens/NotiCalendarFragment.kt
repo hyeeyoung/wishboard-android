@@ -35,7 +35,7 @@ class NotiCalendarFragment : Fragment(), NotiListAdapter.OnItemClickListener {
     ): View {
         binding = FragmentNotiCalendarBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@NotiCalendarFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addObservers()

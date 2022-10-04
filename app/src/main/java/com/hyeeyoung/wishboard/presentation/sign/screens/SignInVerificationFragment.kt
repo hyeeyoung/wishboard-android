@@ -24,7 +24,7 @@ class SignInVerificationFragment : Fragment() {
     ): View {
         binding = FragmentSignInVerificationCodeBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@SignInVerificationFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         addObservers()
 
