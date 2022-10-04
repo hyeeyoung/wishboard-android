@@ -1,10 +1,10 @@
 package com.hyeeyoung.wishboard.data.repositories
 
-import android.util.Log
 import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.data.model.user.UserInfo
 import com.hyeeyoung.wishboard.data.services.retrofit.AuthService
 import com.hyeeyoung.wishboard.domain.repositories.SignRepository
+import timber.log.Timber
 import javax.inject.Inject
 
 class SignRepositoryImpl @Inject constructor(private val authService: AuthService) :
@@ -15,12 +15,12 @@ class SignRepositoryImpl @Inject constructor(private val authService: AuthServic
             val result = response.body()
             // TODO 네트워크에 연결되지 않은 경우 예외처리 필요
             if (response.isSuccessful) {
-                Log.d(TAG, "회원가입 성공")
+                Timber.d("회원가입 성공")
                 result?.data?.token?.let {
                     WishBoardApp.prefs.setUserInfo(it, email)
                 }
             } else {
-                Log.e(TAG, "회원가입 실패: ${response.code()}")
+                Timber.e("회원가입 실패: ${response.code()}")
             }
             return response.isSuccessful
         } catch (e: Exception) {
@@ -34,12 +34,12 @@ class SignRepositoryImpl @Inject constructor(private val authService: AuthServic
             val response = authService.signInUser(UserInfo(email = email, password = password))
             val result = response.body()
             if (response.isSuccessful) {
-                Log.d(TAG, "로그인 성공")
+                Timber.d("로그인 성공")
                 result?.data?.token?.let {
                     WishBoardApp.prefs.setUserInfo(it, email)
                 }
             } else {
-                Log.e(TAG, "로그인 실패: ${response.code()}")
+                Timber.e("로그인 실패: ${response.code()}")
             }
             return response.isSuccessful
         } catch (e: Exception) {
@@ -53,13 +53,13 @@ class SignRepositoryImpl @Inject constructor(private val authService: AuthServic
             val response = authService.signInEmail(true, email)
             val result = response.body()
             if (response.isSuccessful) {
-                Log.d(TAG, "이메일 인증 로그인 성공")
+                Timber.d("이메일 인증 로그인 성공")
                 result?.data?.token?.let {
                     WishBoardApp.prefs.setUserInfo(it, email)
                 }
                 // TODO save the pushState
             } else {
-                Log.e(TAG, "이메일 인증 로그인 실패: ${response.code()}")
+                Timber.e("이메일 인증 로그인 실패: ${response.code()}")
             }
             return response.isSuccessful
         } catch (e: Exception) {
@@ -73,9 +73,9 @@ class SignRepositoryImpl @Inject constructor(private val authService: AuthServic
             val response = authService.requestVerificationMail(email)
             val result = response.body()
             if (response.isSuccessful) {
-                Log.d(TAG, "인증메일 요청 성공")
+                Timber.d("인증메일 요청 성공")
             } else {
-                Log.e(TAG, "인증메일 요청 실패: ${response.code()}")
+                Timber.e("인증메일 요청 실패: ${response.code()}")
             }
             return Pair(
                 Pair(response.isSuccessful, result?.data?.verificationCode),
@@ -91,18 +91,14 @@ class SignRepositoryImpl @Inject constructor(private val authService: AuthServic
         try {
             val response = authService.checkRegisteredUser(email)
             if (response.isSuccessful) {
-                Log.d(TAG, "가입 가능 검사 성공")
+                Timber.d("가입 가능 검사 성공")
             } else {
-                Log.e(TAG, "가입 가능 검사 실패: ${response.code()}")
+                Timber.e("가입 가능 검사 실패: ${response.code()}")
             }
             return Pair(response.isSuccessful, response.code())
         } catch (e: Exception) {
             e.printStackTrace()
             return null
         }
-    }
-
-    companion object {
-        private const val TAG = "SignRepositoryImpl"
     }
 }
