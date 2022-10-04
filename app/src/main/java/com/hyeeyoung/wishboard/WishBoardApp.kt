@@ -21,9 +21,9 @@ class WishBoardApp : Application() {
             Amplify.addPlugin(AWSCognitoAuthPlugin())
             Amplify.addPlugin(AWSS3StoragePlugin())
             Amplify.configure(applicationContext)
-            Log.d(TAG, "Initialized Amplify")
+            Timber.d("Initialized Amplify")
         } catch (error: AmplifyException) {
-            Log.e(TAG, "Could not initialize Amplify", error)
+            Timber.e("Could not initialize Amplify", error)
         }
     }
 
@@ -34,7 +34,6 @@ class WishBoardApp : Application() {
     }
 
     companion object {
-        private const val TAG = "WishBoardApp"
         lateinit var prefs: PreferenceUtil
     }
 }

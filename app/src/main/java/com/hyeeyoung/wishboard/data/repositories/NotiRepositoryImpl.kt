@@ -1,10 +1,10 @@
 package com.hyeeyoung.wishboard.data.repositories
 
-import android.util.Log
 import com.hyeeyoung.wishboard.data.model.noti.NotiItem
 import com.hyeeyoung.wishboard.data.services.retrofit.NotiService
 import com.hyeeyoung.wishboard.data.services.retrofit.UserService
 import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
+import timber.log.Timber
 import javax.inject.Inject
 
 class NotiRepositoryImpl @Inject constructor(
@@ -15,9 +15,9 @@ class NotiRepositoryImpl @Inject constructor(
         try {
             val response = notiService.fetchPreviousNotiList(token) ?: return null
             if (response.isSuccessful) {
-                Log.d(TAG, "지난 알림 가져오기 성공")
+                Timber.d("지난 알림 가져오기 성공")
             } else {
-                Log.e(TAG, "지난 알림 가져오기 실패: ${response.code()}")
+                Timber.e("지난 알림 가져오기 실패: ${response.code()}")
             }
             return response.body()
         } catch (e: Exception) {
@@ -30,9 +30,9 @@ class NotiRepositoryImpl @Inject constructor(
         try {
             val response = notiService.fetchAllNotiList(token) ?: return null
             if (response.isSuccessful) {
-                Log.d(TAG, "모든 알림 가져오기 성공")
+                Timber.d("모든 알림 가져오기 성공")
             } else {
-                Log.e(TAG, "모든 알림 가져오기 실패: ${response.code()}")
+                Timber.e("모든 알림 가져오기 실패: ${response.code()}")
             }
             return response.body()
         } catch (e: Exception) {
@@ -45,9 +45,9 @@ class NotiRepositoryImpl @Inject constructor(
         try {
             val response = notiService.updateNotiReadState(token, itemId)
             if (response.isSuccessful) {
-                Log.d(TAG, "알림 읽음 처리 성공")
+                Timber.d("알림 읽음 처리 성공")
             } else {
-                Log.e(TAG, "알림 읽음 처리 실패: ${response.code()}")
+                Timber.e("알림 읽음 처리 실패: ${response.code()}")
             }
         } catch (e: Exception) {
             e.printStackTrace()
@@ -65,16 +65,12 @@ class NotiRepositoryImpl @Inject constructor(
             }
 
             if (response.isSuccessful) {
-                Log.d(TAG, "푸시 알림 $onOff 성공")
+                Timber.d("푸시 알림 $onOff 성공")
             } else {
-                Log.e(TAG, "푸시 알림 $onOff 실패: ${response.code()}")
+                Timber.e("푸시 알림 $onOff 실패: ${response.code()}")
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
-    }
-
-    companion object {
-        private const val TAG = "NotiRepositoryImpl"
     }
 }
