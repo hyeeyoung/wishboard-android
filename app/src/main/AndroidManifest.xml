@@ -55,7 +55,7 @@
         <activity
             android:name=".presentation.howtouse.screens.HowToUseActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".presentation.wishitem.screens.WishLinkSharingActivity"
@@ -72,7 +72,8 @@
 
         <activity
             android:name=".presentation.common.screens.WebViewActivity"
-            android:exported="true"/>
+            android:exported="true"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
