@@ -19,7 +19,10 @@ class WishBoardApp : Application() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         setUpTimber()
+        setUpAmplify()
+    }
 
+    private fun setUpAmplify() {
         try {
             Amplify.addPlugin(AWSCognitoAuthPlugin())
             Amplify.addPlugin(AWSS3StoragePlugin())
