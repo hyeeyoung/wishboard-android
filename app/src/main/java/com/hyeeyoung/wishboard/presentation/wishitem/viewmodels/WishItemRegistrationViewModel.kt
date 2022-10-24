@@ -22,6 +22,7 @@ import com.hyeeyoung.wishboard.util.safeLet
 import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
 import com.hyeeyoung.wishboard.util.ContentUriRequestBody
 import dagger.hilt.android.lifecycle.HiltViewModel
+import com.hyeeyoung.wishboard.util.extension.toPlainRequestBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
