@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import coil.load
 import com.hyeeyoung.wishboard.databinding.ItemCartBinding
 import com.hyeeyoung.wishboard.data.model.cart.CartItem
 import com.hyeeyoung.wishboard.presentation.cart.types.CartItemButtonType
@@ -35,8 +35,8 @@ class CartListAdapter : ListAdapter<CartItem, RecyclerView.ViewHolder>(diffCallb
             with(binding) {
                 this.item = item
                 itemImage.clipToOutline = true
-                item.wishItem.imageUrl?.let { url ->
-                    Glide.with(itemImage.context).load(url).into(itemImage)
+                item.wishItem.image?.let {
+                    itemImage.load(it)
                 }
                 delete.setOnClickListener {
                     listener.onItemClick(item, position, CartItemButtonType.VIEW_TYPE_DELETION)

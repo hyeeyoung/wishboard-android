@@ -20,10 +20,15 @@ import com.hyeeyoung.wishboard.data.services.AWSS3Service
 import com.hyeeyoung.wishboard.util.getTimestamp
 import com.hyeeyoung.wishboard.util.safeLet
 import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
+import com.hyeeyoung.wishboard.util.ContentUriRequestBody
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -128,36 +133,25 @@ class WishItemRegistrationViewModel @Inject constructor(
         if (itemRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return
         if (token == null) return
         val name = itemName.value?.trim() ?: return
-        itemRegistrationStatus.postValue(ProcessStatus.IN_PROGRESS)
+        itemRegistrationStatus.value = ProcessStatus.IN_PROGRESS
 
-        withContext(Dispatchers.IO) {
-            // 파싱으로 아이템 이미지 불러온 경우 비트맵이미지로 이미지 파일 만들기
-            itemImage.value?.let { imageUrl ->
-                val bitmap = getBitmapFromURL(imageUrl) ?: return@let
-                imageFile = saveBitmapToInternalStorage(bitmap) ?: return@let
-            }
+        val folderId: RequestBody = folderItem.value?.id.toString().toPlainRequestBody()
+        val itemName: RequestBody = name.toPlainRequestBody()
+        val itemPrice: RequestBody = itemPrice.value?.replace(",", "")?.toIntOrNull().toString().toPlainRequestBody()
+        val itemMemo: RequestBody = getTrimmedMemo(itemMemo.value).toString().toPlainRequestBody()
+        val itemUrl: RequestBody = itemUrl.value.toString().toPlainRequestBody()
+        val notiType: RequestBody = notiType.value.toString().toPlainRequestBody()
+        val notiDate: RequestBody = notiDate.value.toString().toPlainRequestBody()
 
-            imageFile?.let {
-                val isSuccessful = AWSS3Service().uploadFile(imageFile!!.name, imageFile!!)
-                if (!isSuccessful) return@withContext
-            }
+        val imageMultipartBody: MultipartBody.Part = ContentUriRequestBody(
+            application.baseContext,
+            "item_img",
+            selectedGalleryImageUri.value ?: Uri.parse(itemImage.value)
+        ).toFormData()
 
-            wishItem = WishItem(
-                name = name,
-                image = imageFile?.name, // TODO 널처리 필요
-                price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
-                url = itemUrl.value,
-                memo = getTrimmedMemo(itemMemo.value),
-                folderId = folderItem.value?.id,
-                folderName = folderItem.value?.name, // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
-                notiType = notiType.value,
-                notiDate = notiDate.value
-            )
-
-            val isComplete = wishRepository.uploadWishItem(token, wishItem!!)
-            isCompleteUpload.postValue(isComplete)
-        }
-        itemRegistrationStatus.postValue(ProcessStatus.IDLE)
+        val isComplete = wishRepository.uploadWishItem(token, folderId, itemName, itemPrice, itemMemo, itemUrl, notiType, notiDate, imageMultipartBody)
+        isCompleteUpload.value = isComplete
+        itemRegistrationStatus.value = ProcessStatus.IDLE
     }
 
     suspend fun updateWishItem() { // TODO need refactoring, uploadWishItemByBasics()와 합치기
@@ -335,8 +329,7 @@ class WishItemRegistrationViewModel @Inject constructor(
         wishItem?.let { item ->
             itemId = item.id
             itemName.value = item.name
-            itemImage.value = item.image
-            itemImageUrl.value = item.imageUrl
+            itemImage.value = item.imageUrl
             itemPrice.value = item.price.toString()
             itemMemo.value = item.memo
             itemUrl.value = item.url
@@ -507,6 +500,8 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun getIsValidItemUrl(): LiveData<Boolean?> = isValidItemUrl
     fun getRegistrationStatus(): LiveData<ProcessStatus> = itemRegistrationStatus
     fun getFolderRegistrationStatus(): LiveData<ProcessStatus> = folderRegistrationStatus
+
+    private fun String?.toPlainRequestBody() = requireNotNull(this).toRequestBody("text/plain".toMediaTypeOrNull())
 
     companion object {
         private const val TAG = "WishItemRegistrationViewModel"

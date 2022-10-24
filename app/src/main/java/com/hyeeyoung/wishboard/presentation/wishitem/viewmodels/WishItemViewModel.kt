@@ -30,21 +30,13 @@ class WishItemViewModel @Inject constructor(
             isCompleteDeletion.value = wishRepository.deleteWishItem(token, itemId)
             // 아이템이 삭제 완료된 경우, s3에서도 이미지 객체 삭제
             if (isCompleteDeletion.value == true) {
-                AWSS3Service().removeImageUrl(wishItem.value!!.image ?: return@launch)
+                AWSS3Service().removeImageUrl(wishItem.value!!.imageUrl ?: return@launch)
             }
         }
     }
 
-    fun setWishItem(item: WishItem) { // TODO refactoring
-        if (item.imageUrl == null && item.image != null) {
-            viewModelScope.launch {
-                item.imageUrl = AWSS3Service().getImageUrl(item.image)
-                wishItem.value =
-                    item // 이미지 다운로드까지 시간이 소요됨에 따라 if 문 밖에서 해당 코드 실행할 경우, imageUrl이 초기화 되기 전에 wishItem을 초기화함
-            }
-        } else {
-            wishItem.value = item
-        }
+    fun setWishItem(item: WishItem) {
+        wishItem.value = item
     }
 
     fun updateWishItemFolder(folder: FolderItem) {

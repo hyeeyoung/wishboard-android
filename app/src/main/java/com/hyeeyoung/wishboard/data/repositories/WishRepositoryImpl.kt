@@ -5,13 +5,16 @@ import com.hyeeyoung.wishboard.data.model.wish.ItemInfo
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.data.services.retrofit.WishItemService
 import com.hyeeyoung.wishboard.domain.repositories.WishRepository
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import timber.log.Timber
 import javax.inject.Inject
 
 class WishRepositoryImpl @Inject constructor(private val wishItemService: WishItemService) :
     WishRepository {
     override suspend fun fetchWishList(token: String): List<WishItem>? {
         try {
-            val response = wishItemService.fetchWishList(token) ?: return null
+            val response = wishItemService.fetchWishList(token)
             if (response.isSuccessful) {
                 Log.d(TAG, "아이템 가져오기 성공")
             } else {
@@ -19,7 +22,7 @@ class WishRepositoryImpl @Inject constructor(private val wishItemService: WishIt
             }
             return response.body()
         } catch (e: Exception) {
-            e.printStackTrace()
+            Timber.e(e.message)
             return null
         }
     }
@@ -34,14 +37,25 @@ class WishRepositoryImpl @Inject constructor(private val wishItemService: WishIt
             }
             return response.body()?.get(0)
         } catch (e: Exception) {
-            e.printStackTrace()
+            Timber.e(e.message)
             return null
         }
     }
 
-    override suspend fun uploadWishItem(token: String, wishItem: WishItem): Boolean {
+    override suspend fun uploadWishItem(
+        token: String,
+        folderId: RequestBody,
+        itemName: RequestBody,
+        itemPrice: RequestBody,
+        itemMemo: RequestBody,
+        itemUrl: RequestBody,
+        itemNotificationType: RequestBody,
+        itemNotificationDate: RequestBody,
+        image: MultipartBody.Part
+    ): Boolean {
         try {
-            val response = wishItemService.uploadWishItem(token, wishItem)
+            val response =
+                wishItemService.uploadWishItem(token, folderId, itemName, itemPrice, itemMemo, itemUrl, itemNotificationType, itemNotificationDate, image)
             if (response.isSuccessful) {
                 Log.d(TAG, "아이템 등록 성공")
             } else {
@@ -49,7 +63,7 @@ class WishRepositoryImpl @Inject constructor(private val wishItemService: WishIt
             }
             return response.isSuccessful
         } catch (e: Exception) {
-            e.printStackTrace()
+            Timber.e(e.message)
             return false
         }
     }

@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.hyeeyoung.wishboard.databinding.ItemWishBinding
+import coil.load
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
+import com.hyeeyoung.wishboard.databinding.ItemWishBinding
 import com.hyeeyoung.wishboard.presentation.cart.types.CartStateType
 import com.hyeeyoung.wishboard.util.setOnSingleClickListener
 
@@ -36,7 +36,7 @@ class WishListAdapter : ListAdapter<WishItem, RecyclerView.ViewHolder>(diffCallb
                 this.item = item
 
                 item.imageUrl?.let { url ->
-                    Glide.with(itemImage.context).load(url).into(itemImage)
+                    binding.itemImage.load(url)
                 }
 
                 cart.isSelected = item.cartState == CartStateType.IN_CART.numValue
