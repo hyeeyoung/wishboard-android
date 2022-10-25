@@ -9,27 +9,27 @@ import android.webkit.URLUtil
 import android.widget.NumberPicker
 import androidx.lifecycle.*
 import com.hyeeyoung.wishboard.WishBoardApp
-import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
-import com.hyeeyoung.wishboard.presentation.folder.types.FolderListViewType
-import com.hyeeyoung.wishboard.presentation.noti.types.NotiType
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
+import com.hyeeyoung.wishboard.data.services.AWSS3Service
 import com.hyeeyoung.wishboard.domain.repositories.FolderRepository
 import com.hyeeyoung.wishboard.domain.repositories.WishRepository
-import com.hyeeyoung.wishboard.data.services.AWSS3Service
+import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
+import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
+import com.hyeeyoung.wishboard.presentation.folder.types.FolderListViewType
+import com.hyeeyoung.wishboard.presentation.noti.types.NotiType
+import com.hyeeyoung.wishboard.util.ContentUriRequestBody
+import com.hyeeyoung.wishboard.util.extension.toPlainNullableRequestBody
+import com.hyeeyoung.wishboard.util.extension.toPlainRequestBody
 import com.hyeeyoung.wishboard.util.getTimestamp
 import com.hyeeyoung.wishboard.util.safeLet
-import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
-import com.hyeeyoung.wishboard.util.ContentUriRequestBody
 import dagger.hilt.android.lifecycle.HiltViewModel
 import com.hyeeyoung.wishboard.util.extension.toPlainRequestBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -136,13 +136,13 @@ class WishItemRegistrationViewModel @Inject constructor(
         val name = itemName.value?.trim() ?: return
         itemRegistrationStatus.value = ProcessStatus.IN_PROGRESS
 
-        val folderId: RequestBody = folderItem.value?.id.toString().toPlainRequestBody()
+        val folderId: RequestBody? = folderItem.value?.id?.toString()?.toPlainNullableRequestBody()
         val itemName: RequestBody = name.toPlainRequestBody()
-        val itemPrice: RequestBody = itemPrice.value?.replace(",", "")?.toIntOrNull().toString().toPlainRequestBody()
-        val itemMemo: RequestBody = getTrimmedMemo(itemMemo.value).toString().toPlainRequestBody()
-        val itemUrl: RequestBody = itemUrl.value.toString().toPlainRequestBody()
-        val notiType: RequestBody = notiType.value.toString().toPlainRequestBody()
-        val notiDate: RequestBody = notiDate.value.toString().toPlainRequestBody()
+        val itemPrice: RequestBody? = itemPrice.value?.replace(",", "")?.toIntOrNull()?.toString()?.toPlainNullableRequestBody()
+        val itemMemo: RequestBody? = getTrimmedMemo(itemMemo.value).toPlainNullableRequestBody()
+        val itemUrl: RequestBody? = itemUrl.value.toPlainNullableRequestBody()
+        val notiType: RequestBody? = notiType.value?.name?.toPlainNullableRequestBody()
+        val notiDate: RequestBody? = notiDate.value?.toPlainNullableRequestBody()
 
         val imageMultipartBody: MultipartBody.Part = ContentUriRequestBody(
             application.baseContext,
@@ -501,8 +501,6 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun getIsValidItemUrl(): LiveData<Boolean?> = isValidItemUrl
     fun getRegistrationStatus(): LiveData<ProcessStatus> = itemRegistrationStatus
     fun getFolderRegistrationStatus(): LiveData<ProcessStatus> = folderRegistrationStatus
-
-    private fun String?.toPlainRequestBody() = requireNotNull(this).toRequestBody("text/plain".toMediaTypeOrNull())
 
     companion object {
         private const val TAG = "WishItemRegistrationViewModel"

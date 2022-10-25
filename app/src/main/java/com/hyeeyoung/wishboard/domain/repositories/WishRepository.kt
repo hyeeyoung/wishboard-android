@@ -9,13 +9,13 @@ interface WishRepository {
     suspend fun fetchWishList(token: String): List<WishItem>?
     suspend fun fetchLatestWishItem(token: String): WishItem?
     suspend fun uploadWishItem(
-        token: String, folderId: RequestBody,
+        token: String, folderId: RequestBody?,
         itemName: RequestBody,
-        itemPrice: RequestBody,
-        itemMemo: RequestBody,
-        itemUrl: RequestBody,
-        itemNotificationType: RequestBody,
-        itemNotificationDate: RequestBody,
+        itemPrice: RequestBody?,
+        itemMemo: RequestBody?,
+        itemUrl: RequestBody?,
+        itemNotificationType: RequestBody?,
+        itemNotificationDate: RequestBody?,
         image: MultipartBody.Part
     ): Boolean
     suspend fun updateWishItem(token: String, itemId: Long, wishItem: WishItem): Pair<Boolean, Int>?

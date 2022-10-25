@@ -35,13 +35,13 @@ class WishRepositoryImpl @Inject constructor(private val wishItemService: WishIt
 
     override suspend fun uploadWishItem(
         token: String,
-        folderId: RequestBody,
+        folderId: RequestBody?,
         itemName: RequestBody,
-        itemPrice: RequestBody,
-        itemMemo: RequestBody,
-        itemUrl: RequestBody,
-        itemNotificationType: RequestBody,
-        itemNotificationDate: RequestBody,
+        itemPrice: RequestBody?,
+        itemMemo: RequestBody?,
+        itemUrl: RequestBody?,
+        itemNotificationType: RequestBody?,
+        itemNotificationDate: RequestBody?,
         image: MultipartBody.Part
     ): Boolean = runCatching {
         wishItemService.uploadWishItem(
