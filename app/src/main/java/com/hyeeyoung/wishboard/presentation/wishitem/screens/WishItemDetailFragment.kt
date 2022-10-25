@@ -12,7 +12,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
+import coil.load
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentWishItemDetailBinding
 import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
@@ -90,7 +90,8 @@ class WishItemDetailFragment : Fragment() {
 
     private fun addObservers() {
         viewModel.getWishItem().observe(viewLifecycleOwner) { item ->
-            Glide.with(binding.itemImage).load(item.imageUrl).into(binding.itemImage)
+            // TODO need refactoring 서버쪽에서 image 필드명을 통일시켜준다면 imageUrl, image 프로퍼티를 중 하나만 사용하는 것으로 통일할 수 있음
+            binding.itemImage.load(item.imageUrl ?: item.image)
             binding.goToShopBtn.setOnClickListener {
                 if (item.url == null) return@setOnClickListener
                 goToShop(item.url)
@@ -183,7 +184,6 @@ class WishItemDetailFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "WishItemDetailFragment"
         private const val ARG_WISH_ITEM = "wishItem"
         private const val ARG_WISH_ITEM_POSITION = "position"
         private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
