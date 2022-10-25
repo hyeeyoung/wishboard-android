@@ -210,21 +210,11 @@ class WishItemRegistrationViewModel @Inject constructor(
         }
     }
 
+    // TODO need refactoring UseCase로 분리
     private fun fetchFolderList() {
         if (token == null) return
         viewModelScope.launch {
-            var items: List<FolderItem>?
-            withContext(Dispatchers.IO) {
-                items = folderRepository.fetchFolderListSummary(token)
-                items?.forEach { item ->
-                    item.thumbnail?.let {
-                        item.thumbnailUrl = AWSS3Service().getImageUrl(it)
-                    }
-                }
-            }
-            withContext(Dispatchers.Main) {
-                items?.let { folderListSquareAdapter.setData(it) }
-            }
+            folderListSquareAdapter.setData(folderRepository.fetchFolderListSummary(token))
         }
     }
 

@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ItemFolderHorizontalBinding
@@ -67,8 +68,7 @@ class FolderListAdapter(
             with(binding) {
                 this.item = folder
                 thumbnail.clipToOutline = true
-                Glide.with(thumbnail.context).load(folder.thumbnailUrl).into(thumbnail)
-
+                thumbnail.load(folder.thumbnail)
                 container.setOnClickListener {
                     listener.onItemClick(folder)
                 }
@@ -90,8 +90,7 @@ class FolderListAdapter(
                     View.INVISIBLE
                 }
                 thumbnail.clipToOutline = true
-                Glide.with(thumbnail.context).load(folder.thumbnailUrl).into(thumbnail)
-
+                thumbnail.load(folder.thumbnail)
                 container.setOnClickListener {
                     listener.onItemClick(folder)
                 }
@@ -115,8 +114,7 @@ class FolderListAdapter(
                         ContextCompat.getColorStateList(foreground.context, R.color.transparent_300)
                 }
                 thumbnail.clipToOutline = true
-                Glide.with(thumbnail.context).load(folder.thumbnailUrl).into(thumbnail)
-
+                thumbnail.load(folder.thumbnail)
                 container.setOnClickListener {
                     changeSelectedFolder(folder)
                 }
