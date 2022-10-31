@@ -2,6 +2,8 @@ package com.hyeeyoung.wishboard.util
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
@@ -9,11 +11,17 @@ import androidx.lifecycle.LifecycleCoroutineScope
 import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.data.services.AWSS3Service
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import timber.log.Timber
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.net.MalformedURLException
+import java.net.URL
 import java.text.SimpleDateFormat
-import java.util.TimeZone
-import java.util.Locale
-import java.util.Date
+import java.util.*
 
 inline fun <T1 : Any, T2 : Any, R : Any> safeLet(p1: T1?, p2: T2?, block: (T1, T2) -> R?): R? {
     return if (p1 != null && p2 != null) block(p1, p2) else null
@@ -75,4 +83,42 @@ fun showKeyboard(context: Context, view: View, toShow: Boolean) {
     } else {
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
+}
+
+/** 이미지 url을 bitmap으로 변환 */
+suspend fun getBitmapFromURL(imageUrl: String): Bitmap? = try {
+    val url = URL(imageUrl)
+    val stream = withContext(Dispatchers.IO) {
+        url.openStream()
+    }
+    BitmapFactory.decodeStream(stream)
+} catch (e: MalformedURLException) {
+    Timber.e(e.message)
+    null
+} catch (e: IOException) {
+    Timber.e(e.message)
+    null
+}
+
+fun getFileFromBitmap(bitmap: Bitmap, token: String, context: Context): File? {
+    val cache = context.externalCacheDir
+    val shareFile = File(cache, makePhotoFileName(token))
+    Timber.d("파일 경로: ${shareFile.absolutePath}")
+
+    return try {
+        val out = FileOutputStream(shareFile)
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out)
+        out.flush()
+        out.close()
+        shareFile
+    } catch (e: Exception) {
+        Timber.e(e.message)
+        null
+    }
+}
+
+/** 이미지 파일명 생성하는 함수 */
+fun makePhotoFileName(token: String): String {
+    val timestamp = getTimestamp()
+    return ("${token.substring(7)}_${timestamp}.jpg")
 }
