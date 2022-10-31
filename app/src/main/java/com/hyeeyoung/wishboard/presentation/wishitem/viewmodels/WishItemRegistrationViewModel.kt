@@ -102,32 +102,45 @@ class WishItemRegistrationViewModel @Inject constructor(
         if (itemRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return
         itemRegistrationStatus.postValue(ProcessStatus.IN_PROGRESS)
 
-        // TODO 가격 데이터에 천단위 구분자 ',' 있는 경우 문자열 처리 필요
         safeLet(itemName.value?.trim(), getValidUrl(itemUrl.value)) { name, siteUrl ->
-            withContext(Dispatchers.IO) {
-                itemImage.value?.let { imageUrl ->
-                    val bitmap = getBitmapFromURL(imageUrl) ?: return@let
-                    imageFile = saveBitmapToInternalStorage(bitmap) ?: return@let
-                    val isSuccessful = AWSS3Service().uploadFile(imageFile!!.name, imageFile!!)
-                    if (!isSuccessful) return@withContext // TODO 업로드 실패 예외 처리 필요
-                }
+            val folderId: RequestBody? =
+                folderItem.value?.id?.toString()?.toPlainNullableRequestBody()
+            val itemName: RequestBody = name.toPlainRequestBody()
+            val itemPrice: RequestBody? =
+                itemPrice.value?.replace(",", "")?.toIntOrNull()?.toString()
+                    ?.toPlainNullableRequestBody() // // TODO 가격 데이터에 천단위 구분자 ',' 있는 경우 문자열 처리 필요
+            val itemUrl: RequestBody = siteUrl.toPlainRequestBody()
+            val notiType: RequestBody? = notiType.value?.name?.toPlainNullableRequestBody()
+            val notiDate: RequestBody? = notiDate.value?.toPlainNullableRequestBody()
 
-                val item = WishItem(
-                    name = name,
-                    image = imageFile?.name,
-                    price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
-                    url = siteUrl,
-//                    memo = getRefinedMemo(itemMemo.value), // 추후 메모 추가될 가능성이 있으므로 주석처리함
-                    folderId = folderItem.value?.id,
-                    notiType = notiType.value,
-                    notiDate = notiDate.value
+            val imageMultipartBody: MultipartBody.Part? = itemImage.value?.let { imageUrl ->
+                val bitmap = requireNotNull(getBitmapFromURL(imageUrl)) { Timber.e("비트맵 변환 실패") }
+                imageFile = requireNotNull(
+                    getFileFromBitmap(
+                        bitmap,
+                        token,
+                        application.applicationContext
+                    )
+                ) { Timber.e("파일 변환 실패") }
+
+                MultipartBody.Part.createFormData(
+                    "item_img", imageFile?.name, imageFile!!.asRequestBody()
                 )
-
-                val isComplete = wishRepository.uploadWishItem(token, item)
-                isCompleteUpload.postValue(isComplete)
             }
-            itemRegistrationStatus.postValue(ProcessStatus.IDLE)
+
+            val isComplete = wishRepository.uploadWishItem(
+                token,
+                folderId,
+                itemName,
+                itemPrice,
+                itemUrl,
+                notiType,
+                notiDate,
+                imageMultipartBody
+            )
+            isCompleteUpload.postValue(isComplete)
         }
+        itemRegistrationStatus.postValue(ProcessStatus.IDLE)
     }
 
     suspend fun uploadWishItemByBasics() {
