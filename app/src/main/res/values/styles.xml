@@ -263,4 +263,10 @@
         <item name="android:fontFamily">@font/montserrat_m</item>
         <item name="android:textColor">@color/gray_700</item>
     </style>
+
+    <!-- Circle Image View -->
+    <style name="Style.CircleImageView.Half" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>
