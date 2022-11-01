@@ -92,12 +92,7 @@ class WishBasicFragment : Fragment() {
 
     private fun addListeners() {
         binding.save.setOnClickListener {
-            lifecycleScope.launch {
-                when (isEditMode) {
-                    false -> viewModel.uploadWishItemByBasics()
-                    true -> viewModel.updateWishItem()
-                }
-            }
+            viewModel.uploadWishItemByBasics(isEditMode)
         }
         binding.addPhoto.setOnClickListener {
             requestStorage.launch(Manifest.permission.READ_EXTERNAL_STORAGE)

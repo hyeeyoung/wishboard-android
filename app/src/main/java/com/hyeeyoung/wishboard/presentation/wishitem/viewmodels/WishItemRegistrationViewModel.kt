@@ -137,29 +137,67 @@ class WishItemRegistrationViewModel @Inject constructor(
         itemRegistrationStatus.postValue(ProcessStatus.IDLE)
     }
 
-    suspend fun uploadWishItemByBasics() {
-        if (itemRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return
-        if (token == null) return
-        val name = itemName.value?.trim() ?: return
-        itemRegistrationStatus.value = ProcessStatus.IN_PROGRESS
+    fun uploadWishItemByBasics(isEditMode: Boolean) {
+        viewModelScope.launch {
+            if (itemRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return@launch
+            if (token == null) return@launch
+            val itemName = itemName.value?.trim() ?: return@launch
+            itemRegistrationStatus.value = ProcessStatus.IN_PROGRESS
 
+            if (!isEditMode) uploadWishItemByBasics(itemName)
+            else updateWishItem(itemName)
+
+            itemRegistrationStatus.value = ProcessStatus.IDLE
+        }
+    }
+
+    private suspend fun uploadWishItemByBasics(trimmedItemName: String) {
         val folderId: RequestBody? = folderItem.value?.id?.toString()?.toPlainNullableRequestBody()
-        val itemName: RequestBody = name.toPlainRequestBody()
-        val itemPrice: RequestBody? = itemPrice.value?.replace(",", "")?.toIntOrNull()?.toString()?.toPlainNullableRequestBody()
+        val itemName: RequestBody = trimmedItemName.toPlainRequestBody()
+        val itemPrice: RequestBody? = itemPrice.value?.replace(",", "")?.toIntOrNull()?.toString()
+            ?.toPlainNullableRequestBody()
         val itemMemo: RequestBody? = getTrimmedMemo(itemMemo.value).toPlainNullableRequestBody()
         val itemUrl: RequestBody? = itemUrl.value.toPlainNullableRequestBody()
         val notiType: RequestBody? = notiType.value?.name?.toPlainNullableRequestBody()
         val notiDate: RequestBody? = notiDate.value?.toPlainNullableRequestBody()
 
-        val imageMultipartBody: MultipartBody.Part = ContentUriRequestBody(
-            application.baseContext,
-            "item_img",
-            selectedGalleryImageUri.value ?: Uri.parse(itemImage.value)
-        ).toFormData()
+        val imageMultipartBody: MultipartBody.Part =
+            if (selectedGalleryImageUri.value != null) {
+                ContentUriRequestBody(
+                    application.baseContext,
+                    "item_img",
+                    selectedGalleryImageUri.value!!
+                ).toFormData()
+            } else if (itemImage.value != null) { // 파싱으로 아이템 이미지 불러온 경우 비트맵이미지로 이미지 파일 만들기
+                val bitmap =
+                    requireNotNull(getBitmapFromURL(itemImage.value!!)) { Timber.e("비트맵 변환 실패") }
+                imageFile = requireNotNull(
+                    getFileFromBitmap(
+                        bitmap,
+                        token!!,
+                        application.applicationContext
+                    )
+                ) { Timber.e("파일 변환 실패") }
+                MultipartBody.Part.createFormData(
+                    "item_img", imageFile?.name, imageFile!!.asRequestBody()
+                )
+            } else {
+                Timber.e("FormData로 변환 실패")
+                return
+            }
 
-        val isComplete = wishRepository.uploadWishItem(token, folderId, itemName, itemPrice, itemMemo, itemUrl, notiType, notiDate, imageMultipartBody)
+        val isComplete = wishRepository.uploadWishItem(
+            token!!,
+            folderId,
+            itemName,
+            itemPrice,
+            itemUrl,
+            notiType,
+            notiDate,
+            imageMultipartBody,
+            itemMemo,
+        )
         isCompleteUpload.value = isComplete
-        itemRegistrationStatus.value = ProcessStatus.IDLE
     }
 
     private suspend fun updateWishItem(trimmedItemName: String) { // TODO need refactoring, uploadWishItemByBasics()와 합치기
