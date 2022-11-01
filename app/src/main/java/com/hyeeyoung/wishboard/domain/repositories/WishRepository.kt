@@ -12,13 +12,23 @@ interface WishRepository {
         token: String, folderId: RequestBody?,
         itemName: RequestBody,
         itemPrice: RequestBody?,
+        itemUrl: RequestBody?,
+        itemNotificationType: RequestBody?,
+        itemNotificationDate: RequestBody?,
+        image: MultipartBody.Part?,
+        itemMemo: RequestBody? = null,
+    ): Boolean
+    suspend fun updateWishItem(
+        token: String, itemId: Long,
+        folderId: RequestBody?,
+        itemName: RequestBody,
+        itemPrice: RequestBody?,
         itemMemo: RequestBody?,
         itemUrl: RequestBody?,
         itemNotificationType: RequestBody?,
         itemNotificationDate: RequestBody?,
-        image: MultipartBody.Part
-    ): Boolean
-    suspend fun updateWishItem(token: String, itemId: Long, wishItem: WishItem): Pair<Boolean, Int>?
+        itemImage: MultipartBody.Part?
+    ): Pair<Boolean, Int>?
     suspend fun updateFolderOfWishItem(token: String, folderId: Long, itemId: Long): Boolean
     suspend fun deleteWishItem(token: String, itemId: Long): Boolean
     suspend fun getItemParsingInfo(site: String): Pair<ItemInfo?, Int>?

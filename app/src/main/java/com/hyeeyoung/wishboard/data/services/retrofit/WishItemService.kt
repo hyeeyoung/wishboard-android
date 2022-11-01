@@ -27,14 +27,22 @@ interface WishItemService {
         @Part("item_url") itemUrl: RequestBody?,
         @Part("item_notification_type") itemNotificationType: RequestBody?,
         @Part("item_notification_date") itemNotificationDate: RequestBody?,
-        @Part itemImg: MultipartBody.Part,
+        @Part itemImg: MultipartBody.Part?,
     ): Response<BaseResponseResult<BaseResponseData?>>
 
+    @Multipart
     @PUT("item/{item_id}")
     suspend fun updateToWishItem(
         @Header("Authorization") token: String,
         @Path("item_id") itemId: Long,
-        @Body wishItem: WishItem
+        @Part("folder_id") folderId: RequestBody?,
+        @Part("item_name") itemName: RequestBody,
+        @Part("item_price") itemPrice: RequestBody?,
+        @Part("item_memo") itemMemo: RequestBody?,
+        @Part("item_url") itemUrl: RequestBody?,
+        @Part("item_notification_type") itemNotificationType: RequestBody?,
+        @Part("item_notification_date") itemNotificationDate: RequestBody?,
+        @Part itemImg: MultipartBody.Part?,
     ): Response<BaseResponseResult<BaseResponseData?>>
 
     @PUT("item/{item_id}/folder/{folder_id}")

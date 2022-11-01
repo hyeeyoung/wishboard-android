@@ -38,11 +38,11 @@ class WishRepositoryImpl @Inject constructor(private val wishItemService: WishIt
         folderId: RequestBody?,
         itemName: RequestBody,
         itemPrice: RequestBody?,
-        itemMemo: RequestBody?,
         itemUrl: RequestBody?,
         itemNotificationType: RequestBody?,
         itemNotificationDate: RequestBody?,
-        image: MultipartBody.Part
+        image: MultipartBody.Part?,
+        itemMemo: RequestBody?,
     ): Boolean = runCatching {
         wishItemService.uploadWishItem(
             token,
@@ -66,9 +66,25 @@ class WishRepositoryImpl @Inject constructor(private val wishItemService: WishIt
     override suspend fun updateWishItem(
         token: String,
         itemId: Long,
-        wishItem: WishItem
+        folderId: RequestBody?,
+        itemName: RequestBody,
+        itemPrice: RequestBody?,
+        itemMemo: RequestBody?,
+        itemUrl: RequestBody?,
+        itemNotificationType: RequestBody?,
+        itemNotificationDate: RequestBody?,
+        itemImage: MultipartBody.Part?
     ): Pair<Boolean, Int>? = runCatching {
-        wishItemService.updateToWishItem(token, itemId, wishItem)
+        wishItemService.updateToWishItem(
+            token, itemId, folderId,
+            itemName,
+            itemPrice,
+            itemMemo,
+            itemUrl,
+            itemNotificationType,
+            itemNotificationDate,
+            itemImage
+        )
     }.fold({
         Timber.d("아이템 수정 성공(${it.code()})")
         Pair(it.isSuccessful, it.code())
@@ -107,7 +123,7 @@ class WishRepositoryImpl @Inject constructor(private val wishItemService: WishIt
             wishItemService.getItemParsingInfo(site)
         }.fold({
             Log.d(TAG, "아이템 파싱 성공")
-            it.body()?.data
+            Pair(it.body()?.data, it.code())
         }, {
             Log.d(TAG, "아이템 파싱 실패: ${it.message}")
             null
