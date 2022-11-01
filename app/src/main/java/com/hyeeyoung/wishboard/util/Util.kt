@@ -17,8 +17,7 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException
-import java.net.MalformedURLException
+import java.net.HttpURLConnection
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
@@ -86,18 +85,22 @@ fun showKeyboard(context: Context, view: View, toShow: Boolean) {
 }
 
 /** 이미지 url을 bitmap으로 변환 */
-suspend fun getBitmapFromURL(imageUrl: String): Bitmap? = try {
-    val url = URL(imageUrl)
-    val stream = withContext(Dispatchers.IO) {
-        url.openStream()
+suspend fun getBitmapFromURL(imageUrl: String): Bitmap? {
+    val bitmap = try {
+        val url = URL(imageUrl)
+
+        withContext(Dispatchers.IO) {
+            val connection = (url.openConnection() as? HttpURLConnection)?.apply {
+                doInput = true
+                connect()
+            }
+            connection?.let { BitmapFactory.decodeStream(it.inputStream) }
+        }
+    } catch (e: Exception) {
+        Timber.e(e.message)
+        null
     }
-    BitmapFactory.decodeStream(stream)
-} catch (e: MalformedURLException) {
-    Timber.e(e.message)
-    null
-} catch (e: IOException) {
-    Timber.e(e.message)
-    null
+    return bitmap
 }
 
 fun getFileFromBitmap(bitmap: Bitmap, token: String, context: Context): File? {
