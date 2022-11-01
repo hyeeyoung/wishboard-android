@@ -167,6 +167,7 @@ class WishBasicFragment : Fragment() {
         // 갤러리에서 가져온 이미지
         viewModel.getSelectedGalleryUri().observe(viewLifecycleOwner) {
             it?.let {
+                viewModel.removeWishItemImage()
                 Glide.with(binding.itemImage).load(it).into(binding.itemImage)
             }
         }

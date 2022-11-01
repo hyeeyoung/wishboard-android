@@ -2,7 +2,6 @@ package com.hyeeyoung.wishboard.presentation.wishitem.viewmodels
 
 import android.app.Application
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Patterns
 import android.webkit.URLUtil
@@ -11,30 +10,25 @@ import androidx.lifecycle.*
 import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
-import com.hyeeyoung.wishboard.data.services.AWSS3Service
 import com.hyeeyoung.wishboard.domain.repositories.FolderRepository
 import com.hyeeyoung.wishboard.domain.repositories.WishRepository
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
 import com.hyeeyoung.wishboard.presentation.folder.types.FolderListViewType
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiType
-import com.hyeeyoung.wishboard.util.ContentUriRequestBody
+import com.hyeeyoung.wishboard.util.*
 import com.hyeeyoung.wishboard.util.extension.toPlainNullableRequestBody
 import com.hyeeyoung.wishboard.util.extension.toPlainRequestBody
-import com.hyeeyoung.wishboard.util.getTimestamp
-import com.hyeeyoung.wishboard.util.safeLet
 import dagger.hilt.android.lifecycle.HiltViewModel
-import com.hyeeyoung.wishboard.util.extension.toPlainRequestBody
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
-import java.io.IOException
-import java.net.MalformedURLException
-import java.net.URL
 import java.text.DecimalFormat
 import javax.inject.Inject
 
@@ -168,43 +162,59 @@ class WishItemRegistrationViewModel @Inject constructor(
         itemRegistrationStatus.value = ProcessStatus.IDLE
     }
 
-    suspend fun updateWishItem() { // TODO need refactoring, uploadWishItemByBasics()와 합치기
-        if (itemRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return
-        if (itemId == null || token == null) return
-        val itemName = itemName.value?.trim() ?: return
-        itemRegistrationStatus.value = ProcessStatus.IN_PROGRESS
-
+    private suspend fun updateWishItem(trimmedItemName: String) { // TODO need refactoring, uploadWishItemByBasics()와 합치기
         // 파싱으로 아이템 이미지 불러온 경우 비트맵이미지로 이미지 파일 만들기
-        itemImage.value?.let { imageUrl ->
-            val bitmap = getBitmapFromURL(imageUrl) ?: return@let
-            imageFile = saveBitmapToInternalStorage(bitmap) ?: return@let
-        }
+        val folderId: RequestBody? =
+            (folderItem.value?.id ?: wishItem?.folderId)?.toString()?.toPlainNullableRequestBody()
+        val itemName: RequestBody = trimmedItemName.toPlainRequestBody()
+        val itemPrice: RequestBody? = itemPrice.value?.replace(",", "")?.toIntOrNull()?.toString()
+            ?.toPlainNullableRequestBody()
+        val itemMemo: RequestBody? = getTrimmedMemo(itemMemo.value).toPlainNullableRequestBody()
+        val itemUrl: RequestBody? = itemUrl.value.toPlainNullableRequestBody()
+        val notiType: RequestBody? = notiType.value?.name?.toPlainNullableRequestBody()
+        val notiDate: RequestBody? = notiDate.value?.toPlainNullableRequestBody()
 
-        imageFile?.let {
-            val isSuccessful = AWSS3Service().uploadFile(it.name, it)
-            if (!isSuccessful) return
-        }
+        val imageMultipartBody: MultipartBody.Part? =
+            if (wishItem?.image != null || wishItem?.imageUrl != null) { // 이미지가 변경되지 않은 경우
+                null
+            } else if (selectedGalleryImageUri.value != null) {
+                ContentUriRequestBody(
+                    application.baseContext,
+                    "item_img",
+                    selectedGalleryImageUri.value!!
+                ).toFormData()
+            } else if (itemImage.value != null) { // 파싱으로 아이템 이미지 불러온 경우 비트맵이미지로 이미지 파일 만들기
+                Timber.e(wishItem.toString())
+                val bitmap =
+                    requireNotNull(getBitmapFromURL(itemImage.value!!)) { Timber.e("비트맵 변환 실패") }
+                imageFile = requireNotNull(
+                    getFileFromBitmap(
+                        bitmap,
+                        token!!,
+                        application.applicationContext
+                    )
+                ) { Timber.e("파일 변환 실패") }
+                MultipartBody.Part.createFormData(
+                    "item_img", imageFile?.name, imageFile!!.asRequestBody()
+                )
+            } else {
+                null
+            }
 
-        wishItem = WishItem(
-            id = itemId,
-            createAt = wishItem?.createAt,
-            name = itemName,
-            image = imageFile?.name ?: wishItem?.image,
-            price = itemPrice.value?.replace(",", "")?.toIntOrNull(),
-            url = itemUrl.value,
-            memo = getTrimmedMemo(itemMemo.value),
-            folderId = folderItem.value?.id ?: wishItem?.folderId,
-            folderName = folderItem.value?.name
-                ?: wishItem?.folderName, // TODO (보류) 현재 코드 상으로는 folderId만 필요한 것으로 파악되나 추후 수동등록화면에서 폴더 추가기능 도입할 경우 필요함
-            notiType = notiType.value,
-            notiDate = notiDate.value
+        val result = wishRepository.updateWishItem(
+            requireNotNull(token) { Timber.e("토큰 없음") },
+            requireNotNull(itemId) { Timber.e("아이템 아이디 없음") },
+            folderId,
+            itemName,
+            itemPrice,
+            itemMemo,
+            itemUrl,
+            notiType,
+            notiDate,
+            imageMultipartBody
         )
-
-        val result = wishRepository.updateWishItem(token, itemId!!, wishItem!!)
         _isShownItemNonUpdateDialog.value = result?.second == 404
         isCompleteUpload.value = result?.first
-
-        itemRegistrationStatus.value = ProcessStatus.IDLE
     }
 
     fun createNewFolder() {
@@ -328,12 +338,19 @@ class WishItemRegistrationViewModel @Inject constructor(
         setWishItemInfo()
     }
 
+    fun removeWishItemImage() {
+        wishItem?.apply {
+            this.imageUrl = null
+            this.image = null
+        }
+    }
+
     /** UI에 보여질 데이터값 설정 */
     private fun setWishItemInfo() {
         wishItem?.let { item ->
             itemId = item.id
             itemName.value = item.name
-            itemImage.value = item.imageUrl
+            itemImage.value = item.image ?: item.imageUrl
             itemPrice.value = item.price.toString()
             itemMemo.value = item.memo
             itemUrl.value = item.url
