@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hyeeyoung.wishboard.R
@@ -86,8 +87,9 @@ class WishBasicFragment : Fragment() {
                 }
             )
 
-        Glide.with(binding.itemImage).load(viewModel.getWishItem()?.imageUrl)
-            .into(binding.itemImage)
+        viewModel.getWishItem()?.let {
+            binding.itemImage.load(it.imageUrl ?: it.image)
+        }
     }
 
     private fun addListeners() {
@@ -163,7 +165,7 @@ class WishBasicFragment : Fragment() {
         viewModel.getSelectedGalleryUri().observe(viewLifecycleOwner) {
             it?.let {
                 viewModel.removeWishItemImage()
-                Glide.with(binding.itemImage).load(it).into(binding.itemImage)
+                binding.itemImage.load(it)
             }
         }
 
