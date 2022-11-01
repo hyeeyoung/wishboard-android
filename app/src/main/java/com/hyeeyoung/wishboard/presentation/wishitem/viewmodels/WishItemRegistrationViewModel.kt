@@ -1,7 +1,6 @@
 package com.hyeeyoung.wishboard.presentation.wishitem.viewmodels
 
 import android.app.Application
-import android.graphics.Bitmap
 import android.net.Uri
 import android.util.Patterns
 import android.webkit.URLUtil
@@ -16,19 +15,19 @@ import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
 import com.hyeeyoung.wishboard.presentation.folder.types.FolderListViewType
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiType
-import com.hyeeyoung.wishboard.util.*
+import com.hyeeyoung.wishboard.util.ContentUriRequestBody
 import com.hyeeyoung.wishboard.util.extension.toPlainNullableRequestBody
 import com.hyeeyoung.wishboard.util.extension.toPlainRequestBody
+import com.hyeeyoung.wishboard.util.getBitmapFromURL
+import com.hyeeyoung.wishboard.util.getFileFromBitmap
+import com.hyeeyoung.wishboard.util.safeLet
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import timber.log.Timber
 import java.io.File
-import java.io.FileOutputStream
 import java.text.DecimalFormat
 import javax.inject.Inject
 
@@ -85,10 +84,11 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     /** 오픈그래프 메타태그 파싱을 통해 아이템 정보 가져오기 */
     suspend fun getWishItemInfo(url: String) {
-        val result = wishRepository.getItemParsingInfo(url) ?: return
-        itemName.postValue(result.name)
-        itemPrice.postValue(result.price.toString())
-        itemImage.postValue(result.image)
+        val result = wishRepository.getItemParsingInfo(url)
+        if (result?.first == null) return
+        itemName.value = result.first!!.name
+        itemPrice.value = result.first!!.price.toString()
+        itemImage.value = result.first!!.image
     }
 
     suspend fun uploadWishItemByLinkSharing() {
@@ -279,44 +279,6 @@ class WishItemRegistrationViewModel @Inject constructor(
         }
     }
 
-    /** 이미지 파일명 생성하는 함수로 해당 함수 호출 전 반드시 token null 체크해야함 */
-    private fun makePhotoFileName(): String {
-        val timestamp = getTimestamp()
-        return ("${token!!.substring(7)}_${timestamp}.jpg")
-    }
-
-    /** 이미지 url을 bitmap으로 변환 */
-    private suspend fun getBitmapFromURL(imageUrl: String): Bitmap? {
-        return try {
-            val url = URL(imageUrl)
-            val stream = url.openStream()
-            BitmapFactory.decodeStream(stream)
-        } catch (e: MalformedURLException) {
-            e.printStackTrace()
-            null
-        } catch (e: IOException) {
-            e.printStackTrace()
-            null
-        }
-    }
-
-    /** bitmap 이미지를 내부저장소에 file로 저장 */
-    private suspend fun saveBitmapToInternalStorage(bitmapImage: Bitmap): File? {
-        val fileName = makePhotoFileName()
-        val file = File(application.cacheDir, fileName)
-
-        try {
-            val fileStream = FileOutputStream(file)
-            bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fileStream)
-            file.deleteOnExit()
-            fileStream.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return null
-        }
-        return file
-    }
-
     /** 입력한 쇼핑몰 링크의 포맷을 검증 후, 유효한 url일 때 아이템 정보 파싱 */
     fun loadWishItemInfo() {
         val url = itemUrlInput.value?.trim()
@@ -326,7 +288,7 @@ class WishItemRegistrationViewModel @Inject constructor(
         if (!isValid) return
 
         selectedGalleryImageUri.value = null // 파싱한 이미지를 적용할 것이기 때문에 기존에 선택된 이미지를 제거
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             getWishItemInfo(url!!)
         }
     }
@@ -559,8 +521,4 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun getIsValidItemUrl(): LiveData<Boolean?> = isValidItemUrl
     fun getRegistrationStatus(): LiveData<ProcessStatus> = itemRegistrationStatus
     fun getFolderRegistrationStatus(): LiveData<ProcessStatus> = folderRegistrationStatus
-
-    companion object {
-        private const val TAG = "WishItemRegistrationViewModel"
-    }
 }
