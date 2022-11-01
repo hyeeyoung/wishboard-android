@@ -117,6 +117,8 @@ class WishItemDetailFragment : Fragment() {
                 it[ARG_WISH_ITEM] as? WishItem
             ) { status, item ->
                 itemStatus = status
+
+                // 아이템 수정 후 상세뷰로 전달할 아이템 정보를 저장, 아이템 수정 후 디테일 정보 조회 api를 요청하는 방식으로 변경 완료할 경우 해당 코드는 삭제 예정
                 viewModel.setWishItem(item)
             }
             return@observe
