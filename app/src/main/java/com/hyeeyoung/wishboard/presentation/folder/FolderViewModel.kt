@@ -42,18 +42,9 @@ class FolderViewModel @Inject constructor(
     fun fetchFolderList() {
         if (token == null) return
         viewModelScope.launch {
-            var items: List<FolderItem>?
-            withContext(Dispatchers.IO) {
-                items = folderRepository.fetchFolderList(token)
-                items?.forEach { item ->
-                    item.thumbnail?.let {
-                        item.thumbnailUrl = AWSS3Service().getImageUrl(it)
-                    }
-                }
-            }
-            withContext(Dispatchers.Main) {
-                folderList.postValue(items)
-                folderListAdapter.setData(items)
+            folderRepository.fetchFolderList(token).let { folders ->
+                folderList.value = folders
+                folderListAdapter.setData(folders)
             }
         }
     }

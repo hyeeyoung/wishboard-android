@@ -10,7 +10,6 @@ data class FolderItem(
     val id: Long? = null,
     @SerializedName("folder_name")
     var name: String? = null,
-    var thumbnailUrl: String? = null,
     @SerializedName("folder_thumbnail")
     val thumbnail: String? = null,
     @SerializedName("item_count")

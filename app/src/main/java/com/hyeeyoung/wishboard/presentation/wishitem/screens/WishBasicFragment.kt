@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hyeeyoung.wishboard.R
@@ -86,18 +87,14 @@ class WishBasicFragment : Fragment() {
                 }
             )
 
-        Glide.with(binding.itemImage).load(viewModel.getWishItem()?.imageUrl)
-            .into(binding.itemImage)
+        viewModel.getWishItem()?.let {
+            binding.itemImage.load(it.imageUrl ?: it.image)
+        }
     }
 
     private fun addListeners() {
         binding.save.setOnClickListener {
-            lifecycleScope.launch {
-                when (isEditMode) {
-                    false -> viewModel.uploadWishItemByBasics()
-                    true -> viewModel.updateWishItem()
-                }
-            }
+            viewModel.uploadWishItemByBasics(isEditMode)
         }
         binding.addPhoto.setOnClickListener {
             requestStorage.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
@@ -167,7 +164,8 @@ class WishBasicFragment : Fragment() {
         // 갤러리에서 가져온 이미지
         viewModel.getSelectedGalleryUri().observe(viewLifecycleOwner) {
             it?.let {
-                Glide.with(binding.itemImage).load(it).into(binding.itemImage)
+                viewModel.removeWishItemImage()
+                binding.itemImage.load(it)
             }
         }
 

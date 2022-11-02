@@ -56,6 +56,8 @@ class ShopLinkInputBottomDialogFragment: BottomSheetDialogFragment() {
     private fun addObservers() {
         viewModel.getIsValidItemUrl().observe(viewLifecycleOwner) {
             if (it == true) {
+                // TODO need refactoring
+                viewModel.removeWishItemImage()
                 dismiss()
             }
         }

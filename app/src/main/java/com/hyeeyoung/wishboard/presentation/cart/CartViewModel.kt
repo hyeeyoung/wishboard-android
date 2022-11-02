@@ -33,11 +33,6 @@ class CartViewModel @Inject constructor(
             var items: List<CartItem>?
             withContext(Dispatchers.IO) {
                 items = cartRepository.fetchCartList(token)
-                items?.forEach { item ->
-                    item.wishItem.image?.let {
-                        item.wishItem.imageUrl = AWSS3Service().getImageUrl(it)
-                    }
-                }
                 cartList.postValue(items)
             }
             withContext(Dispatchers.Main) {

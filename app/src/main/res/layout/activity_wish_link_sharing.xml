@@ -184,13 +184,14 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/item_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="-40dp"
             android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/Style.CircleImageView.Half"
             app:layout_constraintBottom_toTopOf="@id/container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

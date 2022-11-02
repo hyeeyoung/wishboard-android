@@ -14,7 +14,8 @@ data class WishItem(
     @SerializedName("item_id")
     val id: Long? = null,
     @SerializedName("item_img")
-    val image: String? = null,
+    var image: String? = null,
+    @SerializedName("item_img_url") // TODO need refactoring
     var imageUrl: String? = null,
     @SerializedName("item_name")
     val name: String,
@@ -39,7 +40,7 @@ data class WishItem(
             val folderId = wishItem.folderId
             val folderName = wishItem.folderName
             val id = wishItem.id
-            val image = wishItem.image
+            val image = wishItem.imageUrl
             val name = wishItem.name
             val price = wishItem.price
             val url = wishItem.url
@@ -53,7 +54,7 @@ data class WishItem(
                 folderId = folderId,
                 folderName = folderName,
                 id = id,
-                image = image,
+                imageUrl = image,
                 name = name,
                 price = price,
                 url = url,

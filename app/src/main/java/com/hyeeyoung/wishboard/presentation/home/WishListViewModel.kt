@@ -5,17 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.WishBoardApp
-import com.hyeeyoung.wishboard.presentation.cart.types.CartStateType
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.domain.repositories.CartRepository
 import com.hyeeyoung.wishboard.domain.repositories.FolderRepository
 import com.hyeeyoung.wishboard.domain.repositories.WishRepository
-import com.hyeeyoung.wishboard.data.services.AWSS3Service
+import com.hyeeyoung.wishboard.presentation.cart.types.CartStateType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
@@ -33,16 +30,9 @@ class WishListViewModel @Inject constructor(
     fun fetchWishList() {
         if (token == null) return
         viewModelScope.launch {
-            var items: List<WishItem>?
-            withContext(Dispatchers.IO) {
-                items = wishRepository.fetchWishList(token)
-                items?.forEach { item ->
-                    item.image?.let { item.imageUrl = AWSS3Service().getImageUrl(it) }
-                }
-            }
-            withContext(Dispatchers.Main) {
-                wishList.postValue(items)
-                wishListAdapter.setData(items)
+            wishRepository.fetchWishList(token).let {
+                wishList.postValue(it)
+                wishListAdapter.setData(it)
             }
         }
     }
@@ -50,30 +40,16 @@ class WishListViewModel @Inject constructor(
     fun fetchLatestItem() {
         if (token == null) return
         viewModelScope.launch {
-            var item: WishItem? = null
-            withContext(Dispatchers.IO) {
-                item = wishRepository.fetchLatestWishItem(token) ?: return@withContext
-                item!!.image?.let { item!!.imageUrl = AWSS3Service().getImageUrl(it) }
-            }
-            withContext(Dispatchers.Main) {
-                insertWishItem(item ?: return@withContext)
-            }
+            insertWishItem(wishRepository.fetchLatestWishItem(token) ?: return@launch)
         }
     }
 
-    fun fetchFolderItems(folderId: Long?) { // TODO need refactoring
+    fun fetchFolderItems(folderId: Long?) { // TODO need refactoring UseCase로 분리
         if (token == null || folderId == null) return
         viewModelScope.launch {
-            var items: List<WishItem>?
-            withContext(Dispatchers.IO) {
-                items = folderRepository.fetchItemsInFolder(token, folderId)
-                items?.forEach { item ->
-                    item.image?.let { item.imageUrl = AWSS3Service().getImageUrl(it) }
-                }
-            }
-            withContext(Dispatchers.Main) {
-                wishList.postValue(items)
-                wishListAdapter.setData(items)
+            folderRepository.fetchItemsInFolder(token, folderId).let { folders ->
+                wishList.postValue(folders)
+                wishListAdapter.setData(folders)
             }
         }
     }
