@@ -99,7 +99,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacingBase"
                 android:text="@string/cancel"
-                android:textAppearance="@style/Widget.Button.Dialog.TextAppearance"
+                android:textColor="@color/green_500"
                 app:layout_constraintEnd_toStartOf="@id/yes"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/nickname_container" />
@@ -117,7 +117,6 @@
                 style="@style/Widget.Button.Dialog"
                 android:layout_height="wrap_content"
                 android:text="@string/my_membership_exit"
-                android:textAppearance="@style/Widget.Button.Dialog.TextAppearance"
                 android:textColor="@color/gray_600"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/no"

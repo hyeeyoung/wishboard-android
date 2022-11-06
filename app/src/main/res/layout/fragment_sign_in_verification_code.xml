@@ -143,15 +143,14 @@
                 android:visibility="@{viewModel.isCorrectedVerificationCode() == false &amp;&amp; viewModel.isCorrectedVerificationCode() != null ? View.VISIBLE : View.GONE}" />
         </LinearLayout>
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/login"
-            style="@style/Widget.Button.Activate.Green"
+            style="@style/Widget.Button.Full.Activate"
             android:layout_width="match_parent"
             android:layout_marginBottom="@dimen/spacingBase"
             android:enabled="@{viewModel.isEnabledVerificationCodeButton() == true}"
             android:onClick="@{() -> viewModel.signInEmail()}"
             android:text="@{viewModel.signProcessStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.sign_in)}"
-            android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:text="@string/sign_in" />
 

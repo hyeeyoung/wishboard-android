@@ -44,21 +44,13 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/save"
+                style="@style/Widget.Button.Small.Green"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacingBase"
-                android:background="@drawable/shape_border_radius_32"
-                android:backgroundTint="@color/green_500"
-                android:fontFamily="@font/suit_m"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
                 android:text="@string/save"
-                android:textColor="@color/gray_700"
-                android:textSize="@dimen/typographyDescription"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

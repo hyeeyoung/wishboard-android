@@ -133,15 +133,13 @@
             app:layout_constraintTop_toTopOf="@id/nickname_detail_text"
             tools:text="(7/12)자" />
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/complete"
-            style="@style/Widget.Button.Activate.Green"
-            android:layout_width="match_parent"
+            style="@style/Widget.Button.Full.Activate"
             android:layout_marginTop="@dimen/spacing20"
             android:layout_marginBottom="@dimen/spacingBase"
             android:enabled="@{viewModel.isEnabledEditCompleteButton()}"
             android:text="@{viewModel.profileEditStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.complete)}"
-            android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             tools:text="@string/complete" />

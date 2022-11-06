@@ -157,15 +157,14 @@
                 <!--                android:textSize="@dimen/typographyBase"-->
                 <!--                app:layout_constraintTop_toBottomOf="@id/noti_info_container" />-->
 
-                <TextView
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/add"
-                    style="@style/Widget.Button.Activate.Green"
+                    style="@style/Widget.Button.Full.Activate"
                     android:layout_width="match_parent"
                     android:layout_marginHorizontal="@dimen/spacingBase"
                     android:layout_marginBottom="@dimen/spacingBase"
                     android:enabled="@{viewModel.itemName.length() > 0 ? true : false}"
                     android:text="@{viewModel.registrationStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.wish_list_registration_button_text)}"
-                    android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
                     app:layout_constraintBottom_toBottomOf="parent"
                     tools:text="@string/wish_list_registration_button_text" />
 

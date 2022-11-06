@@ -109,14 +109,13 @@
                 app:layout_constraintStart_toStartOf="@id/folder_name"
                 app:layout_constraintTop_toBottomOf="@id/folder_name" />
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/add"
-                style="@style/Widget.Button.Activate.Green"
+                style="@style/Widget.Button.Full.Activate.CenterDialog"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/spacingBase"
                 android:enabled="@{viewModel.folderName.trim().length() > 0}"
                 android:text="@{viewModel.registrationStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(viewModel.editMode == true ? R.string.edit : R.string.add)}"
-                android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
                 app:layout_constraintTop_toBottomOf="@id/folder_name_detail_text"
                 tools:text="@string/add" />
 

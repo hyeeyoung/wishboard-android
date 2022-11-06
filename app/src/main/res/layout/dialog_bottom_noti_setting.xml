@@ -56,6 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/widgetBottomDialogContentHeightBase"
             app:layout_constraintTop_toBottomOf="@id/toolbar">
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/noti_container"
                 android:layout_width="match_parent"
@@ -154,13 +155,12 @@
                 app:layout_constraintBottom_toTopOf="@id/complete"
                 app:layout_constraintStart_toStartOf="@id/complete" />
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/complete"
-                style="@style/Widget.Button.Activate.Green"
+                style="@style/Widget.Button.Full.Activate"
                 android:layout_width="match_parent"
                 android:layout_margin="@dimen/spacingBase"
                 android:text="@{viewModel.registrationStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.complete)}"
-                android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:text="@string/complete" />
 

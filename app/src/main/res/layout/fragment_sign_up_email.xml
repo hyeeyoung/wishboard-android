@@ -123,15 +123,14 @@
 
         </LinearLayout>
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/next"
-            style="@style/Widget.Button.Activate.Green"
+            style="@style/Widget.Button.Full.Activate"
             android:layout_width="match_parent"
             android:layout_marginBottom="@dimen/spacingBase"
             android:enabled="@{viewModel.validEmailFormat == true}"
             android:onClick="@{() -> viewModel.checkRegisteredUser()}"
             android:text="@{viewModel.signProcessStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.next)}"
-            android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:text="@string/next"/>
 
