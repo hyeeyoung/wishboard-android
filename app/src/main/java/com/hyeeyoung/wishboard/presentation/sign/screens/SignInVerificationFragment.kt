@@ -43,6 +43,7 @@ class SignInVerificationFragment : Fragment() {
                     startActivity(Intent(requireContext(), MainActivity::class.java))
                     requireActivity().finish()
                 }
+                else -> {}
             }
         }
 
@@ -55,6 +56,7 @@ class SignInVerificationFragment : Fragment() {
                     binding.loadingLottie.visibility = View.VISIBLE
                     binding.loadingLottie.playAnimation()
                 }
+                else -> {}
             }
         }
     }

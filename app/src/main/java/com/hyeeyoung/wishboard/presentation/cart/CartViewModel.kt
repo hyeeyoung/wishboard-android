@@ -63,6 +63,7 @@ class CartViewModel @Inject constructor(
                     if (item.cartItemInfo.count == 0) return //TODO count가 0이면 더이상 내릴 수 없도록 예외처리 필요
                     it.cartItemInfo.count -= 1
                 }
+                else -> {}
             }
             updateCartItemCount(item, position)
         }

@@ -130,6 +130,7 @@ class WishBasicFragment : Fragment() {
                         moveToPrevious(WishItemStatus.ADDED, null)
                     }
                 }
+                else -> {}
             }
         }
 
@@ -142,6 +143,7 @@ class WishBasicFragment : Fragment() {
                     binding.loadingLottie.visibility = View.VISIBLE
                     binding.loadingLottie.playAnimation()
                 }
+                else -> {}
             }
         }
 
