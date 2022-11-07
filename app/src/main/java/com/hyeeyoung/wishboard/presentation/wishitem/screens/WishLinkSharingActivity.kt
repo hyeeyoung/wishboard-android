@@ -95,7 +95,7 @@ class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemCli
     private fun addObservers() {
         viewModel.getItemImage().observe(this) { image ->
             if (image == null) return@observe
-            binding.itemImage.load(image) { placeholder(R.mipmap.ic_main) }
+            binding.itemImage.load(image) { placeholder(R.drawable.ic_app_logo_black) }
         }
         viewModel.isCompleteUpload().observe(this) { isComplete ->
             if (isComplete == true) {
