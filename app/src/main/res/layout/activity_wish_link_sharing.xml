@@ -163,7 +163,7 @@
                     android:layout_width="match_parent"
                     android:layout_marginHorizontal="@dimen/spacingBase"
                     android:layout_marginBottom="@dimen/spacingBase"
-                    android:enabled="@{viewModel.itemName.length() > 0 ? true : false}"
+                    android:enabled="@{viewModel.itemName.length() > 0 &amp;&amp; viewModel.itemPrice.length() > 0 ? true : false}"
                     android:text="@{viewModel.registrationStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.wish_list_registration_button_text)}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     tools:text="@string/wish_list_registration_button_text" />

@@ -13,17 +13,16 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.R
+import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.databinding.ActivityWishLinkSharingBinding
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
-import com.hyeeyoung.wishboard.data.model.folder.FolderItem
-import com.hyeeyoung.wishboard.util.NetworkConnection
-import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
 import com.hyeeyoung.wishboard.presentation.folder.screens.FolderUploadBottomDialogFragment
 import com.hyeeyoung.wishboard.presentation.noti.screens.NotiSettingBottomDialogFragment
 import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel
+import com.hyeeyoung.wishboard.util.NetworkConnection
+import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -53,7 +52,7 @@ class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemCli
                 "text/plain" -> {
                     val url = intent.getStringExtra(Intent.EXTRA_TEXT) ?: return
                     viewModel.setItemUrl(url)
-                    lifecycleScope.launch(Dispatchers.IO) {
+                    lifecycleScope.launch {
                         viewModel.getWishItemInfo(url)
                     }
                 }
@@ -115,6 +114,7 @@ class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemCli
                 else -> {}
             }
         }
+
         NetworkConnection(this).observe(this) { isConnected ->
             binding.networkView.visibility =
                 if (isConnected == true) {
