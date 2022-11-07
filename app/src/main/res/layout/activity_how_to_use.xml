@@ -33,7 +33,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/yes"
-            style="@style/Widget.Button.Black"
+            style="@style/Widget.Button.Full.Round.Black"
             android:layout_width="match_parent"
             android:layout_margin="@dimen/spacingBase"
             android:text="@string/how_to_use_yes_button_text"

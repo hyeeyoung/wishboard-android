@@ -93,7 +93,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/sign_in"
-                style="@style/Widget.Button.Full.Activate"
+                style="@style/Widget.Button.Full.Round.Activate.Green"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/spacingBase"
                 android:enabled="@{viewModel.loginEmail.length() > 0 &amp;&amp; viewModel.loginPassword.length() > 0}"

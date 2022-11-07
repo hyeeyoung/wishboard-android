@@ -119,7 +119,7 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/add"
-                style="@style/Widget.Button.Full.Activate"
+                style="@style/Widget.Button.Full.Round.Activate.Green"
                 android:layout_width="match_parent"
                 android:layout_margin="@dimen/spacingBase"
                 android:enabled="@{viewModel.folderName.trim().length() > 0}"

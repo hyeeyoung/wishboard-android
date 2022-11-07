@@ -145,7 +145,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/login"
-            style="@style/Widget.Button.Full.Activate"
+            style="@style/Widget.Button.Full.Round.Activate.Green"
             android:layout_width="match_parent"
             android:layout_marginBottom="@dimen/spacingBase"
             android:enabled="@{viewModel.isEnabledVerificationCodeButton() == true}"

@@ -69,7 +69,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sign_up"
-            style="@style/Widget.Button.Full.Green"
+            style="@style/Widget.Button.Full.Round.Green"
             android:layout_marginBottom="@dimen/spacingSmall"
             android:onClick="@{v -> Navigation.findNavController(v).navigate(R.id.action_sign_to_email)}"
             android:text="@string/sign_up"
