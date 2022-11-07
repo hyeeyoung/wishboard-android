@@ -52,25 +52,18 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/wish_basic_item_add_title" />
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/save"
+                style="@style/Widget.Button.Small.Round.Activate.Green"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/spacingBase"
-                android:background="@drawable/shape_border_radius_32"
-                android:backgroundTint="@{context.getColor(viewModel.isEnabledSaveButton == false ? R.color.gray_100 : R.color.green_500)}"
                 android:enabled="@{viewModel.isEnabledSaveButton()}"
-                android:fontFamily="@font/suit_m"
-                android:minWidth="0dp"
-                android:minHeight="0dp"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="8dp"
                 android:text="@string/save"
-                android:textColor="@{context.getColor(viewModel.isEnabledSaveButton == false ? R.color.gray_300 : R.color.gray_700)}"
-                android:textSize="@dimen/typographyDescription"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <ScrollView
@@ -291,12 +284,12 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:clickable="false"
-                            android:text="@string/shop_link_guide"
-                            android:textSize="@dimen/typographyBaseDetail"
-                            android:fontFamily="@font/suit_r"
-                            android:textColor="@color/green_600"
                             android:layout_marginEnd="-16dp"
+                            android:clickable="false"
+                            android:fontFamily="@font/suit_r"
+                            android:text="@string/shop_link_guide"
+                            android:textColor="@color/green_600"
+                            android:textSize="@dimen/typographyBaseDetail"
                             app:layout_constraintBottom_toBottomOf="@id/item_url_detail"
                             app:layout_constraintEnd_toStartOf="@id/item_url_detail"
                             app:layout_constraintTop_toTopOf="@id/item_url_detail" />

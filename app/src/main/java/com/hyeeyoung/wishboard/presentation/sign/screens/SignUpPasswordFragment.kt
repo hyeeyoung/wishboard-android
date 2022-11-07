@@ -94,6 +94,7 @@ class SignUpPasswordFragment : Fragment() {
                     binding.loadingLottie.visibility = View.VISIBLE
                     binding.loadingLottie.playAnimation()
                 }
+                else -> {}
             }
         }
     }

@@ -67,15 +67,12 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/sign_up"
-            style="@style/Widget.Button.Basic.Green"
-            android:layout_width="0dp"
-            android:layout_height="50dp"
+            style="@style/Widget.Button.Full.Round.Green"
             android:layout_marginBottom="@dimen/spacingSmall"
             android:onClick="@{v -> Navigation.findNavController(v).navigate(R.id.action_sign_to_email)}"
             android:text="@string/sign_up"
-            android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
             app:layout_constraintBottom_toTopOf="@id/sign_in"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

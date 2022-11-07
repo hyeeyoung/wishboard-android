@@ -66,6 +66,7 @@ class FolderUploadBottomDialogFragment() : BottomSheetDialogFragment() { // TODO
                     binding.loadingLottie.visibility = View.VISIBLE
                     binding.loadingLottie.playAnimation()
                 }
+                else -> {}
             }
         }
         viewModel.isCompleteFolderUpload().observe(this) { isComplete ->

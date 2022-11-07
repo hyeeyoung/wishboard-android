@@ -1,6 +1,6 @@
 <resources>
     <!-- v23이하에서 적용 -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="colorPrimary">@color/green_500</item>
         <item name="colorPrimaryDark">@color/black</item>
         <item name="colorAccent">@color/gray_100</item>
@@ -69,33 +69,27 @@
 
     <style name="Widget.BottomSheetDialog.Option.TextAppearance" parent="">
         <item name="android:fontFamily">@font/suit_m</item>
-        <item name="android:textColor">@color/gray_600</item>
         <item name="android:textSize">@dimen/typographyBase</item>
     </style>
 
-    <style name="Widget.BottomSheetDialog.Option" parent="">
-        <item name="android:gravity">center</item>
-        <item name="android:background">?attr/selectableItemBackground</item>
+    <style name="Widget.BottomSheetDialog.Option" parent="Widget.Material.Button.Basic">
         <item name="android:paddingTop">@dimen/spacingBase</item>
         <item name="android:paddingBottom">@dimen/spacingBase</item>
+        <item name="backgroundTint">@color/white</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="android:textAppearance">@style/Widget.BottomSheetDialog.Option.TextAppearance
+        </item>
     </style>
 
     <style name="Widget.Button" parent="">
         <item name="android:background">@color/transparent</item>
     </style>
 
-    <style name="Widget.Button.Basic" parent="">
-        <item name="android:paddingTop">@dimen/spacingBase</item>
-        <item name="android:paddingBottom">@dimen/spacingBase</item>
-        <item name="android:outlineProvider">none</item>
-        <item name="android:layout_marginEnd">@dimen/spacingBase</item>
-        <item name="android:layout_marginStart">@dimen/spacingBase</item>
-    </style>
-
     <style name="Widget.Button.Dialog" parent="Widget.Button">
         <item name="android:layout_width">0dp</item>
         <item name="android:outlineProvider">none</item>
         <item name="android:padding">@dimen/spacingBase</item>
+        <item name="android:textAppearance">@style/Widget.Button.Dialog.TextAppearance</item>
     </style>
 
     <style name="Widget.Button.Icon.Navigation" parent="Widget.Button">
@@ -104,26 +98,85 @@
         <item name="android:layout_height">match_parent</item>
     </style>
 
-    <style name="Widget.Button.Basic.Green" parent="Widget.Button.Basic">
-        <item name="android:background">@drawable/shape_border_radius_32</item>
-        <item name="android:backgroundTint">@color/green_500</item>
+    <style name="Widget.Material.Button.Basic" parent="">
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:stateListAnimator">@null</item>
     </style>
 
-    <style name="Widget.Button.Activate.Green" parent="Widget.Button.Basic">
-        <item name="android:background">@drawable/selector_button</item>
-        <item name="android:layout_height">@dimen/widgetHeightBase</item>
-        <item name="android:gravity">center</item>
+    <style name="Widget.Button.Full.Basic" parent="Widget.Material.Button.Basic">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">@dimen/spacing14</item>
+        <item name="android:paddingBottom">@dimen/spacing14</item>
+        <item name="android:textAppearance">@style/TextAppearance.Button.Full.Basic</item>
     </style>
 
-    <style name="Widget.Button.Basic.TextAppearance" parent="">
-        <item name="android:fontFamily">@font/suit_b</item>
+    <style name="Widget.Button.Full.Round" parent="Widget.Button.Full.Basic">
+        <item name="android:layout_marginStart">@dimen/spacingBase</item>
+        <item name="android:layout_marginEnd">@dimen/spacingBase</item>
+        <item name="cornerRadius">30dp</item>
+    </style>
+
+    <style name="Widget.Button.Small.Round" parent="Widget.Material.Button.Basic">
+        <item name="android:paddingStart">@dimen/spacingBase</item>
+        <item name="android:paddingEnd">@dimen/spacingBase</item>
+        <item name="android:paddingTop">@dimen/spacingSmall</item>
+        <item name="android:paddingBottom">@dimen/spacingSmall</item>
+        <item name="cornerRadius">20dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.Button.Small.Basic</item>
+    </style>
+
+    <style name="Widget.Button.Small.Round.Activate.Green" parent="Widget.Button.Small.Round">
+        <item name="backgroundTint">@color/selector_button_background_main_color</item>
+        <item name="android:textColor">@color/selector_button_text_main_color</item>
+    </style>
+
+    <style name="Widget.Button.Small.Round.Green" parent="Widget.Button.Small.Round">
+        <item name="backgroundTint">@color/green_500</item>
         <item name="android:textColor">@color/gray_700</item>
+    </style>
+
+    <style name="Widget.Button.Full.Round.Activate.Green" parent="Widget.Button.Full.Round">
+        <item name="backgroundTint">@color/selector_button_background_main_color</item>
+        <item name="android:textColor">@color/selector_button_text_main_color</item>
+    </style>
+
+    <style name="Widget.Button.Full.Activate.Black" parent="Widget.Button.Full.Basic">
+        <item name="cornerRadius">0dp</item>
+        <item name="backgroundTint">@color/selector_button_background_sub_color</item>
+        <item name="android:textColor">@color/selector_button_text_sub_color</item>
+    </style>
+
+    <style name="Widget.Button.Full.Round.Activate.Green.CenterDialog" parent="Widget.Button.Full.Round.Activate.Green">
+        <item name="android:paddingTop">@dimen/spacing12</item>
+        <item name="android:paddingBottom">@dimen/spacing12</item>
+    </style>
+
+    <style name="Widget.Button.Full.Round.Green" parent="Widget.Button.Full.Round">
+        <item name="backgroundTint">@color/green_500</item>
+        <item name="android:textColor">@color/gray_700</item>
+    </style>
+
+    <style name="Widget.Button.Full.Round.Black" parent="Widget.Button.Full.Round">
+        <item name="backgroundTint">@color/black</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="TextAppearance.Button.Full.Basic" parent="">
+        <item name="android:fontFamily">@font/suit_sb</item>
         <item name="android:textSize">@dimen/typographyBase</item>
+    </style>
+
+    <style name="TextAppearance.Button.Small.Basic" parent="">
+        <item name="android:fontFamily">@font/suit_sb</item>
+        <item name="android:textSize">@dimen/typographyDescription</item>
     </style>
 
     <style name="Widget.Button.Dialog.TextAppearance" parent="">
         <item name="android:fontFamily">@font/suit_m</item>
-        <item name="android:textColor">@color/green_600</item>
         <item name="android:textSize">@dimen/typographyBase</item>
     </style>
 
@@ -242,7 +295,7 @@
         <item name="android:fontFamily">@font/suit_r</item>
     </style>
 
-    <style name="Calendar"/>
+    <style name="Calendar" />
 
     <style name="Calendar.CalendarViewStyle">
         <item name="dayHeight">44dp</item>

@@ -63,6 +63,7 @@ class FolderAddDialogFragment : DialogFragment() {
                     binding.loadingLottie.visibility = View.VISIBLE
                     binding.loadingLottie.playAnimation()
                 }
+                else -> {}
             }
         }
     }

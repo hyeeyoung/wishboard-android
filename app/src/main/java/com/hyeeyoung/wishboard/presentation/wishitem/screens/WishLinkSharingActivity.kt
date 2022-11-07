@@ -112,6 +112,7 @@ class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemCli
                     binding.loadingLottie.visibility = View.VISIBLE
                     binding.loadingLottie.playAnimation()
                 }
+                else -> {}
             }
         }
         NetworkConnection(this).observe(this) { isConnected ->

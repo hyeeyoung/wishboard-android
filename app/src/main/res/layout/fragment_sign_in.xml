@@ -91,15 +91,14 @@
             android:layout_height="wrap_content"
             app:layout_constraintBottom_toBottomOf="parent">
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/sign_in"
-                style="@style/Widget.Button.Activate.Green"
+                style="@style/Widget.Button.Full.Round.Activate.Green"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/spacingBase"
                 android:enabled="@{viewModel.loginEmail.length() > 0 &amp;&amp; viewModel.loginPassword.length() > 0}"
                 android:onClick="@{() -> viewModel.signIn()}"
                 android:text="@{viewModel.signProcessStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.sign_in)}"
-                android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="@string/sign_in"/>
 

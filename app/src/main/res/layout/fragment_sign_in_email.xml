@@ -132,15 +132,14 @@
                 tools:text="@string/sign_in_unregistered_user_detail" />
         </LinearLayout>
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/send_mail"
-            style="@style/Widget.Button.Activate.Green"
+            style="@style/Widget.Button.Full.Round.Activate.Green"
             android:layout_width="match_parent"
             android:layout_marginBottom="@dimen/spacingBase"
             android:enabled="@{viewModel.validEmailFormat == true}"
             android:onClick="@{() -> viewModel.requestVerificationMail()}"
             android:text="@string/sign_in_email_send_email_button_text"
-            android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <com.airbnb.lottie.LottieAnimationView

@@ -102,14 +102,13 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/get_item"
-                style="@style/Widget.Button.Activate.Green"
+                style="@style/Widget.Button.Full.Round.Activate.Green"
                 android:layout_width="match_parent"
                 android:layout_margin="@dimen/spacingBase"
                 android:enabled="@{viewModel.itemUrlInput.length() > 0}"
                 android:text="@string/wish_basic_get_item_info_button_text"
-                android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
                 app:layout_constraintBottom_toBottomOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
