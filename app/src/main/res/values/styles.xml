@@ -156,12 +156,12 @@
     </style>
 
     <style name="TextAppearance.Button.Full.Basic" parent="">
-        <item name="android:fontFamily">@font/suit_b</item>
+        <item name="android:fontFamily">@font/suit_sb</item>
         <item name="android:textSize">@dimen/typographyBase</item>
     </style>
 
     <style name="TextAppearance.Button.Small.Basic" parent="">
-        <item name="android:fontFamily">@font/suit_m</item>
+        <item name="android:fontFamily">@font/suit_sb</item>
         <item name="android:textSize">@dimen/typographyDescription</item>
     </style>
 
