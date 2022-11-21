@@ -1,20 +1,24 @@
 package com.hyeeyoung.wishboard.presentation.my
 
+import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.*
 import com.hyeeyoung.wishboard.WishBoardApp
-import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
 import com.hyeeyoung.wishboard.domain.repositories.UserRepository
-import com.hyeeyoung.wishboard.data.services.AWSS3Service
+import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
+import com.hyeeyoung.wishboard.util.ContentUriRequestBody
+import com.hyeeyoung.wishboard.util.extension.toPlainNullableRequestBody
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import java.io.File
 import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
 class MyViewModel @Inject constructor(
+    private val application: Application,
     private val notiRepository: NotiRepository,
     private val userRepository: UserRepository,
 ) : ViewModel() {
@@ -61,19 +65,23 @@ class MyViewModel @Inject constructor(
         viewModelScope.launch {
             val nickname =
                 if (userNickname.value == inputUserNickName.value) null else inputUserNickName.value
+            val imageMultipartBody: MultipartBody.Part? =
+                userProfileImageUri.value?.let { imageUri ->
+                    ContentUriRequestBody(
+                        application.baseContext,
+                        "profile_img",
+                        imageUri,
+                    ).toFormData()
+                }
 
-            // AWS 업로드
-            val profile = userProfileImageFile.value
-            profile?.let { file ->
-                AWSS3Service().uploadFile(file.name, file)
-            }
-
-            // DB 업로드
             val result =
-                userRepository.updateUserInfo(token, nickname, profile?.name)
+                userRepository.updateUserInfo(
+                    token,
+                    nickname.toString().toPlainNullableRequestBody(),
+                    imageMultipartBody
+                )
             isCompleteUpdateUserInfo.value = result?.first
             isExistNickname.value = result?.second == 409
-
             profileEditStatus.postValue(ProcessStatus.IDLE)
 
             if (isCompleteUpdateUserInfo.value == true) {
@@ -111,7 +119,7 @@ class MyViewModel @Inject constructor(
         return when (pushState) {
             0 -> false
             1 -> true
-            else -> null
+            else -> false
         }
     }
 
@@ -211,8 +219,4 @@ class MyViewModel @Inject constructor(
     fun isValidNicknameFormat(): LiveData<Boolean?> = isValidNicknameFormat
 
     fun getProfileEditStatus(): LiveData<ProcessStatus> = profileEditStatus
-
-    companion object {
-        private const val TAG = "MyViewModel"
-    }
 }
