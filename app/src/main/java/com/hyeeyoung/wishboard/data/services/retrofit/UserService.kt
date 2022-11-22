@@ -1,5 +1,6 @@
 package com.hyeeyoung.wishboard.data.services.retrofit
 
+import com.hyeeyoung.wishboard.data.model.base.BaseResponse
 import com.hyeeyoung.wishboard.data.model.base.BaseResponseData
 import com.hyeeyoung.wishboard.data.model.base.BaseResponseResult
 import com.hyeeyoung.wishboard.data.model.user.UserInfo
@@ -32,7 +33,7 @@ interface UserService {
     @PUT("user/active")
     suspend fun deleteUserAccount(
         @Header("Authorization") token: String,
-    ): Response<BaseResponseResult<BaseResponseData?>>
+    ): Response<BaseResponse>
 
     @PUT("user/push-state/{push}")
     suspend fun updatePushState(

@@ -56,22 +56,13 @@ class UserRepositoryImpl @Inject constructor(private val userService: UserServic
             null
         })
 
-    override suspend fun deleteUserAccount(userToken: String): Boolean {
-        try {
-            val response = userService.deleteUserAccount(userToken)
-            if (response.isSuccessful) {
-                Log.d(TAG, "사용자 탈퇴 처리 성공")
-            } else {
-                Log.e(TAG, "사용자 탈퇴 처리 실패: ${response.code()}")
-            }
-            return response.isSuccessful
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return false
-        }
-    }
-
-    companion object {
-        private const val TAG = "UserRepositoryImpl"
-    }
+    override suspend fun deleteUserAccount(userToken: String) = runCatching {
+        userService.deleteUserAccount(userToken)
+    }.fold({
+        Timber.d("사용자 탈퇴 처리 성공(${it.code()})")
+        it.isSuccessful
+    }, {
+        Timber.e("사용자 탈퇴 처리 실패: ${it.message}")
+        false
+    })
 }
