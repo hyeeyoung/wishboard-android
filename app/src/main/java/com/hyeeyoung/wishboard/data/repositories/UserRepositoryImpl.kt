@@ -4,6 +4,9 @@ import android.util.Log
 import com.hyeeyoung.wishboard.data.model.user.UserInfo
 import com.hyeeyoung.wishboard.data.services.retrofit.UserService
 import com.hyeeyoung.wishboard.domain.repositories.UserRepository
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import timber.log.Timber
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(private val userService: UserService) :
@@ -40,23 +43,18 @@ class UserRepositoryImpl @Inject constructor(private val userService: UserServic
 
     override suspend fun updateUserInfo(
         userToken: String,
-        nickname: String?,
-        imageFileName: String?
-    ): Pair<Boolean, Int>? {
-        try {
-            val userInfo = UserInfo(nickname = nickname, profileImage = imageFileName)
-            val response = userService.updateUserInfo(userToken, userInfo)
-            if (response.isSuccessful) {
-                Log.d(TAG, "사용자 정보 수정 성공")
-            } else {
-                Log.e(TAG, "사용자 정보 수정 실패: ${response.code()}")
-            }
-            return Pair(response.isSuccessful, response.code())
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return null
-        }
-    }
+        nickname: RequestBody?,
+        profileImg: MultipartBody.Part?
+    ): Pair<Boolean, Int>? =
+        runCatching {
+            userService.updateUserInfo(userToken, nickname, profileImg)
+        }.fold({
+            Timber.d("사용자 프로필 수정 성공(${it.code()})")
+            Pair(it.isSuccessful, it.code())
+        }, {
+            Timber.e("사용자 프로필 수정 실패: ${it.message}")
+            null
+        })
 
     override suspend fun deleteUserAccount(userToken: String): Boolean {
         try {
