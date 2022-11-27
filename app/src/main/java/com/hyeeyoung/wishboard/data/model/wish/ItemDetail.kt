@@ -14,7 +14,7 @@ data class ItemDetail(
     @SerializedName("item_id")
     val id: Long,
     @SerializedName("item_img_url")
-    val image: String,
+    val image: String?,
     @SerializedName("item_memo")
     val memo: String?,
     @SerializedName("item_name")

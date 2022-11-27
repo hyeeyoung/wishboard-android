@@ -10,27 +10,24 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
-import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hyeeyoung.wishboard.R
-import com.hyeeyoung.wishboard.databinding.FragmentWishBinding
-import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
-import com.hyeeyoung.wishboard.data.model.wish.WishItem
+import com.hyeeyoung.wishboard.databinding.FragmentWishBinding
+import com.hyeeyoung.wishboard.domain.entity.WishItemDetail
 import com.hyeeyoung.wishboard.presentation.common.screens.OneButtonDialogFragment
+import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
+import com.hyeeyoung.wishboard.presentation.folder.screens.FolderListBottomDialogFragment
+import com.hyeeyoung.wishboard.presentation.noti.screens.NotiSettingBottomDialogFragment
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
+import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel
+import com.hyeeyoung.wishboard.util.FolderListDialogListener
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.safeLet
-import com.hyeeyoung.wishboard.util.FolderListDialogListener
-import com.hyeeyoung.wishboard.presentation.folder.screens.FolderListBottomDialogFragment
-import com.hyeeyoung.wishboard.presentation.noti.screens.NotiSettingBottomDialogFragment
-import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 import java.io.File
 
 @AndroidEntryPoint
@@ -52,9 +49,8 @@ class WishBasicFragment : Fragment() {
             (it[ARG_IS_EDIT_MODE] as? Boolean)?.let { isEditable ->
                 isEditMode = isEditable
             }
-            (it[ARG_WISH_ITEM] as? WishItem)?.let { item ->
-                viewModel.setWishItem(item)
-                viewModel.copyItemUrlToInputUrl()
+            (it[ARG_WISH_ITEM_DETAIL] as? WishItemDetail)?.let { detail ->
+                viewModel.wishItemDetail = detail
             }
         }
 
@@ -87,8 +83,8 @@ class WishBasicFragment : Fragment() {
                 }
             )
 
-        viewModel.getWishItem()?.let {
-            binding.itemImage.load(it.imageUrl ?: it.image)
+        viewModel.wishItemDetail?.let {
+            binding.itemImage.load(it.image)
         }
     }
 
@@ -121,13 +117,13 @@ class WishBasicFragment : Fragment() {
                             binding.layout,
                             getString(R.string.wish_item_update_snackbar_text)
                         ).show()
-                        moveToPrevious(WishItemStatus.MODIFIED, viewModel.getWishItem())
+                        moveToPrevious(WishItemStatus.MODIFIED)
                     } else {
                         CustomSnackbar.make(
                             binding.layout,
                             getString(R.string.wish_item_registration_snackbar_text)
                         ).show()
-                        moveToPrevious(WishItemStatus.ADDED, null)
+                        moveToPrevious(WishItemStatus.ADDED)
                     }
                 }
                 else -> {}
@@ -147,19 +143,11 @@ class WishBasicFragment : Fragment() {
             }
         }
 
-        // TODO need refactoring
-        // 수정 전 기존 이미지
-        viewModel.getItemImageUrl().observe(viewLifecycleOwner) {
-            it?.let {
-                Glide.with(binding.itemImage).load(it).into(binding.itemImage)
-            }
-        }
-
         // 파싱으로 가져온 이미지
         viewModel.getItemImage().observe(viewLifecycleOwner) {
             // TODO 정규 표현식으로 바꿔서 조건 하나로 만들기
             if (it?.contains("http://") == true || it?.contains("https://") == true) {
-                Glide.with(binding.itemImage).load(it).into(binding.itemImage)
+                binding.itemImage.load(it)
             }
         }
 
@@ -197,7 +185,7 @@ class WishBasicFragment : Fragment() {
     }
 
     private fun showFolderListDialog() {
-        val folderId = folder?.id ?: viewModel.getWishItem()?.folderId
+        val folderId = folder?.id ?: viewModel.wishItemDetail?.folderId
         val dialog = FolderListBottomDialogFragment(folderId).apply {
             setListener(object : FolderListDialogListener {
                 override fun onButtonClicked(folder: FolderItem) {
@@ -211,13 +199,10 @@ class WishBasicFragment : Fragment() {
     }
 
     /** 아이템 추가 또는 수정에 성공한 경우, UI 업데이트를 위해 변경된 아이템 정보를 이전 프래그먼트로 전달 */
-    private fun moveToPrevious(itemStatus: WishItemStatus, wishItem: WishItem?) {
+    private fun moveToPrevious(itemStatus: WishItemStatus) {
         val navController = findNavController()
         navController.previousBackStackEntry?.savedStateHandle?.set(
-            ARG_WISH_ITEM_INFO, bundleOf(
-                ARG_ITEM_STATUS to itemStatus,
-                ARG_WISH_ITEM to wishItem,
-            )
+            ARG_WISH_ITEM_INFO, bundleOf(ARG_ITEM_STATUS to itemStatus)
         )
         navController.popBackStack()
     }
@@ -230,13 +215,12 @@ class WishBasicFragment : Fragment() {
         }
 
     companion object {
-        private const val TAG = "WishBasicFragment"
-        private const val ARG_WISH_ITEM = "wishItem"
         private const val ARG_IS_EDIT_MODE = "isEditMode"
         private const val ARG_IMAGE_INFO = "imageInfo"
         private const val ARG_IMAGE_URI = "imageUri"
         private const val ARG_IMAGE_FILE = "imageFile"
         private const val ARG_ITEM_STATUS = "itemStatus"
         private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
+        private const val ARG_WISH_ITEM_DETAIL = "wishItemDetail"
     }
 }
