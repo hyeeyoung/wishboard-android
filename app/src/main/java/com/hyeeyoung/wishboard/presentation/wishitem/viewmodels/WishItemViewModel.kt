@@ -9,8 +9,10 @@ import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.domain.repositories.WishRepository
 import com.hyeeyoung.wishboard.data.services.AWSS3Service
+import com.hyeeyoung.wishboard.domain.entity.WishItemDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.net.URL
 import javax.inject.Inject
 
@@ -21,7 +23,17 @@ class WishItemViewModel @Inject constructor(
     private val token = WishBoardApp.prefs.getUserToken()
 
     private var wishItem = MutableLiveData<WishItem>()
+    private var _itemDetail = MutableLiveData<WishItemDetail>()
+    val itemDetail: LiveData<WishItemDetail> get() = _itemDetail
     private var isCompleteDeletion = MutableLiveData<Boolean>()
+
+    fun fetchWishItemDetail(itemId: Long) {
+        if (token == null) return
+        viewModelScope.launch {
+            Timber.d(wishRepository.fetchWishItemDetail(token, itemId)?.get(0).toString())
+            _itemDetail.value = wishRepository.fetchWishItemDetail(token, itemId)?.map { it.toWishItemDetail(it) }?.get(0)
+        }
+    }
 
     fun deleteWishItem() {
         if (token == null) return
@@ -33,10 +45,6 @@ class WishItemViewModel @Inject constructor(
                 AWSS3Service().removeImageUrl(wishItem.value!!.imageUrl ?: return@launch)
             }
         }
-    }
-
-    fun setWishItem(item: WishItem) {
-        wishItem.value = item
     }
 
     fun updateWishItemFolder(folder: FolderItem) {
@@ -70,10 +78,10 @@ class WishItemViewModel @Inject constructor(
         }
     }
 
+    fun setItemDetail(detail: WishItemDetail) {
+        _itemDetail.value = detail
+    }
+
     fun getWishItem(): LiveData<WishItem> = wishItem
     fun getIsCompleteDeletion(): LiveData<Boolean> = isCompleteDeletion
-
-    companion object {
-        private const val TAG = "WishItemViewModel"
-    }
 }

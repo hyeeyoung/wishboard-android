@@ -96,7 +96,7 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
             R.id.action_home_to_wish_item_detail,
             bundleOf(
                 ARG_WISH_ITEM_POSITION to position,
-                ARG_WISH_ITEM to item,
+                ARG_WISH_ITEM_ID to item.id,
             )
         )
     }
@@ -108,6 +108,7 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
     companion object {
         private const val TAG = "HomeFragment"
         private const val ARG_WISH_ITEM = "wishItem"
+        private const val ARG_WISH_ITEM_ID = "wishItemId"
         private const val ARG_WISH_ITEM_POSITION = "position"
         private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
         private const val ARG_ITEM_STATUS = "itemStatus"

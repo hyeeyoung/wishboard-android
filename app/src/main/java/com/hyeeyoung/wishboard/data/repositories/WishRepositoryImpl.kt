@@ -1,6 +1,7 @@
 package com.hyeeyoung.wishboard.data.repositories
 
 import android.util.Log
+import com.hyeeyoung.wishboard.data.model.wish.ItemDetail
 import com.hyeeyoung.wishboard.data.model.wish.ItemInfo
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.data.services.retrofit.WishItemService
@@ -30,6 +31,17 @@ class WishRepositoryImpl @Inject constructor(private val wishItemService: WishIt
             it?.body()?.get(0)
         }, {
             Timber.e("가장 최근 등록된 아이템 가져오기 실패: ${it.message}")
+            null
+        })
+
+    override suspend fun fetchWishItemDetail(token: String, itemId: Long): List<ItemDetail>? =
+        runCatching {
+            wishItemService.fetchWishItemDetail(token, itemId)
+        }.fold({
+            Timber.d("아이템 상세정보 가져오기 성공(${it.code()})")
+            it.body()
+        }, {
+            Timber.e("아이템 상세정보 가져오기 실패: ${it.message}")
             null
         })
 

@@ -1,5 +1,6 @@
 package com.hyeeyoung.wishboard.domain.repositories
 
+import com.hyeeyoung.wishboard.data.model.wish.ItemDetail
 import com.hyeeyoung.wishboard.data.model.wish.ItemInfo
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import okhttp3.MultipartBody
@@ -8,6 +9,7 @@ import okhttp3.RequestBody
 interface WishRepository {
     suspend fun fetchWishList(token: String): List<WishItem>?
     suspend fun fetchLatestWishItem(token: String): WishItem?
+    suspend fun fetchWishItemDetail(token: String, itemId: Long): List<ItemDetail>?
     suspend fun uploadWishItem(
         token: String, folderId: RequestBody?,
         itemName: RequestBody,

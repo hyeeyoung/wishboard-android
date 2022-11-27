@@ -89,6 +89,7 @@
                         android:backgroundTint="@color/gray_150"
                         android:foreground="@color/semi_transparent"
                         android:scaleType="centerCrop"
+                        app:imageUrl="@{viewModel.itemDetail.image}"
                         app:layout_constraintDimensionRatio="3:3.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -105,10 +106,10 @@
                         android:fontFamily="@font/suit_sb"
                         android:paddingHorizontal="@dimen/spacingSmall"
                         android:paddingVertical="@dimen/spacingMicro"
-                        android:text="@{viewModel.wishItem.notiType == null ? `` : context.getString(viewModel.wishItem.notiType.strRes)}"
+                        android:text="@{viewModel.itemDetail.notiType == null ? `` : context.getString(viewModel.itemDetail.notiType.strRes)}"
                         android:textColor="@color/gray_700"
                         android:textSize="14sp"
-                        android:visibility="@{viewModel.wishItem.notiType == null ? View.INVISIBLE : View.VISIBLE}"
+                        android:visibility="@{viewModel.itemDetail.notiType == null ? View.INVISIBLE : View.VISIBLE}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         tools:text="재입고" />
@@ -123,10 +124,10 @@
                         android:fontFamily="@font/suit_sb"
                         android:paddingHorizontal="@dimen/spacingSmall"
                         android:paddingVertical="@dimen/spacingMicro"
-                        android:text="@{viewModel.wishItem.notiType == null ? `` : DateFormatUtilKt.calculateDday(viewModel.wishItem.notiDate)}"
+                        android:text="@{viewModel.itemDetail.notiType == null ? `` : DateFormatUtilKt.calculateDday(viewModel.itemDetail.notiDate)}"
                         android:textColor="@color/gray_700"
                         android:textSize="14sp"
-                        android:visibility="@{viewModel.wishItem.notiType == null ? View.INVISIBLE : View.VISIBLE}"
+                        android:visibility="@{viewModel.itemDetail.notiType == null ? View.INVISIBLE : View.VISIBLE}"
                         app:layout_constraintBottom_toBottomOf="@id/noti_type"
                         app:layout_constraintStart_toEndOf="@id/noti_type"
                         tools:text="오늘 15시 30분" />
@@ -166,7 +167,7 @@
                         android:fontFamily="@font/suit_r"
                         android:paddingHorizontal="@dimen/spacingBase"
                         android:paddingVertical="@dimen/spacing10"
-                        android:text="@{String.format(context.getString(R.string.go_to_folder), viewModel.wishItem.folderName == null ? context.getString(R.string.setting_folder) : viewModel.wishItem.folderName)}"
+                        android:text="@{String.format(context.getString(R.string.go_to_folder), viewModel.itemDetail.folderName == null ? context.getString(R.string.setting_folder) : viewModel.itemDetail.folderName)}"
                         android:textColor="@color/gray_300"
                         android:textSize="@dimen/typographyDescription"
                         app:layout_constraintBottom_toBottomOf="@id/create_at"
@@ -184,7 +185,7 @@
                         android:textSize="@dimen/typographyDescription"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/guild_top"
-                        app:timeFormat="@{DateFormatUtilKt.convertStrTimeToDate(viewModel.wishItem.createAt)}"
+                        app:timeFormat="@{DateFormatUtilKt.convertStrTimeToDate(viewModel.itemDetail.createAt)}"
                         tools:text="1시간 전" />
 
                     <TextView
@@ -192,7 +193,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/suit_sb"
-                        android:text="@{viewModel.wishItem.name}"
+                        android:text="@{viewModel.itemDetail.name}"
                         android:textColor="@color/gray_700"
                         android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="@id/guild_end"
@@ -210,7 +211,7 @@
                         android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="@id/guild_start"
                         app:layout_constraintTop_toBottomOf="@id/item_name"
-                        app:priceFormat="@{viewModel.wishItem.price}"
+                        app:priceFormat="@{viewModel.itemDetail.price}"
                         tools:text="129,000" />
 
                     <TextView
@@ -238,7 +239,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:visibility="@{viewModel.wishItem.url == null ? View.GONE : View.VISIBLE}"
+                            android:visibility="@{viewModel.itemDetail.site == null ? View.GONE : View.VISIBLE}"
                             app:layout_constraintTop_toBottomOf="@id/item_price">
 
                             <View
@@ -253,10 +254,10 @@
                                 android:layout_marginVertical="@dimen/spacingBase"
                                 android:layout_marginStart="@dimen/spacingBase"
                                 android:fontFamily="@font/suit_r"
-                                android:text="@{viewModel.wishItem.url == null ? `` : viewModel.getDomainName(viewModel.wishItem.url)}"
+                                android:text="@{viewModel.itemDetail.site == null ? `` : viewModel.getDomainName(viewModel.itemDetail.site)}"
                                 android:textColor="@color/gray_300"
                                 android:textSize="@dimen/typographyDescription"
-                                android:visibility="@{viewModel.wishItem.url == null ? View.GONE : View.VISIBLE}"
+                                android:visibility="@{viewModel.itemDetail.site == null ? View.GONE : View.VISIBLE}"
                                 app:layout_constraintStart_toStartOf="@id/guild_start"
                                 app:layout_constraintTop_toBottomOf="@id/item_name"
                                 tools:text="grovestore.com" />
@@ -267,7 +268,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:visibility="@{viewModel.wishItem.memo == null ? View.GONE : View.VISIBLE}"
+                            android:visibility="@{viewModel.itemDetail.memo == null ? View.GONE : View.VISIBLE}"
                             app:layout_constraintTop_toBottomOf="@id/url_container">
 
                             <View
@@ -293,7 +294,7 @@
                                 android:layout_marginStart="@dimen/spacingBase"
                                 android:layout_marginTop="6dp"
                                 android:fontFamily="@font/suit_r"
-                                android:text="@{viewModel.wishItem.memo}"
+                                android:text="@{viewModel.itemDetail.memo}"
                                 android:textColor="@color/gray_700"
                                 android:textSize="@dimen/typographyDescription"
                                 tools:text="S사이즈" />
@@ -309,7 +310,7 @@
             style="@style/Widget.Button.Full.Activate.Black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:enabled="@{viewModel.wishItem.url == null ? false : true}"
+            android:enabled="@{viewModel.itemDetail.site == null ? false : true}"
             android:text="@string/go_to_shop_button_text"
             app:layout_constraintBottom_toBottomOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>

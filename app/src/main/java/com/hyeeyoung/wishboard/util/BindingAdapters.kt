@@ -1,18 +1,33 @@
 package com.hyeeyoung.wishboard.util
 
 import android.graphics.Color
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.util.custom.CustomDecoration
 import java.text.DecimalFormat
+
+@BindingAdapter("imageUrl")
+fun ImageView.setImageUrl(imageUrl: String?) {
+    load(imageUrl) {
+        placeholder(R.color.gray_150)
+    }
+}
 
 @BindingAdapter("priceFormat")
 fun TextView.setPriceFormat(price: Number?) {
     val decimalFormat = DecimalFormat("#,###")
     text = decimalFormat.format(price ?: 0)
+}
+
+@BindingAdapter("priceFormat")
+fun TextView.setPriceFormat(price: String?) {
+    val decimalFormat = DecimalFormat("#,###")
+    text = decimalFormat.format(price?.toIntOrNull() ?: 0)
 }
 
 @BindingAdapter("timeFormat")

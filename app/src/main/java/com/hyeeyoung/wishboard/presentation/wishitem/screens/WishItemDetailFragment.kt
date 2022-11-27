@@ -14,19 +14,20 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.hyeeyoung.wishboard.R
-import com.hyeeyoung.wishboard.databinding.FragmentWishItemDetailBinding
-import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
+import com.hyeeyoung.wishboard.databinding.FragmentWishItemDetailBinding
+import com.hyeeyoung.wishboard.domain.entity.WishItemDetail
+import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
+import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
+import com.hyeeyoung.wishboard.presentation.folder.screens.FolderListBottomDialogFragment
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
+import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemViewModel
+import com.hyeeyoung.wishboard.util.DialogListener
+import com.hyeeyoung.wishboard.util.FolderListDialogListener
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.safeLet
-import com.hyeeyoung.wishboard.util.DialogListener
-import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
-import com.hyeeyoung.wishboard.util.FolderListDialogListener
-import com.hyeeyoung.wishboard.presentation.folder.screens.FolderListBottomDialogFragment
-import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -47,10 +48,8 @@ class WishItemDetailFragment : Fragment() {
 
         arguments?.let {
             position = it[ARG_WISH_ITEM_POSITION] as? Int
-
-            (it[ARG_WISH_ITEM] as? WishItem)?.let { item ->
-                wishItem = item
-                viewModel.setWishItem(item)
+            (it[ARG_WISH_ITEM_ID] as? Long)?.let { id ->
+                viewModel.fetchWishItemDetail(id)
             }
         }
 
@@ -72,7 +71,7 @@ class WishItemDetailFragment : Fragment() {
         binding.edit.setOnClickListener {
             findNavController().navigateSafe(
                 R.id.action_detail_to_registration, bundleOf(
-                    ARG_WISH_ITEM to viewModel.getWishItem().value,
+                    ARG_WISH_ITEM_DETAIL to viewModel.itemDetail.value,
                     ARG_IS_EDIT_MODE to true
                 )
             )
@@ -114,12 +113,12 @@ class WishItemDetailFragment : Fragment() {
         )?.observe(viewLifecycleOwner) {
             safeLet(
                 it[ARG_ITEM_STATUS] as? WishItemStatus,
-                it[ARG_WISH_ITEM] as? WishItem
-            ) { status, item ->
+                it[ARG_WISH_ITEM_DETAIL] as? WishItemDetail
+            ) { status, detail ->
                 itemStatus = status
 
                 // 아이템 수정 후 상세뷰로 전달할 아이템 정보를 저장, 아이템 수정 후 디테일 정보 조회 api를 요청하는 방식으로 변경 완료할 경우 해당 코드는 삭제 예정
-                viewModel.setWishItem(item)
+                viewModel.setItemDetail(detail)
             }
             return@observe
         }
@@ -130,7 +129,7 @@ class WishItemDetailFragment : Fragment() {
         navController.previousBackStackEntry?.savedStateHandle?.set(
             ARG_WISH_ITEM_INFO, bundleOf(
                 ARG_ITEM_STATUS to itemStatus,
-                ARG_WISH_ITEM to viewModel.getWishItem().value,
+//                ARG_WISH_ITEM to viewModel.getWishItem().value, TODO WishItem 변경하기
                 ARG_WISH_ITEM_POSITION to position
             )
         )
@@ -186,7 +185,8 @@ class WishItemDetailFragment : Fragment() {
     }
 
     companion object {
-        private const val ARG_WISH_ITEM = "wishItem"
+        private const val ARG_WISH_ITEM_DETAIL = "wishItemDetail"
+        private const val ARG_WISH_ITEM_ID = "wishItemId"
         private const val ARG_WISH_ITEM_POSITION = "position"
         private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
         private const val ARG_IS_EDIT_MODE = "isEditMode"
