@@ -121,7 +121,7 @@ class WishItemDetailFragment : Fragment() {
         navController.previousBackStackEntry?.savedStateHandle?.set(
             ARG_WISH_ITEM_INFO, bundleOf(
                 ARG_ITEM_STATUS to itemStatus,
-//                ARG_WISH_ITEM to viewModel.getWishItem().value, TODO WishItem 변경하기
+                ARG_WISH_ITEM_THUMBNAIL to viewModel.wishItemThumbnail.value,
                 ARG_WISH_ITEM_POSITION to position
             )
         )
@@ -177,6 +177,7 @@ class WishItemDetailFragment : Fragment() {
     }
 
     companion object {
+        private const val ARG_WISH_ITEM_THUMBNAIL = "wishItemThumbnail"
         private const val ARG_WISH_ITEM_DETAIL = "wishItemDetail"
         private const val ARG_WISH_ITEM_ID = "wishItemId"
         private const val ARG_WISH_ITEM_POSITION = "position"

@@ -21,8 +21,9 @@ class WishItemViewModel @Inject constructor(
 ) : ViewModel() {
     private val token = WishBoardApp.prefs.getUserToken()
 
-    private var wishItem = MutableLiveData<WishItem>()
-    private var _itemDetail = MutableLiveData<WishItemDetail>()
+    private val _wishItemThumbnail = MutableLiveData<WishItem>()
+    val wishItemThumbnail: LiveData<WishItem> get() = _wishItemThumbnail
+    private val _itemDetail = MutableLiveData<WishItemDetail>()
     val itemDetail: LiveData<WishItemDetail> get() = _itemDetail
     private var isCompleteDeletion = MutableLiveData<Boolean>()
 
@@ -30,36 +31,39 @@ class WishItemViewModel @Inject constructor(
         if (token == null) return
         viewModelScope.launch {
             Timber.d(wishRepository.fetchWishItemDetail(token, itemId)?.get(0).toString())
-            _itemDetail.value = wishRepository.fetchWishItemDetail(token, itemId)?.map { it.toWishItemDetail(it) }?.get(0)
+            _itemDetail.value =
+                wishRepository.fetchWishItemDetail(token, itemId)?.map { it.toWishItemDetail(it) }
+                    ?.get(0)
+            generateWishItemThumbnail(itemDetail.value ?: return@launch)
         }
     }
 
     fun deleteWishItem() {
-        if (token == null) return
-        val itemId = wishItem.value?.id ?: return
-        viewModelScope.launch {
-            isCompleteDeletion.value = wishRepository.deleteWishItem(token, itemId)
-            // 아이템이 삭제 완료된 경우, s3에서도 이미지 객체 삭제
-            if (isCompleteDeletion.value == true) {
-                AWSS3Service().removeImageUrl(wishItem.value!!.imageUrl ?: return@launch)
-            }
-        }
+//        if (token == null) return
+//        val itemId = wishItem.value?.id ?: return
+//        viewModelScope.launch {
+//            isCompleteDeletion.value = wishRepository.deleteWishItem(token, itemId)
+//            // 아이템이 삭제 완료된 경우, s3에서도 이미지 객체 삭제
+//            if (isCompleteDeletion.value == true) {
+//                AWSS3Service().removeImageUrl(wishItem.value!!.imageUrl ?: return@launch)
+//            }
+//        }
     }
 
     fun updateWishItemFolder(folder: FolderItem) {
-        if (token == null) return
-        val itemId = wishItem.value?.id ?: return
-        val item = wishItem.value?.apply {
-            folderId = folder.id
-            folderName = folder.name
-        } ?: return
-        viewModelScope.launch {
-            val isComplete =
-                wishRepository.updateFolderOfWishItem(token, itemId, folder.id ?: return@launch)
-            if (isComplete) {
-                wishItem.postValue(item)
-            }
-        }
+//        if (token == null) return
+//        val itemId = wishItem.value?.id ?: return
+//        val item = wishItem.value?.apply {
+//            folderId = folder.id
+//            folderName = folder.name
+//        } ?: return
+//        viewModelScope.launch {
+//            val isComplete =
+//                wishRepository.updateFolderOfWishItem(token, itemId, folder.id ?: return@launch)
+//            if (isComplete) {
+//                wishItem.postValue(item)
+//            }
+//        }
     }
 
     /** url에서 도메인명을 추출 */
@@ -77,10 +81,13 @@ class WishItemViewModel @Inject constructor(
         }
     }
 
-    fun setItemDetail(detail: WishItemDetail) {
-        _itemDetail.value = detail
+    /** 아이템 수정 -> 디테일 화면 복귀 -> 홈화면 복귀 시 홈화면 UI를 업데이트하기 위해 수정된 아이템 정보를 반영한 WishItemThumbnail 객체를 생성함 */
+    private fun generateWishItemThumbnail(detail: WishItemDetail) {
+        with(detail) {
+            _wishItemThumbnail.value =
+                WishItem(image = image, imageUrl = image, name = name, price = price.toIntOrNull(), id = id)
+        }
     }
 
-    fun getWishItem(): LiveData<WishItem> = wishItem
     fun getIsCompleteDeletion(): LiveData<Boolean> = isCompleteDeletion
 }
