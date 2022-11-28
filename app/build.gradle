@@ -26,8 +26,8 @@ android {
         applicationId "com.hyeeyoung.wishboard"
         minSdkVersion 22
         targetSdkVersion 32
-        versionCode 9
-        versionName "1.0.0.2"
+        versionCode 13
+        versionName "1.1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         buildConfigField "String", "BASE_URL", properties["ec2.url"]
