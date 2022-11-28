@@ -8,21 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import coil.load
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentMyBinding
-import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
-import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
-import com.hyeeyoung.wishboard.util.extension.navigateSafe
-import com.hyeeyoung.wishboard.util.loadProfileImage
-import com.hyeeyoung.wishboard.util.DialogListener
 import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
 import com.hyeeyoung.wishboard.presentation.common.screens.WebViewActivity
-import com.hyeeyoung.wishboard.presentation.sign.screens.SignActivity
+import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
 import com.hyeeyoung.wishboard.presentation.my.MyViewModel
+import com.hyeeyoung.wishboard.presentation.sign.screens.SignActivity
+import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
+import com.hyeeyoung.wishboard.util.DialogListener
+import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
+import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -106,9 +106,10 @@ class MyFragment : Fragment() {
     private fun addObservers() {
         viewModel.getUserProfileImage().observe(viewLifecycleOwner) { profileImage ->
             if (profileImage == null) return@observe
-            loadProfileImage(lifecycleScope, profileImage, binding.profileImage)
+            binding.profileImage.load(profileImage)
             return@observe
         }
+
         viewModel.getCompleteDeleteUser().observe(viewLifecycleOwner) { isComplete ->
             if (isComplete == true) {
                 CustomSnackbar.make(binding.layout,
@@ -122,6 +123,18 @@ class MyFragment : Fragment() {
                         }
                     }).show()
             }
+        }
+
+        // 프로필 수정 후 프로필 편집 뷰에서 마이페이지 복귀 시 프로필 정보 ui 업데이트
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
+            ARG_PROFILE_UPDATE_INFO
+        )?.observe(viewLifecycleOwner) {
+            (it[ARG_PROFILE_UPDATE_STATUS] as? WishItemStatus)?.let { status ->
+                if (status == WishItemStatus.MODIFIED) { // TODO 범용 status로 변경
+                    viewModel.fetchUserInfo()
+                }
+            }
+            it.clear()
         }
     }
 
@@ -174,5 +187,7 @@ class MyFragment : Fragment() {
         private const val TAG = "MyFragment"
         private const val ARG_WEB_VIEW_LINK = "link"
         private const val ARG_WEB_VIEW_TITLE = "title"
+        private const val ARG_PROFILE_UPDATE_INFO = "profileUpdateInfo"
+        private const val ARG_PROFILE_UPDATE_STATUS = "profileUpdateStatus"
     }
 }
