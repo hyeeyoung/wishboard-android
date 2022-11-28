@@ -5,11 +5,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 /** 시간 포맷 지정 */
-fun convertStrTimeToDate(strDate: String): Long? {
+fun convertStrTimeToDate(strDate: String?): Long? {
     val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
     val date: Date?
     try {
-        date = dateFormat.parse(strDate)
+        date = dateFormat.parse(strDate ?: return null)
     } catch (e: ParseException) {
         e.printStackTrace()
         return null

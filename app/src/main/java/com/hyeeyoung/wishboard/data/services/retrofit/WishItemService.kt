@@ -2,6 +2,7 @@ package com.hyeeyoung.wishboard.data.services.retrofit
 
 import com.hyeeyoung.wishboard.data.model.base.BaseResponseData
 import com.hyeeyoung.wishboard.data.model.base.BaseResponseResult
+import com.hyeeyoung.wishboard.data.model.wish.ItemDetail
 import com.hyeeyoung.wishboard.data.model.wish.ItemInfo
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import okhttp3.MultipartBody
@@ -15,6 +16,12 @@ interface WishItemService {
 
     @GET("item/latest")
     suspend fun fetchLatestWishItem(@Header("Authorization") token: String): Response<List<WishItem>>?
+
+    @GET("item/{item_id}")
+    suspend fun fetchWishItemDetail(
+        @Header("Authorization") token: String,
+        @Path("item_id") itemId: Long
+    ): Response<List<ItemDetail>>
 
     @Multipart
     @POST("/item")

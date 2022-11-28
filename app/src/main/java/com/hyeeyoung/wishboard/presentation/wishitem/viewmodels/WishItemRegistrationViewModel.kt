@@ -8,7 +8,7 @@ import android.widget.NumberPicker
 import androidx.lifecycle.*
 import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
-import com.hyeeyoung.wishboard.data.model.wish.WishItem
+import com.hyeeyoung.wishboard.domain.entity.WishItemDetail
 import com.hyeeyoung.wishboard.domain.repositories.FolderRepository
 import com.hyeeyoung.wishboard.domain.repositories.WishRepository
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
@@ -37,13 +37,11 @@ class WishItemRegistrationViewModel @Inject constructor(
     private val wishRepository: WishRepository,
     private val folderRepository: FolderRepository,
 ) : ViewModel() {
-    private val token = WishBoardApp.prefs.getUserToken()
-    private var wishItem: WishItem? = null
+    val token = WishBoardApp.prefs.getUserToken()
     private var itemId: Long? = null
     private var itemName = MutableLiveData<String?>()
     private var itemPrice = MutableLiveData<String?>()
     private var itemImage = MutableLiveData<String?>()
-    private var itemImageUrl = MutableLiveData<String?>()
     private var itemMemo = MutableLiveData<String?>()
     private var itemUrl = MutableLiveData<String?>()
 
@@ -58,6 +56,12 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var notiDateVal = MutableLiveData<Int>()
     private var notiHourVal = MutableLiveData<Int>()
     private var notiMinuteVal = MutableLiveData<Int>()
+
+    var wishItemDetail: WishItemDetail? = null
+        set(value) {
+            field = value
+            copyOriginItemInfo(value ?: return)
+        }
 
     private var isEnabledSaveButton = MediatorLiveData<Boolean>()
     private var isCompleteUpload = MutableLiveData<Boolean?>()
@@ -203,7 +207,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private suspend fun updateWishItem(trimmedItemName: String) { // TODO need refactoring, uploadWishItemByBasics()와 합치기
         // 파싱으로 아이템 이미지 불러온 경우 비트맵이미지로 이미지 파일 만들기
         val folderId: RequestBody? =
-            (folderItem.value?.id ?: wishItem?.folderId)?.toString()?.toPlainNullableRequestBody()
+            (folderItem.value?.id ?: wishItemDetail?.folderId)?.toString()?.toPlainNullableRequestBody()
         val itemName: RequestBody = trimmedItemName.toPlainRequestBody()
         val itemPrice: RequestBody? = itemPrice.value?.replace(",", "")?.toIntOrNull()?.toString()
             ?.toPlainNullableRequestBody()
@@ -213,7 +217,7 @@ class WishItemRegistrationViewModel @Inject constructor(
         val notiDate: RequestBody? = notiDate.value?.toPlainNullableRequestBody()
 
         val imageMultipartBody: MultipartBody.Part? =
-            if (wishItem?.image != null || wishItem?.imageUrl != null) { // 이미지가 변경되지 않은 경우
+            if (wishItemDetail?.image != null) { // 이미지가 변경되지 않은 경우
                 null
             } else if (selectedGalleryImageUri.value != null) {
                 ContentUriRequestBody(
@@ -222,7 +226,6 @@ class WishItemRegistrationViewModel @Inject constructor(
                     selectedGalleryImageUri.value!!
                 ).toFormData()
             } else if (itemImage.value != null) { // 파싱으로 아이템 이미지 불러온 경우 비트맵이미지로 이미지 파일 만들기
-                Timber.e(wishItem.toString())
                 val bitmap =
                     requireNotNull(getBitmapFromURL(itemImage.value!!)) { Timber.e("비트맵 변환 실패") }
                 imageFile = requireNotNull(
@@ -333,29 +336,24 @@ class WishItemRegistrationViewModel @Inject constructor(
         isEnabledSaveButton.value = !(name.isNullOrBlank() || price.isNullOrBlank())
     }
 
-    fun setWishItem(wishItem: WishItem) {
-        this.wishItem = wishItem
-        setWishItemInfo()
-    }
-
     fun removeWishItemImage() {
-        wishItem?.apply {
-            this.imageUrl = null
+        wishItemDetail?.apply {
             this.image = null
         }
     }
 
-    /** UI에 보여질 데이터값 설정 */
-    private fun setWishItemInfo() {
-        wishItem?.let { item ->
-            itemId = item.id
-            itemName.value = item.name
-            itemImage.value = item.image ?: item.imageUrl
-            itemPrice.value = item.price.toString()
-            itemMemo.value = item.memo
-            itemUrl.value = item.url
-            notiType.value = item.notiType
-            notiDate.value = item.notiDate
+    /** 아이템 수정을 위한 기존 아이템 정보를 복사해서 UI에 보여질 데이터값 설정 */
+    private fun copyOriginItemInfo(detail: WishItemDetail) {
+        detail.run {
+            itemId = id
+            itemName.value = name
+            itemImage.value = image
+            itemPrice.value = price
+            itemMemo.value = memo
+            itemUrl.value = site
+            itemUrlInput.value = site // 쇼핑몰 링크가 존재하는 아이템을 수정할 경우, 쇼핑몰 링크 EditText에 기존 링크를 보여주기 위함
+            this@WishItemRegistrationViewModel.notiType.value = notiType
+            this@WishItemRegistrationViewModel.notiDate.value = notiDate
         }
     }
 
@@ -428,11 +426,6 @@ class WishItemRegistrationViewModel @Inject constructor(
         itemUrl.value = url
     }
 
-    /** 쇼핑몰 링크가 존재하는 아이템을 수정할 경우, 쇼핑몰 링크 EditText에 기존 링크를 보여주기 위함 */
-    fun copyItemUrlToInputUrl() {
-        itemUrlInput.value = wishItem?.url
-    }
-
     /** 초기화 전 url 검증 실패 시 기존 url로 원상 복구 */
     fun resetValidItemUrl() {
         if (isValidItemUrl.value == false || itemUrlInput.value.isNullOrBlank()) {
@@ -444,9 +437,8 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     fun setSelectedGalleryImage(imageUri: Uri, imageFile: File) {
         // 갤러리 이미지를 적용할 것이기 때문에 기존에 파싱한 이미지를 제거
+        itemImage.value = null // TODO need refactoring, 아이템 정보 파싱 후 갤러리에서 이미지 선택 하지 않아도 이전에 갤러리에서 이미지를 선택한 적이 있는 경우, 갤러리 이미지가 보이는 버그를 방지하기 위함
         selectedGalleryImageUri.value = imageUri
-        itemImage.value =
-            null // TODO need refactoring, 아이템 정보 파싱 후 갤러리에서 이미지 선택 하지 않아도 이전에 갤러리에서 이미지를 선택한 적이 있는 경우, 갤러리 이미지가 보이는 버그를 방지하기 위함
         this.imageFile = imageFile
     }
 
@@ -496,7 +488,6 @@ class WishItemRegistrationViewModel @Inject constructor(
         }
     }
 
-    fun getItemImageUrl(): LiveData<String?> = itemImageUrl
     fun getItemUrlInput(): LiveData<String?> = itemUrlInput
     fun getItemMemo(): LiveData<String?> = itemMemo
     fun getFolderItem(): LiveData<FolderItem?> = folderItem
@@ -507,8 +498,6 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun getNotiDateVal(): LiveData<Int?> = notiDateVal
     fun getNotiHourVal(): LiveData<Int?> = notiHourVal
     fun getNotiMinuteVal(): LiveData<Int?> = notiMinuteVal
-
-    fun getWishItem(): WishItem? = wishItem
     fun getFolderName(): LiveData<String?> = folderName
 
     fun getFolderListSquareAdapter(): FolderListAdapter = folderListSquareAdapter

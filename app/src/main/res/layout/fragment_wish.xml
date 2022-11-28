@@ -193,7 +193,7 @@
                             android:layout_height="wrap_content"
                             android:clickable="false"
                             android:hint="@string/folder"
-                            android:text="@{viewModel.folderItem.name == null ? viewModel.wishItem.folderName : viewModel.folderItem.name}"
+                            android:text="@{viewModel.folderItem.name == null ? viewModel.wishItemDetail.folderName : viewModel.folderItem.name}"
                             android:textAppearance="@style/Item.Basic.Upload.EditText.TextAppearance"
                             android:textColorHint="@color/gray_700"
                             app:layout_constraintBottom_toBottomOf="parent"

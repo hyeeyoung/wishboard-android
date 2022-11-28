@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
-import com.hyeeyoung.wishboard.databinding.FragmentCartBinding
 import com.hyeeyoung.wishboard.data.model.cart.CartItem
-import com.hyeeyoung.wishboard.presentation.cart.types.CartItemButtonType
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
+import com.hyeeyoung.wishboard.databinding.FragmentCartBinding
+import com.hyeeyoung.wishboard.presentation.cart.types.CartItemButtonType
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import dagger.hilt.android.AndroidEntryPoint
@@ -54,7 +54,7 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
                     R.id.action_home_to_wish_item_detail,
                     bundleOf(
                         ARG_WISH_ITEM_POSITION to position,
-                        ARG_WISH_ITEM to item.wishItem
+                        ARG_WISH_ITEM_ID to item.wishItem.id,
                     )
                 )
             }
@@ -74,7 +74,7 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
         )?.observe(viewLifecycleOwner) {
             (it[ARG_ITEM_STATUS] as? WishItemStatus)?.let { status ->
                 val position = it[ARG_WISH_ITEM_POSITION] as? Int
-                val item = it[ARG_WISH_ITEM] as? WishItem
+                val item = it[ARG_WISH_ITEM_THUMBNAIL] as? WishItem
                 when (status) {
                     WishItemStatus.MODIFIED -> {
                         viewModel.updateCartItem(position ?: return@let, item ?: return@let)
@@ -92,8 +92,8 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
     }
 
     companion object {
-        private const val TAG = "CartFragment"
-        const val ARG_WISH_ITEM = "wishItem"
+        private const val ARG_WISH_ITEM_THUMBNAIL = "wishItemThumbnail"
+        private const val ARG_WISH_ITEM_ID = "wishItemId"
         private const val ARG_WISH_ITEM_POSITION = "position"
         private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
         private const val ARG_ITEM_STATUS = "itemStatus"

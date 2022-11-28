@@ -62,7 +62,7 @@ class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener {
         )?.observe(viewLifecycleOwner) {
             (it[ARG_ITEM_STATUS] as? WishItemStatus)?.let { status ->
                 val position = it[ARG_WISH_ITEM_POSITION] as? Int
-                val item = it[ARG_WISH_ITEM] as? WishItem
+                val item = it[ARG_WISH_ITEM_THUMBNAIL] as? WishItem
                 when (status) {
                     WishItemStatus.MODIFIED -> {
                         viewModel.updateWishItem(position ?: return@let, item ?: return@let)
@@ -84,7 +84,7 @@ class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener {
             R.id.action_folder_detail_to_wish_item_detail,
             bundleOf(
                 ARG_WISH_ITEM_POSITION to position,
-                ARG_WISH_ITEM to item,
+                ARG_WISH_ITEM_ID to item.id,
             )
         )
     }
@@ -94,11 +94,11 @@ class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener {
     }
 
     companion object {
-        private const val TAG = "FolderItemDetailFragment"
+        private const val ARG_WISH_ITEM_THUMBNAIL = "wishItemThumbnail"
+        private const val ARG_WISH_ITEM_ID = "wishItemId"
         private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
         private const val ARG_FOLDER_ITEM = "folderItem"
         private const val ARG_WISH_ITEM_POSITION = "position"
-        private const val ARG_WISH_ITEM = "wishItem"
         private const val ARG_ITEM_STATUS = "itemStatus"
     }
 }

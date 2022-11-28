@@ -12,30 +12,39 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import coil.load
 import com.hyeeyoung.wishboard.R
-import com.hyeeyoung.wishboard.databinding.FragmentWishItemDetailBinding
-import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
-import com.hyeeyoung.wishboard.data.model.wish.WishItem
+import com.hyeeyoung.wishboard.databinding.FragmentWishItemDetailBinding
+import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
+import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
+import com.hyeeyoung.wishboard.presentation.folder.screens.FolderListBottomDialogFragment
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
+import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemViewModel
+import com.hyeeyoung.wishboard.util.DialogListener
+import com.hyeeyoung.wishboard.util.FolderListDialogListener
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
-import com.hyeeyoung.wishboard.util.safeLet
-import com.hyeeyoung.wishboard.util.DialogListener
-import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
-import com.hyeeyoung.wishboard.util.FolderListDialogListener
-import com.hyeeyoung.wishboard.presentation.folder.screens.FolderListBottomDialogFragment
-import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class WishItemDetailFragment : Fragment() {
     private lateinit var binding: FragmentWishItemDetailBinding
     private val viewModel: WishItemViewModel by viewModels()
-    private var wishItem: WishItem? = null
     private var position: Int? = null // TODO delete
     private var itemStatus: WishItemStatus? = null
+    private var itemId: Long = 0L
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        arguments?.let {
+            position = it[ARG_WISH_ITEM_POSITION] as? Int
+            (it[ARG_WISH_ITEM_ID] as? Long)?.let { id ->
+                itemId = id
+                viewModel.fetchWishItemDetail(id)
+            }
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,15 +53,6 @@ class WishItemDetailFragment : Fragment() {
         binding = FragmentWishItemDetailBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-
-        arguments?.let {
-            position = it[ARG_WISH_ITEM_POSITION] as? Int
-
-            (it[ARG_WISH_ITEM] as? WishItem)?.let { item ->
-                wishItem = item
-                viewModel.setWishItem(item)
-            }
-        }
 
         initializeView()
         addListeners()
@@ -72,7 +72,7 @@ class WishItemDetailFragment : Fragment() {
         binding.edit.setOnClickListener {
             findNavController().navigateSafe(
                 R.id.action_detail_to_registration, bundleOf(
-                    ARG_WISH_ITEM to viewModel.getWishItem().value,
+                    ARG_WISH_ITEM_DETAIL to viewModel.itemDetail.value,
                     ARG_IS_EDIT_MODE to true
                 )
             )
@@ -86,18 +86,12 @@ class WishItemDetailFragment : Fragment() {
         binding.folderName.setOnClickListener {
             showFolderListDialog()
         }
+        binding.goToShopBtn.setOnClickListener {
+            viewModel.itemDetail.value?.site?.let { site -> goToShop(site) }
+        }
     }
 
     private fun addObservers() {
-        viewModel.getWishItem().observe(viewLifecycleOwner) { item ->
-            // TODO need refactoring 서버쪽에서 image 필드명을 통일시켜준다면 imageUrl, image 프로퍼티를 중 하나만 사용하는 것으로 통일할 수 있음
-            binding.itemImage.load(item.imageUrl ?: item.image)
-            binding.goToShopBtn.setOnClickListener {
-                if (item.url == null) return@setOnClickListener
-                goToShop(item.url)
-            }
-        }
-
         viewModel.getIsCompleteDeletion().observe(viewLifecycleOwner) { isComplete ->
             if (isComplete == true) {
                 CustomSnackbar.make(
@@ -112,15 +106,12 @@ class WishItemDetailFragment : Fragment() {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
             ARG_WISH_ITEM_INFO
         )?.observe(viewLifecycleOwner) {
-            safeLet(
-                it[ARG_ITEM_STATUS] as? WishItemStatus,
-                it[ARG_WISH_ITEM] as? WishItem
-            ) { status, item ->
+            (it[ARG_ITEM_STATUS] as? WishItemStatus)?.let { status ->
+                if (status == WishItemStatus.MODIFIED)
+                    viewModel.fetchWishItemDetail(itemId)
                 itemStatus = status
-
-                // 아이템 수정 후 상세뷰로 전달할 아이템 정보를 저장, 아이템 수정 후 디테일 정보 조회 api를 요청하는 방식으로 변경 완료할 경우 해당 코드는 삭제 예정
-                viewModel.setWishItem(item)
             }
+            it.clear()
             return@observe
         }
     }
@@ -130,7 +121,7 @@ class WishItemDetailFragment : Fragment() {
         navController.previousBackStackEntry?.savedStateHandle?.set(
             ARG_WISH_ITEM_INFO, bundleOf(
                 ARG_ITEM_STATUS to itemStatus,
-                ARG_WISH_ITEM to viewModel.getWishItem().value,
+                ARG_WISH_ITEM_THUMBNAIL to viewModel.wishItemThumbnail.value,
                 ARG_WISH_ITEM_POSITION to position
             )
         )
@@ -157,7 +148,7 @@ class WishItemDetailFragment : Fragment() {
     }
 
     private fun showFolderListDialog() {
-        val folderId = wishItem?.folderId
+        val folderId = viewModel.itemDetail.value?.folderId
         val dialog = FolderListBottomDialogFragment(folderId).apply {
             setListener(object : FolderListDialogListener {
                 override fun onButtonClicked(folder: FolderItem) {
@@ -186,7 +177,9 @@ class WishItemDetailFragment : Fragment() {
     }
 
     companion object {
-        private const val ARG_WISH_ITEM = "wishItem"
+        private const val ARG_WISH_ITEM_THUMBNAIL = "wishItemThumbnail"
+        private const val ARG_WISH_ITEM_DETAIL = "wishItemDetail"
+        private const val ARG_WISH_ITEM_ID = "wishItemId"
         private const val ARG_WISH_ITEM_POSITION = "position"
         private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
         private const val ARG_IS_EDIT_MODE = "isEditMode"
