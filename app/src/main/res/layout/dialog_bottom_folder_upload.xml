@@ -117,14 +117,13 @@
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <TextView
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/add"
-                style="@style/Widget.Button.Activate.Green"
+                style="@style/Widget.Button.Full.Round.Activate.Green"
                 android:layout_width="match_parent"
                 android:layout_margin="@dimen/spacingBase"
                 android:enabled="@{viewModel.folderName.trim().length() > 0}"
                 android:text="@{viewModel.folderRegistrationStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.add)}"
-                android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:text="@string/add" />
 

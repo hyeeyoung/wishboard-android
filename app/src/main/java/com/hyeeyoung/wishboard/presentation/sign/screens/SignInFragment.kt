@@ -29,7 +29,7 @@ class SignInFragment : Fragment() {
     ): View {
         binding = FragmentSignInBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@SignInFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         addListeners()
         addObservers()
@@ -55,7 +55,7 @@ class SignInFragment : Fragment() {
                     startActivity(Intent(requireContext(), MainActivity::class.java))
                     requireActivity().finish()
                 }
-                false -> {
+                else -> {
                     // TODO 에러케이스에 따라 에러메세지 분리 및 스낵바 커스텀 필요
                     CustomSnackbar.make(binding.layout, getString(R.string.sign_in_failed_snackbar_text), false).show()
                 }
@@ -70,6 +70,7 @@ class SignInFragment : Fragment() {
                     binding.loadingLottie.visibility = View.VISIBLE
                     binding.loadingLottie.playAnimation()
                 }
+                else -> {}
             }
         }
     }

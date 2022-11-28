@@ -195,6 +195,10 @@ class SignViewModel @Inject constructor(
         registrationPassword.value = null
     }
 
+    fun setCompletedSendMail(isCompleted: Boolean) {
+        isCompletedSendMail.value = isCompleted
+    }
+
     fun terminateTimer() {
         timer.cancel()
     }

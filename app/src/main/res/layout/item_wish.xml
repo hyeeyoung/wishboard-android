@@ -73,18 +73,24 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/cart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minHeight="0dp"
-            android:minWidth="0dp"
-            android:background="@drawable/selector_background_cart_button"
+            style="@style/Widget.Material.Button.Basic"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_margin="@dimen/spacing5"
             android:fontFamily="@font/suit_r"
+            android:insetLeft="@dimen/spacing5"
+            android:insetTop="@dimen/spacing5"
+            android:insetRight="@dimen/spacing5"
+            android:insetBottom="@dimen/spacing5"
+            android:paddingHorizontal="0dp"
             android:text="@string/cart"
             android:textAllCaps="false"
             android:textColor="@color/gray_700"
             android:textSize="@dimen/typographyBaseDetail"
+            app:backgroundTint="@color/selector_cart_button_background_color"
+            app:cornerRadius="19dp"
             app:layout_constraintBottom_toBottomOf="@id/item_image"
             app:layout_constraintRight_toRightOf="@id/item_image" />
 

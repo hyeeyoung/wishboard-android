@@ -6,7 +6,7 @@ import com.hyeeyoung.wishboard.presentation.noti.types.NotiType
 data class NotiItem(
     @SerializedName("item_id")
     val itemId: Long,
-    @SerializedName("item_img")
+    @SerializedName("item_img_url")
     val itemImg: String? = null, // TODO rename itemImage
     var itemImageUrl: String? = null,
     @SerializedName("item_name")

@@ -40,7 +40,7 @@ class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener {
     ): View {
         binding = FragmentFolderDetailBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@FolderDetailFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addObservers()
@@ -62,7 +62,7 @@ class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener {
         )?.observe(viewLifecycleOwner) {
             (it[ARG_ITEM_STATUS] as? WishItemStatus)?.let { status ->
                 val position = it[ARG_WISH_ITEM_POSITION] as? Int
-                val item = it[ARG_WISH_ITEM] as? WishItem
+                val item = it[ARG_WISH_ITEM_THUMBNAIL] as? WishItem
                 when (status) {
                     WishItemStatus.MODIFIED -> {
                         viewModel.updateWishItem(position ?: return@let, item ?: return@let)
@@ -70,6 +70,7 @@ class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener {
                     WishItemStatus.DELETED -> {
                         viewModel.deleteWishItem(position ?: return@let, item ?: return@let)
                     }
+                    else -> {}
                 }
                 // 단순 화면 전환 시에도 해당 코드 실행 방지를 위해 전달받은 bundle 데이터를 clear()
                 it.clear()
@@ -83,7 +84,7 @@ class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener {
             R.id.action_folder_detail_to_wish_item_detail,
             bundleOf(
                 ARG_WISH_ITEM_POSITION to position,
-                ARG_WISH_ITEM to item,
+                ARG_WISH_ITEM_ID to item.id,
             )
         )
     }
@@ -93,11 +94,11 @@ class FolderDetailFragment : Fragment(), WishListAdapter.OnItemClickListener {
     }
 
     companion object {
-        private const val TAG = "FolderItemDetailFragment"
+        private const val ARG_WISH_ITEM_THUMBNAIL = "wishItemThumbnail"
+        private const val ARG_WISH_ITEM_ID = "wishItemId"
         private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
         private const val ARG_FOLDER_ITEM = "folderItem"
         private const val ARG_WISH_ITEM_POSITION = "position"
-        private const val ARG_WISH_ITEM = "wishItem"
         private const val ARG_ITEM_STATUS = "itemStatus"
     }
 }

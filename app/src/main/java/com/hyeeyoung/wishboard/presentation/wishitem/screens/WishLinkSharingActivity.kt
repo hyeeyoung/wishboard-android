@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
+import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
@@ -95,7 +95,7 @@ class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemCli
     private fun addObservers() {
         viewModel.getItemImage().observe(this) { image ->
             if (image == null) return@observe
-            Glide.with(this).load(image).circleCrop().error(R.mipmap.ic_main).into(binding.itemImage)
+            binding.itemImage.load(image) { placeholder(R.mipmap.ic_main) }
         }
         viewModel.isCompleteUpload().observe(this) { isComplete ->
             if (isComplete == true) {
@@ -112,6 +112,7 @@ class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemCli
                     binding.loadingLottie.visibility = View.VISIBLE
                     binding.loadingLottie.playAnimation()
                 }
+                else -> {}
             }
         }
         NetworkConnection(this).observe(this) { isConnected ->

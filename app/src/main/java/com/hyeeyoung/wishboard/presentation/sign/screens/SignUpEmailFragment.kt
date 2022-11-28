@@ -31,7 +31,7 @@ class SignUpEmailFragment : Fragment() {
     ): View {
         binding = FragmentSignUpEmailBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@SignUpEmailFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         addObservers()
 
@@ -58,6 +58,7 @@ class SignUpEmailFragment : Fragment() {
                     binding.loadingLottie.visibility = View.VISIBLE
                     binding.loadingLottie.playAnimation()
                 }
+                else -> {}
             }
         }
     }

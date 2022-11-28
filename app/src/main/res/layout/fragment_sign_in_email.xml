@@ -50,6 +50,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/spacingBase"
+                android:fontFamily="@font/suit_r"
+                android:text="@{String.format(context.getString(R.string.step_format), 1, 2)}"
+                android:textColor="@color/gray_700"
+                android:textSize="@dimen/typographyBase"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="1/2 단계" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
@@ -66,9 +79,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/spacingBase"
                 android:gravity="center_horizontal"
-                android:orientation="vertical"
-                android:visibility="@{viewModel.isCompletedSendMail() == true ? View.GONE : View.VISIBLE}"
-                tools:visibility="gone">
+                android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/email_icon"
@@ -108,23 +119,6 @@
 
                     <requestFocus />
                 </EditText>
-
-                <Button
-                    style="@style/Widget.Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:enabled="@{viewModel.validEmailFormat == true}"
-                    android:fontFamily="@font/suit_b"
-                    android:minWidth="0dp"
-                    android:minHeight="0dp"
-                    android:onClick="@{() -> viewModel.requestVerificationMail()}"
-                    android:paddingHorizontal="@dimen/spacing10"
-                    android:text="@string/sign_in_email_resend_email_button_text"
-                    android:textColor="@drawable/selector_text_button_color"
-                    android:visibility="@{viewModel.isCompletedSendMail() == true ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="@id/email_input"
-                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <TextView
@@ -136,93 +130,27 @@
                 android:textAppearance="@style/Widget.TextAppearance.Detail"
                 android:visibility="@{viewModel.loginEmail.length() > 0 &amp;&amp; (viewModel.validEmailFormat == false || viewModel.isUnregisteredUser() == true) ? View.VISIBLE : View.GONE}"
                 tools:text="@string/sign_in_unregistered_user_detail" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:visibility="@{viewModel.isCompletedSendMail() == true ? View.VISIBLE : View.INVISIBLE}">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/verification_code_container"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacingBase">
-
-                    <EditText
-                        android:id="@+id/verification_code_input"
-                        style="@style/Widget.EditText.Basic"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/sign_in_email_verification_code_hint"
-                        android:inputType="textPassword"
-                        android:maxLines="1"
-                        android:onTextChanged="@{viewModel::onVerificationCodeTextChanged}"
-                        android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/spacing10"
-                        android:fontFamily="@font/suit_r"
-                        android:text="@{viewModel.timer}"
-                        android:textColor="@color/pink"
-                        android:textSize="@dimen/typographyBase"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="@id/verification_code_input"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="5:00" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/spacingBase"
-                    android:layout_marginTop="@dimen/spacing5"
-                    android:text="@string/sign_in_email_verification_code_detail"
-                    android:textAppearance="@style/Widget.TextAppearance.Detail"
-                    android:visibility="@{viewModel.isCorrectedVerificationCode() == false &amp;&amp; viewModel.isCorrectedVerificationCode() != null ? View.VISIBLE : View.GONE}" />
-
-            </LinearLayout>
         </LinearLayout>
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/send_mail"
-            style="@style/Widget.Button.Activate.Green"
+            style="@style/Widget.Button.Full.Round.Activate.Green"
             android:layout_width="match_parent"
             android:layout_marginBottom="@dimen/spacingBase"
             android:enabled="@{viewModel.validEmailFormat == true}"
             android:onClick="@{() -> viewModel.requestVerificationMail()}"
             android:text="@string/sign_in_email_send_email_button_text"
-            android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
-            android:visibility="@{viewModel.isCompletedSendMail() == false ? View.VISIBLE : View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:visibility="gone" />
-
-        <TextView
-            android:id="@+id/login"
-            style="@style/Widget.Button.Activate.Green"
-            android:layout_width="match_parent"
-            android:layout_marginBottom="@dimen/spacingBase"
-            android:enabled="@{viewModel.isEnabledVerificationCodeButton() == true}"
-            android:onClick="@{() -> viewModel.signInEmail()}"
-            android:text="@{viewModel.signProcessStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.sign_in)}"
-            android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
-            android:visibility="@{viewModel.isCompletedSendMail() == true ? View.VISIBLE : View.INVISIBLE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="@string/sign_in" />
+            app:layout_constraintBottom_toBottomOf="parent" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading_lottie"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@id/login"
+            app:layout_constraintBottom_toBottomOf="@id/send_mail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/login"
+            app:layout_constraintTop_toTopOf="@id/send_mail"
             app:lottie_fileName="lottie/loading_horizontal_black.json"
             app:lottie_imageAssetsFolder="lottie"
             app:lottie_loop="true" />

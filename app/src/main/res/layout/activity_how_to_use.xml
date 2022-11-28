@@ -31,13 +31,12 @@
             app:tabPaddingEnd="@dimen/spacingSmall"
             app:tabPaddingTop="@dimen/spacingSmall" />
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/yes"
-            style="@style/Widget.Button.Activate.Green"
+            style="@style/Widget.Button.Full.Round.Black"
             android:layout_width="match_parent"
             android:layout_margin="@dimen/spacingBase"
             android:text="@string/how_to_use_yes_button_text"
-            android:textAppearance="@style/Widget.Button.Basic.TextAppearance"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

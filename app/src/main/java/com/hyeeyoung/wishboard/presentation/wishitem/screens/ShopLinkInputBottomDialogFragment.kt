@@ -11,6 +11,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.DialogBottomShopLinkInputBinding
 import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel
+import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -25,7 +26,7 @@ class ShopLinkInputBottomDialogFragment: BottomSheetDialogFragment() {
     ): View {
         binding = DialogBottomShopLinkInputBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@ShopLinkInputBottomDialogFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         // 키보드 위로 다이얼로그를 띄우기 위함
         dialog?.setOnShowListener {
@@ -55,6 +56,8 @@ class ShopLinkInputBottomDialogFragment: BottomSheetDialogFragment() {
     private fun addObservers() {
         viewModel.getIsValidItemUrl().observe(viewLifecycleOwner) {
             if (it == true) {
+                // TODO need refactoring
+                viewModel.removeWishItemImage()
                 dismiss()
             }
         }

@@ -27,7 +27,7 @@ class FolderAddDialogFragment : DialogFragment() {
     ): View {
         binding = DialogNewFolderAddBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@FolderAddDialogFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         addListeners()
         addObservers()
@@ -63,6 +63,7 @@ class FolderAddDialogFragment : DialogFragment() {
                     binding.loadingLottie.visibility = View.VISIBLE
                     binding.loadingLottie.playAnimation()
                 }
+                else -> {}
             }
         }
     }

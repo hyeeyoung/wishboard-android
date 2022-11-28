@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacing12"
             android:fontFamily="@font/suit_b"
-            android:text="@{String.format(context.getString(R.string.noti_item_type), context.getString(item.notiType.strRes))}"
+            android:text="@{@string/noti_item_type(context.getString(item.notiType.strRes))}"
             android:textColor="@color/gray_700"
             android:textSize="14sp"
             app:layout_constraintStart_toEndOf="@id/item_image"

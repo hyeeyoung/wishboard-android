@@ -35,7 +35,7 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
     ): View {
         binding = FragmentFolderBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this@FolderFragment
+        binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addListeners()

@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.hyeeyoung.wishboard.databinding.ItemWishBinding
+import coil.load
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
+import com.hyeeyoung.wishboard.databinding.ItemWishBinding
 import com.hyeeyoung.wishboard.presentation.cart.types.CartStateType
 import com.hyeeyoung.wishboard.util.setOnSingleClickListener
 
@@ -36,7 +36,7 @@ class WishListAdapter : ListAdapter<WishItem, RecyclerView.ViewHolder>(diffCallb
                 this.item = item
 
                 item.imageUrl?.let { url ->
-                    Glide.with(itemImage.context).load(url).into(itemImage)
+                    binding.itemImage.load(url)
                 }
 
                 cart.isSelected = item.cartState == CartStateType.IN_CART.numValue
@@ -81,12 +81,18 @@ class WishListAdapter : ListAdapter<WishItem, RecyclerView.ViewHolder>(diffCallb
 
     /** 아이템 정보(타이틀 및 가격 등)수정, cart 포함 여부 수정에 사용 */
     fun updateData(position: Int, wishItem: WishItem) {
-        dataSet[position] = wishItem
+        dataSet[position] = wishItem.apply {
+            // 상세뷰에서 아이템 수정 후 홈화면 썸네일 업데이트를 위해 WishItem을 전달
+            if (wishItem.cartState == null) cartState = dataSet[position].cartState
+        }
         notifyItemChanged(position)
     }
 
     fun deleteData(position: Int, wishItem: WishItem) {
-        dataSet.remove(wishItem)
+        dataSet.remove(wishItem.apply {
+            // 상세뷰에서 아이템 수정 후 홈화면 썸네일 업데이트를 위해 WishItem을 전달
+            if (wishItem.cartState == null) cartState = dataSet[position].cartState
+        })
         notifyItemRemoved(position)
     }
 
