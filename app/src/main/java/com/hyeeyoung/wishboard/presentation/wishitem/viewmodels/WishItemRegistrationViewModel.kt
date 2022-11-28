@@ -16,6 +16,7 @@ import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
 import com.hyeeyoung.wishboard.presentation.folder.types.FolderListViewType
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiType
 import com.hyeeyoung.wishboard.util.ContentUriRequestBody
+import com.hyeeyoung.wishboard.util.extension.addSourceList
 import com.hyeeyoung.wishboard.util.extension.toPlainNullableRequestBody
 import com.hyeeyoung.wishboard.util.extension.toPlainRequestBody
 import com.hyeeyoung.wishboard.util.getBitmapFromURL
@@ -81,18 +82,27 @@ class WishItemRegistrationViewModel @Inject constructor(
     private val folderListSquareAdapter =
         FolderListAdapter(FolderListViewType.SQUARE_VIEW_TYPE)
 
+    val isEnabledUploadButton = MediatorLiveData<Boolean>().apply {
+        addSourceList(itemName, itemPrice) { checkValidItemInfoInput() }
+    }
+
+    private fun checkValidItemInfoInput(): Boolean {
+        return !(itemName.value.isNullOrBlank() || itemPrice.value.isNullOrBlank() || token == null)
+    }
+
     init {
         initEnabledSaveButton()
         fetchFolderList()
     }
 
     /** 오픈그래프 메타태그 파싱을 통해 아이템 정보 가져오기 */
-    suspend fun getWishItemInfo(url: String) {
-        val result = wishRepository.getItemParsingInfo(url)
-        if (result?.first == null) return
-        itemName.value = result.first!!.name
-        itemPrice.value = result.first!!.price.toString()
-        itemImage.value = result.first!!.image
+    fun getWishItemInfo(url: String) {
+        viewModelScope.launch {
+            val result = wishRepository.getItemParsingInfo(url)
+            itemName.value = result?.first?.name
+            itemPrice.value = if (result?.first?.price == null || result.first?.price == "0") null else result.first?.price
+            itemImage.value = result?.first?.image
+        }
     }
 
     suspend fun uploadWishItemByLinkSharing() {
@@ -207,7 +217,8 @@ class WishItemRegistrationViewModel @Inject constructor(
     private suspend fun updateWishItem(trimmedItemName: String) { // TODO need refactoring, uploadWishItemByBasics()와 합치기
         // 파싱으로 아이템 이미지 불러온 경우 비트맵이미지로 이미지 파일 만들기
         val folderId: RequestBody? =
-            (folderItem.value?.id ?: wishItemDetail?.folderId)?.toString()?.toPlainNullableRequestBody()
+            (folderItem.value?.id ?: wishItemDetail?.folderId)?.toString()
+                ?.toPlainNullableRequestBody()
         val itemName: RequestBody = trimmedItemName.toPlainRequestBody()
         val itemPrice: RequestBody? = itemPrice.value?.replace(",", "")?.toIntOrNull()?.toString()
             ?.toPlainNullableRequestBody()
@@ -291,9 +302,7 @@ class WishItemRegistrationViewModel @Inject constructor(
         if (!isValid) return
 
         selectedGalleryImageUri.value = null // 파싱한 이미지를 적용할 것이기 때문에 기존에 선택된 이미지를 제거
-        viewModelScope.launch {
-            getWishItemInfo(url!!)
-        }
+        getWishItemInfo(url!!)
     }
 
     /** url 유효성 검증 */
@@ -437,7 +446,8 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     fun setSelectedGalleryImage(imageUri: Uri, imageFile: File) {
         // 갤러리 이미지를 적용할 것이기 때문에 기존에 파싱한 이미지를 제거
-        itemImage.value = null // TODO need refactoring, 아이템 정보 파싱 후 갤러리에서 이미지 선택 하지 않아도 이전에 갤러리에서 이미지를 선택한 적이 있는 경우, 갤러리 이미지가 보이는 버그를 방지하기 위함
+        itemImage.value =
+            null // TODO need refactoring, 아이템 정보 파싱 후 갤러리에서 이미지 선택 하지 않아도 이전에 갤러리에서 이미지를 선택한 적이 있는 경우, 갤러리 이미지가 보이는 버그를 방지하기 위함
         selectedGalleryImageUri.value = imageUri
         this.imageFile = imageFile
     }
