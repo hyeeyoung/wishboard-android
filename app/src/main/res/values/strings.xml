@@ -130,6 +130,7 @@
 
     <string name="item_non_update_dialog_description">앗, 삭제된 아이템은 수정할 수 없어요.\n홈탭에서 새로고침을 시도해 주세요!</string>
     <string name="item_non_update_dialog_title">아이템 수정 오류</string>
+    <string name="wish_list_registration_button_text_for_unregister_user">로그인 후 위시보드에 아이템을 담아보세요!</string>
 
     <!-- Detail -->
     <string name="go_to_folder">%s></string>
