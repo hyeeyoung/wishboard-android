@@ -39,15 +39,11 @@ class WishItemViewModel @Inject constructor(
     }
 
     fun deleteWishItem() {
-//        if (token == null) return
-//        val itemId = wishItem.value?.id ?: return
-//        viewModelScope.launch {
-//            isCompleteDeletion.value = wishRepository.deleteWishItem(token, itemId)
-//            // 아이템이 삭제 완료된 경우, s3에서도 이미지 객체 삭제
-//            if (isCompleteDeletion.value == true) {
-//                AWSS3Service().removeImageUrl(wishItem.value!!.imageUrl ?: return@launch)
-//            }
-//        }
+        if (token == null) return
+        val itemId = itemDetail.value?.id ?: return
+        viewModelScope.launch {
+            isCompleteDeletion.value = wishRepository.deleteWishItem(token, itemId)
+        }
     }
 
     fun updateWishItemFolder(folder: FolderItem) {

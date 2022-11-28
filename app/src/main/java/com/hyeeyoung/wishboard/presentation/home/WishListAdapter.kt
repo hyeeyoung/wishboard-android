@@ -89,7 +89,10 @@ class WishListAdapter : ListAdapter<WishItem, RecyclerView.ViewHolder>(diffCallb
     }
 
     fun deleteData(position: Int, wishItem: WishItem) {
-        dataSet.remove(wishItem)
+        dataSet.remove(wishItem.apply {
+            // 상세뷰에서 아이템 수정 후 홈화면 썸네일 업데이트를 위해 WishItem을 전달
+            if (wishItem.cartState == null) cartState = dataSet[position].cartState
+        })
         notifyItemRemoved(position)
     }
 
