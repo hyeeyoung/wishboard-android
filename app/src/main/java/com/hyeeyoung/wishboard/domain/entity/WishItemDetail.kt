@@ -7,8 +7,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class WishItemDetail(
     val createAt: String,
-    val folderId: Long?,
-    val folderName: String?,
+    var folderId: Long?,
+    var folderName: String?,
     val id: Long,
     var image: String?,
     val memo: String?,

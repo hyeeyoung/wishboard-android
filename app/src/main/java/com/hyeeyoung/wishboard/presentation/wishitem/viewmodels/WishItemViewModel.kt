@@ -47,19 +47,18 @@ class WishItemViewModel @Inject constructor(
     }
 
     fun updateWishItemFolder(folder: FolderItem) {
-//        if (token == null) return
-//        val itemId = wishItem.value?.id ?: return
-//        val item = wishItem.value?.apply {
-//            folderId = folder.id
-//            folderName = folder.name
-//        } ?: return
-//        viewModelScope.launch {
-//            val isComplete =
-//                wishRepository.updateFolderOfWishItem(token, itemId, folder.id ?: return@launch)
-//            if (isComplete) {
-//                wishItem.postValue(item)
-//            }
-//        }
+        if (token == null) return
+        val item = itemDetail.value?.apply {
+            folderId = folder.id
+            folderName = folder.name
+        } ?: return
+        viewModelScope.launch {
+            val isComplete =
+                wishRepository.updateFolderOfWishItem(token, itemDetail.value?.id ?: return@launch, folder.id ?: return@launch)
+            if (isComplete) {
+                _itemDetail.value = item
+            }
+        }
     }
 
     /** url에서 도메인명을 추출 */
@@ -81,7 +80,7 @@ class WishItemViewModel @Inject constructor(
     private fun generateWishItemThumbnail(detail: WishItemDetail) {
         with(detail) {
             _wishItemThumbnail.value =
-                WishItem(image = image, imageUrl = image, name = name, price = price.toIntOrNull(), id = id)
+                WishItem(imageUrl = image, name = name, price = price.toIntOrNull(), id = id)
         }
     }
 
