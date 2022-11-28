@@ -54,7 +54,7 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
                     R.id.action_home_to_wish_item_detail,
                     bundleOf(
                         ARG_WISH_ITEM_POSITION to position,
-                        ARG_WISH_ITEM to item.wishItem
+                        ARG_WISH_ITEM_ID to item.wishItem.id,
                     )
                 )
             }
@@ -92,7 +92,7 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
     }
 
     companion object {
-        private const val TAG = "CartFragment"
+        private const val ARG_WISH_ITEM_ID = "wishItemId"
         const val ARG_WISH_ITEM = "wishItem"
         private const val ARG_WISH_ITEM_POSITION = "position"
         private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
