@@ -51,6 +51,7 @@
             android:background="@drawable/shape_border_radius_10"
             android:foreground="@color/semi_transparent"
             android:scaleType="centerCrop"
+            app:imageUrl="@{item.wishItem.image == null ? item.wishItem.imageUrl : item.wishItem.image}"
             app:layout_constraintBottom_toBottomOf="@id/guild_bottom"
             app:layout_constraintStart_toStartOf="@id/guild_start"
             app:layout_constraintTop_toTopOf="@id/guild_top" />

@@ -5,11 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import com.hyeeyoung.wishboard.databinding.ItemCartBinding
 import com.hyeeyoung.wishboard.data.model.cart.CartItem
-import com.hyeeyoung.wishboard.presentation.cart.types.CartItemButtonType
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
+import com.hyeeyoung.wishboard.databinding.ItemCartBinding
+import com.hyeeyoung.wishboard.presentation.cart.types.CartItemButtonType
 
 class CartListAdapter : ListAdapter<CartItem, RecyclerView.ViewHolder>(diffCallback) {
     private val dataSet = arrayListOf<CartItem>()
@@ -35,9 +34,6 @@ class CartListAdapter : ListAdapter<CartItem, RecyclerView.ViewHolder>(diffCallb
             with(binding) {
                 this.item = item
                 itemImage.clipToOutline = true
-                item.wishItem.image?.let {
-                    itemImage.load(it)
-                }
                 delete.setOnClickListener {
                     listener.onItemClick(item, position, CartItemButtonType.VIEW_TYPE_DELETION)
                 }
@@ -97,7 +93,10 @@ class CartListAdapter : ListAdapter<CartItem, RecyclerView.ViewHolder>(diffCallb
     }
 
     fun updateItem(position: Int, wishItem: WishItem) {
-        dataSet[position].wishItem = wishItem
+        dataSet[position].wishItem = wishItem.apply {
+            // 상세뷰에서 아이템 수정 후 홈화면 썸네일 업데이트를 위해 WishItem을 전달
+            if (wishItem.cartState == null) cartState = dataSet[position].wishItem.cartState
+        }
         notifyItemChanged(position)
     }
 

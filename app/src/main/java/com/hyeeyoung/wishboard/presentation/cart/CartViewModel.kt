@@ -3,10 +3,9 @@ package com.hyeeyoung.wishboard.presentation.cart
 import androidx.lifecycle.*
 import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.data.model.cart.CartItem
-import com.hyeeyoung.wishboard.presentation.cart.types.CartItemButtonType
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.domain.repositories.CartRepository
-import com.hyeeyoung.wishboard.data.services.AWSS3Service
+import com.hyeeyoung.wishboard.presentation.cart.types.CartItemButtonType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -83,7 +82,7 @@ class CartViewModel @Inject constructor(
     /** 장바구니에서 아이템 수정할 경우 ui 업데이트 */
     fun updateCartItem(position: Int, item: WishItem) {
         cartListAdapter.updateItem(position, item)
-        cartList.postValue(cartListAdapter.getData())
+        cartList.value = cartListAdapter.getData()
     }
 
     /** 장바구니에서 아이템 삭제할 경우 ui 업데이트 */
@@ -103,8 +102,4 @@ class CartViewModel @Inject constructor(
     fun getCartList(): LiveData<List<CartItem>?> = cartList
     fun getCartListAdapter(): CartListAdapter = cartListAdapter
     fun getTotalPrice(): LiveData<Int> = totalPrice
-
-    companion object {
-        private const val TAG = "CartViewModel"
-    }
 }
