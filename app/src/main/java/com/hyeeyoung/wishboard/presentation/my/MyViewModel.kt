@@ -152,10 +152,10 @@ class MyViewModel @Inject constructor(
         isCorrectedEmail.value = null
     }
 
+    /** 유저 프로필 업데이트 이후 로컬에 닉네임을 저장 */
+    // TODO 함수명 변경
     private fun setUserInfo() {
         WishBoardApp.prefs.setUserNickName(inputUserNickName.value!!)
-        userNickname.value = inputUserNickName.value
-        userProfileImageFile.value?.let { file -> userProfileImage.value = file.name }
     }
 
     fun setSelectedUserProfileImage(imageUri: Uri, imageFile: File) {
@@ -217,6 +217,5 @@ class MyViewModel @Inject constructor(
     fun getCompleteUpdateUserInfo(): LiveData<Boolean?> = isCompleteUpdateUserInfo
     fun getCompleteDeleteUser(): LiveData<Boolean?> = isCompleteUserDelete
     fun isValidNicknameFormat(): LiveData<Boolean?> = isValidNicknameFormat
-
     fun getProfileEditStatus(): LiveData<ProcessStatus> = profileEditStatus
 }
