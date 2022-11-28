@@ -5,10 +5,11 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
 import com.bumptech.glide.Glide
+import com.hyeeyoung.wishboard.data.model.noti.NotiItem
 import com.hyeeyoung.wishboard.databinding.ItemCalendarNotiBinding
 import com.hyeeyoung.wishboard.databinding.ItemNotiBinding
-import com.hyeeyoung.wishboard.data.model.noti.NotiItem
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiListViewType
 import com.hyeeyoung.wishboard.presentation.noti.types.ReadStateType
 
@@ -38,8 +39,8 @@ class NotiListAdapter(
                 this.item = item
 
                 itemImage.clipToOutline = true
-                item.itemImageUrl?.let {
-                    Glide.with(itemImage.context).load(it).into(itemImage)
+                item.itemImg?.let {
+                    itemImage.load(it)
                 }
 
                 notiContainer.setOnClickListener {

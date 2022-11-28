@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.data.model.noti.NotiItem
-import com.hyeeyoung.wishboard.presentation.noti.types.NotiListViewType
-import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
 import com.hyeeyoung.wishboard.data.services.AWSS3Service
+import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
 import com.hyeeyoung.wishboard.presentation.noti.adapters.NotiListAdapter
+import com.hyeeyoung.wishboard.presentation.noti.types.NotiListViewType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
