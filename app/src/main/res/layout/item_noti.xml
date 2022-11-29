@@ -24,16 +24,26 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/spacingBase">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/item_image"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:foreground="@color/ultra_semi_transparent"
-            android:background="@drawable/shape_border_radius_40"
             android:scaleType="centerCrop"
+            app:imageUrl="@{item.itemImg}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/Style.CircleImageView.Half"
             tools:src="@drawable/sample" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@color/ultra_semi_transparent"
+            app:layout_constraintStart_toStartOf="@id/item_image"
+            app:layout_constraintEnd_toEndOf="@id/item_image"
+            app:layout_constraintTop_toTopOf="@id/item_image"
+            app:layout_constraintBottom_toBottomOf="@id/item_image"
+            app:shapeAppearanceOverlay="@style/Style.CircleImageView.Half" />
 
         <TextView
             android:id="@+id/noti_type"
@@ -80,11 +90,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/suit_r"
-            app:timeFormat="@{DateFormatUtilKt.convertStrTimeToDate(item.notiDate)}"
             android:textColor="@color/gray_300"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/noti_type"
+            app:timeFormat="@{DateFormatUtilKt.convertStrTimeToDate(item.notiDate)}"
             tools:text="1시간 전" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

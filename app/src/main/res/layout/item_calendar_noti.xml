@@ -27,15 +27,16 @@
         android:backgroundTint="#EFEFEF"
         android:padding="@dimen/spacingBase">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/item_image"
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:background="@drawable/shape_border_radius_40"
             android:scaleType="centerCrop"
+            app:imageUrl="@{item.itemImg}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:clipToOutline="true"
+            app:shapeAppearanceOverlay="@style/Style.CircleImageView.Half"
             tools:src="@drawable/sample" />
 
         <TextView
