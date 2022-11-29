@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentNotiCalendarBinding
-import com.hyeeyoung.wishboard.data.model.noti.NotiItem
+import com.hyeeyoung.wishboard.domain.entity.NotiItemInfo
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.presentation.noti.adapters.CalendarAdapter
 import com.hyeeyoung.wishboard.presentation.noti.adapters.NotiListAdapter
@@ -67,15 +67,11 @@ class NotiCalendarFragment : Fragment(), NotiListAdapter.OnItemClickListener {
         }
     }
 
-    override fun onItemClick(position: Int, item: NotiItem) {
+    override fun onItemClick(position: Int, item: NotiItemInfo) {
         if (item.itemUrl == null) {
             CustomSnackbar.make(binding.layout, getString(R.string.noti_item_url_snackbar_text)).show()
         } else {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item.itemUrl)))
         }
-    }
-
-    companion object {
-        private const val TAG = "NotiCalendarFragment"
     }
 }
