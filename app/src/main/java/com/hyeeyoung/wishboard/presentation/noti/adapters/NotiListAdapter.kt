@@ -5,18 +5,16 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import coil.load
-import com.bumptech.glide.Glide
-import com.hyeeyoung.wishboard.data.model.noti.NotiItem
 import com.hyeeyoung.wishboard.databinding.ItemCalendarNotiBinding
 import com.hyeeyoung.wishboard.databinding.ItemNotiBinding
+import com.hyeeyoung.wishboard.domain.entity.NotiItemInfo
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiListViewType
 import com.hyeeyoung.wishboard.presentation.noti.types.ReadStateType
 
 class NotiListAdapter(
     private val notiListViewType: NotiListViewType,
-) : ListAdapter<NotiItem, RecyclerView.ViewHolder>(diffCallback) {
-    private val dataSet = arrayListOf<NotiItem>()
+) : ListAdapter<NotiItemInfo, RecyclerView.ViewHolder>(diffCallback) {
+    private val dataSet = arrayListOf<NotiItemInfo>()
     private lateinit var listener: OnItemClickListener
 
     init {
@@ -24,7 +22,7 @@ class NotiListAdapter(
     }
 
     interface OnItemClickListener {
-        fun onItemClick(position: Int, item: NotiItem)
+        fun onItemClick(position: Int, item: NotiItemInfo)
     }
 
     fun setOnItemClickListener(listener: OnItemClickListener) {
@@ -37,12 +35,6 @@ class NotiListAdapter(
             val item = dataSet[position]
             with(binding) {
                 this.item = item
-
-                itemImage.clipToOutline = true
-                item.itemImg?.let {
-                    itemImage.load(it)
-                }
-
                 notiContainer.setOnClickListener {
                     listener.onItemClick(position, item)
                 }
@@ -56,12 +48,6 @@ class NotiListAdapter(
             val item = dataSet[position]
             with(binding) {
                 this.item = item
-
-                itemImage.clipToOutline = true
-                item.itemImageUrl?.let {
-                    Glide.with(itemImage.context).load(it).into(itemImage)
-                }
-
                 notiContainer.setOnClickListener {
                     listener.onItemClick(position, item)
                 }
@@ -106,25 +92,24 @@ class NotiListAdapter(
         notifyItemChanged(position)
     }
 
-    fun setData(items: List<NotiItem>?) {
+    fun setData(items: List<NotiItemInfo>?) {
         dataSet.clear()
         items?.let { dataSet.addAll(it) }
         notifyDataSetChanged()
     }
 
     companion object {
-        private const val TAG = "notiListAdapter"
-        private val diffCallback = object : DiffUtil.ItemCallback<NotiItem>() {
+        private val diffCallback = object : DiffUtil.ItemCallback<NotiItemInfo>() {
             override fun areItemsTheSame(
-                oldItem: NotiItem,
-                newItem: NotiItem
+                oldItem: NotiItemInfo,
+                newItem: NotiItemInfo
             ): Boolean {
                 return oldItem.itemId == newItem.itemId
             }
 
             override fun areContentsTheSame(
-                oldItem: NotiItem,
-                newItem: NotiItem
+                oldItem: NotiItemInfo,
+                newItem: NotiItemInfo
             ): Boolean {
                 return oldItem == newItem
             }

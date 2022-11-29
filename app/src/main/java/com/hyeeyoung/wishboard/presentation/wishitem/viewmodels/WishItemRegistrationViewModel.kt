@@ -64,7 +64,6 @@ class WishItemRegistrationViewModel @Inject constructor(
             copyOriginItemInfo(value ?: return)
         }
 
-    private var isEnabledSaveButton = MediatorLiveData<Boolean>()
     private var isCompleteUpload = MutableLiveData<Boolean?>()
     private var isCompleteFolderUpload = MutableLiveData<Boolean?>()
     private var isExistFolderName = MutableLiveData<Boolean?>()
@@ -82,17 +81,29 @@ class WishItemRegistrationViewModel @Inject constructor(
     private val folderListSquareAdapter =
         FolderListAdapter(FolderListViewType.SQUARE_VIEW_TYPE)
 
-    val isEnabledUploadButton = MediatorLiveData<Boolean>().apply {
-        addSourceList(itemName, itemPrice) { checkValidItemInfoInput() }
+    private val _isEnabledSaveButton = MediatorLiveData<Boolean>().apply {
+        addSourceList(
+            itemName,
+            itemPrice,
+            itemImage,
+            selectedGalleryImageUri
+        ) { combineEnabledSaveButton() }
     }
+    val isEnabledSaveButton: LiveData<Boolean> get() = _isEnabledSaveButton
 
-    private fun checkValidItemInfoInput(): Boolean {
-        return !(itemName.value.isNullOrBlank() || itemPrice.value.isNullOrBlank() || token == null)
+    val isEnabledUploadButton = MediatorLiveData<Boolean>().apply {
+        addSourceList(itemName, itemPrice, itemImage) { checkValidItemInfoInput() }
     }
 
     init {
-        initEnabledSaveButton()
         fetchFolderList()
+    }
+
+    private fun combineEnabledSaveButton() =
+        !(itemName.value.isNullOrBlank() || itemPrice.value.isNullOrBlank() || (itemImage.value.isNullOrBlank() && selectedGalleryImageUri.value == null))
+
+    private fun checkValidItemInfoInput(): Boolean {
+        return !(itemName.value.isNullOrBlank() || itemPrice.value.isNullOrBlank() || itemImage.value.isNullOrBlank() || token == null)
     }
 
     /** 오픈그래프 메타태그 파싱을 통해 아이템 정보 가져오기 */
@@ -100,7 +111,8 @@ class WishItemRegistrationViewModel @Inject constructor(
         viewModelScope.launch {
             val result = wishRepository.getItemParsingInfo(url)
             itemName.value = result?.first?.name
-            itemPrice.value = if (result?.first?.price == null || result.first?.price == "0") null else result.first?.price
+            itemPrice.value =
+                if (result?.first?.price == null || result.first?.price == "0") null else result.first?.price
             itemImage.value = result?.first?.image
         }
     }
@@ -331,20 +343,6 @@ class WishItemRegistrationViewModel @Inject constructor(
         return decimalFormat.format(numPrice.toInt())
     }
 
-    private fun initEnabledSaveButton() {
-        isEnabledSaveButton.addSource(itemName) { name ->
-            combineEnabledSaveButton(name, itemPrice.value)
-        }
-
-        isEnabledSaveButton.addSource(itemPrice) { price ->
-            combineEnabledSaveButton(itemName.value, price)
-        }
-    }
-
-    private fun combineEnabledSaveButton(name: String?, price: String?) {
-        isEnabledSaveButton.value = !(name.isNullOrBlank() || price.isNullOrBlank())
-    }
-
     fun removeWishItemImage() {
         wishItemDetail?.apply {
             this.image = null
@@ -511,8 +509,6 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun getFolderName(): LiveData<String?> = folderName
 
     fun getFolderListSquareAdapter(): FolderListAdapter = folderListSquareAdapter
-
-    fun isEnabledSaveButton(): LiveData<Boolean> = isEnabledSaveButton
     fun isCompleteUpload(): LiveData<Boolean?> = isCompleteUpload
     fun isCompleteFolderUpload(): LiveData<Boolean?> = isCompleteFolderUpload
 

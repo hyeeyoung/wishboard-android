@@ -1,6 +1,7 @@
 package com.hyeeyoung.wishboard.data.model.noti
 
 import com.google.gson.annotations.SerializedName
+import com.hyeeyoung.wishboard.domain.entity.NotiItemInfo
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiType
 
 data class NotiItem(
@@ -19,4 +20,14 @@ data class NotiItem(
     val notiType: NotiType,
     @SerializedName("item_notification_date")
     val notiDate: String,
-)
+) {
+    fun toNotiItemInfo(noti: NotiItem) = NotiItemInfo(
+        noti.itemId,
+        noti.itemImg,
+        noti.itemName,
+        if (noti.itemUrl.isNullOrBlank()) null else noti.itemUrl,
+        noti.readState,
+        noti.notiType,
+        notiDate,
+    )
+}

@@ -10,10 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentNotiBinding
-import com.hyeeyoung.wishboard.data.model.noti.NotiItem
-import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
-import com.hyeeyoung.wishboard.presentation.noti.adapters.NotiListAdapter
+import com.hyeeyoung.wishboard.domain.entity.NotiItemInfo
 import com.hyeeyoung.wishboard.presentation.noti.NotiViewModel
+import com.hyeeyoung.wishboard.presentation.noti.adapters.NotiListAdapter
+import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -58,16 +58,12 @@ class NotiFragment : Fragment(), NotiListAdapter.OnItemClickListener {
         }
     }
 
-    override fun onItemClick(position: Int, item: NotiItem) {
+    override fun onItemClick(position: Int, item: NotiItemInfo) {
         viewModel.updateNotiReadState(position, item.itemId)
         if (item.itemUrl == null) {
             CustomSnackbar.make(binding.layout, getString(R.string.noti_item_url_snackbar_text)).show()
         } else {
             startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(item.itemUrl)))
         }
-    }
-
-    companion object {
-        private const val TAG = "NotiFragment"
     }
 }

@@ -190,11 +190,11 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="-40dp"
             android:scaleType="centerCrop"
+            android:src="@drawable/ic_app_logo_black"
             app:layout_constraintBottom_toTopOf="@id/container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:shapeAppearanceOverlay="@style/Style.CircleImageView.Half"
-            tools:src="@drawable/ic_app_logo_black" />
+            app:shapeAppearanceOverlay="@style/Style.CircleImageView.Half" />
 
         <TextView
             android:id="@+id/networkView"
