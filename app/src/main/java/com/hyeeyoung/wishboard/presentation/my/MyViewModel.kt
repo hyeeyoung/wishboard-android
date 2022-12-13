@@ -8,6 +8,7 @@ import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
 import com.hyeeyoung.wishboard.domain.repositories.UserRepository
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.util.ContentUriRequestBody
+import com.hyeeyoung.wishboard.util.extension.addSourceList
 import com.hyeeyoung.wishboard.util.extension.toPlainNullableRequestBody
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -22,29 +23,34 @@ class MyViewModel @Inject constructor(
     private val notiRepository: NotiRepository,
     private val userRepository: UserRepository,
 ) : ViewModel() {
+    private val token = WishBoardApp.prefs.getUserToken()
+
     private var userEmail = MutableLiveData<String?>()
-    private var userNickname = MutableLiveData<String?>()
+    private var userNickname = MutableLiveData<String>()
     private var userProfileImage = MutableLiveData<String?>()
 
-    private var inputUserNickName = MutableLiveData<String?>()
+    private var inputUserNickName = MutableLiveData<String>()
     private var inputUserEmail = MutableLiveData<String?>()
     private var userProfileImageUri = MutableLiveData<Uri?>()
     private var userProfileImageFile = MutableLiveData<File?>()
+
+    private var pushState = MutableLiveData<Boolean?>()
+    private var profileEditStatus = MutableLiveData<ProcessStatus>()
 
     private var isCompleteUpdateUserInfo = MutableLiveData<Boolean?>()
     private var isCompleteUserDelete = MutableLiveData<Boolean?>()
     private var isExistNickname = MutableLiveData<Boolean?>()
     private var isCorrectedEmail = MutableLiveData<Boolean?>()
-    private var isEnabledEditCompleteButton = MediatorLiveData<Boolean>()
-    private var isValidNicknameFormat = MutableLiveData<Boolean?>()
-    private var pushState = MutableLiveData<Boolean?>()
+    private var isValidNicknameFormat = MutableLiveData<Boolean>()
 
-    private var profileEditStatus = MutableLiveData<ProcessStatus>()
-
-    private val token = WishBoardApp.prefs.getUserToken()
-
-    init {
-        initEnabledEditCompleteButton()
+    val isEnabledEditCompleteButton = MediatorLiveData<Boolean>().apply {
+        addSourceList(
+            inputUserNickName,
+            isValidNicknameFormat,
+            userProfileImageUri
+        ) {
+            (isValidNicknameFormat.value == true && inputUserNickName.value != userNickname.value) || userProfileImageUri.value != null
+        }
     }
 
     fun fetchUserInfo() {
@@ -169,39 +175,6 @@ class MyViewModel @Inject constructor(
         return isCorrected
     }
 
-    private fun initEnabledEditCompleteButton() {
-        isEnabledEditCompleteButton.addSource(inputUserNickName) { nickname ->
-            combineEnabledEditCompleteButton(
-                nickname,
-                userProfileImageUri.value,
-                isValidNicknameFormat.value
-            )
-        }
-        isEnabledEditCompleteButton.addSource(userProfileImageUri) { imageUri ->
-            combineEnabledEditCompleteButton(
-                inputUserNickName.value,
-                imageUri,
-                isValidNicknameFormat.value
-            )
-        }
-        isEnabledEditCompleteButton.addSource(isValidNicknameFormat) { isValid ->
-            combineEnabledEditCompleteButton(
-                inputUserNickName.value,
-                userProfileImageUri.value,
-                isValid
-            )
-        }
-    }
-
-    private fun combineEnabledEditCompleteButton(
-        nickname: String?,
-        imageUri: Uri?,
-        isValidNickname: Boolean?
-    ) {
-        isEnabledEditCompleteButton.value =
-            !(nickname == userNickname.value && imageUri == null) && isValidNickname == true
-    }
-
     fun getUserEmail(): LiveData<String?> = userEmail
     fun getUserNickname(): LiveData<String?> = userNickname
     fun getUserProfileImage(): LiveData<String?> = userProfileImage
@@ -211,7 +184,6 @@ class MyViewModel @Inject constructor(
     fun getUserProfileImageUri(): LiveData<Uri?> = userProfileImageUri
 
     fun isExistNickname(): LiveData<Boolean?> = isExistNickname
-    fun isEnabledEditCompleteButton(): LiveData<Boolean> = isEnabledEditCompleteButton
     fun isCorrectedEmail(): LiveData<Boolean?> = isCorrectedEmail
 
     fun getCompleteUpdateUserInfo(): LiveData<Boolean?> = isCompleteUpdateUserInfo
