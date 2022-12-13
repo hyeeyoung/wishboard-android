@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginHorizontal="24dp"
-            android:background="@drawable/shape_border_radius_32"
+            android:background="@drawable/shape_border_radius_16"
             android:backgroundTint="@color/white"
             android:paddingBottom="@dimen/spacingBase"
             app:layout_constraintBottom_toBottomOf="parent"
