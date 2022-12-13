@@ -138,7 +138,7 @@
             style="@style/Widget.Button.Full.Round.Activate.Green"
             android:layout_marginTop="@dimen/spacing20"
             android:layout_marginBottom="@dimen/spacingBase"
-            android:enabled="@{viewModel.isEnabledEditCompleteButton()}"
+            android:enabled="@{viewModel.isEnabledEditCompleteButton}"
             android:text="@{viewModel.profileEditStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.complete)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
