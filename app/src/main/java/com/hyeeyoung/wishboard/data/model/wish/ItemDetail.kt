@@ -31,7 +31,7 @@ data class ItemDetail(
     fun toWishItemDetail(detail: ItemDetail) = WishItemDetail(
         detail.createAt,
         detail.folderId,
-        detail.folderName,
+        if (detail.folderName.isNullOrBlank()) null else detail.folderName,
         detail.id,
         detail.image,
         if (detail.memo.isNullOrBlank()) null else detail.memo,
