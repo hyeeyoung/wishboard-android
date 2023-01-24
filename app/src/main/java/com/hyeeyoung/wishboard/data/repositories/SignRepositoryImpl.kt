@@ -17,7 +17,7 @@ class SignRepositoryImpl @Inject constructor(private val authService: AuthServic
             if (response.isSuccessful) {
                 Timber.d("회원가입 성공")
                 result?.data?.token?.let {
-                    WishBoardApp.prefs.setUserInfo(it, email)
+                    WishBoardApp.prefs.setUserInfo(it, email, result.data.tempNickname)
                 }
             } else {
                 Timber.e("회원가입 실패: ${response.code()}")
@@ -36,7 +36,7 @@ class SignRepositoryImpl @Inject constructor(private val authService: AuthServic
             if (response.isSuccessful) {
                 Timber.d("로그인 성공")
                 result?.data?.token?.let {
-                    WishBoardApp.prefs.setUserInfo(it, email)
+                    WishBoardApp.prefs.setUserInfo(it, email, result.data.tempNickname)
                 }
             } else {
                 Timber.e("로그인 실패: ${response.code()}")
@@ -55,7 +55,7 @@ class SignRepositoryImpl @Inject constructor(private val authService: AuthServic
             if (response.isSuccessful) {
                 Timber.d("이메일 인증 로그인 성공")
                 result?.data?.token?.let {
-                    WishBoardApp.prefs.setUserInfo(it, email)
+                    WishBoardApp.prefs.setUserInfo(it, email, result.data.tempNickname)
                 }
                 // TODO save the pushState
             } else {

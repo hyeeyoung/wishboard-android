@@ -8,5 +8,6 @@ data class BaseResponseData(
     val id: Long? = null,
     val token: String? = null,
     val pushState: Int? = null,
-    val verificationCode: String
+    val verificationCode: String,
+    val tempNickname: String? = null
 )
