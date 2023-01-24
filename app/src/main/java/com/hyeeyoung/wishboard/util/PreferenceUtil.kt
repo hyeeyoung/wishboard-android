@@ -14,9 +14,12 @@ class PreferenceUtil(context: Context) { // TODO need refactoring
     private val prefs: SharedPreferences =
         context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
 
-    fun setUserInfo(token: String, email: String) {
-        prefs.edit().putString(PREF_USER_TOKEN, "Bearer $token").apply()
-        prefs.edit().putString(PREF_USER_EMAIL, email).apply()
+    fun setUserInfo(token: String, email: String, nickname: String?) {
+        prefs.edit().apply {
+            putString(PREF_USER_TOKEN, "Bearer $token")
+            putString(PREF_USER_EMAIL, email)
+            nickname?.let { putString(PREF_USER_NICKNAME, it) }
+        }.apply()
     }
 
     fun setUserNickName(nickname: String) {
