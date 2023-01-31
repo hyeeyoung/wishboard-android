@@ -1,6 +1,5 @@
 package com.hyeeyoung.wishboard.presentation.main
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.tasks.OnCompleteListener
@@ -11,6 +10,7 @@ import com.hyeeyoung.wishboard.domain.repositories.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,12 +25,12 @@ class MainViewModel @Inject constructor(
         if (userToken == null) return
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
-                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                Timber.w("Fetching FCM registration token failed", task.exception)
                 return@OnCompleteListener
             }
 
             val fcmToken = task.result
-            Log.d(TAG, fcmToken)
+            Timber.d(fcmToken)
 
             if (this.fcmToken != fcmToken) {
                 WishBoardApp.prefs.setFCMToken(fcmToken)
@@ -46,9 +46,5 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             notiRepository.updatePushState(userToken, true)
         }
-    }
-
-    companion object {
-        private const val TAG = "MainViewModel"
     }
 }

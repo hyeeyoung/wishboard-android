@@ -3,7 +3,6 @@ package com.hyeeyoung.wishboard.presentation.splash
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
@@ -19,6 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class SplashActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashBinding
@@ -65,7 +65,7 @@ class SplashActivity : AppCompatActivity() {
     private fun moveToNext() {
         // TODO 유저 정보 가져오기
         val token = WishBoardApp.prefs.getUserToken()
-        Log.d(TAG, "token : $token")
+        Timber.d("token : $token")
         if (token == null) {
             startActivity(Intent(this@SplashActivity, SignActivity::class.java))
         } else {
@@ -76,9 +76,5 @@ class SplashActivity : AppCompatActivity() {
     override fun onPause() {
         job?.cancel()
         super.onPause()
-    }
-
-    companion object {
-        private const val TAG = "SplashActivity"
     }
 }
