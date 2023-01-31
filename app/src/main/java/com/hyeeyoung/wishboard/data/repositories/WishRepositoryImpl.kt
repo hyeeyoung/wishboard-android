@@ -1,6 +1,5 @@
 package com.hyeeyoung.wishboard.data.repositories
 
-import android.util.Log
 import com.hyeeyoung.wishboard.data.model.wish.ItemDetail
 import com.hyeeyoung.wishboard.data.model.wish.ItemInfo
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
@@ -134,15 +133,11 @@ class WishRepositoryImpl @Inject constructor(private val wishItemService: WishIt
         return runCatching {
             wishItemService.getItemParsingInfo(site)
         }.fold({
-            Log.d(TAG, "아이템 파싱 성공")
+            Timber.d("아이템 파싱 성공(${it.code()})")
             Pair(it.body()?.data, it.code())
         }, {
-            Log.d(TAG, "아이템 파싱 실패: ${it.message}")
+            Timber.d("아이템 파싱 실패: ${it.message}")
             null
         })
-    }
-
-    companion object {
-        private const val TAG = "WishRepositoryImpl"
     }
 }
