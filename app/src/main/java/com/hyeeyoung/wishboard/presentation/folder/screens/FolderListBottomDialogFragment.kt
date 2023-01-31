@@ -70,8 +70,4 @@ class FolderListBottomDialogFragment(private val folderId: Long?) : BottomSheetD
     override fun onItemClick(item: FolderItem) {
         listener.onButtonClicked(item)
     }
-
-    companion object {
-        private const val TAG = "FolderListBottomDialogFragment"
-    }
 }

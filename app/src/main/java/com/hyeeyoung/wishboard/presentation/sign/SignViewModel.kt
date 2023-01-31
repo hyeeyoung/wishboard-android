@@ -219,8 +219,4 @@ class SignViewModel @Inject constructor(
     fun isEnabledVerificationCodeButton(): LiveData<Boolean> = isEnabledVerificationCodeButton
 
     fun getSignProcessStatus(): LiveData<ProcessStatus> = signProcessStatus
-
-    companion object {
-        private const val TAG = "SignViewModel"
-    }
 }

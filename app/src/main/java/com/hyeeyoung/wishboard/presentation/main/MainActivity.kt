@@ -108,7 +108,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "MainActivity"
         private const val ARG_SUCCESS_SIGN_UP = "successSignup"
     }
 }

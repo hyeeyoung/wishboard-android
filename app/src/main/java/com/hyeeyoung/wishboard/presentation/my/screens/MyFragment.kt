@@ -184,7 +184,6 @@ class MyFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "MyFragment"
         private const val ARG_WEB_VIEW_LINK = "link"
         private const val ARG_WEB_VIEW_TITLE = "title"
         private const val ARG_PROFILE_UPDATE_INFO = "profileUpdateInfo"

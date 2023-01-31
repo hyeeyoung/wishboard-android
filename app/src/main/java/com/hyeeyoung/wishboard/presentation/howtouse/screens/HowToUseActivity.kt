@@ -36,8 +36,4 @@ class HowToUseActivity() : AppCompatActivity() {
             finish()
         }
     }
-
-    companion object {
-        private const val TAG = "HowToUseActivity"
-    }
 }

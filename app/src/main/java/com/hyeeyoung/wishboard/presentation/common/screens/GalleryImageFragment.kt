@@ -104,7 +104,6 @@ class GalleryImageFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "GalleryImageFragment"
         private const val ARG_IMAGE_INFO = "imageInfo"
         private const val ARG_IMAGE_URI = "imageUri"
         private const val ARG_IMAGE_FILE = "imageFile"

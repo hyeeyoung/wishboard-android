@@ -64,8 +64,4 @@ class NotiSettingFragment : Fragment() {
             isCheckedNotiSwitch = isChecked
         }
     }
-
-    companion object {
-        private const val TAG = "NotiSettingFragment"
-    }
 }

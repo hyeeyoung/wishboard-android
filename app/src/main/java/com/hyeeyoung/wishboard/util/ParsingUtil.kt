@@ -5,7 +5,6 @@ import org.jsoup.Jsoup
 
 class ParsingUtils {
     companion object {
-        private const val TAG = "ParsingUtils"
         private var itemName: String? = null
         private var itemImage: String? = null
         private var itemPrice: Int? = null

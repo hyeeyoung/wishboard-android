@@ -118,7 +118,6 @@ class SignUpPasswordFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "SignUpPasswordFragment"
         private const val ARG_SUCCESS_SIGN_UP = "successSignup"
         private const val ARG_WEB_VIEW_LINK = "link"
         private const val ARG_WEB_VIEW_TITLE = "title"

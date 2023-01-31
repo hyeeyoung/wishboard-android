@@ -103,7 +103,6 @@ class WishListAdapter : ListAdapter<WishItem, RecyclerView.ViewHolder>(diffCallb
     }
 
     companion object {
-        private const val TAG = "wishListAdapter"
         private val diffCallback = object : DiffUtil.ItemCallback<WishItem>() {
             override fun areItemsTheSame(
                 oldItem: WishItem,

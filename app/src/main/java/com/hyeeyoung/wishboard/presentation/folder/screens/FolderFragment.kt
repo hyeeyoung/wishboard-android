@@ -159,7 +159,6 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
     }
 
     companion object {
-        private const val TAG = "FolderFragment"
         private const val ARG_FOLDER_ITEM = "folderItem"
     }
 }
