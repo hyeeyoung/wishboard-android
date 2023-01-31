@@ -86,8 +86,4 @@ class GalleryPagingDataSource(context: Context) :
             cursor.close()
         }
     }
-
-    companion object {
-        private const val TAG = "GalleryPagingDataSource"
-    }
 }

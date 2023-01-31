@@ -42,8 +42,6 @@ class GalleryPagingAdapter(private val onItemClick: (Uri) -> Unit) :
     }
 
     companion object {
-        private const val TAG = "GalleryPagingAdapter"
-
         private val diffCallback = object : DiffUtil.ItemCallback<GalleryData>() {
             override fun areItemsTheSame(
                 oldItem: GalleryData,

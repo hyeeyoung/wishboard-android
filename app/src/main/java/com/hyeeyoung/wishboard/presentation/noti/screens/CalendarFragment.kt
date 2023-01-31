@@ -57,7 +57,6 @@ class CalendarFragment : Fragment() {
     }
 
     companion object {
-        private const val TAG = "CalendarFragment"
         private const val MILLIS = "MILLIS"
         fun newInstance(millis: Long) = CalendarFragment().apply {
             arguments = Bundle().apply {

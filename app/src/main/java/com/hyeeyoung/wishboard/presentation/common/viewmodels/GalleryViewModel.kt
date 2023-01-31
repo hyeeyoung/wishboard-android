@@ -81,8 +81,4 @@ class GalleryViewModel @Inject constructor(
     }
 
     fun getImageFile(): File? = imageFile
-
-    companion object {
-        private const val TAG = "GalleryViewModel"
-    }
 }

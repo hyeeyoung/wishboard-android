@@ -243,7 +243,6 @@ class FolderListAdapter(
     }
 
     companion object {
-        private const val TAG = "FolderListAdapter"
         // 현재 사용되고 있지 않음. submitList()로 초기화하지 않고, dataSet 관련 override 함수를 사용할 경우, 콜백 실행 안됨.
         private val diffCallback = object : DiffUtil.ItemCallback<FolderItem>() {
             override fun areItemsTheSame(

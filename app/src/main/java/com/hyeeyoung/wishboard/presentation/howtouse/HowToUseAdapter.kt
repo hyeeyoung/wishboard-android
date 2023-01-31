@@ -17,8 +17,4 @@ class HowToUseAdapter(fm: FragmentActivity) : FragmentStateAdapter(fm) {
             else -> HowToNotiSettingFragment()
         }
     }
-
-    companion object {
-        private const val TAG = "HowToUseAdapter"
-    }
 }

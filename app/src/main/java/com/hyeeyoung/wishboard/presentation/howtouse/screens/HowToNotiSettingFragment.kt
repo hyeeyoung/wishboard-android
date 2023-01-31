@@ -23,8 +23,4 @@ class HowToNotiSettingFragment : Fragment() {
 
         return binding.root
     }
-
-    companion object {
-        private const val TAG = "HowToNotiSettingFragment"
-    }
 }

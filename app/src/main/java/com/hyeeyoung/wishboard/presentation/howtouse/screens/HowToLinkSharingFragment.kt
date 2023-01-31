@@ -23,8 +23,4 @@ class HowToLinkSharingFragment : Fragment() {
 
         return binding.root
     }
-
-    companion object {
-        private const val TAG = "HowToLinkSharingFragment"
-    }
 }
