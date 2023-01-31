@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentNotiCalendarBinding
-import com.hyeeyoung.wishboard.domain.entity.NotiItemInfo
+import com.hyeeyoung.wishboard.domain.model.NotiItemInfo
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.presentation.noti.adapters.CalendarAdapter
 import com.hyeeyoung.wishboard.presentation.noti.adapters.NotiListAdapter

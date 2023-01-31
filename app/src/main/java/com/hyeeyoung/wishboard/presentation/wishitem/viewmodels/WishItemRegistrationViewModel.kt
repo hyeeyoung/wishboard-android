@@ -8,7 +8,7 @@ import android.widget.NumberPicker
 import androidx.lifecycle.*
 import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
-import com.hyeeyoung.wishboard.domain.entity.WishItemDetail
+import com.hyeeyoung.wishboard.domain.model.WishItemDetail
 import com.hyeeyoung.wishboard.domain.repositories.FolderRepository
 import com.hyeeyoung.wishboard.domain.repositories.WishRepository
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus

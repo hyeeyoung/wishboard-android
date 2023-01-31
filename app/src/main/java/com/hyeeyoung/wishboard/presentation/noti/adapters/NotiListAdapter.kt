@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hyeeyoung.wishboard.databinding.ItemCalendarNotiBinding
 import com.hyeeyoung.wishboard.databinding.ItemNotiBinding
-import com.hyeeyoung.wishboard.domain.entity.NotiItemInfo
+import com.hyeeyoung.wishboard.domain.model.NotiItemInfo
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiListViewType
 import com.hyeeyoung.wishboard.presentation.noti.types.ReadStateType
 
