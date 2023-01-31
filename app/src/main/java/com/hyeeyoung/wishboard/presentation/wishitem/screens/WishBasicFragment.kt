@@ -16,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.databinding.FragmentWishBinding
-import com.hyeeyoung.wishboard.domain.entity.WishItemDetail
+import com.hyeeyoung.wishboard.domain.model.WishItemDetail
 import com.hyeeyoung.wishboard.presentation.common.screens.OneButtonDialogFragment
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.presentation.folder.screens.FolderListBottomDialogFragment

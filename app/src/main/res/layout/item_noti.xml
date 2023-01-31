@@ -7,7 +7,7 @@
 
         <variable
             name="item"
-            type="com.hyeeyoung.wishboard.domain.entity.NotiItemInfo" />
+            type="com.hyeeyoung.wishboard.domain.model.NotiItemInfo" />
 
         <import type="com.hyeeyoung.wishboard.presentation.noti.types.ReadStateType" />
 

@@ -1,7 +1,7 @@
 package com.hyeeyoung.wishboard.data.model.wish
 
 import com.google.gson.annotations.SerializedName
-import com.hyeeyoung.wishboard.domain.entity.WishItemDetail
+import com.hyeeyoung.wishboard.domain.model.WishItemDetail
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiType
 
 data class ItemDetail(

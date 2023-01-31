@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.WishBoardApp
-import com.hyeeyoung.wishboard.domain.entity.NotiItemInfo
+import com.hyeeyoung.wishboard.domain.model.NotiItemInfo
 import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
 import com.hyeeyoung.wishboard.presentation.noti.adapters.NotiListAdapter
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiListViewType
