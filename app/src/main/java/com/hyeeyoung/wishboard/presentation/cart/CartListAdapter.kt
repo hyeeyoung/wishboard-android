@@ -2,15 +2,13 @@ package com.hyeeyoung.wishboard.presentation.cart
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hyeeyoung.wishboard.data.model.cart.CartItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.databinding.ItemCartBinding
 import com.hyeeyoung.wishboard.presentation.cart.types.CartItemButtonType
 
-class CartListAdapter : ListAdapter<CartItem, RecyclerView.ViewHolder>(diffCallback) {
+class CartListAdapter : RecyclerView.Adapter<CartListAdapter.ViewHolder>() {
     private val dataSet = arrayListOf<CartItem>()
     private lateinit var listener: OnItemClickListener
 
@@ -53,7 +51,10 @@ class CartListAdapter : ListAdapter<CartItem, RecyclerView.ViewHolder>(diffCallb
         }
     }
 
-    override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(
+        viewGroup: ViewGroup,
+        viewType: Int
+    ): CartListAdapter.ViewHolder {
         return ViewHolder(
             ItemCartBinding.inflate(
                 LayoutInflater.from(viewGroup.context),
@@ -63,10 +64,8 @@ class CartListAdapter : ListAdapter<CartItem, RecyclerView.ViewHolder>(diffCallb
         )
     }
 
-    override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
-        when (viewHolder) {
-            is ViewHolder -> viewHolder.bind(position)
-        }
+    override fun onBindViewHolder(viewHolder: CartListAdapter.ViewHolder, position: Int) {
+        viewHolder.bind(position)
     }
 
     override fun getItemCount(): Int = dataSet.size
@@ -98,23 +97,5 @@ class CartListAdapter : ListAdapter<CartItem, RecyclerView.ViewHolder>(diffCallb
             if (wishItem.cartState == null) cartState = dataSet[position].wishItem.cartState
         }
         notifyItemChanged(position)
-    }
-
-    companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<CartItem>() {
-            override fun areItemsTheSame(
-                oldItem: CartItem,
-                newItem: CartItem
-            ): Boolean {
-                return oldItem.wishItem.id == newItem.wishItem.id
-            }
-
-            override fun areContentsTheSame(
-                oldItem: CartItem,
-                newItem: CartItem
-            ): Boolean {
-                return oldItem == newItem
-            }
-        }
     }
 }

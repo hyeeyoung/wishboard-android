@@ -2,8 +2,6 @@ package com.hyeeyoung.wishboard.presentation.noti.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hyeeyoung.wishboard.databinding.ItemCalendarNotiBinding
 import com.hyeeyoung.wishboard.databinding.ItemNotiBinding
@@ -13,7 +11,7 @@ import com.hyeeyoung.wishboard.presentation.noti.types.ReadStateType
 
 class NotiListAdapter(
     private val notiListViewType: NotiListViewType,
-) : ListAdapter<NotiItemInfo, RecyclerView.ViewHolder>(diffCallback) {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val dataSet = arrayListOf<NotiItemInfo>()
     private lateinit var listener: OnItemClickListener
 
@@ -96,23 +94,5 @@ class NotiListAdapter(
         dataSet.clear()
         items?.let { dataSet.addAll(it) }
         notifyDataSetChanged()
-    }
-
-    companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<NotiItemInfo>() {
-            override fun areItemsTheSame(
-                oldItem: NotiItemInfo,
-                newItem: NotiItemInfo
-            ): Boolean {
-                return oldItem.itemId == newItem.itemId
-            }
-
-            override fun areContentsTheSame(
-                oldItem: NotiItemInfo,
-                newItem: NotiItemInfo
-            ): Boolean {
-                return oldItem == newItem
-            }
-        }
     }
 }
