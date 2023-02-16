@@ -17,6 +17,7 @@ import com.hyeeyoung.wishboard.presentation.folder.types.FolderListViewType
 class FolderListAdapter(
     private val folderListViewType: FolderListViewType,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private lateinit var inflater: LayoutInflater
     private val dataSet = arrayListOf<FolderItem>()
     private lateinit var listener: OnItemClickListener
     private var folderMoreDialogListener: OnFolderMoreDialogListener? = null
@@ -131,39 +132,20 @@ class FolderListAdapter(
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        when (viewType) {
-            FolderListViewType.VERTICAL_VIEW_TYPE.ordinal -> {
-                val binding = ItemFolderVerticalBinding.inflate(
-                    LayoutInflater.from(viewGroup.context),
-                    viewGroup,
-                    false
+        if (!::inflater.isInitialized)
+            inflater = LayoutInflater.from(viewGroup.context)
+
+        return when (viewType) {
+            FolderListViewType.VERTICAL_VIEW_TYPE.ordinal ->
+                VerticalViewHolder(ItemFolderVerticalBinding.inflate(inflater, viewGroup, false))
+            FolderListViewType.HORIZONTAL_VIEW_TYPE.ordinal ->
+                HorizontalViewHolder(
+                    ItemFolderHorizontalBinding.inflate(inflater, viewGroup, false)
                 )
-                return VerticalViewHolder(binding)
-            }
-            FolderListViewType.HORIZONTAL_VIEW_TYPE.ordinal -> {
-                val binding = ItemFolderHorizontalBinding.inflate(
-                    LayoutInflater.from(viewGroup.context),
-                    viewGroup,
-                    false
-                )
-                return HorizontalViewHolder(binding)
-            }
-            FolderListViewType.SQUARE_VIEW_TYPE.ordinal -> {
-                val binding = ItemFolderSquareBinding.inflate(
-                    LayoutInflater.from(viewGroup.context),
-                    viewGroup,
-                    false
-                )
-                return SquareViewHolder(binding)
-            }
-            else -> {
-                val binding = ItemNewFolderBinding.inflate(
-                    LayoutInflater.from(viewGroup.context),
-                    viewGroup,
-                    false
-                )
-                return NewFolderViewHolder(binding)
-            }
+            FolderListViewType.SQUARE_VIEW_TYPE.ordinal ->
+                SquareViewHolder(ItemFolderSquareBinding.inflate(inflater, viewGroup, false))
+            else ->
+                NewFolderViewHolder(ItemNewFolderBinding.inflate(inflater, viewGroup, false))
         }
     }
 
