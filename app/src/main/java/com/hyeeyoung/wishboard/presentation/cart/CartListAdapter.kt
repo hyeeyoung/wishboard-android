@@ -9,6 +9,7 @@ import com.hyeeyoung.wishboard.databinding.ItemCartBinding
 import com.hyeeyoung.wishboard.presentation.cart.types.CartItemButtonType
 
 class CartListAdapter : RecyclerView.Adapter<CartListAdapter.ViewHolder>() {
+    private lateinit var inflater: LayoutInflater
     private val dataSet = arrayListOf<CartItem>()
     private lateinit var listener: OnItemClickListener
 
@@ -55,13 +56,10 @@ class CartListAdapter : RecyclerView.Adapter<CartListAdapter.ViewHolder>() {
         viewGroup: ViewGroup,
         viewType: Int
     ): CartListAdapter.ViewHolder {
-        return ViewHolder(
-            ItemCartBinding.inflate(
-                LayoutInflater.from(viewGroup.context),
-                viewGroup,
-                false
-            )
-        )
+        if (!::inflater.isInitialized)
+            inflater = LayoutInflater.from(viewGroup.context)
+
+        return ViewHolder(ItemCartBinding.inflate(inflater, viewGroup, false))
     }
 
     override fun onBindViewHolder(viewHolder: CartListAdapter.ViewHolder, position: Int) {

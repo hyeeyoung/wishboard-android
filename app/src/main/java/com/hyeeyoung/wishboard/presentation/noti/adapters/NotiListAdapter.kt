@@ -12,6 +12,7 @@ import com.hyeeyoung.wishboard.presentation.noti.types.ReadStateType
 class NotiListAdapter(
     private val notiListViewType: NotiListViewType,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private lateinit var inflater: LayoutInflater
     private val dataSet = arrayListOf<NotiItemInfo>()
     private lateinit var listener: OnItemClickListener
 
@@ -54,23 +55,14 @@ class NotiListAdapter(
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        when (notiListViewType) {
-            NotiListViewType.NOTI_TAB_VIEW_TYPE -> {
-                val binding = ItemNotiBinding.inflate(
-                    LayoutInflater.from(viewGroup.context),
-                    viewGroup,
-                    false
-                )
-                return NotiTabViewHolder(binding)
-            }
-            NotiListViewType.CALENDAR_VIEW_TYPE -> {
-                val binding = ItemCalendarNotiBinding.inflate(
-                    LayoutInflater.from(viewGroup.context),
-                    viewGroup,
-                    false
-                )
-                return CalendarViewHolder(binding)
-            }
+        if (!::inflater.isInitialized)
+            inflater = LayoutInflater.from(viewGroup.context)
+
+        return when (notiListViewType) {
+            NotiListViewType.NOTI_TAB_VIEW_TYPE ->
+                NotiTabViewHolder(ItemNotiBinding.inflate(inflater, viewGroup, false))
+            NotiListViewType.CALENDAR_VIEW_TYPE ->
+                CalendarViewHolder(ItemCalendarNotiBinding.inflate(inflater, viewGroup, false))
         }
     }
 

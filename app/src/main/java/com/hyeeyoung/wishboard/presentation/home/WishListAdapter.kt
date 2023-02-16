@@ -10,6 +10,7 @@ import com.hyeeyoung.wishboard.presentation.cart.types.CartStateType
 import com.hyeeyoung.wishboard.util.setOnSingleClickListener
 
 class WishListAdapter : RecyclerView.Adapter<WishListAdapter.ViewHolder>() {
+    private lateinit var inflater: LayoutInflater
     private val dataSet = arrayListOf<WishItem>()
     private lateinit var listener: OnItemClickListener
 
@@ -54,13 +55,10 @@ class WishListAdapter : RecyclerView.Adapter<WishListAdapter.ViewHolder>() {
         viewGroup: ViewGroup,
         viewType: Int
     ): WishListAdapter.ViewHolder {
-        return ViewHolder(
-            ItemWishBinding.inflate(
-                LayoutInflater.from(viewGroup.context),
-                viewGroup,
-                false
-            )
-        )
+        if (!::inflater.isInitialized)
+            inflater = LayoutInflater.from(viewGroup.context)
+
+        return ViewHolder(ItemWishBinding.inflate(inflater, viewGroup, false))
     }
 
     override fun onBindViewHolder(viewHolder: WishListAdapter.ViewHolder, position: Int) {
