@@ -28,10 +28,9 @@ class NotiListAdapter(
         this.listener = listener
     }
 
-    inner class NotiTabViewHolder(private val binding: ItemNotiBinding) :
+    class NotiTabViewHolder(private val binding: ItemNotiBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(position: Int) {
-            val item = dataSet[position]
+        fun bind(position: Int, item: NotiItemInfo, listener: OnItemClickListener) {
             with(binding) {
                 this.item = item
                 notiContainer.setOnClickListener {
@@ -41,10 +40,9 @@ class NotiListAdapter(
         }
     }
 
-    inner class CalendarViewHolder(private val binding: ItemCalendarNotiBinding) :
+    class CalendarViewHolder(private val binding: ItemCalendarNotiBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(position: Int) { // TODO need refactoring
-            val item = dataSet[position]
+        fun bind(position: Int, item: NotiItemInfo, listener: OnItemClickListener) {
             with(binding) {
                 this.item = item
                 notiContainer.setOnClickListener {
@@ -68,8 +66,8 @@ class NotiListAdapter(
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         when (viewHolder) {
-            is NotiTabViewHolder -> viewHolder.bind(position)
-            is CalendarViewHolder -> viewHolder.bind(position)
+            is NotiTabViewHolder -> viewHolder.bind(position, dataSet[position], listener)
+            is CalendarViewHolder -> viewHolder.bind(position, dataSet[position], listener)
         }
     }
 

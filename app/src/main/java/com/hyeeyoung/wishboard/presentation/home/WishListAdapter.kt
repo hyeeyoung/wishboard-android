@@ -27,10 +27,9 @@ class WishListAdapter : RecyclerView.Adapter<WishListAdapter.ViewHolder>() {
         this.listener = listener
     }
 
-    inner class ViewHolder(private val binding: ItemWishBinding) :
+    class ViewHolder(private val binding: ItemWishBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(position: Int) {
-            val item = dataSet[position]
+        fun bind(position: Int, item: WishItem, listener: OnItemClickListener) {
             with(binding) {
                 this.item = item
 
@@ -62,7 +61,7 @@ class WishListAdapter : RecyclerView.Adapter<WishListAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(viewHolder: WishListAdapter.ViewHolder, position: Int) {
-        viewHolder.bind(position)
+        viewHolder.bind(position, dataSet[position], listener)
     }
 
     fun getData(): List<WishItem> = dataSet
