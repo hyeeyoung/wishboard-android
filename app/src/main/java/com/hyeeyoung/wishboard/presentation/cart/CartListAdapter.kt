@@ -25,10 +25,9 @@ class CartListAdapter : RecyclerView.Adapter<CartListAdapter.ViewHolder>() {
         this.listener = listener
     }
 
-    inner class ViewHolder(private val binding: ItemCartBinding) :
+    class ViewHolder(private val binding: ItemCartBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(position: Int) {
-            val item = dataSet[position]
+        fun bind(position: Int, item: CartItem, listener: OnItemClickListener) {
 
             with(binding) {
                 this.item = item
@@ -63,7 +62,7 @@ class CartListAdapter : RecyclerView.Adapter<CartListAdapter.ViewHolder>() {
     }
 
     override fun onBindViewHolder(viewHolder: CartListAdapter.ViewHolder, position: Int) {
-        viewHolder.bind(position)
+        viewHolder.bind(position, dataSet[position], listener)
     }
 
     override fun getItemCount(): Int = dataSet.size

@@ -62,9 +62,13 @@ class FolderListAdapter(
         this.folderMoreDialogListener = listener
     }
 
-    inner class VerticalViewHolder(private val binding: ItemFolderVerticalBinding) :
+    class VerticalViewHolder(private val binding: ItemFolderVerticalBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(folder: FolderItem) {
+        fun bind(
+            folder: FolderItem,
+            listener: OnItemClickListener,
+            moreDialogListener: OnFolderMoreDialogListener?
+        ) {
             with(binding) {
                 this.item = folder
                 thumbnail.clipToOutline = true
@@ -73,15 +77,15 @@ class FolderListAdapter(
                     listener.onItemClick(folder)
                 }
                 more.setOnClickListener {
-                    folderMoreDialogListener?.onItemMoreButtonClick(folder)
+                    moreDialogListener?.onItemMoreButtonClick(folder)
                 }
             }
         }
     }
 
-    inner class HorizontalViewHolder(private val binding: ItemFolderHorizontalBinding) :
+    class HorizontalViewHolder(private val binding: ItemFolderHorizontalBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(folder: FolderItem) {
+        fun bind(folder: FolderItem, selectedFolderId: Long?, listener: OnItemClickListener) {
             with(binding) {
                 this.item = folder
                 check.visibility = if (selectedFolderId == folder.id) {
@@ -98,9 +102,13 @@ class FolderListAdapter(
         }
     }
 
-    inner class SquareViewHolder(private val binding: ItemFolderSquareBinding) :
+    class SquareViewHolder(private val binding: ItemFolderSquareBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(folder: FolderItem) {
+        fun bind(
+            folder: FolderItem,
+            selectedFolder: FolderItem?,
+            changeSelectedFolder: (FolderItem) -> Unit
+        ) {
             with(binding) {
                 this.item = folder
 
@@ -122,9 +130,9 @@ class FolderListAdapter(
         }
     }
 
-    inner class NewFolderViewHolder(private val binding: ItemNewFolderBinding) :
+    class NewFolderViewHolder(private val binding: ItemNewFolderBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind() {
+        fun bind(newFolderListener: OnNewFolderClickListener?) {
             binding.container.setOnClickListener {
                 newFolderListener?.onItemClick()
             }
@@ -152,10 +160,10 @@ class FolderListAdapter(
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val folder = dataSet[position]
         when (viewHolder) {
-            is VerticalViewHolder -> viewHolder.bind(folder)
-            is HorizontalViewHolder -> viewHolder.bind(folder)
-            is SquareViewHolder -> viewHolder.bind(folder)
-            is NewFolderViewHolder -> viewHolder.bind()
+            is VerticalViewHolder -> viewHolder.bind(folder, listener, folderMoreDialogListener)
+            is HorizontalViewHolder -> viewHolder.bind(folder, selectedFolderId, listener)
+            is SquareViewHolder -> viewHolder.bind(folder, selectedFolder, ::changeSelectedFolder)
+            is NewFolderViewHolder -> viewHolder.bind(newFolderListener)
         }
     }
 
