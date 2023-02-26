@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.hyeeyoung.wishboard.R
-import com.hyeeyoung.wishboard.WishBoardApp
+import com.hyeeyoung.wishboard.data.local.WishBoardPreference
 import com.hyeeyoung.wishboard.databinding.ActivitySplashBinding
 import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
 import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
@@ -18,7 +18,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class SplashActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashBinding
@@ -63,14 +62,9 @@ class SplashActivity : AppCompatActivity() {
     }
 
     private fun moveToNext() {
-        // TODO 유저 정보 가져오기
-        val token = WishBoardApp.prefs.getUserToken()
-        Timber.d("token : $token")
-        if (token == null) {
-            startActivity(Intent(this@SplashActivity, SignActivity::class.java))
-        } else {
-            startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-        }
+        val isLogin = WishBoardPreference(this).isLogin
+        val nextScreen = if (isLogin) MainActivity::class.java else SignActivity::class.java
+        startActivity(Intent(this@SplashActivity, nextScreen))
     }
 
     override fun onPause() {

@@ -12,5 +12,5 @@ interface UserRepository {
     ): Pair<Boolean, Int>?
 
     suspend fun registerFCMToken(fcmToken: String?): Boolean
-    suspend fun deleteUserAccount(): Boolean
+    suspend fun deleteUserAccount(): Result<Boolean?>
 }

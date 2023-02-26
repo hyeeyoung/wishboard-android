@@ -28,29 +28,36 @@ class WishBoardPreference @Inject constructor(@ApplicationContext context: Conte
 
     var userEmail: String
         set(value) = dataStore.edit { putString(USER_EMAIL, value) }
-        get() = dataStore.getString(USER_EMAIL, "") ?: ""
+        get() = dataStore.getString(USER_EMAIL, null) ?: ""
 
     var userNickname: String
         set(value) = dataStore.edit { putString(USER_NICKNAME, value) }
-        get() = dataStore.getString(USER_NICKNAME, "") ?: ""
+        get() = dataStore.getString(USER_NICKNAME, null) ?: ""
 
     var accessToken: String
         set(value) = dataStore.edit { putString(ACCESS_TOKEN, value) }
         get() = dataStore.getString(
             ACCESS_TOKEN,
-            ""
+            null
         ) ?: ""
 
     var refreshToken: String
         set(value) = dataStore.edit { putString(REFRESH_TOKEN, value) }
         get() = dataStore.getString(
             REFRESH_TOKEN,
-            ""
+            null
         ) ?: ""
 
     var isLogin: Boolean
         set(value) = dataStore.edit { putBoolean(IS_LOGIN, value) }
         get() = dataStore.getBoolean(IS_LOGIN, false)
+
+    var fcmToken: String
+        set(value) = dataStore.edit { putString(FCM_TOKEN, value) }
+        get() = dataStore.getString(
+            FCM_TOKEN,
+            null
+        ) ?: ""
 
     fun setUserInfo(email: String, nickname: String?, accessToken: String, refreshToken: String) {
         isLogin = true
@@ -75,6 +82,7 @@ class WishBoardPreference @Inject constructor(@ApplicationContext context: Conte
         const val FILE_NAME = "wishboardPreferences"
         const val ACCESS_TOKEN = "accessToken"
         const val REFRESH_TOKEN = "refreshToken"
+        const val FCM_TOKEN = "fcmToken"
         const val IS_LOGIN = "isLogin"
         const val USER_EMAIL = "userEmail"
         const val USER_NICKNAME = "userNickname"

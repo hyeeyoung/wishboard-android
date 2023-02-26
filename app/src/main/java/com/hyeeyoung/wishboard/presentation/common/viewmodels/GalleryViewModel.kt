@@ -10,7 +10,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.hyeeyoung.wishboard.WishBoardApp
+import com.hyeeyoung.wishboard.data.local.WishBoardPreference
 import com.hyeeyoung.wishboard.data.model.GalleryData
 import com.hyeeyoung.wishboard.domain.repositories.GalleryRepository
 import com.hyeeyoung.wishboard.util.getTimestamp
@@ -26,8 +26,8 @@ import javax.inject.Inject
 class GalleryViewModel @Inject constructor(
     private val application: Application,
     private val galleryRepository: GalleryRepository,
+    private val localStorage: WishBoardPreference
 ) : ViewModel() {
-    private val token = WishBoardApp.prefs.getUserToken()
     val imageList: Flow<PagingData<GalleryData>> =
         Pager(PagingConfig(pageSize = 40)) {
             galleryRepository.galleryPagingSource()
@@ -73,7 +73,7 @@ class GalleryViewModel @Inject constructor(
     /** 이미지 파일명 생성하는 함수로 해당 함수 호출 전 반드시 token null 체크해야함 */
     private fun makePhotoFileName(): String {
         val timestamp = getTimestamp()
-        return ("${token!!.substring(7)}_${timestamp}.jpg")
+        return ("${localStorage.accessToken.substring(7)}_${timestamp}.jpg")
     }
 
     fun setSelectedGalleryImageUri(imageUri: Uri?) {

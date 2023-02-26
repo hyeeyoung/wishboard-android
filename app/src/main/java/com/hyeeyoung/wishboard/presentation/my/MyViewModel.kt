@@ -4,6 +4,7 @@ import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.*
 import com.hyeeyoung.wishboard.WishBoardApp
+import com.hyeeyoung.wishboard.data.local.WishBoardPreference
 import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
 import com.hyeeyoung.wishboard.domain.repositories.UserRepository
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
@@ -22,6 +23,7 @@ class MyViewModel @Inject constructor(
     private val application: Application,
     private val notiRepository: NotiRepository,
     private val userRepository: UserRepository,
+    private val localStorage: WishBoardPreference
 ) : ViewModel() {
     private var userEmail = MutableLiveData<String?>()
     private var userNickname = MutableLiveData<String>()
@@ -52,10 +54,10 @@ class MyViewModel @Inject constructor(
     }
 
     fun fetchUserInfo() {
-        viewModelScope.launch { // TODO 네트워크에 연결되어있지 않은 경우, 내부 저장소에서 유저 정보 가져오기
+        viewModelScope.launch {
             userRepository.fetchUserInfo().let {
-                userEmail.value = it?.email ?: WishBoardApp.prefs.getUserEmail()
-                userNickname.value = it?.nickname ?: WishBoardApp.prefs.getUserNickName()
+                userEmail.value = it?.email ?: localStorage.userEmail
+                userNickname.value = it?.nickname ?: localStorage.userNickname
                 userProfileImage.value = it?.profileImage
                 pushState.value = convertIntToBooleanPushState(it?.pushState)
             }
@@ -108,9 +110,8 @@ class MyViewModel @Inject constructor(
 
     fun deleteUserAccount() {
         viewModelScope.launch {
-            isCompleteUserDelete.postValue(userRepository.deleteUserAccount())
+            isCompleteUserDelete.value = userRepository.deleteUserAccount().getOrNull() == true
         }
-        WishBoardApp.prefs.clearUserInfo()
     }
 
     /** 서버에서 전달받은 push_state 값은 Int타입으로, 알림 스위치 on/off를 위해 Boolean타입으로 변경 */
@@ -154,7 +155,7 @@ class MyViewModel @Inject constructor(
     /** 유저 프로필 업데이트 이후 로컬에 닉네임을 저장 */
     // TODO 함수명 변경
     private fun setUserInfo() {
-        WishBoardApp.prefs.setUserNickName(inputUserNickName.value!!)
+        localStorage.userNickname = inputUserNickName.value!!
     }
 
     fun setSelectedUserProfileImage(imageUri: Uri, imageFile: File) {
