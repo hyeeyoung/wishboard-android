@@ -11,18 +11,11 @@ import retrofit2.http.Path
 
 interface NotiService {
     @GET("noti")
-    suspend fun fetchPreviousNotiList(
-        @Header("Authorization") token: String,
-    ): Response<List<NotiItem>>?
+    suspend fun fetchPreviousNotiList(): Response<List<NotiItem>>?
 
     @GET("noti/calendar")
-    suspend fun fetchAllNotiList(
-        @Header("Authorization") token: String,
-    ): Response<List<NotiItem>>?
+    suspend fun fetchAllNotiList(): Response<List<NotiItem>>?
 
     @PUT("noti/{item_id}/read-state")
-    suspend fun updateNotiReadState(
-        @Header("Authorization") token: String,
-        @Path("item_id") itemId: Long,
-    ): Response<BaseResponseResult<BaseResponseData?>>
+    suspend fun updateNotiReadState(@Path("item_id") itemId: Long): Response<BaseResponseResult<BaseResponseData?>>
 }

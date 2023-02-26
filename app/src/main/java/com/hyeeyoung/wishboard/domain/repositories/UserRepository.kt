@@ -5,8 +5,12 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 interface UserRepository {
-    suspend fun fetchUserInfo(userToken: String): UserInfo?
-    suspend fun updateUserInfo(userToken: String, nickname: RequestBody?, profileImg: MultipartBody.Part?): Pair<Boolean, Int>?
-    suspend fun registerFCMToken(userToken: String, fcmToken: String?): Boolean
-    suspend fun deleteUserAccount(userToken: String): Boolean
+    suspend fun fetchUserInfo(): UserInfo?
+    suspend fun updateUserInfo(
+        nickname: RequestBody?,
+        profileImg: MultipartBody.Part?
+    ): Pair<Boolean, Int>?
+
+    suspend fun registerFCMToken(fcmToken: String?): Boolean
+    suspend fun deleteUserAccount(): Boolean
 }

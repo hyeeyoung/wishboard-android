@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.domain.repositories.CartRepository
@@ -21,16 +20,13 @@ class WishListViewModel @Inject constructor(
     private val cartRepository: CartRepository,
     private val folderRepository: FolderRepository,
 ) : ViewModel() {
-    private val token = WishBoardApp.prefs.getUserToken()
-
     private val wishList = MutableLiveData<List<WishItem>?>(listOf())
     private val wishListAdapter = WishListAdapter()
     private var folderItem: FolderItem? = null
 
     fun fetchWishList() {
-        if (token == null) return
         viewModelScope.launch {
-            wishRepository.fetchWishList(token).let {
+            wishRepository.fetchWishList().let {
                 wishList.postValue(it)
                 wishListAdapter.setData(it)
             }
@@ -38,16 +34,15 @@ class WishListViewModel @Inject constructor(
     }
 
     fun fetchLatestItem() {
-        if (token == null) return
         viewModelScope.launch {
-            insertWishItem(wishRepository.fetchLatestWishItem(token) ?: return@launch)
+            insertWishItem(wishRepository.fetchLatestWishItem() ?: return@launch)
         }
     }
 
     fun fetchFolderItems(folderId: Long?) { // TODO need refactoring UseCase로 분리
-        if (token == null || folderId == null) return
+        if (folderId == null) return
         viewModelScope.launch {
-            folderRepository.fetchItemsInFolder(token, folderId).let { folders ->
+            folderRepository.fetchItemsInFolder(folderId).let { folders ->
                 wishList.postValue(folders)
                 wishListAdapter.setData(folders)
             }
@@ -55,14 +50,13 @@ class WishListViewModel @Inject constructor(
     }
 
     fun toggleCartState(position: Int, item: WishItem) {
-        if (token == null) return
         viewModelScope.launch {
             val isInCart = item.cartState == CartStateType.IN_CART.numValue
             val isSuccessful =
                 if (isInCart) {
-                    cartRepository.removeToCart(token, item.id ?: return@launch)
+                    cartRepository.removeToCart( item.id ?: return@launch)
                 } else {
-                    cartRepository.addToCart(token, item.id ?: return@launch)
+                    cartRepository.addToCart(item.id ?: return@launch)
                 }
             if (!isSuccessful) return@launch // TODO 네트워크 연결 실패, 그 외 나머지 예외 처리 -> 스낵바 띄우기
 

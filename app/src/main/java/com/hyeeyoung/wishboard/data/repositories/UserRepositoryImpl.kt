@@ -10,9 +10,9 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(private val userService: UserService) :
     UserRepository {
-    override suspend fun fetchUserInfo(userToken: String): UserInfo? {
+    override suspend fun fetchUserInfo(): UserInfo? {
         try {
-            val response = userService.fetchUserInfo(userToken) ?: return null
+            val response = userService.fetchUserInfo() ?: return null
             if (response.isSuccessful) {
                 Timber.d("사용자 정보 불러오기 성공")
             } else {
@@ -25,9 +25,9 @@ class UserRepositoryImpl @Inject constructor(private val userService: UserServic
         }
     }
 
-    override suspend fun registerFCMToken(userToken: String, fcmToken: String?): Boolean {
+    override suspend fun registerFCMToken(fcmToken: String?): Boolean {
         try {
-            val response = userService.updateFCMToken(userToken, fcmToken)
+            val response = userService.updateFCMToken(fcmToken)
             if (response.isSuccessful) {
                 Timber.d("FCM 토큰 등록 성공")
             } else {
@@ -41,22 +41,20 @@ class UserRepositoryImpl @Inject constructor(private val userService: UserServic
     }
 
     override suspend fun updateUserInfo(
-        userToken: String,
         nickname: RequestBody?,
         profileImg: MultipartBody.Part?
-    ): Pair<Boolean, Int>? =
-        runCatching {
-            userService.updateUserInfo(userToken, nickname, profileImg)
-        }.fold({
-            Timber.d("사용자 프로필 수정 성공(${it.code()})")
-            Pair(it.isSuccessful, it.code())
-        }, {
-            Timber.e("사용자 프로필 수정 실패: ${it.message}")
-            null
-        })
+    ): Pair<Boolean, Int>? = runCatching {
+        userService.updateUserInfo(nickname, profileImg)
+    }.fold({
+        Timber.d("사용자 프로필 수정 성공(${it.code()})")
+        Pair(it.isSuccessful, it.code())
+    }, {
+        Timber.e("사용자 프로필 수정 실패: ${it.message}")
+        null
+    })
 
-    override suspend fun deleteUserAccount(userToken: String) = runCatching {
-        userService.deleteUserAccount(userToken)
+    override suspend fun deleteUserAccount() = runCatching {
+        userService.deleteUserAccount()
     }.fold({
         Timber.d("사용자 탈퇴 처리 성공(${it.code()})")
         it.isSuccessful

@@ -18,11 +18,9 @@ class MainViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val notiRepository: NotiRepository,
 ) : ViewModel() {
-    private val userToken = WishBoardApp.prefs.getUserToken()
     private val fcmToken = WishBoardApp.prefs.getFCMToken()
 
     fun initFCMToken() {
-        if (userToken == null) return
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Timber.w("Fetching FCM registration token failed", task.exception)
@@ -35,16 +33,15 @@ class MainViewModel @Inject constructor(
             if (this.fcmToken != fcmToken) {
                 WishBoardApp.prefs.setFCMToken(fcmToken)
                 viewModelScope.launch(Dispatchers.IO) {
-                    userRepository.registerFCMToken(userToken, fcmToken)
+                    userRepository.registerFCMToken(fcmToken)
                 }
             }
         })
     }
 
     fun updatePushState() {
-        if (userToken == null) return
         viewModelScope.launch {
-            notiRepository.updatePushState(userToken, true)
+            notiRepository.updatePushState(true)
         }
     }
 }

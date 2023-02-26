@@ -23,8 +23,6 @@ class MyViewModel @Inject constructor(
     private val notiRepository: NotiRepository,
     private val userRepository: UserRepository,
 ) : ViewModel() {
-    private val token = WishBoardApp.prefs.getUserToken()
-
     private var userEmail = MutableLiveData<String?>()
     private var userNickname = MutableLiveData<String>()
     private var userProfileImage = MutableLiveData<String?>()
@@ -54,9 +52,8 @@ class MyViewModel @Inject constructor(
     }
 
     fun fetchUserInfo() {
-        if (token == null) return
         viewModelScope.launch { // TODO 네트워크에 연결되어있지 않은 경우, 내부 저장소에서 유저 정보 가져오기
-            userRepository.fetchUserInfo(token).let {
+            userRepository.fetchUserInfo().let {
                 userEmail.value = it?.email ?: WishBoardApp.prefs.getUserEmail()
                 userNickname.value = it?.nickname ?: WishBoardApp.prefs.getUserNickName()
                 userProfileImage.value = it?.profileImage
@@ -67,7 +64,6 @@ class MyViewModel @Inject constructor(
 
     fun updateUserInfo() {
         profileEditStatus.value = ProcessStatus.IN_PROGRESS
-        if (token == null) return
         viewModelScope.launch {
             val nickname =
                 if (userNickname.value == inputUserNickName.value) null else inputUserNickName.value
@@ -82,7 +78,6 @@ class MyViewModel @Inject constructor(
 
             val result =
                 userRepository.updateUserInfo(
-                    token,
                     nickname.toString().toPlainNullableRequestBody(),
                     imageMultipartBody
                 )
@@ -97,25 +92,23 @@ class MyViewModel @Inject constructor(
     }
 
     fun updatePushState() {
-        if (token == null || pushState.value == null) return
+        if (pushState.value == null) return
         pushState.value = !pushState.value!!
         viewModelScope.launch {
-            notiRepository.updatePushState(token, pushState.value!!)
+            notiRepository.updatePushState(pushState.value!!)
         }
     }
 
     fun signOut() {
-        if (token == null) return
         viewModelScope.launch {
-            userRepository.registerFCMToken(token, null)
+            userRepository.registerFCMToken(null)
         }
         WishBoardApp.prefs.clearUserInfo()
     }
 
     fun deleteUserAccount() {
-        if (token == null) return
         viewModelScope.launch {
-            isCompleteUserDelete.postValue(userRepository.deleteUserAccount(token))
+            isCompleteUserDelete.postValue(userRepository.deleteUserAccount())
         }
         WishBoardApp.prefs.clearUserInfo()
     }

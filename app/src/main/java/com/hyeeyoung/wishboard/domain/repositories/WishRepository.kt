@@ -7,11 +7,11 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 interface WishRepository {
-    suspend fun fetchWishList(token: String): List<WishItem>?
-    suspend fun fetchLatestWishItem(token: String): WishItem?
-    suspend fun fetchWishItemDetail(token: String, itemId: Long): List<ItemDetail>?
+    suspend fun fetchWishList(): List<WishItem>?
+    suspend fun fetchLatestWishItem(): WishItem?
+    suspend fun fetchWishItemDetail(itemId: Long): List<ItemDetail>?
     suspend fun uploadWishItem(
-        token: String, folderId: RequestBody?,
+        folderId: RequestBody?,
         itemName: RequestBody,
         itemPrice: RequestBody?,
         itemUrl: RequestBody?,
@@ -20,8 +20,9 @@ interface WishRepository {
         image: MultipartBody.Part?,
         itemMemo: RequestBody? = null,
     ): Boolean
+
     suspend fun updateWishItem(
-        token: String, itemId: Long,
+        itemId: Long,
         folderId: RequestBody?,
         itemName: RequestBody,
         itemPrice: RequestBody?,
@@ -31,7 +32,8 @@ interface WishRepository {
         itemNotificationDate: RequestBody?,
         itemImage: MultipartBody.Part?
     ): Pair<Boolean, Int>?
-    suspend fun updateFolderOfWishItem(token: String, folderId: Long, itemId: Long): Boolean
-    suspend fun deleteWishItem(token: String, itemId: Long): Boolean
+
+    suspend fun updateFolderOfWishItem(folderId: Long, itemId: Long): Boolean
+    suspend fun deleteWishItem(itemId: Long): Boolean
     suspend fun getItemParsingInfo(site: String): Pair<ItemInfo?, Int>?
 }
