@@ -1,5 +1,7 @@
 package com.hyeeyoung.wishboard.data.services.retrofit
 
+import com.hyeeyoung.wishboard.data.model.auth.RequestAuth
+import com.hyeeyoung.wishboard.data.model.auth.ResponseSignIn
 import com.hyeeyoung.wishboard.data.model.base.BaseResponseData
 import com.hyeeyoung.wishboard.data.model.base.BaseResponseResult
 import com.hyeeyoung.wishboard.data.model.user.UserInfo
@@ -17,8 +19,8 @@ interface AuthService {
 
     @POST("auth/signin")
     suspend fun signInUser(
-        @Body userInfo: UserInfo
-    ): Response<BaseResponseResult<BaseResponseData>>
+        @Body requestAuth: RequestAuth
+    ): Response<BaseResponseResult<ResponseSignIn?>>
 
     @FormUrlEncoded
     @POST("auth/password-mail")
