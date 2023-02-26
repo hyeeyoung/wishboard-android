@@ -6,7 +6,7 @@ import android.util.Patterns
 import android.webkit.URLUtil
 import android.widget.NumberPicker
 import androidx.lifecycle.*
-import com.hyeeyoung.wishboard.WishBoardApp
+import com.hyeeyoung.wishboard.data.local.WishBoardPreference
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.domain.model.WishItemDetail
 import com.hyeeyoung.wishboard.domain.repositories.FolderRepository
@@ -37,8 +37,8 @@ class WishItemRegistrationViewModel @Inject constructor(
     private val application: Application,
     private val wishRepository: WishRepository,
     private val folderRepository: FolderRepository,
+    private val localStorage: WishBoardPreference
 ) : ViewModel() {
-    val token = WishBoardApp.prefs.getUserToken()
     private var itemId: Long? = null
     private var itemName = MutableLiveData<String?>()
     private var itemPrice = MutableLiveData<String?>()
@@ -118,7 +118,6 @@ class WishItemRegistrationViewModel @Inject constructor(
     }
 
     suspend fun uploadWishItemByLinkSharing() {
-        if (token == null) return
         if (itemRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return
         itemRegistrationStatus.postValue(ProcessStatus.IN_PROGRESS)
 
@@ -138,7 +137,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                 imageFile = requireNotNull(
                     getFileFromBitmap(
                         bitmap,
-                        token,
+                        localStorage.accessToken,
                         application.applicationContext
                     )
                 ) { Timber.e("파일 변환 실패") }
@@ -165,7 +164,6 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun uploadWishItemByBasics(isEditMode: Boolean) {
         viewModelScope.launch {
             if (itemRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return@launch
-            if (token == null) return@launch
             val itemName = itemName.value?.trim() ?: return@launch
             itemRegistrationStatus.value = ProcessStatus.IN_PROGRESS
 
@@ -199,7 +197,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                 imageFile = requireNotNull(
                     getFileFromBitmap(
                         bitmap,
-                        token!!,
+                        localStorage.accessToken,
                         application.applicationContext
                     )
                 ) { Timber.e("파일 변환 실패") }
@@ -252,7 +250,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                 imageFile = requireNotNull(
                     getFileFromBitmap(
                         bitmap,
-                        token!!,
+                        localStorage.accessToken,
                         application.applicationContext
                     )
                 ) { Timber.e("파일 변환 실패") }

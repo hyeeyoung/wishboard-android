@@ -1,5 +1,6 @@
 package com.hyeeyoung.wishboard.data.repositories
 
+import com.hyeeyoung.wishboard.data.local.WishBoardPreference
 import com.hyeeyoung.wishboard.data.model.user.UserInfo
 import com.hyeeyoung.wishboard.data.services.retrofit.UserService
 import com.hyeeyoung.wishboard.domain.repositories.UserRepository
@@ -8,8 +9,10 @@ import okhttp3.RequestBody
 import timber.log.Timber
 import javax.inject.Inject
 
-class UserRepositoryImpl @Inject constructor(private val userService: UserService) :
-    UserRepository {
+class UserRepositoryImpl @Inject constructor(
+    private val userService: UserService,
+    private val localStorage: WishBoardPreference
+) : UserRepository {
     override suspend fun fetchUserInfo(): UserInfo? {
         try {
             val response = userService.fetchUserInfo() ?: return null
@@ -54,12 +57,11 @@ class UserRepositoryImpl @Inject constructor(private val userService: UserServic
     })
 
     override suspend fun deleteUserAccount() = runCatching {
-        userService.deleteUserAccount()
-    }.fold({
-        Timber.d("사용자 탈퇴 처리 성공(${it.code()})")
-        it.isSuccessful
-    }, {
+        userService.deleteUserAccount().body()?.success
+    }.onSuccess {
+        Timber.d("사용자 탈퇴 처리 성공")
+        localStorage.clear()
+    }.onFailure {
         Timber.e("사용자 탈퇴 처리 실패: ${it.message}")
-        false
-    })
+    }
 }
