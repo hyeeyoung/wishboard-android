@@ -62,8 +62,8 @@ class SignViewModel @Inject constructor(
         signProcessStatus.value = ProcessStatus.IN_PROGRESS
         viewModelScope.launch {
             safeLet(loginEmail.value, loginPassword.value) { email, password ->
-                isCompletedSignIn.value = signRepository.signIn(email, password)
-                signProcessStatus.postValue(ProcessStatus.IDLE)
+                isCompletedSignIn.value = signRepository.signIn(email, password).getOrNull() != null
+                signProcessStatus.value = ProcessStatus.IDLE
             }
         }
     }
