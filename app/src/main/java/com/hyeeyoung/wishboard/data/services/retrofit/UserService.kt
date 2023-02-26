@@ -11,33 +11,22 @@ import retrofit2.http.*
 
 interface UserService {
     @GET("user")
-    suspend fun fetchUserInfo(
-        @Header("Authorization") token: String,
-    ): Response<List<UserInfo>>?
+    suspend fun fetchUserInfo(): Response<List<UserInfo>>?
 
     @Multipart
     @PUT("user")
     suspend fun updateUserInfo(
-        @Header("Authorization") token: String,
         @Part("nickname") nickname: RequestBody?,
-        @Part profileImg: MultipartBody.Part?,
+        @Part profileImg: MultipartBody.Part?
     ): Response<BaseResponseResult<BaseResponseData?>>
 
     @FormUrlEncoded
     @PUT("user/fcm")
-    suspend fun updateFCMToken(
-        @Header("Authorization") userToken: String,
-        @Field("fcm_token") fcmToken: String?
-    ): Response<BaseResponseResult<BaseResponseData?>>
+    suspend fun updateFCMToken(@Field("fcm_token") fcmToken: String?): Response<BaseResponseResult<BaseResponseData?>>
 
     @PUT("user/active")
-    suspend fun deleteUserAccount(
-        @Header("Authorization") token: String,
-    ): Response<BaseResponse>
+    suspend fun deleteUserAccount(): Response<BaseResponse>
 
     @PUT("user/push-state/{push}")
-    suspend fun updatePushState(
-        @Header("Authorization") token: String,
-        @Path("push") push: Boolean,
-    ): Response<BaseResponseResult<BaseResponseData?>>
+    suspend fun updatePushState(@Path("push") push: Boolean): Response<BaseResponseResult<BaseResponseData?>>
 }

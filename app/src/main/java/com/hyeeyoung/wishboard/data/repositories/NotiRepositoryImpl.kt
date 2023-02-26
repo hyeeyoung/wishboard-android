@@ -11,9 +11,9 @@ class NotiRepositoryImpl @Inject constructor(
     private val notiService: NotiService,
     private val userService: UserService
 ) : NotiRepository {
-    override suspend fun fetchPreviousNotiList(token: String): List<NotiItem>? {
+    override suspend fun fetchPreviousNotiList(): List<NotiItem>? {
         try {
-            val response = notiService.fetchPreviousNotiList(token) ?: return null
+            val response = notiService.fetchPreviousNotiList() ?: return null
             if (response.isSuccessful) {
                 Timber.d("지난 알림 가져오기 성공")
             } else {
@@ -26,9 +26,9 @@ class NotiRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun fetchAllNotiList(token: String): List<NotiItem>? {
+    override suspend fun fetchAllNotiList(): List<NotiItem>? {
         try {
-            val response = notiService.fetchAllNotiList(token) ?: return null
+            val response = notiService.fetchAllNotiList() ?: return null
             if (response.isSuccessful) {
                 Timber.d("모든 알림 가져오기 성공")
             } else {
@@ -41,9 +41,9 @@ class NotiRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updateNotiReadState(token: String, itemId: Long) {
+    override suspend fun updateNotiReadState(itemId: Long) {
         try {
-            val response = notiService.updateNotiReadState(token, itemId)
+            val response = notiService.updateNotiReadState(itemId)
             if (response.isSuccessful) {
                 Timber.d("알림 읽음 처리 성공")
             } else {
@@ -54,9 +54,9 @@ class NotiRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun updatePushState(token: String, isSet: Boolean) {
+    override suspend fun updatePushState(isSet: Boolean) {
         try {
-            val response = userService.updatePushState(token, isSet)
+            val response = userService.updatePushState(isSet)
 
             val onOff = if (isSet) {
                 "켜기"

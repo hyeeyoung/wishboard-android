@@ -8,9 +8,9 @@ import javax.inject.Inject
 
 class CartRepositoryImpl @Inject constructor(private val cartService: CartService) :
     CartRepository {
-    override suspend fun addToCart(token: String, itemId: Long): Boolean {
+    override suspend fun addToCart(itemId: Long): Boolean {
         try {
-            val response = cartService.addToCart(token, itemId)
+            val response = cartService.addToCart(itemId)
             if (response.isSuccessful) {
                 Timber.d("장바구니에서 추가 성공")
             } else {
@@ -23,11 +23,11 @@ class CartRepositoryImpl @Inject constructor(private val cartService: CartServic
         }
     }
 
-    override suspend fun updateCartItemCount(token: String, item: CartItem): Boolean {
+    override suspend fun updateCartItemCount(item: CartItem): Boolean {
         try {
             if (item.wishItem.id == null) return false
             val response =
-                cartService.updateToCart(token, item.wishItem.id!!, item.cartItemInfo.count)
+                cartService.updateToCart(item.wishItem.id!!, item.cartItemInfo.count)
             if (response.isSuccessful) {
                 Timber.d("장바구니 수정 성공")
             } else {
@@ -40,9 +40,9 @@ class CartRepositoryImpl @Inject constructor(private val cartService: CartServic
         }
     }
 
-    override suspend fun removeToCart(token: String, itemId: Long): Boolean {
+    override suspend fun removeToCart(itemId: Long): Boolean {
         try {
-            val response = cartService.removeToCart(token, itemId)
+            val response = cartService.removeToCart(itemId)
             if (response.isSuccessful) {
                 Timber.d("장바구니에서 제거 성공")
             } else {
@@ -55,9 +55,9 @@ class CartRepositoryImpl @Inject constructor(private val cartService: CartServic
         }
     }
 
-    override suspend fun fetchCartList(token: String): List<CartItem>? {
+    override suspend fun fetchCartList(): List<CartItem>? {
         try {
-            val response = cartService.fetchCart(token) ?: return null
+            val response = cartService.fetchCart() ?: return null
             if (response.isSuccessful) {
                 Timber.d("장바구니 가져오기 성공")
             } else {

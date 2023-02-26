@@ -103,7 +103,7 @@ class WishItemRegistrationViewModel @Inject constructor(
         !(itemName.value.isNullOrBlank() || itemPrice.value.isNullOrBlank() || (itemImage.value.isNullOrBlank() && selectedGalleryImageUri.value == null))
 
     private fun checkValidItemInfoInput(): Boolean {
-        return !(itemName.value.isNullOrBlank() || itemPrice.value.isNullOrBlank() || itemImage.value.isNullOrBlank() || token == null)
+        return !(itemName.value.isNullOrBlank() || itemPrice.value.isNullOrBlank() || itemImage.value.isNullOrBlank())
     }
 
     /** 오픈그래프 메타태그 파싱을 통해 아이템 정보 가져오기 */
@@ -149,7 +149,6 @@ class WishItemRegistrationViewModel @Inject constructor(
             }
 
             val isComplete = wishRepository.uploadWishItem(
-                token,
                 folderId,
                 itemName,
                 itemPrice,
@@ -213,7 +212,6 @@ class WishItemRegistrationViewModel @Inject constructor(
             }
 
         val isComplete = wishRepository.uploadWishItem(
-            token!!,
             folderId,
             itemName,
             itemPrice,
@@ -266,7 +264,6 @@ class WishItemRegistrationViewModel @Inject constructor(
             }
 
         val result = wishRepository.updateWishItem(
-            requireNotNull(token) { Timber.e("토큰 없음") },
             requireNotNull(itemId) { Timber.e("아이템 아이디 없음") },
             folderId,
             itemName,
@@ -287,7 +284,7 @@ class WishItemRegistrationViewModel @Inject constructor(
         val folder = FolderItem(name = folderName)
 
         viewModelScope.launch {
-            val result = folderRepository.createNewFolder(token!!, folder)
+            val result = folderRepository.createNewFolder(folder)
             isCompleteFolderUpload.value = result?.first?.first
             isExistFolderName.value = result?.first?.second == 409
             result?.second?.let { folderId ->
@@ -299,9 +296,8 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     // TODO need refactoring UseCase로 분리
     private fun fetchFolderList() {
-        if (token == null) return
         viewModelScope.launch {
-            folderListSquareAdapter.setData(folderRepository.fetchFolderListSummary(token))
+            folderListSquareAdapter.setData(folderRepository.fetchFolderListSummary())
         }
     }
 

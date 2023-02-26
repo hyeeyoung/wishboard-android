@@ -8,25 +8,22 @@ import retrofit2.http.*
 
 interface CartService {
     @GET("cart")
-    suspend fun fetchCart(@Header("Authorization") token: String): Response<List<CartItem>>?
+    suspend fun fetchCart(): Response<List<CartItem>>?
 
     @FormUrlEncoded
     @POST("cart")
     suspend fun addToCart(
-        @Header("Authorization") token: String,
         @Field("item_id") itemId: Long
     ): Response<BaseResponseResult<BaseResponseData?>>
 
     @DELETE("cart/{item_id}")
     suspend fun removeToCart(
-        @Header("Authorization") token: String,
         @Path("item_id") itemId: Long
     ): Response<BaseResponseResult<BaseResponseData?>>
 
     @FormUrlEncoded
     @PUT("cart/{item_id}")
     suspend fun updateToCart(
-        @Header("Authorization") token: String,
         @Path("item_id") itemId: Long,
         @Field("item_count") itemCount: Int
     ): Response<BaseResponseResult<BaseResponseData?>>

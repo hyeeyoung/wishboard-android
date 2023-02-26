@@ -12,21 +12,19 @@ import retrofit2.http.*
 
 interface WishItemService {
     @GET("item")
-    suspend fun fetchWishList(@Header("Authorization") token: String): Response<List<WishItem>?>
+    suspend fun fetchWishList(): Response<List<WishItem>?>
 
     @GET("item/latest")
-    suspend fun fetchLatestWishItem(@Header("Authorization") token: String): Response<List<WishItem>>?
+    suspend fun fetchLatestWishItem(): Response<List<WishItem>>?
 
     @GET("item/{item_id}")
     suspend fun fetchWishItemDetail(
-        @Header("Authorization") token: String,
         @Path("item_id") itemId: Long
     ): Response<List<ItemDetail>>
 
     @Multipart
     @POST("/item")
     suspend fun uploadWishItem(
-        @Header("Authorization") token: String,
         @Part("folder_id") folderId: RequestBody?,
         @Part("item_name") itemName: RequestBody,
         @Part("item_price") itemPrice: RequestBody?,
@@ -40,7 +38,6 @@ interface WishItemService {
     @Multipart
     @PUT("item/{item_id}")
     suspend fun updateToWishItem(
-        @Header("Authorization") token: String,
         @Path("item_id") itemId: Long,
         @Part("folder_id") folderId: RequestBody?,
         @Part("item_name") itemName: RequestBody,
@@ -54,16 +51,12 @@ interface WishItemService {
 
     @PUT("item/{item_id}/folder/{folder_id}")
     suspend fun updateFolderOfItem(
-        @Header("Authorization") token: String,
         @Path("item_id") itemId: Long,
         @Path("folder_id") folderId: Long
     ): Response<BaseResponseResult<BaseResponseData?>>
 
     @DELETE("item/{item_id}")
-    suspend fun deleteWishItem(
-        @Header("Authorization") token: String,
-        @Path("item_id") itemId: Long
-    ): Response<BaseResponseResult<BaseResponseData?>>
+    suspend fun deleteWishItem(@Path("item_id") itemId: Long): Response<BaseResponseResult<BaseResponseData?>>
 
     @GET("item/parse?site=")
     suspend fun getItemParsingInfo(

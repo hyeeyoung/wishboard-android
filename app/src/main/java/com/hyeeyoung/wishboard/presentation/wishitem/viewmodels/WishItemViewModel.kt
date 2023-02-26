@@ -4,11 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
-import com.hyeeyoung.wishboard.domain.repositories.WishRepository
 import com.hyeeyoung.wishboard.domain.model.WishItemDetail
+import com.hyeeyoung.wishboard.domain.repositories.WishRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -19,8 +18,6 @@ import javax.inject.Inject
 class WishItemViewModel @Inject constructor(
     private val wishRepository: WishRepository,
 ) : ViewModel() {
-    private val token = WishBoardApp.prefs.getUserToken()
-
     private val _wishItemThumbnail = MutableLiveData<WishItem>()
     val wishItemThumbnail: LiveData<WishItem> get() = _wishItemThumbnail
     private val _itemDetail = MutableLiveData<WishItemDetail>()
@@ -28,33 +25,32 @@ class WishItemViewModel @Inject constructor(
     private var isCompleteDeletion = MutableLiveData<Boolean>()
 
     fun fetchWishItemDetail(itemId: Long) {
-        if (token == null) return
         viewModelScope.launch {
-            Timber.d(wishRepository.fetchWishItemDetail(token, itemId)?.get(0).toString())
             _itemDetail.value =
-                wishRepository.fetchWishItemDetail(token, itemId)?.map { it.toWishItemDetail(it) }
+                wishRepository.fetchWishItemDetail(itemId)?.map { it.toWishItemDetail(it) }
                     ?.get(0)
             generateWishItemThumbnail(itemDetail.value ?: return@launch)
         }
     }
 
     fun deleteWishItem() {
-        if (token == null) return
         val itemId = itemDetail.value?.id ?: return
         viewModelScope.launch {
-            isCompleteDeletion.value = wishRepository.deleteWishItem(token, itemId)
+            isCompleteDeletion.value = wishRepository.deleteWishItem(itemId)
         }
     }
 
     fun updateWishItemFolder(folder: FolderItem) {
-        if (token == null) return
         val item = itemDetail.value?.apply {
             folderId = folder.id
             folderName = folder.name
         } ?: return
         viewModelScope.launch {
             val isComplete =
-                wishRepository.updateFolderOfWishItem(token, itemDetail.value?.id ?: return@launch, folder.id ?: return@launch)
+                wishRepository.updateFolderOfWishItem(
+                    itemDetail.value?.id ?: return@launch,
+                    folder.id ?: return@launch
+                )
             if (isComplete) {
                 _itemDetail.value = item
             }

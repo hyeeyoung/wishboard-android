@@ -12,8 +12,8 @@ import javax.inject.Inject
 
 class WishRepositoryImpl @Inject constructor(private val wishItemService: WishItemService) :
     WishRepository {
-    override suspend fun fetchWishList(token: String): List<WishItem>? = runCatching {
-        wishItemService.fetchWishList(token)
+    override suspend fun fetchWishList(): List<WishItem>? = runCatching {
+        wishItemService.fetchWishList()
     }.fold({
         Timber.d("아이템 가져오기 성공(${it.code()})")
         it.body()
@@ -22,9 +22,9 @@ class WishRepositoryImpl @Inject constructor(private val wishItemService: WishIt
         null
     })
 
-    override suspend fun fetchLatestWishItem(token: String): WishItem? =
+    override suspend fun fetchLatestWishItem(): WishItem? =
         runCatching {
-            wishItemService.fetchLatestWishItem(token)
+            wishItemService.fetchLatestWishItem()
         }.fold({
             Timber.d("가장 최근 등록된 아이템 가져오기 성공(${it?.code()})")
             it?.body()?.get(0)
@@ -33,9 +33,9 @@ class WishRepositoryImpl @Inject constructor(private val wishItemService: WishIt
             null
         })
 
-    override suspend fun fetchWishItemDetail(token: String, itemId: Long): List<ItemDetail>? =
+    override suspend fun fetchWishItemDetail(itemId: Long): List<ItemDetail>? =
         runCatching {
-            wishItemService.fetchWishItemDetail(token, itemId)
+            wishItemService.fetchWishItemDetail(itemId)
         }.fold({
             Timber.d("아이템 상세정보 가져오기 성공(${it.code()})")
             it.body()
@@ -45,7 +45,6 @@ class WishRepositoryImpl @Inject constructor(private val wishItemService: WishIt
         })
 
     override suspend fun uploadWishItem(
-        token: String,
         folderId: RequestBody?,
         itemName: RequestBody,
         itemPrice: RequestBody?,
@@ -56,7 +55,6 @@ class WishRepositoryImpl @Inject constructor(private val wishItemService: WishIt
         itemMemo: RequestBody?,
     ): Boolean = runCatching {
         wishItemService.uploadWishItem(
-            token,
             folderId,
             itemName,
             itemPrice,
@@ -75,7 +73,6 @@ class WishRepositoryImpl @Inject constructor(private val wishItemService: WishIt
     })
 
     override suspend fun updateWishItem(
-        token: String,
         itemId: Long,
         folderId: RequestBody?,
         itemName: RequestBody,
@@ -87,7 +84,7 @@ class WishRepositoryImpl @Inject constructor(private val wishItemService: WishIt
         itemImage: MultipartBody.Part?
     ): Pair<Boolean, Int>? = runCatching {
         wishItemService.updateToWishItem(
-            token, itemId, folderId,
+            itemId, folderId,
             itemName,
             itemPrice,
             itemMemo,
@@ -104,22 +101,19 @@ class WishRepositoryImpl @Inject constructor(private val wishItemService: WishIt
         null
     })
 
-    override suspend fun updateFolderOfWishItem(
-        token: String,
-        itemId: Long,
-        folderId: Long
-    ): Boolean = runCatching {
-        wishItemService.updateFolderOfItem(token, itemId, folderId)
-    }.fold({
-        Timber.d("아이템 폴더 수정 성공(${it.code()})")
-        it.isSuccessful
-    }, {
-        Timber.e("아이템 폴더 수정 실패: ${it.message}")
-        false
-    })
+    override suspend fun updateFolderOfWishItem(itemId: Long, folderId: Long): Boolean =
+        runCatching {
+            wishItemService.updateFolderOfItem(itemId, folderId)
+        }.fold({
+            Timber.d("아이템 폴더 수정 성공(${it.code()})")
+            it.isSuccessful
+        }, {
+            Timber.e("아이템 폴더 수정 실패: ${it.message}")
+            false
+        })
 
-    override suspend fun deleteWishItem(token: String, itemId: Long): Boolean = runCatching {
-        wishItemService.deleteWishItem(token, itemId)
+    override suspend fun deleteWishItem(itemId: Long): Boolean = runCatching {
+        wishItemService.deleteWishItem(itemId)
     }.fold({
         Timber.d("아이템 삭제 성공(${it.code()})")
         it.isSuccessful
