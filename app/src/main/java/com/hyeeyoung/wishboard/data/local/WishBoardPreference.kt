@@ -60,6 +60,11 @@ class WishBoardPreference @Inject constructor(@ApplicationContext context: Conte
         this.refreshToken = refreshToken
     }
 
+    fun updateToken(accessToken: String, refreshToken: String) {
+        this.accessToken = accessToken
+        this.refreshToken = refreshToken
+    }
+
     fun clear() {
         dataStore.edit {
             clear()
