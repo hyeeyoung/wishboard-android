@@ -32,7 +32,7 @@ class WishItemViewModel @Inject constructor(
         viewModelScope.launch {
             Timber.d(wishRepository.fetchWishItemDetail(token, itemId)?.get(0).toString())
             _itemDetail.value =
-                wishRepository.fetchWishItemDetail(token, itemId)?.map { it.toWishItemDetail(it) }
+                wishRepository.fetchWishItemDetail(token, itemId)?.map { it.toWishItemDetail() }
                     ?.get(0)
             generateWishItemThumbnail(itemDetail.value ?: return@launch)
         }

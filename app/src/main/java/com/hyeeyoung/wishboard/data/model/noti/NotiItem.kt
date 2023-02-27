@@ -21,13 +21,13 @@ data class NotiItem(
     @SerializedName("item_notification_date")
     val notiDate: String,
 ) {
-    fun toNotiItemInfo(noti: NotiItem) = NotiItemInfo(
-        noti.itemId,
-        noti.itemImg,
-        noti.itemName,
-        if (noti.itemUrl.isNullOrBlank()) null else noti.itemUrl,
-        noti.readState,
-        noti.notiType,
+    fun toNotiItemInfo() = NotiItemInfo(
+        itemId,
+        itemImg,
+        itemName,
+        if (itemUrl.isNullOrBlank()) null else itemUrl,
+        readState,
+        notiType,
         notiDate,
     )
 }
