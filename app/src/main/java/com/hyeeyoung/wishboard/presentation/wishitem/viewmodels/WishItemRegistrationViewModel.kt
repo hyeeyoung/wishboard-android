@@ -95,6 +95,8 @@ class WishItemRegistrationViewModel @Inject constructor(
         addSourceList(itemName, itemPrice, itemImage) { checkValidItemInfoInput() }
     }
 
+    val isLogin: Boolean get() = localStorage.isLogin
+
     init {
         fetchFolderList()
     }
