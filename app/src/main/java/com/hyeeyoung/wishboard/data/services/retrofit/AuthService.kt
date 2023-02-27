@@ -40,4 +40,7 @@ interface AuthService {
     suspend fun checkRegisteredUser(
         @Field("email") email: String
     ): Response<BaseResponse>
+
+    @POST("auth/logout")
+    suspend fun logout(): Response<BaseResponse>
 }

@@ -95,4 +95,13 @@ class SignRepositoryImpl @Inject constructor(
             return null
         }
     }
+
+    override suspend fun logout(): Result<Boolean?> = runCatching {
+        authService.logout().isSuccessful
+    }.onSuccess {
+        Timber.d("로그아웃 성공")
+        localStorage.clear()
+    }.onFailure {
+        Timber.e("로그아웃 실패")
+    }
 }
