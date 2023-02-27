@@ -6,7 +6,6 @@ import com.amplifyframework.AmplifyException
 import com.amplifyframework.auth.cognito.AWSCognitoAuthPlugin
 import com.amplifyframework.core.Amplify
 import com.amplifyframework.storage.s3.AWSS3StoragePlugin
-import com.hyeeyoung.wishboard.util.PreferenceUtil
 import com.hyeeyoung.wishboard.util.WishBoardDebugTree
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
@@ -15,7 +14,6 @@ import timber.log.Timber
 class WishBoardApp : Application() {
     override fun onCreate() {
         super.onCreate()
-        prefs = PreferenceUtil(applicationContext)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
         setUpTimber()
@@ -37,9 +35,5 @@ class WishBoardApp : Application() {
         if (BuildConfig.DEBUG) {
             Timber.plant(WishBoardDebugTree())
         }
-    }
-
-    companion object {
-        lateinit var prefs: PreferenceUtil
     }
 }
