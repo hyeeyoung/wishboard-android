@@ -1,21 +1,17 @@
 package com.hyeeyoung.wishboard.presentation.howtouse.screens
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import com.google.android.material.tabs.TabLayoutMediator
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ActivityHowToUseBinding
 import com.hyeeyoung.wishboard.presentation.howtouse.HowToUseAdapter
+import com.hyeeyoung.wishboard.util.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HowToUseActivity() : AppCompatActivity() {
-    private lateinit var binding: ActivityHowToUseBinding
-
+class HowToUseActivity : BaseActivity<ActivityHowToUseBinding>(R.layout.activity_how_to_use) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_how_to_use)
 
         initializeView()
         addListeners()

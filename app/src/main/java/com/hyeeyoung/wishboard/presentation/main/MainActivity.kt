@@ -6,12 +6,11 @@ import android.view.View
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ActivityMainBinding
+import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
 import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
 import com.hyeeyoung.wishboard.presentation.howtouse.screens.HowToUseActivity
 import com.hyeeyoung.wishboard.util.BaseActivity
@@ -19,14 +18,12 @@ import com.hyeeyoung.wishboard.util.DialogListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityMainBinding
+class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     private val viewModel: MainViewModel by viewModels()
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
 
         viewModel.initFCMToken()
         setActivityResultLauncher()
