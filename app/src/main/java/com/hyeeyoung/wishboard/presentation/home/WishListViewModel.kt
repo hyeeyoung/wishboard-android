@@ -102,8 +102,4 @@ class WishListViewModel @Inject constructor(
     fun getWishList(): LiveData<List<WishItem>?> = wishList
     fun getWishListAdapter(): WishListAdapter = wishListAdapter
     fun getFolderItem(): FolderItem? = folderItem
-
-    companion object {
-        private const val TAG = "WishListViewModel"
-    }
 }

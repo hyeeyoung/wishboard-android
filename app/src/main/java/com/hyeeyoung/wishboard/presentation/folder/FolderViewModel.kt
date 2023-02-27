@@ -144,8 +144,4 @@ class FolderViewModel @Inject constructor(
     fun getIsExistFolderName(): LiveData<Boolean?> = isExistFolderName
     fun getEditMode(): Boolean = isEditMode
     fun getRegistrationStatus(): LiveData<ProcessStatus> = folderRegistrationStatus
-
-    companion object {
-        private const val TAG = "FolderViewModel"
-    }
 }

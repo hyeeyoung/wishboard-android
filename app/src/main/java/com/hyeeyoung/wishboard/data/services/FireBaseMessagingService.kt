@@ -2,10 +2,10 @@ package com.hyeeyoung.wishboard.data.services
 
 import android.content.Context
 import android.provider.Settings
-import android.util.Log
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.hyeeyoung.wishboard.util.NotificationUtil
+import timber.log.Timber
 
 class FireBaseMessagingService : FirebaseMessagingService() {
     /** 사용자 디바이스의 시스템 설정 > '날짜 및 시간'이 자동으로 되어 있는지 확인 (자동이 아닌 경우 알림이 잘못된 시간에 표시될 수 있음) */
@@ -22,7 +22,7 @@ class FireBaseMessagingService : FirebaseMessagingService() {
         val title = msg.notification?.title
         val body = msg.notification?.body
         if (!isTimeAutomatic(applicationContext)) {
-            Log.d(TAG, "`Automatic Date and Time` is not enabled")
+            Timber.d("`Automatic Date and Time` is not enabled")
             return
         }
         showNotification(title, body)
@@ -41,10 +41,6 @@ class FireBaseMessagingService : FirebaseMessagingService() {
     /** 새 토큰 생성 및 토큰 갱신 */
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        Log.d(TAG, "Refreshed token: $token")
-    }
-
-    companion object {
-        private const val TAG = "FireBaseMessagingService"
+        Timber.d("Refreshed token: $token")
     }
 }

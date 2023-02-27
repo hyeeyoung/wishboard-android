@@ -8,7 +8,7 @@ import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.domain.repositories.WishRepository
-import com.hyeeyoung.wishboard.domain.entity.WishItemDetail
+import com.hyeeyoung.wishboard.domain.model.WishItemDetail
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -32,7 +32,7 @@ class WishItemViewModel @Inject constructor(
         viewModelScope.launch {
             Timber.d(wishRepository.fetchWishItemDetail(token, itemId)?.get(0).toString())
             _itemDetail.value =
-                wishRepository.fetchWishItemDetail(token, itemId)?.map { it.toWishItemDetail(it) }
+                wishRepository.fetchWishItemDetail(token, itemId)?.map { it.toWishItemDetail() }
                     ?.get(0)
             generateWishItemThumbnail(itemDetail.value ?: return@launch)
         }

@@ -51,7 +51,6 @@ class WebViewActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val TAG = "WebViewActivity"
         private const val ARG_WEB_VIEW_LINK = "link"
         private const val ARG_WEB_VIEW_TITLE = "title"
     }

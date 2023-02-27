@@ -2,18 +2,17 @@ package com.hyeeyoung.wishboard.presentation.noti.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.hyeeyoung.wishboard.databinding.ItemCalendarNotiBinding
 import com.hyeeyoung.wishboard.databinding.ItemNotiBinding
-import com.hyeeyoung.wishboard.domain.entity.NotiItemInfo
+import com.hyeeyoung.wishboard.domain.model.NotiItemInfo
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiListViewType
 import com.hyeeyoung.wishboard.presentation.noti.types.ReadStateType
 
 class NotiListAdapter(
     private val notiListViewType: NotiListViewType,
-) : ListAdapter<NotiItemInfo, RecyclerView.ViewHolder>(diffCallback) {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private lateinit var inflater: LayoutInflater
     private val dataSet = arrayListOf<NotiItemInfo>()
     private lateinit var listener: OnItemClickListener
 
@@ -29,10 +28,9 @@ class NotiListAdapter(
         this.listener = listener
     }
 
-    inner class NotiTabViewHolder(private val binding: ItemNotiBinding) :
+    class NotiTabViewHolder(private val binding: ItemNotiBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(position: Int) {
-            val item = dataSet[position]
+        fun bind(position: Int, item: NotiItemInfo, listener: OnItemClickListener) {
             with(binding) {
                 this.item = item
                 notiContainer.setOnClickListener {
@@ -42,10 +40,9 @@ class NotiListAdapter(
         }
     }
 
-    inner class CalendarViewHolder(private val binding: ItemCalendarNotiBinding) :
+    class CalendarViewHolder(private val binding: ItemCalendarNotiBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(position: Int) { // TODO need refactoring
-            val item = dataSet[position]
+        fun bind(position: Int, item: NotiItemInfo, listener: OnItemClickListener) {
             with(binding) {
                 this.item = item
                 notiContainer.setOnClickListener {
@@ -56,30 +53,21 @@ class NotiListAdapter(
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        when (notiListViewType) {
-            NotiListViewType.NOTI_TAB_VIEW_TYPE -> {
-                val binding = ItemNotiBinding.inflate(
-                    LayoutInflater.from(viewGroup.context),
-                    viewGroup,
-                    false
-                )
-                return NotiTabViewHolder(binding)
-            }
-            NotiListViewType.CALENDAR_VIEW_TYPE -> {
-                val binding = ItemCalendarNotiBinding.inflate(
-                    LayoutInflater.from(viewGroup.context),
-                    viewGroup,
-                    false
-                )
-                return CalendarViewHolder(binding)
-            }
+        if (!::inflater.isInitialized)
+            inflater = LayoutInflater.from(viewGroup.context)
+
+        return when (notiListViewType) {
+            NotiListViewType.NOTI_TAB_VIEW_TYPE ->
+                NotiTabViewHolder(ItemNotiBinding.inflate(inflater, viewGroup, false))
+            NotiListViewType.CALENDAR_VIEW_TYPE ->
+                CalendarViewHolder(ItemCalendarNotiBinding.inflate(inflater, viewGroup, false))
         }
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         when (viewHolder) {
-            is NotiTabViewHolder -> viewHolder.bind(position)
-            is CalendarViewHolder -> viewHolder.bind(position)
+            is NotiTabViewHolder -> viewHolder.bind(position, dataSet[position], listener)
+            is CalendarViewHolder -> viewHolder.bind(position, dataSet[position], listener)
         }
     }
 
@@ -96,23 +84,5 @@ class NotiListAdapter(
         dataSet.clear()
         items?.let { dataSet.addAll(it) }
         notifyDataSetChanged()
-    }
-
-    companion object {
-        private val diffCallback = object : DiffUtil.ItemCallback<NotiItemInfo>() {
-            override fun areItemsTheSame(
-                oldItem: NotiItemInfo,
-                newItem: NotiItemInfo
-            ): Boolean {
-                return oldItem.itemId == newItem.itemId
-            }
-
-            override fun areContentsTheSame(
-                oldItem: NotiItemInfo,
-                newItem: NotiItemInfo
-            ): Boolean {
-                return oldItem == newItem
-            }
-        }
     }
 }

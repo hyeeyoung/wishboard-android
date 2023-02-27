@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.domain.entity
+package com.hyeeyoung.wishboard.domain.model
 
 import android.os.Parcelable
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiType

@@ -41,8 +41,4 @@ class FolderMoreDialogFragment : BottomSheetDialogFragment() {
     fun setListener(listener: DialogListener) {
         this.listener = listener
     }
-
-    companion object {
-        private const val TAG = "FolderMoreDialogFragment"
-    }
 }

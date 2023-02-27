@@ -47,8 +47,4 @@ class FolderListFragment : Fragment(), FolderListAdapter.OnItemClickListener { /
         viewModel.setFolderItem(item)
         findNavController().popBackStack()
     }
-
-    companion object {
-        private const val TAG = "FolderListFragment"
-    }
 }

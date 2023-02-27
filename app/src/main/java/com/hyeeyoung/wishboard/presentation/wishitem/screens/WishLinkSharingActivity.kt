@@ -151,8 +151,4 @@ class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemCli
         folderAddDialog = FolderUploadBottomDialogFragment()
         folderAddDialog?.show(supportFragmentManager, "NewFolderAddDialog")
     }
-
-    companion object {
-        private const val TAG = "WishLinkSharingActivity"
-    }
 }

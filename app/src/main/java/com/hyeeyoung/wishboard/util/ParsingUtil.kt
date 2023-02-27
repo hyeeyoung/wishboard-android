@@ -1,12 +1,10 @@
 package com.hyeeyoung.wishboard.util
 
-import android.util.Log
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import org.jsoup.Jsoup
 
 class ParsingUtils {
     companion object {
-        private const val TAG = "ParsingUtils"
         private var itemName: String? = null
         private var itemImage: String? = null
         private var itemPrice: Int? = null
@@ -96,7 +94,6 @@ class ParsingUtils {
         itemName = doc.select("meta[property=og:title]").first()?.attr("content")
         itemImage = doc.select("meta[property=og:image]").first()?.attr("abs:content")
 
-
         // 상품명이 "상품명~~ 73,900 | 무신사 스토어"와 같이 가격을 항상 포함하고 있기 때문에 상품명에서 가격을 가져옴
         val priceCandidate = itemName?.split(" ") ?: return
         if (priceCandidate.size - 4 >= 0) {
@@ -108,7 +105,6 @@ class ParsingUtils {
     /** 네이버 스토어 */
     private fun parsingForNaverStore(url: String) {
         val doc = Jsoup.connect(url).get() ?: return
-        Log.i(TAG, "parsingForGeneral: ${doc.select("meta[property=og:title]")}")
         itemName = doc.select("meta[property=og:title]").first()?.attr("content")
         itemImage = doc.select("meta[property=og:image]").first()?.attr("abs:content")
 

@@ -4,35 +4,35 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.bumptech.glide.Glide
 import com.hyeeyoung.wishboard.R
+import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.databinding.ItemFolderHorizontalBinding
 import com.hyeeyoung.wishboard.databinding.ItemFolderSquareBinding
 import com.hyeeyoung.wishboard.databinding.ItemFolderVerticalBinding
 import com.hyeeyoung.wishboard.databinding.ItemNewFolderBinding
-import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.presentation.folder.types.FolderListViewType
 
 class FolderListAdapter(
     private val folderListViewType: FolderListViewType,
-) : ListAdapter<FolderItem, RecyclerView.ViewHolder>(diffCallback) {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private lateinit var inflater: LayoutInflater
     private val dataSet = arrayListOf<FolderItem>()
     private lateinit var listener: OnItemClickListener
     private var folderMoreDialogListener: OnFolderMoreDialogListener? = null
     private var newFolderListener: OnNewFolderClickListener? = null
+
     /** 링크 공유 전용, 선택된 폴더를 저장 */
     private var selectedFolder: FolderItem? = null
+
     /** 폴더리스트 다이얼로그 전용, 선택된 폴더 id를 저장
     TODO need refactoring : selectedFolder로 합치기 */
     private var selectedFolderId: Long? = null
 
     init {
         setHasStableIds(true)
-        if (folderListViewType == FolderListViewType.SQUARE_VIEW_TYPE) {
+        if (folderListViewType == FolderListViewType.SQUARE_VIEW_TYPE) { // TODO concat adapter 사용
             dataSet.add(FolderItem()) // "폴더 추가" 뷰를 위한 더미 데이터 삽입
             notifyItemChanged(0)
         }
@@ -62,9 +62,13 @@ class FolderListAdapter(
         this.folderMoreDialogListener = listener
     }
 
-    inner class VerticalViewHolder(private val binding: ItemFolderVerticalBinding) :
+    class VerticalViewHolder(private val binding: ItemFolderVerticalBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(folder: FolderItem) {
+        fun bind(
+            folder: FolderItem,
+            listener: OnItemClickListener,
+            moreDialogListener: OnFolderMoreDialogListener?
+        ) {
             with(binding) {
                 this.item = folder
                 thumbnail.clipToOutline = true
@@ -73,15 +77,15 @@ class FolderListAdapter(
                     listener.onItemClick(folder)
                 }
                 more.setOnClickListener {
-                    folderMoreDialogListener?.onItemMoreButtonClick(folder)
+                    moreDialogListener?.onItemMoreButtonClick(folder)
                 }
             }
         }
     }
 
-    inner class HorizontalViewHolder(private val binding: ItemFolderHorizontalBinding) :
+    class HorizontalViewHolder(private val binding: ItemFolderHorizontalBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(folder: FolderItem) {
+        fun bind(folder: FolderItem, selectedFolderId: Long?, listener: OnItemClickListener) {
             with(binding) {
                 this.item = folder
                 check.visibility = if (selectedFolderId == folder.id) {
@@ -98,9 +102,13 @@ class FolderListAdapter(
         }
     }
 
-    inner class SquareViewHolder(private val binding: ItemFolderSquareBinding) :
+    class SquareViewHolder(private val binding: ItemFolderSquareBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(folder: FolderItem) {
+        fun bind(
+            folder: FolderItem,
+            selectedFolder: FolderItem?,
+            changeSelectedFolder: (FolderItem) -> Unit
+        ) {
             with(binding) {
                 this.item = folder
 
@@ -122,9 +130,9 @@ class FolderListAdapter(
         }
     }
 
-    inner class NewFolderViewHolder(private val binding: ItemNewFolderBinding) :
+    class NewFolderViewHolder(private val binding: ItemNewFolderBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind() {
+        fun bind(newFolderListener: OnNewFolderClickListener?) {
             binding.container.setOnClickListener {
                 newFolderListener?.onItemClick()
             }
@@ -132,53 +140,35 @@ class FolderListAdapter(
     }
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        when (viewType) {
-            FolderListViewType.VERTICAL_VIEW_TYPE.ordinal -> {
-                val binding = ItemFolderVerticalBinding.inflate(
-                    LayoutInflater.from(viewGroup.context),
-                    viewGroup,
-                    false
+        if (!::inflater.isInitialized)
+            inflater = LayoutInflater.from(viewGroup.context)
+
+        return when (viewType) {
+            FolderListViewType.VERTICAL_VIEW_TYPE.ordinal ->
+                VerticalViewHolder(ItemFolderVerticalBinding.inflate(inflater, viewGroup, false))
+            FolderListViewType.HORIZONTAL_VIEW_TYPE.ordinal ->
+                HorizontalViewHolder(
+                    ItemFolderHorizontalBinding.inflate(inflater, viewGroup, false)
                 )
-                return VerticalViewHolder(binding)
-            }
-            FolderListViewType.HORIZONTAL_VIEW_TYPE.ordinal -> {
-                val binding = ItemFolderHorizontalBinding.inflate(
-                    LayoutInflater.from(viewGroup.context),
-                    viewGroup,
-                    false
-                )
-                return HorizontalViewHolder(binding)
-            }
-            FolderListViewType.SQUARE_VIEW_TYPE.ordinal -> {
-                val binding = ItemFolderSquareBinding.inflate(
-                    LayoutInflater.from(viewGroup.context),
-                    viewGroup,
-                    false
-                )
-                return SquareViewHolder(binding)
-            }
-            else -> {
-                val binding = ItemNewFolderBinding.inflate(
-                    LayoutInflater.from(viewGroup.context),
-                    viewGroup,
-                    false
-                )
-                return NewFolderViewHolder(binding)
-            }
+            FolderListViewType.SQUARE_VIEW_TYPE.ordinal ->
+                SquareViewHolder(ItemFolderSquareBinding.inflate(inflater, viewGroup, false))
+            else ->
+                NewFolderViewHolder(ItemNewFolderBinding.inflate(inflater, viewGroup, false))
         }
     }
 
     override fun onBindViewHolder(viewHolder: RecyclerView.ViewHolder, position: Int) {
         val folder = dataSet[position]
         when (viewHolder) {
-            is VerticalViewHolder -> viewHolder.bind(folder)
-            is HorizontalViewHolder -> viewHolder.bind(folder)
-            is SquareViewHolder -> viewHolder.bind(folder)
-            is NewFolderViewHolder -> viewHolder.bind()
+            is VerticalViewHolder -> viewHolder.bind(folder, listener, folderMoreDialogListener)
+            is HorizontalViewHolder -> viewHolder.bind(folder, selectedFolderId, listener)
+            is SquareViewHolder -> viewHolder.bind(folder, selectedFolder, ::changeSelectedFolder)
+            is NewFolderViewHolder -> viewHolder.bind(newFolderListener)
         }
     }
 
     fun getData(): List<FolderItem> = dataSet
+
     override fun getItemCount(): Int = dataSet.size
 
     override fun getItemId(position: Int): Long = dataSet[position].id ?: 0
@@ -240,25 +230,5 @@ class FolderListAdapter(
         notifyItemChanged(dataSet.indexOf(unselectedFolder))
         notifyItemChanged(dataSet.indexOf(selectedFolder))
         listener.onItemClick(folder)
-    }
-
-    companion object {
-        private const val TAG = "FolderListAdapter"
-        // 현재 사용되고 있지 않음. submitList()로 초기화하지 않고, dataSet 관련 override 함수를 사용할 경우, 콜백 실행 안됨.
-        private val diffCallback = object : DiffUtil.ItemCallback<FolderItem>() {
-            override fun areItemsTheSame(
-                oldItem: FolderItem,
-                newItem: FolderItem
-            ): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(
-                oldItem: FolderItem,
-                newItem: FolderItem
-            ): Boolean {
-                return oldItem == newItem
-            }
-        }
     }
 }
