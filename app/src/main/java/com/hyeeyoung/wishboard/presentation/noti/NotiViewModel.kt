@@ -32,7 +32,7 @@ class NotiViewModel @Inject constructor(
 
     fun fetchPreviousNotiList() {
         viewModelScope.launch {
-            val items = notiRepository.fetchPreviousNotiList()?.map { it.toNotiItemInfo(it) }
+            val items = notiRepository.fetchPreviousNotiList()?.map { it.toNotiItemInfo() }
             notiList.value = items
             notiListAdapter.setData(items)
         }
@@ -40,7 +40,7 @@ class NotiViewModel @Inject constructor(
 
     fun fetchAllNotiList() {
         viewModelScope.launch {
-            val items = notiRepository.fetchAllNotiList()?.map { it.toNotiItemInfo(it) }
+            val items = notiRepository.fetchAllNotiList()?.map { it.toNotiItemInfo() }
             notiList.value = items
             setNotiDateList(items) // 캘린더 뷰 알림 날짜 표시를 위한 notiDateList 만들기
         }

@@ -27,7 +27,7 @@ class WishItemViewModel @Inject constructor(
     fun fetchWishItemDetail(itemId: Long) {
         viewModelScope.launch {
             _itemDetail.value =
-                wishRepository.fetchWishItemDetail(itemId)?.map { it.toWishItemDetail(it) }
+                wishRepository.fetchWishItemDetail(itemId)?.map { it.toWishItemDetail() }
                     ?.get(0)
             generateWishItemThumbnail(itemDetail.value ?: return@launch)
         }

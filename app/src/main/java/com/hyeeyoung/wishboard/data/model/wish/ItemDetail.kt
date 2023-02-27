@@ -28,17 +28,17 @@ data class ItemDetail(
     @SerializedName("item_url")
     val site: String?
 ) {
-    fun toWishItemDetail(detail: ItemDetail) = WishItemDetail(
-        detail.createAt,
-        detail.folderId,
-        if (detail.folderName.isNullOrBlank()) null else detail.folderName,
-        detail.id,
-        detail.image,
-        if (detail.memo.isNullOrBlank()) null else detail.memo,
-        detail.name,
-        detail.notiDate,
-        detail.notiType,
-        detail.price,
-        if (detail.site.isNullOrBlank()) null else detail.site
+    fun toWishItemDetail() = WishItemDetail(
+        createAt,
+        folderId,
+        if (folderName.isNullOrBlank()) null else folderName,
+        id,
+        image,
+        if (memo.isNullOrBlank()) null else memo,
+        name,
+        notiDate,
+        notiType,
+        price,
+        if (site.isNullOrBlank()) null else site
     )
 }
