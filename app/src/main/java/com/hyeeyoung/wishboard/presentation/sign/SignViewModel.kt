@@ -52,7 +52,7 @@ class SignViewModel @Inject constructor(
         signProcessStatus.value = ProcessStatus.IN_PROGRESS
         viewModelScope.launch {
             safeLet(registrationEmail.value, registrationPassword.value) { email, password ->
-                isCompletedSignUp.value = signRepository.signUp(email, password)
+                isCompletedSignUp.value = signRepository.signUp(email, password).getOrNull() != null
                 signProcessStatus.postValue(ProcessStatus.IDLE)
             }
         }
@@ -75,7 +75,7 @@ class SignViewModel @Inject constructor(
         if (loginEmail.value == null) return
         viewModelScope.launch {
             if (inputVerificationCode.value == verificationCode.value) {
-                isCompletedSignIn.value = signRepository.signInEmail(loginEmail.value!!)
+                isCompletedSignIn.value = signRepository.signInEmail(loginEmail.value!!).getOrNull() != null
             } else {
                 isCorrectedVerificationCode.value = false
             }

@@ -1,6 +1,6 @@
 package com.hyeeyoung.wishboard.data.model.auth
 
-data class ResponseSignIn(
+data class ResponseAuth(
     val token: Token,
-    val nickname: String?
+    val tempNickname: String?
 )
