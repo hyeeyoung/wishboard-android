@@ -4,24 +4,18 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hyeeyoung.wishboard.WishBoardApp
-import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
-import com.hyeeyoung.wishboard.presentation.folder.types.FolderListViewType
 import com.hyeeyoung.wishboard.domain.repositories.FolderRepository
-import com.hyeeyoung.wishboard.data.services.AWSS3Service
+import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
+import com.hyeeyoung.wishboard.presentation.folder.types.FolderListViewType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class FolderViewModel @Inject constructor(
     private val folderRepository: FolderRepository,
 ) : ViewModel() {
-    private val token = WishBoardApp.prefs.getUserToken()
-
     private val folderList = MutableLiveData<List<FolderItem>?>(listOf())
     private val folderListAdapter =
         FolderListAdapter(FolderListViewType.VERTICAL_VIEW_TYPE)
@@ -40,9 +34,8 @@ class FolderViewModel @Inject constructor(
     }
 
     fun fetchFolderList() {
-        if (token == null) return
         viewModelScope.launch {
-            folderRepository.fetchFolderList(token).let { folders ->
+            folderRepository.fetchFolderList().let { folders ->
                 folderList.value = folders
                 folderListAdapter.setData(folders)
             }
@@ -51,7 +44,6 @@ class FolderViewModel @Inject constructor(
 
     fun uploadFolder() {
         if (folderRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return
-        if (token == null) return
         val folderName = folderName.value?.trim() ?: return
 
         if (isEditMode) {
@@ -64,7 +56,7 @@ class FolderViewModel @Inject constructor(
     private fun createNewFolder(folderName: String) {
         folderRegistrationStatus.value = ProcessStatus.IN_PROGRESS
         viewModelScope.launch {
-            val result = folderRepository.createNewFolder(token!!, FolderItem(name = folderName))
+            val result = folderRepository.createNewFolder(FolderItem(name = folderName))
             isCompleteUpload.value = result?.first?.first
             isExistFolderName.value = result?.first?.second == 409
             result?.second?.let { folderId ->
@@ -85,7 +77,7 @@ class FolderViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            val result = folderRepository.updateFolderName(token!!, oldFolder.id, folderName)
+            val result = folderRepository.updateFolderName(oldFolder.id, folderName)
             if (result?.first == true) {
                 folderListAdapter.updateData(oldFolder, newFolder)
             }
@@ -96,9 +88,9 @@ class FolderViewModel @Inject constructor(
     }
 
     fun deleteFolder(folder: FolderItem?) {
-        if (token == null || folder?.id == null) return
+        if (folder?.id == null) return
         viewModelScope.launch {
-            val result = folderRepository.deleteFolder(token, folder.id)
+            val result = folderRepository.deleteFolder(folder.id)
             if (result) {
                 folderListAdapter.deleteData(folder)
                 folderList.value = folderListAdapter.getData()

@@ -1,71 +1,65 @@
 package com.hyeeyoung.wishboard.data.repositories
 
-import com.hyeeyoung.wishboard.WishBoardApp
-import com.hyeeyoung.wishboard.data.model.user.UserInfo
+import com.hyeeyoung.wishboard.data.local.WishBoardPreference
+import com.hyeeyoung.wishboard.data.model.auth.RequestAuth
+import com.hyeeyoung.wishboard.data.model.auth.ResponseAuth
 import com.hyeeyoung.wishboard.data.services.retrofit.AuthService
 import com.hyeeyoung.wishboard.domain.repositories.SignRepository
 import timber.log.Timber
 import javax.inject.Inject
 
-class SignRepositoryImpl @Inject constructor(private val authService: AuthService) :
-    SignRepository {
-    override suspend fun signUp(email: String, password: String): Boolean {
-        try {
-            val response = authService.signUpUser(UserInfo(email = email, password = password))
-            val result = response.body()
-            // TODO 네트워크에 연결되지 않은 경우 예외처리 필요
-            if (response.isSuccessful) {
-                Timber.d("회원가입 성공")
-                result?.data?.token?.let {
-                    WishBoardApp.prefs.setUserInfo(it, email, result.data.tempNickname)
-                }
-            } else {
-                Timber.e("회원가입 실패: ${response.code()}")
+class SignRepositoryImpl @Inject constructor(
+    private val authService: AuthService,
+    private val localStorage: WishBoardPreference
+) : SignRepository {
+    override suspend fun signUp(email: String, password: String): Result<ResponseAuth?> =
+        runCatching {
+            authService.signUpUser(RequestAuth(email, password)).body()?.data
+        }.onSuccess { response ->
+            Timber.d("회원가입 성공")
+            response?.let {
+                localStorage.setUserInfo(
+                    email,
+                    it.tempNickname,
+                    it.token.accessToken,
+                    it.token.refreshToken
+                )
             }
-            return response.isSuccessful
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return false
+        }.onFailure {
+            Timber.e("회원가입 실패: ${it.message}")
         }
-    }
 
-    override suspend fun signIn(email: String, password: String): Boolean {
-        try {
-            val response = authService.signInUser(UserInfo(email = email, password = password))
-            val result = response.body()
-            if (response.isSuccessful) {
-                Timber.d("로그인 성공")
-                result?.data?.token?.let {
-                    WishBoardApp.prefs.setUserInfo(it, email, result.data.tempNickname)
-                }
-            } else {
-                Timber.e("로그인 실패: ${response.code()}")
+    override suspend fun signIn(email: String, password: String): Result<ResponseAuth?> =
+        runCatching {
+            authService.signInUser(RequestAuth(email, password)).body()?.data
+        }.onSuccess { response ->
+            Timber.d("로그인 성공")
+            response?.let {
+                localStorage.setUserInfo(
+                    email,
+                    it.tempNickname,
+                    it.token.accessToken,
+                    it.token.refreshToken
+                )
             }
-            return response.isSuccessful
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return false
+        }.onFailure {
+            Timber.e("로그인 실패: ${it.message}")
         }
-    }
 
-    override suspend fun signInEmail(email: String): Boolean {
-        try {
-            val response = authService.signInEmail(true, email)
-            val result = response.body()
-            if (response.isSuccessful) {
-                Timber.d("이메일 인증 로그인 성공")
-                result?.data?.token?.let {
-                    WishBoardApp.prefs.setUserInfo(it, email, result.data.tempNickname)
-                }
-                // TODO save the pushState
-            } else {
-                Timber.e("이메일 인증 로그인 실패: ${response.code()}")
-            }
-            return response.isSuccessful
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return false
+    override suspend fun signInEmail(email: String): Result<ResponseAuth?> = runCatching {
+        authService.signInEmail(true, email).body()?.data
+    }.onSuccess { response ->
+        Timber.d("이메일 인증 로그인 성공")
+        response?.let {
+            localStorage.setUserInfo(
+                email,
+                it.tempNickname,
+                it.token.accessToken,
+                it.token.refreshToken
+            )
         }
+    }.onFailure {
+        Timber.e("이메일 인증 로그인 실패: ${it.message}")
     }
 
     override suspend fun requestVerificationMail(email: String): Pair<Pair<Boolean, String?>, Int>? {
@@ -100,5 +94,14 @@ class SignRepositoryImpl @Inject constructor(private val authService: AuthServic
             e.printStackTrace()
             return null
         }
+    }
+
+    override suspend fun logout(): Result<Boolean?> = runCatching {
+        authService.logout().isSuccessful
+    }.onSuccess {
+        Timber.d("로그아웃 성공")
+        localStorage.clear()
+    }.onFailure {
+        Timber.e("로그아웃 실패")
     }
 }

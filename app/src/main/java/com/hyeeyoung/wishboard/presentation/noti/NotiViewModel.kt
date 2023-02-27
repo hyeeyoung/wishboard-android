@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.domain.model.NotiItemInfo
 import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
 import com.hyeeyoung.wishboard.presentation.noti.adapters.NotiListAdapter
@@ -19,8 +18,6 @@ import javax.inject.Inject
 class NotiViewModel @Inject constructor(
     private val notiRepository: NotiRepository,
 ) : ViewModel() {
-    private val token = WishBoardApp.prefs.getUserToken()
-
     private var notiList = MutableLiveData<List<NotiItemInfo>?>(listOf())
     private var selectedNotiList = MutableLiveData<List<NotiItemInfo>?>(listOf())
     private var notiDateList = MutableLiveData<List<String>?>(listOf())
@@ -34,28 +31,25 @@ class NotiViewModel @Inject constructor(
     }
 
     fun fetchPreviousNotiList() {
-        if (token == null) return
         viewModelScope.launch {
-            val items = notiRepository.fetchPreviousNotiList(token)?.map { it.toNotiItemInfo() }
+            val items = notiRepository.fetchPreviousNotiList()?.map { it.toNotiItemInfo() }
             notiList.value = items
             notiListAdapter.setData(items)
         }
     }
 
     fun fetchAllNotiList() {
-        if (token == null) return
         viewModelScope.launch {
-            val items = notiRepository.fetchAllNotiList(token)?.map { it.toNotiItemInfo() }
+            val items = notiRepository.fetchAllNotiList()?.map { it.toNotiItemInfo() }
             notiList.value = items
             setNotiDateList(items) // 캘린더 뷰 알림 날짜 표시를 위한 notiDateList 만들기
         }
     }
 
     fun updateNotiReadState(position: Int, itemId: Long) {
-        if (token == null) return
         notiListAdapter.updateReadState(position)
         viewModelScope.launch {
-            notiRepository.updateNotiReadState(token, itemId)
+            notiRepository.updateNotiReadState(itemId)
         }
     }
 

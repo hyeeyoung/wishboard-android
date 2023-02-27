@@ -3,8 +3,9 @@ package com.hyeeyoung.wishboard.presentation.my
 import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.*
-import com.hyeeyoung.wishboard.WishBoardApp
+import com.hyeeyoung.wishboard.data.local.WishBoardPreference
 import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
+import com.hyeeyoung.wishboard.domain.repositories.SignRepository
 import com.hyeeyoung.wishboard.domain.repositories.UserRepository
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.util.ContentUriRequestBody
@@ -21,10 +22,10 @@ import javax.inject.Inject
 class MyViewModel @Inject constructor(
     private val application: Application,
     private val notiRepository: NotiRepository,
+    private val signRepository: SignRepository,
     private val userRepository: UserRepository,
+    private val localStorage: WishBoardPreference
 ) : ViewModel() {
-    private val token = WishBoardApp.prefs.getUserToken()
-
     private var userEmail = MutableLiveData<String?>()
     private var userNickname = MutableLiveData<String>()
     private var userProfileImage = MutableLiveData<String?>()
@@ -38,6 +39,8 @@ class MyViewModel @Inject constructor(
     private var profileEditStatus = MutableLiveData<ProcessStatus>()
 
     private var isCompleteUpdateUserInfo = MutableLiveData<Boolean?>()
+    private val _isCompleteLogout = MutableLiveData<Boolean?>()
+    val isCompleteLogout: LiveData<Boolean?> get() = _isCompleteLogout
     private var isCompleteUserDelete = MutableLiveData<Boolean?>()
     private var isExistNickname = MutableLiveData<Boolean?>()
     private var isCorrectedEmail = MutableLiveData<Boolean?>()
@@ -54,11 +57,10 @@ class MyViewModel @Inject constructor(
     }
 
     fun fetchUserInfo() {
-        if (token == null) return
-        viewModelScope.launch { // TODO 네트워크에 연결되어있지 않은 경우, 내부 저장소에서 유저 정보 가져오기
-            userRepository.fetchUserInfo(token).let {
-                userEmail.value = it?.email ?: WishBoardApp.prefs.getUserEmail()
-                userNickname.value = it?.nickname ?: WishBoardApp.prefs.getUserNickName()
+        viewModelScope.launch {
+            userRepository.fetchUserInfo().let {
+                userEmail.value = it?.email ?: localStorage.userEmail
+                userNickname.value = it?.nickname ?: localStorage.userNickname
                 userProfileImage.value = it?.profileImage
                 pushState.value = convertIntToBooleanPushState(it?.pushState)
             }
@@ -67,7 +69,6 @@ class MyViewModel @Inject constructor(
 
     fun updateUserInfo() {
         profileEditStatus.value = ProcessStatus.IN_PROGRESS
-        if (token == null) return
         viewModelScope.launch {
             val nickname =
                 if (userNickname.value == inputUserNickName.value) null else inputUserNickName.value
@@ -82,7 +83,6 @@ class MyViewModel @Inject constructor(
 
             val result =
                 userRepository.updateUserInfo(
-                    token,
                     nickname.toString().toPlainNullableRequestBody(),
                     imageMultipartBody
                 )
@@ -97,27 +97,23 @@ class MyViewModel @Inject constructor(
     }
 
     fun updatePushState() {
-        if (token == null || pushState.value == null) return
+        if (pushState.value == null) return
         pushState.value = !pushState.value!!
         viewModelScope.launch {
-            notiRepository.updatePushState(token, pushState.value!!)
+            notiRepository.updatePushState(pushState.value!!)
         }
     }
 
     fun signOut() {
-        if (token == null) return
         viewModelScope.launch {
-            userRepository.registerFCMToken(token, null)
+            _isCompleteLogout.value = signRepository.logout().getOrNull() == true
         }
-        WishBoardApp.prefs.clearUserInfo()
     }
 
     fun deleteUserAccount() {
-        if (token == null) return
         viewModelScope.launch {
-            isCompleteUserDelete.postValue(userRepository.deleteUserAccount(token))
+            isCompleteUserDelete.value = userRepository.deleteUserAccount().getOrNull() == true
         }
-        WishBoardApp.prefs.clearUserInfo()
     }
 
     /** 서버에서 전달받은 push_state 값은 Int타입으로, 알림 스위치 on/off를 위해 Boolean타입으로 변경 */
@@ -161,7 +157,7 @@ class MyViewModel @Inject constructor(
     /** 유저 프로필 업데이트 이후 로컬에 닉네임을 저장 */
     // TODO 함수명 변경
     private fun setUserInfo() {
-        WishBoardApp.prefs.setUserNickName(inputUserNickName.value!!)
+        localStorage.userNickname = inputUserNickName.value!!
     }
 
     fun setSelectedUserProfileImage(imageUri: Uri, imageFile: File) {

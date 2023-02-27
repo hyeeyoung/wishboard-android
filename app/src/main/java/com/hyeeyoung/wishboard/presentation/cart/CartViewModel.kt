@@ -1,7 +1,6 @@
 package com.hyeeyoung.wishboard.presentation.cart
 
 import androidx.lifecycle.*
-import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.data.model.cart.CartItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.domain.repositories.CartRepository
@@ -16,7 +15,6 @@ import javax.inject.Inject
 class CartViewModel @Inject constructor(
     private val cartRepository: CartRepository,
 ) : ViewModel() {
-    private val token = WishBoardApp.prefs.getUserToken()
     private val cartList = MutableLiveData<List<CartItem>?>(listOf())
     private val cartListAdapter = CartListAdapter()
     private var totalPrice = MediatorLiveData<Int>()
@@ -27,11 +25,10 @@ class CartViewModel @Inject constructor(
     }
 
     private fun fetchCartList() {
-        if (token == null) return
         viewModelScope.launch {
             var items: List<CartItem>?
             withContext(Dispatchers.IO) {
-                items = cartRepository.fetchCartList(token)
+                items = cartRepository.fetchCartList()
                 cartList.postValue(items)
             }
             withContext(Dispatchers.Main) {
@@ -41,9 +38,8 @@ class CartViewModel @Inject constructor(
     }
 
     fun removeToCart(itemId: Long, position: Int) {
-        if (token == null) return
         viewModelScope.launch {
-            val isSuccessful = cartRepository.removeToCart(token, itemId)
+            val isSuccessful = cartRepository.removeToCart(itemId)
             if (!isSuccessful) return@launch
 
             cartListAdapter.removeItem(position)
@@ -69,9 +65,8 @@ class CartViewModel @Inject constructor(
     }
 
     private fun updateCartItemCount(item: CartItem, position: Int) {
-        if (token == null) return
         viewModelScope.launch {
-            val isSuccessful = cartRepository.updateCartItemCount(token, item)
+            val isSuccessful = cartRepository.updateCartItemCount(item)
             if (!isSuccessful) return@launch // TODO 장바구니 업데이트 실패 시 예외 처리 필요
 
             cartListAdapter.updateItem(position, item)

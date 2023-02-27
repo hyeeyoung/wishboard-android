@@ -9,9 +9,9 @@ import javax.inject.Inject
 
 class FolderRepositoryImpl @Inject constructor(private val folderService: FolderService) :
     FolderRepository {
-    override suspend fun fetchFolderList(token: String): List<FolderItem>? {
+    override suspend fun fetchFolderList(): List<FolderItem>? {
         try {
-            val response = folderService.fetchFolderList(token) ?: return null
+            val response = folderService.fetchFolderList() ?: return null
             if (response.isSuccessful) {
                 Timber.d("폴더 가져오기 성공")
             } else {
@@ -24,9 +24,9 @@ class FolderRepositoryImpl @Inject constructor(private val folderService: Folder
         }
     }
 
-    override suspend fun fetchFolderListSummary(token: String): List<FolderItem>? {
+    override suspend fun fetchFolderListSummary(): List<FolderItem>? {
         try {
-            val response = folderService.fetchFolderListSummary(token) ?: return null
+            val response = folderService.fetchFolderListSummary() ?: return null
             if (response.isSuccessful) {
                 Timber.d("폴더 요약본 가져오기 성공")
             } else {
@@ -39,9 +39,9 @@ class FolderRepositoryImpl @Inject constructor(private val folderService: Folder
         }
     }
 
-    override suspend fun fetchItemsInFolder(token: String, folderId: Long): List<WishItem>? {
+    override suspend fun fetchItemsInFolder(folderId: Long): List<WishItem>? {
         try {
-            val response = folderService.fetchItemsInFolder(token, folderId) ?: return null
+            val response = folderService.fetchItemsInFolder(folderId) ?: return null
             if (response.isSuccessful) {
                 Timber.d("폴더 내 아이템 가져오기 성공")
             } else {
@@ -54,12 +54,9 @@ class FolderRepositoryImpl @Inject constructor(private val folderService: Folder
         }
     }
 
-    override suspend fun createNewFolder(
-        token: String,
-        folderItemInfo: FolderItem
-    ): Pair<Pair<Boolean, Int>, Long?>? {
+    override suspend fun createNewFolder(folderItemInfo: FolderItem): Pair<Pair<Boolean, Int>, Long?>? {
         try {
-            val response = folderService.createNewFolder(token, folderItemInfo)
+            val response = folderService.createNewFolder(folderItemInfo)
             if (response.isSuccessful) {
                 Timber.d("폴더 추가 성공")
             } else {
@@ -72,13 +69,9 @@ class FolderRepositoryImpl @Inject constructor(private val folderService: Folder
         }
     }
 
-    override suspend fun updateFolderName(
-        token: String,
-        folderId: Long,
-        folderName: String
-    ): Pair<Boolean, Int>? {
+    override suspend fun updateFolderName(folderId: Long, folderName: String): Pair<Boolean, Int>? {
         try {
-            val response = folderService.updateFolderName(token, folderId, folderName)
+            val response = folderService.updateFolderName(folderId, folderName)
 
             if (response.isSuccessful) {
                 Timber.d("폴더명 수정 성공")
@@ -92,9 +85,9 @@ class FolderRepositoryImpl @Inject constructor(private val folderService: Folder
         }
     }
 
-    override suspend fun deleteFolder(token: String, folderId: Long): Boolean {
+    override suspend fun deleteFolder(folderId: Long): Boolean {
         try {
-            val response = folderService.deleteFolder(token, folderId)
+            val response = folderService.deleteFolder(folderId)
             if (response.isSuccessful) {
                 Timber.d("폴더 삭제 성공")
             } else {

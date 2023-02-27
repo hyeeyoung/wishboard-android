@@ -9,38 +9,24 @@ import retrofit2.http.*
 
 interface FolderService {
     @GET("folder")
-    suspend fun fetchFolderList(
-        @Header("Authorization") token: String
-    ): Response<List<FolderItem>>?
+    suspend fun fetchFolderList(): Response<List<FolderItem>>?
 
     @GET("folder/list")
-    suspend fun fetchFolderListSummary(
-        @Header("Authorization") token: String
-    ): Response<List<FolderItem>>?
+    suspend fun fetchFolderListSummary(): Response<List<FolderItem>>?
 
     @GET("folder/item/{folder_id}")
-    suspend fun fetchItemsInFolder(
-        @Header("Authorization") token: String,
-        @Path("folder_id") folderId: Long
-    ): Response<List<WishItem>>?
+    suspend fun fetchItemsInFolder(@Path("folder_id") folderId: Long): Response<List<WishItem>>?
 
     @POST("folder")
-    suspend fun createNewFolder(
-        @Header("Authorization") token: String,
-        @Body folderItem: FolderItem
-    ): Response<BaseResponseResult<BaseResponseData>>
+    suspend fun createNewFolder(@Body folderItem: FolderItem): Response<BaseResponseResult<BaseResponseData>>
 
     @FormUrlEncoded
     @PUT("folder/{folder_id}")
     suspend fun updateFolderName(
-        @Header("Authorization") token: String,
         @Path("folder_id") folderId: Long,
         @Field("folder_name") folderName: String
     ): Response<BaseResponseResult<BaseResponseData?>>
 
     @DELETE("folder/{folder_id}")
-    suspend fun deleteFolder(
-        @Header("Authorization") token: String,
-        @Path("folder_id") folderId: Long,
-    ): Response<BaseResponseResult<BaseResponseData?>>
+    suspend fun deleteFolder(@Path("folder_id") folderId: Long): Response<BaseResponseResult<BaseResponseData?>>
 }
