@@ -9,11 +9,10 @@ object ConnectedCompat {
     private val IMPL: ConnectedCompatImpl
 
     init {
-        IMPL = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        IMPL = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
             MarshMallowImpl
-        } else {
+        else
             BaseImpl
-        }
     }
 
     fun isConnected(connectivityManager: ConnectivityManager) =
