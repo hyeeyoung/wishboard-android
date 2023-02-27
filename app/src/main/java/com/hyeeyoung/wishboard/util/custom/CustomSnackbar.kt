@@ -17,21 +17,23 @@ class CustomSnackbar(
     view: View,
     private val message: String,
     private val isTop: Boolean,
-    private val callback: BaseTransientBottomBar.BaseCallback<Snackbar>?
+    private val callback: BaseTransientBottomBar.BaseCallback<Snackbar>?,
+    private val duration: Int
 ) {
     companion object {
         fun make(
             view: View,
             message: String,
             isTop: Boolean = true,
-            callback: BaseTransientBottomBar.BaseCallback<Snackbar>? = null
-        ) = CustomSnackbar(view, message, isTop, callback)
+            callback: BaseTransientBottomBar.BaseCallback<Snackbar>? = null,
+            duration: Int = LENGTH_SHORT,
+        ) = CustomSnackbar(view, message, isTop, callback, duration)
     }
 
     private val context = view.context
     private val snackbarBinding: SnackbarItemBinding =
         DataBindingUtil.inflate(LayoutInflater.from(context), R.layout.snackbar_item, null, false)
-    private val snackbar = Snackbar.make(view, "", LENGTH_SHORT)
+    private val snackbar = Snackbar.make(view, "", duration)
     private val snackbarLayout = snackbar.view as Snackbar.SnackbarLayout
     private val layoutParams = LinearLayout.LayoutParams(snackbar.view.layoutParams)
 
@@ -67,5 +69,9 @@ class CustomSnackbar(
 
     fun show() {
         snackbar.show()
+    }
+
+    fun dismiss() {
+        if (duration == Snackbar.LENGTH_INDEFINITE) snackbar.dismiss()
     }
 }
