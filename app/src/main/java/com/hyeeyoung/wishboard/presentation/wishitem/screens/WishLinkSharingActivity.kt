@@ -16,7 +16,6 @@ import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ActivityWishLinkSharingBinding
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
-import com.hyeeyoung.wishboard.util.NetworkConnection
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
 import com.hyeeyoung.wishboard.presentation.folder.screens.FolderUploadBottomDialogFragment
@@ -114,14 +113,6 @@ class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemCli
                 }
                 else -> {}
             }
-        }
-        NetworkConnection(this).observe(this) { isConnected ->
-            binding.networkView.visibility =
-                if (isConnected == true) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
-                }
         }
     }
 

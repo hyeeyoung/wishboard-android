@@ -13,10 +13,9 @@ import androidx.navigation.ui.setupWithNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ActivityMainBinding
 import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
-import com.hyeeyoung.wishboard.util.NetworkConnection
-import com.hyeeyoung.wishboard.util.DialogListener
-import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
 import com.hyeeyoung.wishboard.presentation.howtouse.screens.HowToUseActivity
+import com.hyeeyoung.wishboard.util.BaseActivity
+import com.hyeeyoung.wishboard.util.DialogListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,7 +39,6 @@ class MainActivity : AppCompatActivity() {
         }
 
         initializeView()
-        addObservers()
     }
 
     private fun initializeView() {
@@ -60,17 +58,6 @@ class MainActivity : AppCompatActivity() {
                     else -> binding.bottomNav.visibility = View.VISIBLE
                 }
             }
-        }
-    }
-
-    private fun addObservers() {
-        NetworkConnection(this).observe(this) { isConnected ->
-            binding.networkView.visibility =
-                if (isConnected == true) {
-                    View.GONE
-                } else {
-                    View.VISIBLE
-                }
         }
     }
 
