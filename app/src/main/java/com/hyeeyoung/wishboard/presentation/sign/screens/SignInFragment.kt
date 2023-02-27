@@ -55,10 +55,10 @@ class SignInFragment : Fragment() {
                     startActivity(Intent(requireContext(), MainActivity::class.java))
                     requireActivity().finish()
                 }
-                else -> {
-                    // TODO 에러케이스에 따라 에러메세지 분리 및 스낵바 커스텀 필요
+                false -> {
                     CustomSnackbar.make(binding.layout, getString(R.string.sign_in_failed_snackbar_text), false).show()
                 }
+                else -> {}
             }
         }
         viewModel.getSignProcessStatus().observe(viewLifecycleOwner) {
