@@ -4,8 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
@@ -13,30 +11,30 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.R
+import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.databinding.ActivityWishLinkSharingBinding
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
-import com.hyeeyoung.wishboard.data.model.folder.FolderItem
-import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
 import com.hyeeyoung.wishboard.presentation.folder.screens.FolderUploadBottomDialogFragment
 import com.hyeeyoung.wishboard.presentation.noti.screens.NotiSettingBottomDialogFragment
 import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel
+import com.hyeeyoung.wishboard.util.BaseActivity
+import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class WishLinkSharingActivity : AppCompatActivity(), FolderListAdapter.OnItemClickListener,
+class WishLinkSharingActivity :
+    BaseActivity<ActivityWishLinkSharingBinding>(R.layout.activity_wish_link_sharing),
+    FolderListAdapter.OnItemClickListener,
     FolderListAdapter.OnNewFolderClickListener {
     private val viewModel: WishItemRegistrationViewModel by viewModels()
-    private lateinit var binding: ActivityWishLinkSharingBinding
-
     private lateinit var notiSettingBottomDialog: BottomSheetDialogFragment
     private var folderAddDialog: FolderUploadBottomDialogFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_wish_link_sharing)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this@WishLinkSharingActivity
 
