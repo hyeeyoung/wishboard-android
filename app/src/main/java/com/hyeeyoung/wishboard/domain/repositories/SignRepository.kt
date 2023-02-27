@@ -8,4 +8,5 @@ interface SignRepository {
     suspend fun signInEmail(email: String): Result<ResponseAuth?>
     suspend fun requestVerificationMail(email: String): Pair<Pair<Boolean, String?>, Int>?
     suspend fun checkRegisteredUser(email: String): Pair<Boolean, Int>?
+    suspend fun logout(): Result<Boolean?>
 }

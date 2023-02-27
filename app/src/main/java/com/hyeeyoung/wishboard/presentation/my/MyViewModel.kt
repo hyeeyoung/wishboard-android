@@ -3,9 +3,9 @@ package com.hyeeyoung.wishboard.presentation.my
 import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.*
-import com.hyeeyoung.wishboard.WishBoardApp
 import com.hyeeyoung.wishboard.data.local.WishBoardPreference
 import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
+import com.hyeeyoung.wishboard.domain.repositories.SignRepository
 import com.hyeeyoung.wishboard.domain.repositories.UserRepository
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.util.ContentUriRequestBody
@@ -22,6 +22,7 @@ import javax.inject.Inject
 class MyViewModel @Inject constructor(
     private val application: Application,
     private val notiRepository: NotiRepository,
+    private val signRepository: SignRepository,
     private val userRepository: UserRepository,
     private val localStorage: WishBoardPreference
 ) : ViewModel() {
@@ -38,6 +39,8 @@ class MyViewModel @Inject constructor(
     private var profileEditStatus = MutableLiveData<ProcessStatus>()
 
     private var isCompleteUpdateUserInfo = MutableLiveData<Boolean?>()
+    private val _isCompleteLogout = MutableLiveData<Boolean?>()
+    val isCompleteLogout: LiveData<Boolean?> get() = _isCompleteLogout
     private var isCompleteUserDelete = MutableLiveData<Boolean?>()
     private var isExistNickname = MutableLiveData<Boolean?>()
     private var isCorrectedEmail = MutableLiveData<Boolean?>()
@@ -103,9 +106,8 @@ class MyViewModel @Inject constructor(
 
     fun signOut() {
         viewModelScope.launch {
-            userRepository.registerFCMToken(null)
+            _isCompleteLogout.value = signRepository.logout().getOrNull() == true
         }
-        WishBoardApp.prefs.clearUserInfo()
     }
 
     fun deleteUserAccount() {

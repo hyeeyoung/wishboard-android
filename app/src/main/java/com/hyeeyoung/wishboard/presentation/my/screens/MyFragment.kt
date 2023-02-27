@@ -125,6 +125,13 @@ class MyFragment : Fragment() {
             }
         }
 
+        viewModel.isCompleteLogout.observe(viewLifecycleOwner) { isComplete ->
+            if (isComplete == true) {
+                startActivity(Intent(requireContext(), SignActivity::class.java))
+                requireActivity().finish()
+            }
+        }
+
         // 프로필 수정 후 프로필 편집 뷰에서 마이페이지 복귀 시 프로필 정보 ui 업데이트
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
             ARG_PROFILE_UPDATE_INFO
@@ -158,8 +165,6 @@ class MyFragment : Fragment() {
                 override fun onButtonClicked(clicked: String) {
                     if (clicked == DialogButtonReplyType.YES.name) {
                         viewModel.signOut()
-                        startActivity(Intent(requireContext(), SignActivity::class.java))
-                        requireActivity().finish()
                     }
                     dismiss()
                 }
