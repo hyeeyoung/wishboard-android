@@ -104,7 +104,7 @@
                         android:fontFamily="@font/suit_m"
                         android:text="@{viewModel.userEmail}"
                         android:textColor="@color/gray_200"
-                        android:textSize="@dimen/typographyBaseDetail"
+                        android:textSize="@dimen/typographyDescription"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/user_name"
                         tools:text="wishboard@gmail.com" />
