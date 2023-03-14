@@ -240,16 +240,16 @@
         <item name="android:backgroundTint">@color/gray_25</item>
         <item name="android:layout_marginStart">@dimen/spacingBase</item>
         <item name="android:layout_marginEnd">@dimen/spacingBase</item>
-        <item name="android:paddingTop">@dimen/spacing12</item>
-        <item name="android:paddingBottom">@dimen/spacing12</item>
+        <item name="android:paddingTop">13dp</item>
+        <item name="android:paddingBottom">13dp</item>
         <item name="android:paddingStart">@dimen/spacing10</item>
         <item name="android:paddingEnd">@dimen/spacing10</item>
     </style>
 
     <style name="Widget.EditText.Basic.TextAppearance" parent="">
         <item name="android:textColor">@color/gray_700</item>
-        <item name="android:fontFamily">@font/suit_m</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/suit_r</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Item.Basic.Upload.EditText.TextAppearance" parent="">
