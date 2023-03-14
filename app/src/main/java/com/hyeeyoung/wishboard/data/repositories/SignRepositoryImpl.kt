@@ -12,9 +12,9 @@ class SignRepositoryImpl @Inject constructor(
     private val authService: AuthService,
     private val localStorage: WishBoardPreference
 ) : SignRepository {
-    override suspend fun signUp(email: String, password: String): Result<ResponseAuth?> =
+    override suspend fun signUp(email: String, password: String, fcmToken: String): Result<ResponseAuth?> =
         runCatching {
-            authService.signUpUser(RequestAuth(email, password)).body()?.data
+            authService.signUpUser(RequestAuth(email, password, fcmToken)).body()?.data
         }.onSuccess { response ->
             Timber.d("회원가입 성공")
             response?.let {
@@ -29,9 +29,9 @@ class SignRepositoryImpl @Inject constructor(
             Timber.e("회원가입 실패: ${it.message}")
         }
 
-    override suspend fun signIn(email: String, password: String): Result<ResponseAuth?> =
+    override suspend fun signIn(email: String, password: String, fcmToken: String): Result<ResponseAuth?> =
         runCatching {
-            authService.signInUser(RequestAuth(email, password)).body()?.data
+            authService.signInUser(RequestAuth(email, password, fcmToken)).body()?.data
         }.onSuccess { response ->
             Timber.d("로그인 성공")
             response?.let {
@@ -46,8 +46,8 @@ class SignRepositoryImpl @Inject constructor(
             Timber.e("로그인 실패: ${it.message}")
         }
 
-    override suspend fun signInEmail(email: String): Result<ResponseAuth?> = runCatching {
-        authService.signInEmail(true, email).body()?.data
+    override suspend fun signInEmail(email: String, fcmToken: String): Result<ResponseAuth?> = runCatching {
+        authService.signInEmail(true, email, fcmToken).body()?.data
     }.onSuccess { response ->
         Timber.d("이메일 인증 로그인 성공")
         response?.let {
