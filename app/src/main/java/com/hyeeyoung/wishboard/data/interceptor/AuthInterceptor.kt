@@ -6,12 +6,11 @@ import com.google.gson.Gson
 import com.hyeeyoung.wishboard.BuildConfig
 import com.hyeeyoung.wishboard.data.local.WishBoardPreference
 import com.hyeeyoung.wishboard.data.model.auth.ResponseRefresh
-import com.hyeeyoung.wishboard.data.model.auth.Token
-import com.hyeeyoung.wishboard.util.extension.toPlainRequestBody
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import okhttp3.FormBody
 import okhttp3.Interceptor
 import okhttp3.Response
 import timber.log.Timber
@@ -26,17 +25,19 @@ class AuthInterceptor @Inject constructor(
         val originalRequest = chain.request()
         val authRequest =
             originalRequest.newBuilder()
-                .addHeader(AUTHORIZATION, "Bearer ${localStorage.accessToken}").build()
+                .addHeader(AUTHORIZATION, "$TOKEN_PREF${localStorage.accessToken}").build()
         val response = chain.proceed(authRequest)
 
         when (response.code) {
             401 -> {
+                Timber.d(localStorage.accessToken)
+                Timber.d(localStorage.refreshToken)
+                val requestBody = FormBody.Builder()
+                    .add(REFRESH_TOKEN, localStorage.refreshToken).build()
+
                 val refreshTokenRequest = originalRequest.newBuilder().get()
                     .url("${BuildConfig.BASE_URL}auth/refresh")
-                    .post(
-                        Token(localStorage.accessToken, localStorage.refreshToken).toString()
-                            .toPlainRequestBody()
-                    )
+                    .post(requestBody)
                     .build()
                 val refreshTokenResponse = chain.proceed(refreshTokenRequest)
 
@@ -53,7 +54,7 @@ class AuthInterceptor @Inject constructor(
 
                     val newRequest =
                         originalRequest.newBuilder()
-                            .addHeader(AUTHORIZATION, "Bearer ${localStorage.accessToken}")
+                            .addHeader(AUTHORIZATION, "$TOKEN_PREF${localStorage.accessToken}")
                             .build()
                     return chain.proceed(newRequest)
                 } else {
@@ -78,5 +79,7 @@ class AuthInterceptor @Inject constructor(
 
     companion object {
         private const val AUTHORIZATION = "Authorization"
+        private const val TOKEN_PREF = "Bearer "
+        private const val REFRESH_TOKEN = "refreshToken"
     }
 }
