@@ -153,15 +153,15 @@
                             android:text="@string/noti_setting"
                             android:textAppearance="@style/My.Menu.TextAppearance" />
 
-                        <com.google.android.material.switchmaterial.SwitchMaterial
+                        <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/noti_switch"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/spacing5"
+                            android:layout_height="20dp"
+                            android:layout_marginEnd="@dimen/spacingBase"
                             android:checked="@{viewModel.pushState}"
-                            app:switchMinWidth="50dp"
-                            app:thumbTint="@color/white"
-                            app:trackTint="@color/selector_switch_track" />
+                            app:switchMinWidth="40dp"
+                            app:thumb="@drawable/selector_switch_thumb"
+                            app:track="@drawable/selector_switch_track" />
 
                     </LinearLayout>
 
