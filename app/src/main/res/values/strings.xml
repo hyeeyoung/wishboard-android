@@ -161,6 +161,7 @@
 
     <!-- My -->
     <string name="my_title">마이페이지</string>
+    <string name="my_profile_edit">편집</string>
     <string name="my_section_title_settings">설정</string>
     <string name="my_section_sub_title_edit_password">비밀번호 변경</string>
 

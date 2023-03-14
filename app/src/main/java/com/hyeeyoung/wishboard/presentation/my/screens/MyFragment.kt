@@ -98,7 +98,7 @@ class MyFragment : Fragment() {
         binding.exit.setOnClickListener {
             showMembershipExitDialog()
         }
-        binding.profileImageContainer.setOnClickListener {
+        binding.profileEdit.setOnClickListener {
             findNavController().navigateSafe(R.id.action_my_to_profile_edit)
         }
     }
