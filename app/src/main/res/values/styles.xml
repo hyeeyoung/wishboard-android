@@ -215,7 +215,16 @@
         <item name="fontFamily">@font/suit_r</item>
     </style>
 
-    <!-- TODO need refacotring -->
+    <style name="Widget.EditText.Label.Style" parent="">
+        <item name="android:layout_marginStart">@dimen/spacingBase</item>
+        <item name="android:textColor">@color/gray_700</item>
+    </style>
+
+    <style name="Widget.EditText.Label.TextAppearance" parent="">
+        <item name="android:textSize">@dimen/typographyDescription</item>
+        <item name="android:fontFamily">@font/suit_m</item>
+    </style>
+
     <style name="Widget.EditText.Input" parent="Widget.MaterialComponents.TextView">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:paddingTop">@dimen/spacing20</item>
