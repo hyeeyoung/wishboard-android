@@ -156,11 +156,10 @@
                         <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/noti_switch"
                             android:layout_width="wrap_content"
-                            android:layout_height="20dp"
+                            android:layout_height="@dimen/spacing20"
                             android:layout_marginEnd="@dimen/spacingBase"
                             android:checked="@{viewModel.pushState}"
-                            app:switchMinWidth="40dp"
-                            app:thumb="@drawable/selector_switch_thumb"
+                            android:thumb="@drawable/selector_switch_thumb"
                             app:track="@drawable/selector_switch_track" />
 
                     </LinearLayout>
