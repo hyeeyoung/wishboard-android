@@ -58,6 +58,9 @@ class MyFragment : Fragment() {
         binding.notiSwitch.setOnClickListener {
             viewModel.updatePushState()
         }
+        binding.changePassword.setOnClickListener {
+            findNavController().navigateSafe(R.id.action_my_to_password_change)
+        }
         binding.contactUs.setOnClickListener {
             val email = Intent(Intent.ACTION_SEND)
             email.type = "plain/text"
@@ -91,7 +94,6 @@ class MyFragment : Fragment() {
                 R.string.my_section_sub_title_opensource_license
             )
         }
-
         binding.logout.setOnClickListener {
             showLogoutDialog()
         }

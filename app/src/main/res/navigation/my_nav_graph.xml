@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_my_to_profile_edit"
             app:destination="@id/profile_edit_fragment" />
+        <action
+            android:id="@+id/action_my_to_password_change"
+            app:destination="@id/password_change_fragment" />
     </fragment>
 
     <fragment
@@ -24,6 +27,12 @@
             android:id="@+id/action_my_profile_edit_to_gallery_image"
             app:destination="@id/gallery_image_fragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/password_change_fragment"
+        android:name="com.hyeeyoung.wishboard.presentation.my.screens.MyPasswordChangeFragment"
+        android:label="passwordChangeFragment"
+        tools:layout="@layout/fragment_password_change" />
 
     <fragment
         android:id="@+id/gallery_image_fragment"
