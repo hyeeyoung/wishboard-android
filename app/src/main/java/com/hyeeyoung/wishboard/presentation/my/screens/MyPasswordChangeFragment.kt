@@ -9,6 +9,7 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentPasswordChangeBinding
 import com.hyeeyoung.wishboard.presentation.my.MyViewModel
+import com.hyeeyoung.wishboard.util.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -19,6 +20,11 @@ class MyPasswordChangeFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.resetUserInfo()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        showKeyboard(requireContext(), binding.passwordInput, true)
     }
 
     override fun onCreateView(
