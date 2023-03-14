@@ -3,17 +3,21 @@ package com.hyeeyoung.wishboard.presentation.sign
 import android.os.CountDownTimer
 import android.util.Patterns
 import androidx.lifecycle.*
-import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
+import com.google.firebase.messaging.FirebaseMessaging
+import com.hyeeyoung.wishboard.data.local.WishBoardPreference
 import com.hyeeyoung.wishboard.domain.repositories.SignRepository
+import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.util.safeLet
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
 class SignViewModel @Inject constructor(
     private val signRepository: SignRepository,
+    private val localStorage: WishBoardPreference,
 ) : ViewModel() {
     private var loginEmail = MutableLiveData<String>()
     private var loginPassword = MutableLiveData<String>()
@@ -48,38 +52,58 @@ class SignViewModel @Inject constructor(
         initEnabledVerificationCodeButton()
     }
 
-    fun signUp() {
+    fun requestSign(signType: SignType) {
         signProcessStatus.value = ProcessStatus.IN_PROGRESS
+        when (signType) {
+            SignType.SIGN_UP -> initFCMToken(::signUp)
+            SignType.SIGN_IN -> initFCMToken(::signIn)
+            SignType.SIGN_IN_BY_EMAIL -> initFCMToken(::signInEmail)
+        }
+    }
+
+    private fun initFCMToken(onSuccess: (String) -> Unit) {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val fcmToken = task.result
+                localStorage.fcmToken = fcmToken
+                onSuccess(fcmToken)
+                Timber.d(fcmToken)
+            } else {
+                Timber.e("Fetching FCM registration token failed", task.exception)
+            }
+            signProcessStatus.value = ProcessStatus.IDLE
+        }
+    }
+
+    private fun signUp(fcmToken: String) {
         viewModelScope.launch {
             safeLet(registrationEmail.value, registrationPassword.value) { email, password ->
-                isCompletedSignUp.value = signRepository.signUp(email, password).getOrNull() != null
-                signProcessStatus.postValue(ProcessStatus.IDLE)
+                isCompletedSignUp.value =
+                    signRepository.signUp(email, password, fcmToken).getOrNull() != null
             }
         }
     }
 
-    fun signIn() {
-        signProcessStatus.value = ProcessStatus.IN_PROGRESS
+    private fun signIn(fcmToken: String) {
         viewModelScope.launch {
             safeLet(loginEmail.value, loginPassword.value) { email, password ->
-                isCompletedSignIn.value = signRepository.signIn(email, password).getOrNull() != null
-                signProcessStatus.value = ProcessStatus.IDLE
+                isCompletedSignIn.value =
+                    signRepository.signIn(email, password, fcmToken).getOrNull() != null
             }
         }
     }
 
-    fun signInEmail() {
+    private fun signInEmail(fcmToken: String) {
         timer.onFinish()
-
-        signProcessStatus.value = ProcessStatus.IN_PROGRESS
         if (loginEmail.value == null) return
         viewModelScope.launch {
             if (inputVerificationCode.value == verificationCode.value) {
-                isCompletedSignIn.value = signRepository.signInEmail(loginEmail.value!!).getOrNull() != null
+                isCompletedSignIn.value =
+                    signRepository.signInEmail(loginEmail.value!!, fcmToken).getOrNull() != null
             } else {
                 isCorrectedVerificationCode.value = false
             }
-            signProcessStatus.postValue(ProcessStatus.IDLE)
+            signProcessStatus.value = ProcessStatus.IDLE
         }
     }
 
