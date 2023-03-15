@@ -12,8 +12,11 @@ import com.hyeeyoung.wishboard.util.ContentUriRequestBody
 import com.hyeeyoung.wishboard.util.UiState
 import com.hyeeyoung.wishboard.util.extension.addSourceList
 import com.hyeeyoung.wishboard.util.extension.toPlainNullableRequestBody
+import com.hyeeyoung.wishboard.util.extension.toStateFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import java.io.File
@@ -51,6 +54,12 @@ class MyViewModel @Inject constructor(
     val newPassword = MutableStateFlow("")
     val reNewPassword = MutableStateFlow("")
     val passwordChangeState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
+    val isValidPassword = newPassword.map {
+        it.matches(PASSWORD_PATTERN.toRegex())
+    }.toStateFlow(viewModelScope, false)
+    val isEnabledPasswordCompleteButton = combine(isValidPassword, newPassword, reNewPassword) { isValid, new, renew ->
+        isValid && (new == renew)
+    }.toStateFlow(viewModelScope, false)
 
     val isEnabledEditCompleteButton = MediatorLiveData<Boolean>().apply {
         addSourceList(
@@ -203,4 +212,9 @@ class MyViewModel @Inject constructor(
     fun getCompleteDeleteUser(): LiveData<Boolean?> = isCompleteUserDelete
     fun isValidNicknameFormat(): LiveData<Boolean?> = isValidNicknameFormat
     fun getProfileEditStatus(): LiveData<ProcessStatus> = profileEditStatus
+
+    companion object {
+        private const val PASSWORD_PATTERN =
+            "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[{!\"#\$%&'()*+,-.:;<=>?@\\[\\]^_`{|}~/\\\\]).{7,15}.$"
+    }
 }
