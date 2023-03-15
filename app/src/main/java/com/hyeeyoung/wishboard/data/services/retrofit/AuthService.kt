@@ -32,7 +32,8 @@ interface AuthService {
     @POST("auth/re-signin")
     suspend fun signInEmail(
         @Field("verify") isVerify: Boolean,
-        @Field("email") email: String
+        @Field("email") email: String,
+        @Field("fcmToken") fcmToken: String
     ): Response<BaseResponseResult<ResponseAuth?>>
 
     @FormUrlEncoded

@@ -25,7 +25,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.initFCMToken()
         setActivityResultLauncher()
 
         // 회원가입 성공 시 알림 설정 다이얼로그 띄우기
