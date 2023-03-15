@@ -15,6 +15,7 @@ import com.hyeeyoung.wishboard.util.extension.toPlainNullableRequestBody
 import com.hyeeyoung.wishboard.util.extension.toStateFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -53,7 +54,8 @@ class MyViewModel @Inject constructor(
 
     val newPassword = MutableStateFlow("")
     val reNewPassword = MutableStateFlow("")
-    val passwordChangeState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
+    private val _passwordChangeState = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
+    val passwordChangeState: StateFlow<UiState<Boolean>> get() = _passwordChangeState
     val isValidPassword = newPassword.map {
         it.matches(PASSWORD_PATTERN.toRegex())
     }.toStateFlow(viewModelScope, false)
@@ -134,11 +136,12 @@ class MyViewModel @Inject constructor(
 
     fun changePassword() {
         viewModelScope.launch {
+            _passwordChangeState.value = UiState.Loading
             userRepository.changePassword(newPassword.value)
                 .onSuccess {
-                    passwordChangeState.value = UiState.Success(it)
+                    _passwordChangeState.value = UiState.Success(it)
                 }.onFailure {
-                    passwordChangeState.value = UiState.Error(it.message)
+                    _passwordChangeState.value = UiState.Error(it.message)
                 }
         }
     }

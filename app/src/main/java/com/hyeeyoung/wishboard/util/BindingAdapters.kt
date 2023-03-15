@@ -9,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.airbnb.lottie.LottieAnimationView
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.util.custom.CustomDecoration
 import java.text.DecimalFormat
@@ -87,4 +88,20 @@ fun RecyclerView.setDivider(
         color = dividerColor ?: Color.TRANSPARENT
     )
     addItemDecoration(decoration)
+}
+
+@BindingAdapter("visibility")
+fun <T> LottieAnimationView.setVisibility(state: UiState<T>) {
+    this.visibility = when (state) {
+        is UiState.Loading -> View.VISIBLE
+        else -> View.INVISIBLE
+    }
+}
+
+@BindingAdapter(value = ["textForLottieButton", "lottieState"], requireAll = true)
+fun <T> TextView.setTextLottieButton(textForLottieButton: String, lottieState: UiState<T>) {
+    text = when (lottieState) {
+        is UiState.Loading -> ""
+        else -> textForLottieButton
+    }
 }
