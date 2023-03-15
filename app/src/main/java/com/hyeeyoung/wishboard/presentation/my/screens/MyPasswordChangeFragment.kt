@@ -13,6 +13,7 @@ import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentPasswordChangeBinding
 import com.hyeeyoung.wishboard.presentation.my.MyViewModel
 import com.hyeeyoung.wishboard.util.UiState
+import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.showToast
 import com.hyeeyoung.wishboard.util.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,7 +53,7 @@ class MyPasswordChangeFragment : Fragment() {
             when (it) {
                 is UiState.Success -> {
                     with(requireContext()) {
-                        showToast(getString(R.string.my_password_change_snackbar_text))
+                        CustomSnackbar.make(binding.layout, getString(R.string.my_password_change_snackbar_text), false).show()
                         findNavController().popBackStack()
                     }
                 }
