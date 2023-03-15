@@ -9,9 +9,11 @@ import com.hyeeyoung.wishboard.domain.repositories.SignRepository
 import com.hyeeyoung.wishboard.domain.repositories.UserRepository
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.util.ContentUriRequestBody
+import com.hyeeyoung.wishboard.util.UiState
 import com.hyeeyoung.wishboard.util.extension.addSourceList
 import com.hyeeyoung.wishboard.util.extension.toPlainNullableRequestBody
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import java.io.File
@@ -45,6 +47,10 @@ class MyViewModel @Inject constructor(
     private var isExistNickname = MutableLiveData<Boolean?>()
     private var isCorrectedEmail = MutableLiveData<Boolean?>()
     private var isValidNicknameFormat = MutableLiveData<Boolean>()
+
+    val newPassword = MutableStateFlow("")
+    val reNewPassword = MutableStateFlow("")
+    val passwordChangeState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
 
     val isEnabledEditCompleteButton = MediatorLiveData<Boolean>().apply {
         addSourceList(
@@ -113,6 +119,17 @@ class MyViewModel @Inject constructor(
     fun deleteUserAccount() {
         viewModelScope.launch {
             isCompleteUserDelete.value = userRepository.deleteUserAccount().getOrNull() == true
+        }
+    }
+
+    fun changePassword() {
+        viewModelScope.launch {
+            userRepository.changePassword(newPassword.value)
+                .onSuccess {
+                    passwordChangeState.value = UiState.Success(it)
+                }.onFailure {
+                    passwordChangeState.value = UiState.Error(it.message)
+                }
         }
     }
 

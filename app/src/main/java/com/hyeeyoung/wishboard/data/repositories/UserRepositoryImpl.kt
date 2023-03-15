@@ -64,4 +64,8 @@ class UserRepositoryImpl @Inject constructor(
     }.onFailure {
         Timber.e("사용자 탈퇴 처리 실패: ${it.message}")
     }
+
+    override suspend fun changePassword(password: String): Result<Boolean> = runCatching {
+        userService.changePassword(password).success
+    }
 }
