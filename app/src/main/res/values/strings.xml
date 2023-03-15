@@ -187,7 +187,8 @@
     <string name="my_membership_exit_dialog_description">탈퇴하시면 회원정보는 7일 후\n파기돠며 파기된 데이터는 복구 불가능합니다.</string>
 
     <string name="my_profile_edit_title">프로필 수정</string>
-    <string name="my_profile_edit_nickname_hint">닉네임</string>
+    <string name="my_profile_nickname">닉네임</string>
+    <string name="my_profile_edit_nickname_hint">닉네임을 입력해 주세요.</string>
     <string name="my_nickname_condition_detail">닉네임은 한글, 영문, 숫자만 가능해요.</string>
     <string name="my_nickname_already_exist_detail">이미 사용 중인 닉네임이에요!</string>
 

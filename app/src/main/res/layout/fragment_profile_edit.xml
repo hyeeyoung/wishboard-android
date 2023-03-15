@@ -92,13 +92,24 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/nickname_label"
+            style="@style/Widget.EditText.Label.Style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/my_profile_nickname"
+            android:textAppearance="@style/Widget.EditText.Label.TextAppearance"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_image_container" />
+
         <EditText
             android:id="@+id/nickname_input"
             style="@style/Widget.EditText.Basic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing20"
-            android:layout_marginTop="@dimen/spacing20"
+            android:layout_marginTop="@dimen/spacingSmall"
             android:hint="@string/my_profile_edit_nickname_hint"
             android:maxLength="12"
             android:maxLines="1"
@@ -106,7 +117,7 @@
             android:paddingVertical="@dimen/spacing12"
             android:text="@{viewModel.inputUserNickname}"
             android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
-            app:layout_constraintTop_toBottomOf="@id/profile_image_container">
+            app:layout_constraintTop_toBottomOf="@id/nickname_label">
 
             <requestFocus />
         </EditText>
