@@ -215,7 +215,16 @@
         <item name="fontFamily">@font/suit_r</item>
     </style>
 
-    <!-- TODO need refacotring -->
+    <style name="Widget.EditText.Label.Style" parent="">
+        <item name="android:layout_marginStart">@dimen/spacingBase</item>
+        <item name="android:textColor">@color/gray_700</item>
+    </style>
+
+    <style name="Widget.EditText.Label.TextAppearance" parent="">
+        <item name="android:textSize">@dimen/typographyDescription</item>
+        <item name="android:fontFamily">@font/suit_m</item>
+    </style>
+
     <style name="Widget.EditText.Input" parent="Widget.MaterialComponents.TextView">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:paddingTop">@dimen/spacing20</item>
@@ -231,16 +240,16 @@
         <item name="android:backgroundTint">@color/gray_25</item>
         <item name="android:layout_marginStart">@dimen/spacingBase</item>
         <item name="android:layout_marginEnd">@dimen/spacingBase</item>
-        <item name="android:paddingTop">@dimen/spacing12</item>
-        <item name="android:paddingBottom">@dimen/spacing12</item>
+        <item name="android:paddingTop">13dp</item>
+        <item name="android:paddingBottom">13dp</item>
         <item name="android:paddingStart">@dimen/spacing10</item>
         <item name="android:paddingEnd">@dimen/spacing10</item>
     </style>
 
     <style name="Widget.EditText.Basic.TextAppearance" parent="">
         <item name="android:textColor">@color/gray_700</item>
-        <item name="android:fontFamily">@font/suit_m</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:fontFamily">@font/suit_r</item>
+        <item name="android:textSize">16sp</item>
     </style>
 
     <style name="Item.Basic.Upload.EditText.TextAppearance" parent="">
@@ -270,29 +279,22 @@
         <item name="android:fontFamily">@font/suit_m</item>
     </style>
 
-    <style name="My.Section.Title" parent="">
-        <item name="android:layout_marginTop">32dp</item>
-        <item name="android:layout_marginStart">@dimen/spacingBase</item>
-        <item name="android:layout_marginBottom">@dimen/spacing12</item>
-    </style>
-
-    <style name="My.Section.Title.TextAppearance" parent="">
-        <item name="android:textColor">@color/gray_700</item>
-        <item name="android:textSize">18sp</item>
-        <item name="android:fontFamily">@font/suit_sb</item>
-    </style>
-
-    <style name="My.Section.SubTitle" parent="">
-        <item name="android:paddingTop">@dimen/spacing12</item>
-        <item name="android:paddingBottom">@dimen/spacing12</item>
+    <style name="My.Menu.Style" parent="">
+        <item name="android:paddingTop">@dimen/spacingBase</item>
+        <item name="android:paddingBottom">@dimen/spacingBase</item>
         <item name="android:paddingStart">@dimen/spacingBase</item>
         <item name="android:paddingEnd">@dimen/spacingBase</item>
     </style>
 
-    <style name="My.Section.SubTitle.TextAppearance" parent="">
-        <item name="android:textColor">@color/gray_700</item>
+    <style name="My.Menu.TextAppearance" parent="">
+        <item name="android:textColor">@color/gray_600</item>
         <item name="android:textSize">@dimen/typographyBase</item>
         <item name="android:fontFamily">@font/suit_r</item>
+    </style>
+
+    <style name="My.Menu.Divider" parent="">
+        <item name="android:layout_height">6dp</item>
+        <item name="android:background">@color/gray_25</item>
     </style>
 
     <style name="Calendar" />

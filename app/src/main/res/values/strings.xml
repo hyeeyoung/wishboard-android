@@ -40,6 +40,7 @@
     <string name="wish_item_deletion_snackbar_text">아이템을 위시리스트에서 삭제했어요!🗑</string>
     <string name="noti_item_url_snackbar_text">쇼핑몰 링크를 등록해 주세요!🛍️️</string>
     <string name="my_profile_edit_completion_snackbar_text">프로필이 수정되었어요!👩‍🎤</string>
+    <string name="my_password_change_snackbar_text">비밀번호가 변경되었어요!👩‍🎤</string>
     <string name="my_delete_user_snackbar_text">탈퇴 완료되었어요. 이용해주셔서 감사합니다!☺️</string>
     <string name="check_network_connection_snackbar_text">네트워크 연결 상태를 확인해 주세요.</string>
     <string name="item_detail_invalid_site_snackbar_text">앗, 사이트를 찾을 수 없어요!🥲</string>
@@ -161,6 +162,7 @@
 
     <!-- My -->
     <string name="my_title">마이페이지</string>
+    <string name="my_profile_edit">편집</string>
     <string name="my_section_title_settings">설정</string>
     <string name="my_section_sub_title_edit_password">비밀번호 변경</string>
 
@@ -188,6 +190,12 @@
     <string name="my_profile_edit_nickname_hint">닉네임</string>
     <string name="my_nickname_condition_detail">닉네임은 한글, 영문, 숫자만 가능해요.</string>
     <string name="my_nickname_already_exist_detail">이미 사용 중인 닉네임이에요!</string>
+
+    <string name="my_new_password">새 비밀번호</string>
+    <string name="my_new_password_hint">새 비밀번호를 입력해 주세요.</string>
+    <string name="my_new_password_re_write">새 비밀번호 재입력</string>
+    <string name="my_new_password_re_write_hint">새 비밀번호를 다시 입력해 주세요.</string>
+    <string name="my_password_mismatch_detail">비밀번호가 일치하지 않아요!</string>
 
     <!-- How To Use -->
     <string name="how_to_use_yes_button_text">네! 알겠어요</string>

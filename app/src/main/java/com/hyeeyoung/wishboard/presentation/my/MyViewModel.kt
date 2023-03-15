@@ -9,9 +9,15 @@ import com.hyeeyoung.wishboard.domain.repositories.SignRepository
 import com.hyeeyoung.wishboard.domain.repositories.UserRepository
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.util.ContentUriRequestBody
+import com.hyeeyoung.wishboard.util.UiState
 import com.hyeeyoung.wishboard.util.extension.addSourceList
 import com.hyeeyoung.wishboard.util.extension.toPlainNullableRequestBody
+import com.hyeeyoung.wishboard.util.extension.toStateFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import java.io.File
@@ -45,6 +51,18 @@ class MyViewModel @Inject constructor(
     private var isExistNickname = MutableLiveData<Boolean?>()
     private var isCorrectedEmail = MutableLiveData<Boolean?>()
     private var isValidNicknameFormat = MutableLiveData<Boolean>()
+
+    val newPassword = MutableStateFlow("")
+    val reNewPassword = MutableStateFlow("")
+    private val _passwordChangeState = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
+    val passwordChangeState: StateFlow<UiState<Boolean>> get() = _passwordChangeState
+    val isValidPassword = newPassword.map {
+        it.matches(PASSWORD_PATTERN.toRegex())
+    }.toStateFlow(viewModelScope, false)
+    val isEnabledPasswordCompleteButton =
+        combine(isValidPassword, newPassword, reNewPassword) { isValid, new, renew ->
+            isValid && (new == renew)
+        }.toStateFlow(viewModelScope, false)
 
     val isEnabledEditCompleteButton = MediatorLiveData<Boolean>().apply {
         addSourceList(
@@ -113,6 +131,18 @@ class MyViewModel @Inject constructor(
     fun deleteUserAccount() {
         viewModelScope.launch {
             isCompleteUserDelete.value = userRepository.deleteUserAccount().getOrNull() == true
+        }
+    }
+
+    fun changePassword() {
+        viewModelScope.launch {
+            _passwordChangeState.value = UiState.Loading
+            userRepository.changePassword(newPassword.value)
+                .onSuccess {
+                    _passwordChangeState.value = UiState.Success(it)
+                }.onFailure {
+                    _passwordChangeState.value = UiState.Error(it.message)
+                }
         }
     }
 
@@ -186,4 +216,9 @@ class MyViewModel @Inject constructor(
     fun getCompleteDeleteUser(): LiveData<Boolean?> = isCompleteUserDelete
     fun isValidNicknameFormat(): LiveData<Boolean?> = isValidNicknameFormat
     fun getProfileEditStatus(): LiveData<ProcessStatus> = profileEditStatus
+
+    companion object {
+        private const val PASSWORD_PATTERN =
+            "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[{!\"#\$%&'()*+,-.:;<=>?@\\[\\]^_`{|}~/\\\\]).{7,15}.$"
+    }
 }

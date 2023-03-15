@@ -13,4 +13,5 @@ interface UserRepository {
 
     suspend fun registerFCMToken(fcmToken: String?): Boolean
     suspend fun deleteUserAccount(): Result<Boolean?>
+    suspend fun changePassword(password: String): Result<Boolean>
 }

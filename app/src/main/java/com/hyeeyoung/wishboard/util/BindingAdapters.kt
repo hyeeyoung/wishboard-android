@@ -1,15 +1,23 @@
 package com.hyeeyoung.wishboard.util
 
 import android.graphics.Color
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.ColorInt
+import androidx.core.view.isVisible
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.airbnb.lottie.LottieAnimationView
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.util.custom.CustomDecoration
 import java.text.DecimalFormat
+
+@BindingAdapter("visibility")
+fun View.setVisibility(isVisible: Boolean) {
+    this.isVisible = isVisible
+}
 
 @BindingAdapter("imageUrl")
 fun ImageView.setImageUrl(imageUrl: String?) {
@@ -80,4 +88,20 @@ fun RecyclerView.setDivider(
         color = dividerColor ?: Color.TRANSPARENT
     )
     addItemDecoration(decoration)
+}
+
+@BindingAdapter("visibility")
+fun <T> LottieAnimationView.setVisibility(state: UiState<T>) {
+    this.visibility = when (state) {
+        is UiState.Loading -> View.VISIBLE
+        else -> View.INVISIBLE
+    }
+}
+
+@BindingAdapter(value = ["textForLottieButton", "lottieState"], requireAll = true)
+fun <T> TextView.setTextLottieButton(textForLottieButton: String, lottieState: UiState<T>) {
+    text = when (lottieState) {
+        is UiState.Loading -> ""
+        else -> textForLottieButton
+    }
 }

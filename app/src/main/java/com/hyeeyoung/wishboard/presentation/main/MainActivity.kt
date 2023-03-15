@@ -49,7 +49,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
                     R.id.wish_fragment,
                     R.id.wish_item_detail_fragment,
                     R.id.gallery_image_fragment,
-                    R.id.profile_edit_fragment
+                    R.id.profile_edit_fragment,
+                    R.id.password_change_fragment
                     -> binding.bottomNav.visibility = View.GONE
                     else -> binding.bottomNav.visibility = View.VISIBLE
                 }
