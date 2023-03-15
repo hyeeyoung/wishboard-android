@@ -57,9 +57,10 @@ class MyViewModel @Inject constructor(
     val isValidPassword = newPassword.map {
         it.matches(PASSWORD_PATTERN.toRegex())
     }.toStateFlow(viewModelScope, false)
-    val isEnabledPasswordCompleteButton = combine(isValidPassword, newPassword, reNewPassword) { isValid, new, renew ->
-        isValid && (new == renew)
-    }.toStateFlow(viewModelScope, false)
+    val isEnabledPasswordCompleteButton =
+        combine(isValidPassword, newPassword, reNewPassword) { isValid, new, renew ->
+            isValid && (new == renew)
+        }.toStateFlow(viewModelScope, false)
 
     val isEnabledEditCompleteButton = MediatorLiveData<Boolean>().apply {
         addSourceList(
