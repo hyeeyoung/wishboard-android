@@ -10,10 +10,6 @@
 
         <import type="com.hyeeyoung.wishboard.R" />
 
-        <import type="android.view.View" />
-
-        <import type="com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus" />
-
         <variable
             name="viewModel"
             type="com.hyeeyoung.wishboard.presentation.my.MyViewModel" />
@@ -150,22 +146,25 @@
             android:layout_marginTop="@dimen/spacing20"
             android:layout_marginBottom="@dimen/spacingBase"
             android:enabled="@{viewModel.isEnabledEditCompleteButton}"
-            android:text="@{viewModel.profileEditStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.complete)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:lottieState="@{viewModel.userInfoUpdateState}"
+            app:textForLottieButton="@{@string/complete}"
             tools:text="@string/complete" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading_lottie"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/complete"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/complete"
+            app:lottie_autoPlay="true"
             app:lottie_fileName="lottie/loading_horizontal_black.json"
             app:lottie_imageAssetsFolder="lottie"
-            app:lottie_loop="true" />
+            app:lottie_loop="true"
+            app:visibility="@{viewModel.userInfoUpdateState}"
+            tools:visibility="gone" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

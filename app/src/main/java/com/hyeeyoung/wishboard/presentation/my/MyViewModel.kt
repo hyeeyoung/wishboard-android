@@ -7,17 +7,13 @@ import com.hyeeyoung.wishboard.data.local.WishBoardPreference
 import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
 import com.hyeeyoung.wishboard.domain.repositories.SignRepository
 import com.hyeeyoung.wishboard.domain.repositories.UserRepository
-import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.util.ContentUriRequestBody
 import com.hyeeyoung.wishboard.util.UiState
 import com.hyeeyoung.wishboard.util.extension.addSourceList
 import com.hyeeyoung.wishboard.util.extension.toPlainNullableRequestBody
 import com.hyeeyoung.wishboard.util.extension.toStateFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import java.io.File
@@ -42,9 +38,9 @@ class MyViewModel @Inject constructor(
     private var userProfileImageFile = MutableLiveData<File?>()
 
     private var pushState = MutableLiveData<Boolean?>()
-    private var profileEditStatus = MutableLiveData<ProcessStatus>()
 
-    private var isCompleteUpdateUserInfo = MutableLiveData<Boolean?>()
+    private val _userInfoUpdateState = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
+    val userInfoUpdateState get() = _userInfoUpdateState.asStateFlow()
     private val _isCompleteLogout = MutableLiveData<Boolean?>()
     val isCompleteLogout: LiveData<Boolean?> get() = _isCompleteLogout
     private var isCompleteUserDelete = MutableLiveData<Boolean?>()
@@ -86,8 +82,8 @@ class MyViewModel @Inject constructor(
     }
 
     fun updateUserInfo() {
-        profileEditStatus.value = ProcessStatus.IN_PROGRESS
         viewModelScope.launch {
+            _userInfoUpdateState.value = UiState.Loading
             val nickname =
                 if (userNickname.value == inputUserNickName.value) null else inputUserNickName.value
             val imageMultipartBody: MultipartBody.Part? =
@@ -99,17 +95,17 @@ class MyViewModel @Inject constructor(
                     ).toFormData()
                 }
 
-            val result =
-                userRepository.updateUserInfo(
-                    nickname.toString().toPlainNullableRequestBody(),
-                    imageMultipartBody
-                )
-            isCompleteUpdateUserInfo.value = result?.first
-            isExistNickname.value = result?.second == 409
-            profileEditStatus.postValue(ProcessStatus.IDLE)
+            val result = userRepository.updateUserInfo(
+                nickname.toString().toPlainNullableRequestBody(),
+                imageMultipartBody
+            ).getOrNull()
 
-            if (isCompleteUpdateUserInfo.value == true) {
+            if (result?.first == true) {
+                _userInfoUpdateState.value = UiState.Success(true)
                 setUserInfo()
+            } else {
+                isExistNickname.value = result?.second == 409
+                _userInfoUpdateState.value = UiState.Error(null)
             }
         }
     }
@@ -177,7 +173,7 @@ class MyViewModel @Inject constructor(
         inputUserNickName.value = userNickname.value
         isExistNickname.value = null
         userProfileImageUri.value = null
-        isCompleteUpdateUserInfo.value = null
+        _userInfoUpdateState.value = UiState.Empty
     }
 
     fun resetCorrectedEmail() {
@@ -212,10 +208,8 @@ class MyViewModel @Inject constructor(
     fun isExistNickname(): LiveData<Boolean?> = isExistNickname
     fun isCorrectedEmail(): LiveData<Boolean?> = isCorrectedEmail
 
-    fun getCompleteUpdateUserInfo(): LiveData<Boolean?> = isCompleteUpdateUserInfo
     fun getCompleteDeleteUser(): LiveData<Boolean?> = isCompleteUserDelete
     fun isValidNicknameFormat(): LiveData<Boolean?> = isValidNicknameFormat
-    fun getProfileEditStatus(): LiveData<ProcessStatus> = profileEditStatus
 
     companion object {
         private const val PASSWORD_PATTERN =
