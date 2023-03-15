@@ -9,7 +9,7 @@ interface UserRepository {
     suspend fun updateUserInfo(
         nickname: RequestBody?,
         profileImg: MultipartBody.Part?
-    ): Pair<Boolean, Int>?
+    ): Result<Pair<Boolean, Int>>
 
     suspend fun registerFCMToken(fcmToken: String?): Boolean
     suspend fun deleteUserAccount(): Result<Boolean?>

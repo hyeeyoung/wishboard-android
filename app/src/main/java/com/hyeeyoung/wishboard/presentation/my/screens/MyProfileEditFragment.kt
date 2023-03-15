@@ -10,18 +10,22 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentProfileEditBinding
-import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.presentation.my.MyViewModel
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
+import com.hyeeyoung.wishboard.util.UiState
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.safeLet
 import com.hyeeyoung.wishboard.util.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import java.io.File
 
 @AndroidEntryPoint
@@ -60,7 +64,7 @@ class MyProfileEditFragment : Fragment() {
 
         initializeView()
         addListeners()
-        addObservers()
+        collectData()
 
         return binding.root
     }
@@ -83,28 +87,20 @@ class MyProfileEditFragment : Fragment() {
         }
     }
 
-    private fun addObservers() {
-        viewModel.getCompleteUpdateUserInfo().observe(viewLifecycleOwner) { isComplete ->
-            if (isComplete == true) {
-                CustomSnackbar.make(
-                    binding.layout, getString(R.string.my_profile_edit_completion_snackbar_text)
-                ).show()
-                moveToPrevious()
-            }
-        }
-
-        viewModel.getProfileEditStatus().observe(viewLifecycleOwner) {
+    private fun collectData() {
+        viewModel.userInfoUpdateState.flowWithLifecycle(lifecycle).onEach {
             when (it) {
-                ProcessStatus.IDLE -> {
-                    binding.loadingLottie.visibility = View.GONE
-                }
-                ProcessStatus.IN_PROGRESS -> {
-                    binding.loadingLottie.visibility = View.VISIBLE
-                    binding.loadingLottie.playAnimation()
+                is UiState.Success -> {
+                    CustomSnackbar.make(
+                        binding.layout,
+                        getString(R.string.my_profile_edit_completion_snackbar_text),
+                        false
+                    ).show()
+                    moveToPrevious()
                 }
                 else -> {}
             }
-        }
+        }.launchIn(lifecycleScope)
     }
 
     private fun moveToPrevious() {

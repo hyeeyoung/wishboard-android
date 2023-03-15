@@ -10,6 +10,7 @@ import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.airbnb.lottie.LottieAnimationView
+import com.google.android.material.button.MaterialButton
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.util.custom.CustomDecoration
 import java.text.DecimalFormat
@@ -99,7 +100,7 @@ fun <T> LottieAnimationView.setVisibility(state: UiState<T>) {
 }
 
 @BindingAdapter(value = ["textForLottieButton", "lottieState"], requireAll = true)
-fun <T> TextView.setTextLottieButton(textForLottieButton: String, lottieState: UiState<T>) {
+fun <T> MaterialButton.setTextLottieButton(textForLottieButton: String, lottieState: UiState<T>) {
     text = when (lottieState) {
         is UiState.Loading -> ""
         else -> textForLottieButton
