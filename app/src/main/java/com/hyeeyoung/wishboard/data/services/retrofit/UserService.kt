@@ -29,4 +29,8 @@ interface UserService {
 
     @PUT("user/push-state/{push}")
     suspend fun updatePushState(@Path("push") push: Boolean): Response<BaseResponseResult<BaseResponseData?>>
+
+    @FormUrlEncoded
+    @PUT("user/re-passwd")
+    suspend fun changePassword(@Field("newPassword") password: String): BaseResponse
 }

@@ -5,17 +5,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentPasswordChangeBinding
 import com.hyeeyoung.wishboard.presentation.my.MyViewModel
+import com.hyeeyoung.wishboard.util.UiState
+import com.hyeeyoung.wishboard.util.extension.showToast
 import com.hyeeyoung.wishboard.util.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @AndroidEntryPoint
 class MyPasswordChangeFragment : Fragment() {
     private lateinit var binding: FragmentPasswordChangeBinding
-    private val viewModel: MyViewModel by hiltNavGraphViewModels(R.id.my_nav_graph)
+    private val viewModel: MyViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,19 +41,21 @@ class MyPasswordChangeFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        addListeners()
-        addObservers()
+        collectData()
 
         return binding.root
     }
 
-    private fun addListeners() {
-        binding.complete.setOnClickListener {
-            // TODO 비밀번호 변경 api 호출
-        }
-    }
-
-    private fun addObservers() {
-
+    private fun collectData() {
+        viewModel.passwordChangeState.flowWithLifecycle(lifecycle).onEach {
+            when (it) {
+                is UiState.Success -> {
+                    with(requireContext()) {
+                        showToast(getString(R.string.my_password_change_snackbar_text))
+                    }
+                }
+                else -> {}
+            }
+        }.launchIn(lifecycleScope)
     }
 }
