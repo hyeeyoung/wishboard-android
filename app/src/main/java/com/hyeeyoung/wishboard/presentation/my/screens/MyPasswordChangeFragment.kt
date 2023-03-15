@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentPasswordChangeBinding
 import com.hyeeyoung.wishboard.presentation.my.MyViewModel
@@ -52,6 +53,7 @@ class MyPasswordChangeFragment : Fragment() {
                 is UiState.Success -> {
                     with(requireContext()) {
                         showToast(getString(R.string.my_password_change_snackbar_text))
+                        findNavController().popBackStack()
                     }
                 }
                 else -> {}
