@@ -75,10 +75,4 @@ class GalleryViewModel @Inject constructor(
         val timestamp = getTimestamp()
         return ("${localStorage.accessToken.substring(7)}_${timestamp}.jpg")
     }
-
-    fun setSelectedGalleryImageUri(imageUri: Uri?) {
-        selectedGalleryImageUri.value = imageUri
-    }
-
-    fun getImageFile(): File? = imageFile
 }

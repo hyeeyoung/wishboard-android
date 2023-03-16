@@ -438,12 +438,11 @@ class WishItemRegistrationViewModel @Inject constructor(
         isValidItemUrl.value = null
     }
 
-    fun setSelectedGalleryImage(imageUri: Uri, imageFile: File) {
+    fun setSelectedGalleryImage(imageUri: Uri) {
         // 갤러리 이미지를 적용할 것이기 때문에 기존에 파싱한 이미지를 제거
         itemImage.value =
             null // TODO need refactoring, 아이템 정보 파싱 후 갤러리에서 이미지 선택 하지 않아도 이전에 갤러리에서 이미지를 선택한 적이 있는 경우, 갤러리 이미지가 보이는 버그를 방지하기 위함
         selectedGalleryImageUri.value = imageUri
-        this.imageFile = imageFile
     }
 
     fun resetCompleteFolderUpload() {

@@ -89,7 +89,7 @@
                         android:backgroundTint="@color/gray_150"
                         android:foreground="@color/semi_transparent"
                         android:scaleType="centerCrop"
-                        app:imageUrl="@{viewModel.itemDetail.image}"
+                        app:imageUrl="@{viewModel.itemImage}"
                         app:layout_constraintDimensionRatio="3:3.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"

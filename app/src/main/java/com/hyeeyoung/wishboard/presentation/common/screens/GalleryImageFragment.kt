@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -20,7 +19,6 @@ import com.hyeeyoung.wishboard.presentation.common.viewmodels.GalleryViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.io.File
 
 @AndroidEntryPoint
 class GalleryImageFragment : Fragment() {
@@ -48,7 +46,7 @@ class GalleryImageFragment : Fragment() {
     }
 
     fun onItemClick(imageUri: Uri) {
-        moveToPrevious(imageUri, viewModel.copyImageToInternalStorage(imageUri))
+        moveToPrevious(imageUri)
     }
 
     private fun addListeners() {
@@ -84,28 +82,20 @@ class GalleryImageFragment : Fragment() {
 
     private val takePicture =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { success: Boolean ->
-            if (success) {
-                photoUri?.let {
-                    viewModel.setSelectedGalleryImageUri(it)
-                    moveToPrevious(it, viewModel.getImageFile())
-                }
-            }
+            if (success)
+                photoUri?.let { moveToPrevious(it) }
         }
 
-    private fun moveToPrevious(galleryImageUri: Uri, cameraImageFile: File?) {
+    private fun moveToPrevious(galleryImageUri: Uri) {
         val navController = findNavController()
         navController.previousBackStackEntry?.savedStateHandle?.set(
-            ARG_IMAGE_INFO, bundleOf(
-                ARG_IMAGE_URI to galleryImageUri.toString(),
-                ARG_IMAGE_FILE to cameraImageFile
-            )
+            ARG_IMAGE_URI,
+            galleryImageUri.toString()
         )
         navController.popBackStack()
     }
 
     companion object {
-        private const val ARG_IMAGE_INFO = "imageInfo"
         private const val ARG_IMAGE_URI = "imageUri"
-        private const val ARG_IMAGE_FILE = "imageFile"
     }
 }
