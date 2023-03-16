@@ -96,7 +96,7 @@ class GalleryImageFragment : Fragment() {
         val navController = findNavController()
         navController.previousBackStackEntry?.savedStateHandle?.set(
             ARG_IMAGE_INFO, bundleOf(
-                ARG_IMAGE_URI to galleryImageUri,
+                ARG_IMAGE_URI to galleryImageUri.toString(),
                 ARG_IMAGE_FILE to cameraImageFile
             )
         )

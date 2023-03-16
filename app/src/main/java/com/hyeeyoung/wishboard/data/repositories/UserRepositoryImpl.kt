@@ -46,15 +46,10 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun updateUserInfo(
         nickname: RequestBody?,
         profileImg: MultipartBody.Part?
-    ): Pair<Boolean, Int>? = runCatching {
-        userService.updateUserInfo(nickname, profileImg)
-    }.fold({
-        Timber.d("사용자 프로필 수정 성공(${it.code()})")
-        Pair(it.isSuccessful, it.code())
-    }, {
-        Timber.e("사용자 프로필 수정 실패: ${it.message}")
-        null
-    })
+    ): Result<Pair<Boolean, Int>> = runCatching {
+        val response = userService.updateUserInfo(nickname, profileImg)
+        Pair(response.isSuccessful, response.code())
+    }
 
     override suspend fun deleteUserAccount() = runCatching {
         userService.deleteUserAccount().body()?.success

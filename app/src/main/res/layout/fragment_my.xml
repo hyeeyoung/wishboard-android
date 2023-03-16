@@ -62,16 +62,17 @@
                     android:orientation="vertical"
                     app:layout_constraintGuide_end="@dimen/spacingBase" />
 
-                <ImageView
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/profile_image"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
                     android:layout_marginTop="34dp"
-                    android:background="@drawable/shape_border_radius_45"
+                    android:background="@drawable/ic_background_user_profile"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_background_user_profile"
+                    app:image="@{viewModel.userProfileImage}"
                     app:layout_constraintStart_toStartOf="@id/gl_start"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearanceOverlay="@style/Style.CircleImageView.Half" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/user_profile_container"

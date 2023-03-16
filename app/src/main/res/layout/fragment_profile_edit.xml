@@ -10,10 +10,6 @@
 
         <import type="com.hyeeyoung.wishboard.R" />
 
-        <import type="android.view.View" />
-
-        <import type="com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus" />
-
         <variable
             name="viewModel"
             type="com.hyeeyoung.wishboard.presentation.my.MyViewModel" />
@@ -68,16 +64,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/profile_image"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                android:background="@drawable/shape_border_radius_45"
+                android:background="@drawable/ic_background_user_profile"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_background_user_profile"
+                app:image="@{viewModel.selectedProfileImageUri == null ? viewModel.userProfileImage : viewModel.selectedProfileImageUri}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/Style.CircleImageView.Half" />
 
             <ImageButton
                 android:id="@+id/camera"
@@ -92,21 +89,31 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/nickname_label"
+            style="@style/Widget.EditText.Label.Style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/my_profile_nickname"
+            android:textAppearance="@style/Widget.EditText.Label.TextAppearance"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/profile_image_container" />
+
         <EditText
             android:id="@+id/nickname_input"
             style="@style/Widget.EditText.Basic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing20"
-            android:layout_marginTop="@dimen/spacing20"
+            android:layout_marginTop="@dimen/spacingSmall"
             android:hint="@string/my_profile_edit_nickname_hint"
             android:maxLength="12"
             android:maxLines="1"
-            android:onTextChanged="@{viewModel::onNicknameTextChanged}"
             android:paddingVertical="@dimen/spacing12"
-            android:text="@{viewModel.inputUserNickname}"
+            android:text="@={viewModel.inputNickName}"
             android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
-            app:layout_constraintTop_toBottomOf="@id/profile_image_container">
+            app:layout_constraintTop_toBottomOf="@id/nickname_label">
 
             <requestFocus />
         </EditText>
@@ -116,7 +123,7 @@
             style="@style/Widget.TextAppearance.Detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.isValidNicknameFormat() == false &amp;&amp; viewModel.isValidNicknameFormat() != null ? context.getString(R.string.my_nickname_condition_detail) : viewModel.isExistNickname() == true ? context.getString(R.string.my_nickname_already_exist_detail) : ``}"
+            android:text="@{viewModel.isValidNicknameFormat == false &amp;&amp; viewModel.isValidNicknameFormat != null ? context.getString(R.string.my_nickname_condition_detail) : viewModel.isExistNickname == true ? context.getString(R.string.my_nickname_already_exist_detail) : ``}"
             app:layout_constraintStart_toStartOf="@id/nickname_input"
             app:layout_constraintTop_toBottomOf="@id/nickname_input"
             tools:text="@string/my_nickname_condition_detail" />
@@ -126,7 +133,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/suit_r"
-            android:text="@{String.format(context.getString(R.string.length_format), viewModel.inputUserNickname.length(), 12)}"
+            android:text="@{String.format(context.getString(R.string.length_format), viewModel.inputNickName.length(), 12)}"
             android:textColor="@color/gray_200"
             android:textSize="@dimen/typographyDescription"
             app:layout_constraintEnd_toEndOf="@id/nickname_input"
@@ -139,22 +146,26 @@
             android:layout_marginTop="@dimen/spacing20"
             android:layout_marginBottom="@dimen/spacingBase"
             android:enabled="@{viewModel.isEnabledEditCompleteButton}"
-            android:text="@{viewModel.profileEditStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.complete)}"
+            android:onClick="@{() -> viewModel.updateUserInfo()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:lottieState="@{viewModel.userInfoUpdateState}"
+            app:textForLottieButton="@{@string/complete}"
             tools:text="@string/complete" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading_lottie"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/complete"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/complete"
+            app:lottie_autoPlay="true"
             app:lottie_fileName="lottie/loading_horizontal_black.json"
             app:lottie_imageAssetsFolder="lottie"
-            app:lottie_loop="true" />
+            app:lottie_loop="true"
+            app:visibility="@{viewModel.userInfoUpdateState}"
+            tools:visibility="gone" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
