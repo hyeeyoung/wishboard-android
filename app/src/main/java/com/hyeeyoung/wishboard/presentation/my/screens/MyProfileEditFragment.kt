@@ -47,13 +47,10 @@ class MyProfileEditFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // 갤러리에서 선택한 이미지 전달받기
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
-            ARG_IMAGE_INFO
-        )?.observe(viewLifecycleOwner) {
-            it.getString(ARG_IMAGE_URI)?.let { uri ->
-                viewModel.setSelectedUserProfileImage(Uri.parse(uri))
-            }
-            it.clear()
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(
+            ARG_IMAGE_URI
+        )?.observe(viewLifecycleOwner) { uri ->
+            viewModel.setSelectedUserProfileImage(Uri.parse(uri))
         }
 
         showKeyboard(requireContext(), binding.nicknameInput, true)
@@ -102,7 +99,6 @@ class MyProfileEditFragment : Fragment() {
         }
 
     companion object {
-        private const val ARG_IMAGE_INFO = "imageInfo"
         private const val ARG_IMAGE_URI = "imageUri"
         private const val ARG_PROFILE_UPDATE_INFO = "profileUpdateInfo"
         private const val ARG_PROFILE_UPDATE_STATUS = "profileUpdateStatus"

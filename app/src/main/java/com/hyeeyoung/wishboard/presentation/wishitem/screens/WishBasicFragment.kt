@@ -25,10 +25,9 @@ import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel
 import com.hyeeyoung.wishboard.util.FolderListDialogListener
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
+import com.hyeeyoung.wishboard.util.extension.getParcelableValue
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
-import com.hyeeyoung.wishboard.util.safeLet
 import dagger.hilt.android.AndroidEntryPoint
-import java.io.File
 
 @AndroidEntryPoint
 class WishBasicFragment : Fragment() {
@@ -46,10 +45,13 @@ class WishBasicFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            (it[ARG_IS_EDIT_MODE] as? Boolean)?.let { isEditable ->
+            it.getBoolean(ARG_IS_EDIT_MODE).let { isEditable ->
                 isEditMode = isEditable
             }
-            (it[ARG_WISH_ITEM_DETAIL] as? WishItemDetail)?.let { detail ->
+            (it.getParcelableValue(
+                ARG_WISH_ITEM_DETAIL,
+                WishItemDetail::class.java
+            ))?.let { detail ->
                 viewModel.wishItemDetail = detail
             }
         }
@@ -160,15 +162,10 @@ class WishBasicFragment : Fragment() {
         }
 
         // 갤러리에서 선택한 이미지 전달받기
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
-            ARG_IMAGE_INFO
-        )?.observe(viewLifecycleOwner) {
-            safeLet(
-                it[ARG_IMAGE_URI] as? Uri, it[ARG_IMAGE_FILE] as? File
-            ) { imageUri, imageFile ->
-                viewModel.setSelectedGalleryImage(imageUri, imageFile)
-                it.clear()
-            }
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(
+            ARG_IMAGE_URI
+        )?.observe(viewLifecycleOwner) { imageUri ->
+            viewModel.setSelectedGalleryImage(Uri.parse(imageUri))
         }
 
         viewModel.isShownItemNonUpdateDialog.observe(viewLifecycleOwner) { isShown ->
@@ -202,7 +199,7 @@ class WishBasicFragment : Fragment() {
     private fun moveToPrevious(itemStatus: WishItemStatus) {
         val navController = findNavController()
         navController.previousBackStackEntry?.savedStateHandle?.set(
-            ARG_WISH_ITEM_INFO, bundleOf(ARG_ITEM_STATUS to itemStatus)
+            ARG_WISH_ITEM_INFO, bundleOf(ARG_ITEM_STATUS to itemStatus.name)
         )
         navController.popBackStack()
     }
@@ -216,9 +213,7 @@ class WishBasicFragment : Fragment() {
 
     companion object {
         private const val ARG_IS_EDIT_MODE = "isEditMode"
-        private const val ARG_IMAGE_INFO = "imageInfo"
         private const val ARG_IMAGE_URI = "imageUri"
-        private const val ARG_IMAGE_FILE = "imageFile"
         private const val ARG_ITEM_STATUS = "itemStatus"
         private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
         private const val ARG_WISH_ITEM_DETAIL = "wishItemDetail"
