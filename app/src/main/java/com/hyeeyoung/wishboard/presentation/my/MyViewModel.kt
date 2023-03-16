@@ -31,27 +31,34 @@ class MyViewModel @Inject constructor(
     private var userEmail = MutableLiveData<String?>()
     private var userNickname = MutableLiveData<String>()
 
-    val inputUserNickName = MutableStateFlow<String?>(null)
-    private var inputUserEmail = MutableLiveData<String?>()
-    private val _userProfileImageUri = MutableStateFlow<String?>(null)
-    val userProfileImageUri get() = _userProfileImageUri.asStateFlow()
+    val inputNickName = MutableStateFlow<String?>(null)
+    private val isExistNickname = MutableLiveData<Boolean?>()
+    private val _userProfileImage = MutableStateFlow<String?>(null)
+    val userProfileImage get() = _userProfileImage.asStateFlow()
     private val _selectedProfileImageUri = MutableStateFlow<Uri?>(null)
     val selectedProfileImageUri get() = _selectedProfileImageUri.asStateFlow()
-
-    private var pushState = MutableLiveData<Boolean?>()
-
     private val _userInfoUpdateState = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
     val userInfoUpdateState get() = _userInfoUpdateState.asStateFlow()
-    private val _isCompleteLogout = MutableLiveData<Boolean?>()
-    val isCompleteLogout: LiveData<Boolean?> get() = _isCompleteLogout
-    private var isCompleteUserDelete = MutableLiveData<Boolean?>()
-    private var isExistNickname = MutableLiveData<Boolean?>()
-    private var isCorrectedEmail = MutableLiveData<Boolean?>()
-    val isValidNicknameFormat = inputUserNickName.map { nickname ->
-        inputUserNickName.value = nickname?.trim()
+    val isValidNicknameFormat = inputNickName.map { nickname ->
+        inputNickName.value = nickname?.trim()
         isExistNickname.value = null
         nickname?.matches(NICKNAME_PATTERN.toRegex()) == true && nickname.isNotEmpty()
     }.toStateFlow(viewModelScope, null)
+    val isEnabledEditCompleteButton = combine(
+        inputNickName,
+        isValidNicknameFormat,
+        selectedProfileImageUri
+    ) { nickname, isValidNickname, profileUri ->
+        isValidNickname != false && !(nickname == userNickname.value && profileUri == null)
+    }.toStateFlow(viewModelScope, false)
+
+    private var pushState = MutableLiveData<Boolean?>()
+
+    private val inputEmail = MutableLiveData<String?>()
+    private val isCorrectedEmail = MutableLiveData<Boolean?>()
+    private val _isCompleteLogout = MutableLiveData<Boolean?>()
+    val isCompleteLogout: LiveData<Boolean?> get() = _isCompleteLogout
+    private val isCompleteUserDelete = MutableLiveData<Boolean?>()
 
     val newPassword = MutableStateFlow("")
     val reNewPassword = MutableStateFlow("")
@@ -65,20 +72,12 @@ class MyViewModel @Inject constructor(
             isValid && (new == renew)
         }.toStateFlow(viewModelScope, false)
 
-    val isEnabledEditCompleteButton = combine(
-        inputUserNickName,
-        isValidNicknameFormat,
-        selectedProfileImageUri
-    ) { nickname, isValidNickname, profileUri ->
-        isValidNickname != false && !(nickname == userNickname.value && profileUri == null)
-    }.toStateFlow(viewModelScope, false)
-
     fun fetchUserInfo() {
         viewModelScope.launch {
             userRepository.fetchUserInfo().let {
                 userEmail.value = it?.email ?: localStorage.userEmail
                 userNickname.value = it?.nickname ?: localStorage.userNickname
-                _userProfileImageUri.value = it?.profileImage
+                _userProfileImage.value = it?.profileImage
                 pushState.value = convertIntToBooleanPushState(it?.pushState)
             }
         }
@@ -88,7 +87,7 @@ class MyViewModel @Inject constructor(
         viewModelScope.launch {
             _userInfoUpdateState.value = UiState.Loading
             val nickname =
-                if (userNickname.value == inputUserNickName.value) null else inputUserNickName.value
+                if (userNickname.value == inputNickName.value) null else inputNickName.value
             val imageMultipartBody: MultipartBody.Part? =
                 selectedProfileImageUri.value?.let { imageUri ->
                     ContentUriRequestBody(
@@ -105,7 +104,7 @@ class MyViewModel @Inject constructor(
 
             if (result?.first == true) {
                 _userInfoUpdateState.value = UiState.Success(true)
-                setUserInfo()
+                localStorage.userNickname = inputNickName.value!! // TODO need refactoring
             } else {
                 isExistNickname.value = result?.second == 409
                 _userInfoUpdateState.value = UiState.Error(null)
@@ -155,14 +154,13 @@ class MyViewModel @Inject constructor(
     }
 
     fun onEmailTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        inputUserEmail.value = s.toString().trim()
+        inputEmail.value = s.toString().trim()
         isCorrectedEmail.value = null
     }
 
     fun resetUserInfo() {
-        inputUserNickName.value = userNickname.value
+        inputNickName.value = userNickname.value
         isExistNickname.value = null
-//        _userProfileImageUri.value = null
         _selectedProfileImageUri.value = null
         _userInfoUpdateState.value = UiState.Empty
     }
@@ -171,18 +169,12 @@ class MyViewModel @Inject constructor(
         isCorrectedEmail.value = null
     }
 
-    /** 유저 프로필 업데이트 이후 로컬에 닉네임을 저장 */
-    // TODO 함수명 변경
-    private fun setUserInfo() {
-        localStorage.userNickname = inputUserNickName.value!!
-    }
-
     fun setSelectedUserProfileImage(imageUri: Uri) {
         _selectedProfileImageUri.value = imageUri
     }
 
     fun checkCorrectedEmail(): Boolean {
-        val isCorrected = inputUserEmail.value == userEmail.value
+        val isCorrected = inputEmail.value == userEmail.value
         isCorrectedEmail.value = isCorrected
         return isCorrected
     }
