@@ -109,9 +109,8 @@
             android:hint="@string/my_profile_edit_nickname_hint"
             android:maxLength="12"
             android:maxLines="1"
-            android:onTextChanged="@{viewModel::onNicknameTextChanged}"
             android:paddingVertical="@dimen/spacing12"
-            android:text="@{viewModel.inputUserNickname}"
+            android:text="@={viewModel.inputUserNickName}"
             android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
             app:layout_constraintTop_toBottomOf="@id/nickname_label">
 
@@ -123,7 +122,7 @@
             style="@style/Widget.TextAppearance.Detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{viewModel.isValidNicknameFormat() == false &amp;&amp; viewModel.isValidNicknameFormat() != null ? context.getString(R.string.my_nickname_condition_detail) : viewModel.isExistNickname() == true ? context.getString(R.string.my_nickname_already_exist_detail) : ``}"
+            android:text="@{viewModel.isValidNicknameFormat == false &amp;&amp; viewModel.isValidNicknameFormat != null ? context.getString(R.string.my_nickname_condition_detail) : viewModel.isExistNickname == true ? context.getString(R.string.my_nickname_already_exist_detail) : ``}"
             app:layout_constraintStart_toStartOf="@id/nickname_input"
             app:layout_constraintTop_toBottomOf="@id/nickname_input"
             tools:text="@string/my_nickname_condition_detail" />
@@ -133,7 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/suit_r"
-            android:text="@{String.format(context.getString(R.string.length_format), viewModel.inputUserNickname.length(), 12)}"
+            android:text="@{String.format(context.getString(R.string.length_format), viewModel.inputUserNickName.length(), 12)}"
             android:textColor="@color/gray_200"
             android:textSize="@dimen/typographyDescription"
             app:layout_constraintEnd_toEndOf="@id/nickname_input"
