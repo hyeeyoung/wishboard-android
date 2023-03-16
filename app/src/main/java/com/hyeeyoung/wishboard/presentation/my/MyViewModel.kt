@@ -2,22 +2,22 @@ package com.hyeeyoung.wishboard.presentation.my
 
 import android.app.Application
 import android.net.Uri
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.data.local.WishBoardPreference
 import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
 import com.hyeeyoung.wishboard.domain.repositories.SignRepository
 import com.hyeeyoung.wishboard.domain.repositories.UserRepository
 import com.hyeeyoung.wishboard.util.ContentUriRequestBody
 import com.hyeeyoung.wishboard.util.UiState
-import com.hyeeyoung.wishboard.util.extension.addSourceList
 import com.hyeeyoung.wishboard.util.extension.toPlainNullableRequestBody
 import com.hyeeyoung.wishboard.util.extension.toStateFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
-import java.io.File
-import java.util.regex.Pattern
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,12 +30,13 @@ class MyViewModel @Inject constructor(
 ) : ViewModel() {
     private var userEmail = MutableLiveData<String?>()
     private var userNickname = MutableLiveData<String>()
-    private var userProfileImage = MutableLiveData<String?>()
 
-    private var inputUserNickName = MutableLiveData<String>()
+    val inputUserNickName = MutableStateFlow<String?>(null)
     private var inputUserEmail = MutableLiveData<String?>()
-    private var userProfileImageUri = MutableLiveData<Uri?>()
-    private var userProfileImageFile = MutableLiveData<File?>()
+    private val _userProfileImageUri = MutableStateFlow<String?>(null)
+    val userProfileImageUri get() = _userProfileImageUri.asStateFlow()
+    private val _selectedProfileImageUri = MutableStateFlow<Uri?>(null)
+    val selectedProfileImageUri get() = _selectedProfileImageUri.asStateFlow()
 
     private var pushState = MutableLiveData<Boolean?>()
 
@@ -46,7 +47,11 @@ class MyViewModel @Inject constructor(
     private var isCompleteUserDelete = MutableLiveData<Boolean?>()
     private var isExistNickname = MutableLiveData<Boolean?>()
     private var isCorrectedEmail = MutableLiveData<Boolean?>()
-    private var isValidNicknameFormat = MutableLiveData<Boolean>()
+    val isValidNicknameFormat = inputUserNickName.map { nickname ->
+        inputUserNickName.value = nickname?.trim()
+        isExistNickname.value = null
+        nickname?.matches(NICKNAME_PATTERN.toRegex()) == true && nickname.isNotEmpty()
+    }.toStateFlow(viewModelScope, null)
 
     val newPassword = MutableStateFlow("")
     val reNewPassword = MutableStateFlow("")
@@ -60,22 +65,20 @@ class MyViewModel @Inject constructor(
             isValid && (new == renew)
         }.toStateFlow(viewModelScope, false)
 
-    val isEnabledEditCompleteButton = MediatorLiveData<Boolean>().apply {
-        addSourceList(
-            inputUserNickName,
-            isValidNicknameFormat,
-            userProfileImageUri
-        ) {
-            (isValidNicknameFormat.value == true && inputUserNickName.value != userNickname.value) || userProfileImageUri.value != null
-        }
-    }
+    val isEnabledEditCompleteButton = combine(
+        inputUserNickName,
+        isValidNicknameFormat,
+        selectedProfileImageUri
+    ) { nickname, isValidNickname, profileUri ->
+        isValidNickname != false && !(nickname == userNickname.value && profileUri == null)
+    }.toStateFlow(viewModelScope, false)
 
     fun fetchUserInfo() {
         viewModelScope.launch {
             userRepository.fetchUserInfo().let {
                 userEmail.value = it?.email ?: localStorage.userEmail
                 userNickname.value = it?.nickname ?: localStorage.userNickname
-                userProfileImage.value = it?.profileImage
+                _userProfileImageUri.value = it?.profileImage
                 pushState.value = convertIntToBooleanPushState(it?.pushState)
             }
         }
@@ -87,7 +90,7 @@ class MyViewModel @Inject constructor(
             val nickname =
                 if (userNickname.value == inputUserNickName.value) null else inputUserNickName.value
             val imageMultipartBody: MultipartBody.Part? =
-                userProfileImageUri.value?.let { imageUri ->
+                selectedProfileImageUri.value?.let { imageUri ->
                     ContentUriRequestBody(
                         application.baseContext,
                         "profile_img",
@@ -96,7 +99,7 @@ class MyViewModel @Inject constructor(
                 }
 
             val result = userRepository.updateUserInfo(
-                nickname.toString().toPlainNullableRequestBody(),
+                nickname.toPlainNullableRequestBody(),
                 imageMultipartBody
             ).getOrNull()
 
@@ -151,19 +154,6 @@ class MyViewModel @Inject constructor(
         }
     }
 
-    private fun checkNicknameFormatValidation(nickname: String?) {
-        val nicknamePattern =
-            Pattern.compile("^[가-힣ㄱ-ㅎa-zA-Z0-9]+\$")
-        isValidNicknameFormat.value =
-            nicknamePattern.matcher(nickname).matches() && !nickname.isNullOrEmpty()
-    }
-
-    fun onNicknameTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        inputUserNickName.value = s.toString().trim()
-        checkNicknameFormatValidation(inputUserNickName.value)
-        isExistNickname.value = null
-    }
-
     fun onEmailTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
         inputUserEmail.value = s.toString().trim()
         isCorrectedEmail.value = null
@@ -172,7 +162,8 @@ class MyViewModel @Inject constructor(
     fun resetUserInfo() {
         inputUserNickName.value = userNickname.value
         isExistNickname.value = null
-        userProfileImageUri.value = null
+//        _userProfileImageUri.value = null
+        _selectedProfileImageUri.value = null
         _userInfoUpdateState.value = UiState.Empty
     }
 
@@ -186,9 +177,8 @@ class MyViewModel @Inject constructor(
         localStorage.userNickname = inputUserNickName.value!!
     }
 
-    fun setSelectedUserProfileImage(imageUri: Uri, imageFile: File) {
-        userProfileImageUri.value = imageUri
-        userProfileImageFile.value = imageFile
+    fun setSelectedUserProfileImage(imageUri: Uri) {
+        _selectedProfileImageUri.value = imageUri
     }
 
     fun checkCorrectedEmail(): Boolean {
@@ -199,20 +189,16 @@ class MyViewModel @Inject constructor(
 
     fun getUserEmail(): LiveData<String?> = userEmail
     fun getUserNickname(): LiveData<String?> = userNickname
-    fun getUserProfileImage(): LiveData<String?> = userProfileImage
     fun getPushState(): LiveData<Boolean?> = pushState
-
-    fun getInputUserNickname(): LiveData<String?> = inputUserNickName
-    fun getUserProfileImageUri(): LiveData<Uri?> = userProfileImageUri
 
     fun isExistNickname(): LiveData<Boolean?> = isExistNickname
     fun isCorrectedEmail(): LiveData<Boolean?> = isCorrectedEmail
 
     fun getCompleteDeleteUser(): LiveData<Boolean?> = isCompleteUserDelete
-    fun isValidNicknameFormat(): LiveData<Boolean?> = isValidNicknameFormat
 
     companion object {
         private const val PASSWORD_PATTERN =
             "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[{!\"#\$%&'()*+,-.:;<=>?@\\[\\]^_`{|}~/\\\\]).{7,15}.$"
+        private const val NICKNAME_PATTERN = "^[가-힣ㄱ-ㅎa-zA-Z0-9]+\$"
     }
 }

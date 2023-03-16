@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
-import coil.load
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.R
@@ -23,6 +22,7 @@ import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.util.DialogListener
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
+import com.hyeeyoung.wishboard.util.extension.safeValueOf
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -106,12 +106,6 @@ class MyFragment : Fragment() {
     }
 
     private fun addObservers() {
-        viewModel.getUserProfileImage().observe(viewLifecycleOwner) { profileImage ->
-            if (profileImage == null) return@observe
-            binding.profileImage.load(profileImage)
-            return@observe
-        }
-
         viewModel.getCompleteDeleteUser().observe(viewLifecycleOwner) { isComplete ->
             if (isComplete == true) {
                 CustomSnackbar.make(binding.layout,
@@ -138,11 +132,9 @@ class MyFragment : Fragment() {
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
             ARG_PROFILE_UPDATE_INFO
         )?.observe(viewLifecycleOwner) {
-            (it[ARG_PROFILE_UPDATE_STATUS] as? WishItemStatus)?.let { status ->
-                if (status == WishItemStatus.MODIFIED) { // TODO 범용 status로 변경
-                    viewModel.fetchUserInfo()
-                }
-            }
+            val isModified = safeValueOf<WishItemStatus>(it.getString(ARG_PROFILE_UPDATE_STATUS))
+            if (isModified == WishItemStatus.MODIFIED)
+                viewModel.fetchUserInfo() // TODO 범용 status로 변경
             it.clear()
         }
     }

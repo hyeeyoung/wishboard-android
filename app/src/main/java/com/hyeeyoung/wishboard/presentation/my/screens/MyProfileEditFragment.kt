@@ -10,8 +10,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import coil.load
 import com.hyeeyoung.wishboard.R
@@ -20,13 +18,10 @@ import com.hyeeyoung.wishboard.presentation.my.MyViewModel
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.util.UiState
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
+import com.hyeeyoung.wishboard.util.extension.collectFlow
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
-import com.hyeeyoung.wishboard.util.safeLet
 import com.hyeeyoung.wishboard.util.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import java.io.File
 
 @AndroidEntryPoint
 class MyProfileEditFragment : Fragment() {
@@ -46,32 +41,35 @@ class MyProfileEditFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        // TODO need refactoring 기존 이미지 보여주기
-        binding.profileImage.load(viewModel.getUserProfileImage().value)
-
-        // 갤러리에서 선택한 이미지 전달받기
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
-            ARG_IMAGE_INFO
-        )?.observe(viewLifecycleOwner) {
-            safeLet(
-                it[ARG_IMAGE_URI] as? Uri, it[ARG_IMAGE_FILE] as? File
-            ) { imageUri, imageFile ->
-                binding.profileImage.load(imageUri)
-                viewModel.setSelectedUserProfileImage(imageUri, imageFile)
-            }
-            it.clear()
-        }
-
-        initializeView()
-        addListeners()
-        collectData()
-
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // TODO need refactoring 기존 이미지 보여주기
+        if (viewModel.selectedProfileImageUri.value == null) {
+            binding.profileImage.load(viewModel.userProfileImageUri.value)
+        } else {
+            binding.profileImage.load(viewModel.selectedProfileImageUri.value)
+        }
+
+        // 갤러리에서 선택한 이미지 전달받기
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
+            ARG_IMAGE_INFO
+        )?.observe(viewLifecycleOwner) {
+            it.getString(ARG_IMAGE_URI)?.let { uri ->
+                val imageUri = Uri.parse(uri)
+                binding.profileImage.load(imageUri)
+                viewModel.setSelectedUserProfileImage(imageUri)
+            }
+            it.clear()
+        }
+
         showKeyboard(requireContext(), binding.nicknameInput, true)
+        initializeView()
+        addListeners()
+        collectData()
     }
 
     private fun initializeView() {
@@ -88,11 +86,11 @@ class MyProfileEditFragment : Fragment() {
     }
 
     private fun collectData() {
-        viewModel.userInfoUpdateState.flowWithLifecycle(lifecycle).onEach {
+        collectFlow(viewModel.userInfoUpdateState) {
             when (it) {
                 is UiState.Success -> {
                     CustomSnackbar.make(
-                        binding.layout,
+                        binding.root,
                         getString(R.string.my_profile_edit_completion_snackbar_text),
                         false
                     ).show()
@@ -100,14 +98,14 @@ class MyProfileEditFragment : Fragment() {
                 }
                 else -> {}
             }
-        }.launchIn(lifecycleScope)
+        }
     }
 
     private fun moveToPrevious() {
         val navController = findNavController()
         navController.previousBackStackEntry?.savedStateHandle?.set(
             ARG_PROFILE_UPDATE_INFO, bundleOf(
-                ARG_PROFILE_UPDATE_STATUS to WishItemStatus.MODIFIED,
+                ARG_PROFILE_UPDATE_STATUS to WishItemStatus.MODIFIED.name,
             )
         )
         navController.popBackStack()
@@ -124,7 +122,6 @@ class MyProfileEditFragment : Fragment() {
     companion object {
         private const val ARG_IMAGE_INFO = "imageInfo"
         private const val ARG_IMAGE_URI = "imageUri"
-        private const val ARG_IMAGE_FILE = "imageFile"
         private const val ARG_PROFILE_UPDATE_INFO = "profileUpdateInfo"
         private const val ARG_PROFILE_UPDATE_STATUS = "profileUpdateStatus"
     }
