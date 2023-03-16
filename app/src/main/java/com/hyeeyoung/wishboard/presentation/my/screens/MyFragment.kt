@@ -43,15 +43,10 @@ class MyFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        initializeView()
         addListeners()
         addObservers()
 
         return binding.root
-    }
-
-    private fun initializeView() {
-        binding.profileImage.clipToOutline = true
     }
 
     private fun addListeners() {
