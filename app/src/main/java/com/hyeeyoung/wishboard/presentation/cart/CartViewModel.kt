@@ -43,7 +43,7 @@ class CartViewModel @Inject constructor(
             if (!isSuccessful) return@launch
 
             cartListAdapter.removeItem(position)
-            cartList.postValue(cartListAdapter.getData())
+            cartList.value = cartListAdapter.getData()
         }
     }
 

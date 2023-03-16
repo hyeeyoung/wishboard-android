@@ -9,8 +9,9 @@ import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.domain.model.WishItemDetail
 import com.hyeeyoung.wishboard.domain.repositories.WishRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import java.net.URL
 import javax.inject.Inject
 
@@ -21,6 +22,8 @@ class WishItemViewModel @Inject constructor(
     private val _wishItemThumbnail = MutableLiveData<WishItem>()
     val wishItemThumbnail: LiveData<WishItem> get() = _wishItemThumbnail
     private val _itemDetail = MutableLiveData<WishItemDetail>()
+    private val _itemImage = MutableStateFlow<String?>(null)
+    val itemImage get() = _itemImage.asStateFlow()
     val itemDetail: LiveData<WishItemDetail> get() = _itemDetail
     private var isCompleteDeletion = MutableLiveData<Boolean>()
 
@@ -29,6 +32,7 @@ class WishItemViewModel @Inject constructor(
             _itemDetail.value =
                 wishRepository.fetchWishItemDetail(itemId)?.map { it.toWishItemDetail(it) }
                     ?.get(0)
+            _itemImage.value = itemDetail.value?.image
             generateWishItemThumbnail(itemDetail.value ?: return@launch)
         }
     }

@@ -10,10 +10,12 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hyeeyoung.wishboard.R
-import com.hyeeyoung.wishboard.databinding.FragmentHomeBinding
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
+import com.hyeeyoung.wishboard.databinding.FragmentHomeBinding
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
+import com.hyeeyoung.wishboard.util.extension.getParcelableValue
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
+import com.hyeeyoung.wishboard.util.extension.safeValueOf
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -69,25 +71,25 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
         // 상세조회에서 아이템 삭제 완료 후 홈으로 복귀했을 때 해당 아이템 정보를 전달받고, ui를 업데이트
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
             ARG_WISH_ITEM_INFO
-        )?.observe(viewLifecycleOwner) {
-            (it[ARG_ITEM_STATUS] as? WishItemStatus)?.let { status ->
-                val position = it[ARG_WISH_ITEM_POSITION] as? Int
-                val item = it[ARG_WISH_ITEM_THUMBNAIL] as? WishItem
-                when (status) {
-                    WishItemStatus.MODIFIED -> {
-                        viewModel.updateWishItem(position ?: return@let, item ?: return@let)
-                    }
-                    WishItemStatus.DELETED -> {
-                        viewModel.deleteWishItem(position ?: return@let, item ?: return@let)
-                    }
-                    WishItemStatus.ADDED -> {
-                        viewModel.fetchLatestItem()
-                    }
+        )?.observe(viewLifecycleOwner) { bundle ->
+            val status =
+                safeValueOf<WishItemStatus>(bundle.getString(ARG_ITEM_STATUS)) ?: return@observe
+            val position = bundle.getInt(ARG_WISH_ITEM_POSITION)
+            val item = bundle.getParcelableValue(ARG_WISH_ITEM_THUMBNAIL, WishItem::class.java)
+            when (status) {
+                WishItemStatus.MODIFIED -> {
+                    viewModel.updateWishItem(position, item ?: return@observe)
                 }
-                // 단순 화면 전환 시에도 해당 코드 실행 방지를 위해 전달받은 bundle 데이터를 clear()
-                it.clear()
-                return@observe
+                WishItemStatus.DELETED -> {
+                    viewModel.deleteWishItem(position, item ?: return@observe)
+                }
+                WishItemStatus.ADDED -> {
+                    viewModel.fetchLatestItem()
+                }
             }
+            // 단순 화면 전환 시에도 해당 코드 실행 방지를 위해 전달받은 bundle 데이터를 clear()
+            bundle.clear()
+            return@observe
         }
     }
 

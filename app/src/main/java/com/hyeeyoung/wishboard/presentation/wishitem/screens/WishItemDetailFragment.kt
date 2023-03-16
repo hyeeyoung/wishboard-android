@@ -24,6 +24,7 @@ import com.hyeeyoung.wishboard.util.DialogListener
 import com.hyeeyoung.wishboard.util.FolderListDialogListener
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
+import com.hyeeyoung.wishboard.util.extension.safeValueOf
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,8 +39,8 @@ class WishItemDetailFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            position = it[ARG_WISH_ITEM_POSITION] as? Int
-            (it[ARG_WISH_ITEM_ID] as? Long)?.let { id ->
+            position = it.getInt(ARG_WISH_ITEM_POSITION)
+            (it.getLong(ARG_WISH_ITEM_ID)).let { id ->
                 itemId = id
                 viewModel.fetchWishItemDetail(id)
             }
@@ -54,11 +55,15 @@ class WishItemDetailFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         initializeView()
         addListeners()
         addObservers()
-
-        return binding.root
     }
 
     private fun initializeView() {
@@ -105,13 +110,12 @@ class WishItemDetailFragment : Fragment() {
         // 아이템 수정에서 수정 완료 후 상세조회로 복귀했을 때 해당 아이템 정보를 전달받고, ui 업데이트
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
             ARG_WISH_ITEM_INFO
-        )?.observe(viewLifecycleOwner) {
-            (it[ARG_ITEM_STATUS] as? WishItemStatus)?.let { status ->
-                if (status == WishItemStatus.MODIFIED)
-                    viewModel.fetchWishItemDetail(itemId)
-                itemStatus = status
-            }
-            it.clear()
+        )?.observe(viewLifecycleOwner) { bundle ->
+            val status =
+                safeValueOf<WishItemStatus>(bundle.getString(ARG_ITEM_STATUS)) ?: return@observe
+            if (status == WishItemStatus.MODIFIED)
+                viewModel.fetchWishItemDetail(itemId)
+            itemStatus = status
             return@observe
         }
     }
@@ -120,7 +124,7 @@ class WishItemDetailFragment : Fragment() {
         val navController = findNavController()
         navController.previousBackStackEntry?.savedStateHandle?.set(
             ARG_WISH_ITEM_INFO, bundleOf(
-                ARG_ITEM_STATUS to itemStatus,
+                ARG_ITEM_STATUS to itemStatus.name,
                 ARG_WISH_ITEM_THUMBNAIL to viewModel.wishItemThumbnail.value,
                 ARG_WISH_ITEM_POSITION to position
             )
