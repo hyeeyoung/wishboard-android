@@ -27,6 +27,12 @@ fun ImageView.setImageUrl(imageUrl: String?) {
     }
 }
 
+@BindingAdapter("image")
+fun <T>ImageView.setImage(imageUrl: T) {
+    if (imageUrl == null) return
+    load(imageUrl)
+}
+
 @BindingAdapter("priceFormat")
 fun TextView.setPriceFormat(price: Number?) {
     val decimalFormat = DecimalFormat("#,###")

@@ -11,7 +11,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
-import coil.load
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentProfileEditBinding
 import com.hyeeyoung.wishboard.presentation.my.MyViewModel
@@ -47,41 +46,24 @@ class MyProfileEditFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // TODO need refactoring 기존 이미지 보여주기
-        if (viewModel.selectedProfileImageUri.value == null) {
-            binding.profileImage.load(viewModel.userProfileImageUri.value)
-        } else {
-            binding.profileImage.load(viewModel.selectedProfileImageUri.value)
-        }
-
         // 갤러리에서 선택한 이미지 전달받기
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
             ARG_IMAGE_INFO
         )?.observe(viewLifecycleOwner) {
             it.getString(ARG_IMAGE_URI)?.let { uri ->
-                val imageUri = Uri.parse(uri)
-                binding.profileImage.load(imageUri)
-                viewModel.setSelectedUserProfileImage(imageUri)
+                viewModel.setSelectedUserProfileImage(Uri.parse(uri))
             }
             it.clear()
         }
 
         showKeyboard(requireContext(), binding.nicknameInput, true)
-        initializeView()
         addListeners()
         collectData()
-    }
-
-    private fun initializeView() {
-        binding.profileImage.clipToOutline = true
     }
 
     private fun addListeners() {
         binding.profileImageContainer.setOnClickListener {
             requestStorage.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
-        }
-        binding.complete.setOnClickListener {
-            viewModel.updateUserInfo()
         }
     }
 

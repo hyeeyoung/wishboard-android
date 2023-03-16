@@ -64,16 +64,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/toolbar">
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/profile_image"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                android:background="@drawable/shape_border_radius_45"
+                android:background="@drawable/ic_background_user_profile"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_background_user_profile"
+                app:image="@{viewModel.selectedProfileImageUri == null ? viewModel.userProfileImageUri : viewModel.selectedProfileImageUri}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/Style.CircleImageView.Half" />
 
             <ImageButton
                 android:id="@+id/camera"
@@ -145,6 +146,7 @@
             android:layout_marginTop="@dimen/spacing20"
             android:layout_marginBottom="@dimen/spacingBase"
             android:enabled="@{viewModel.isEnabledEditCompleteButton}"
+            android:onClick="@{() -> viewModel.updateUserInfo()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:lottieState="@{viewModel.userInfoUpdateState}"
