@@ -69,7 +69,7 @@
                     android:layout_marginTop="34dp"
                     android:background="@drawable/ic_background_user_profile"
                     android:scaleType="centerCrop"
-                    app:image="@{viewModel.userProfileImageUri}"
+                    app:image="@{viewModel.userProfileImage}"
                     app:layout_constraintStart_toStartOf="@id/gl_start"
                     app:layout_constraintTop_toTopOf="parent"
                     app:shapeAppearanceOverlay="@style/Style.CircleImageView.Half" />

@@ -70,7 +70,7 @@
                 android:layout_height="90dp"
                 android:background="@drawable/ic_background_user_profile"
                 android:scaleType="centerCrop"
-                app:image="@{viewModel.selectedProfileImageUri == null ? viewModel.userProfileImageUri : viewModel.selectedProfileImageUri}"
+                app:image="@{viewModel.selectedProfileImageUri == null ? viewModel.userProfileImage : viewModel.selectedProfileImageUri}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -111,7 +111,7 @@
             android:maxLength="12"
             android:maxLines="1"
             android:paddingVertical="@dimen/spacing12"
-            android:text="@={viewModel.inputUserNickName}"
+            android:text="@={viewModel.inputNickName}"
             android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
             app:layout_constraintTop_toBottomOf="@id/nickname_label">
 
@@ -133,7 +133,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/suit_r"
-            android:text="@{String.format(context.getString(R.string.length_format), viewModel.inputUserNickName.length(), 12)}"
+            android:text="@{String.format(context.getString(R.string.length_format), viewModel.inputNickName.length(), 12)}"
             android:textColor="@color/gray_200"
             android:textSize="@dimen/typographyDescription"
             app:layout_constraintEnd_toEndOf="@id/nickname_input"
