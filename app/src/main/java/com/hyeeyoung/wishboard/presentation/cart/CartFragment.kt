@@ -13,7 +13,10 @@ import com.hyeeyoung.wishboard.data.model.cart.CartItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.databinding.FragmentCartBinding
 import com.hyeeyoung.wishboard.presentation.cart.types.CartItemButtonType
+import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
+import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
+import com.hyeeyoung.wishboard.util.DialogListener
 import com.hyeeyoung.wishboard.util.extension.getParcelableValue
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.extension.safeValueOf
@@ -39,7 +42,7 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
     }
 
     private fun initializeView() {
-        val adapter = viewModel.getCartListAdapter()
+        val adapter = viewModel.cartListAdapter
         adapter.setOnItemClickListener(this)
 
         binding.cartList.run {
@@ -54,17 +57,14 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
             CartItemButtonType.VIEW_TYPE_CONTAINER -> {
                 findNavController().navigateSafe(
                     R.id.action_home_to_wish_item_detail,
-                    bundleOf(
-                        ARG_WISH_ITEM_POSITION to position,
-                        ARG_WISH_ITEM_ID to item.wishItem.id,
-                    )
+                    bundleOf(ARG_WISH_ITEM_ID to item.wishItem.id)
                 )
             }
             CartItemButtonType.VIEW_TYPE_DELETION -> {
-                viewModel.removeToCart(item.wishItem.id!!, position)
+                showCartDeleteDialog(item)
             }
             CartItemButtonType.VIEW_TYPE_PLUS, CartItemButtonType.VIEW_TYPE_MINUS -> {
-                viewModel.controlItemCount(item, position, viewType)
+                viewModel.controlItemCount(item, viewType)
             }
         }
     }
@@ -76,29 +76,41 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
         )?.observe(viewLifecycleOwner) { bundle ->
             val status =
                 safeValueOf<WishItemStatus>(bundle.getString(ARG_ITEM_STATUS)) ?: return@observe
-            val position = bundle.getInt(ARG_WISH_ITEM_POSITION)
             val item = bundle.getParcelableValue(ARG_WISH_ITEM_THUMBNAIL, WishItem::class.java)
             when (status) {
-                WishItemStatus.MODIFIED -> {
-                    viewModel.updateCartItem(position, item ?: return@observe)
-                }
-                WishItemStatus.DELETED -> {
-                    viewModel.deleteCartItem(position)
-                }
+                WishItemStatus.MODIFIED -> viewModel.updateCartItem(item ?: return@observe)
+                WishItemStatus.DELETED -> viewModel.removeToCartList(item?.id ?: return@observe)
                 else -> {}
             }
 
             // 단순 화면 전환 시에도 해당 코드 실행 방지를 위해 전달받은 bundle 데이터를 clear()
             bundle.clear()
             return@observe
+        }
+    }
 
+    private fun showCartDeleteDialog(cartItem: CartItem) {
+        TwoButtonDialogFragment(
+            getString(R.string.cart_delete_dialog_title),
+            getString(R.string.cart_delete_dialog_description),
+            getString(R.string.delete),
+            getString(R.string.cancel)
+        ).apply {
+            setListener(object : DialogListener {
+                override fun onButtonClicked(clicked: String) {
+                    if (clicked == DialogButtonReplyType.YES.name)
+                        viewModel.removeToCart(cartItem.wishItem.id ?: return)
+                    dismiss()
+                }
+            })
+        }.also {
+            it.show(parentFragmentManager, "cartDeleteDialog")
         }
     }
 
     companion object {
         private const val ARG_WISH_ITEM_THUMBNAIL = "wishItemThumbnail"
         private const val ARG_WISH_ITEM_ID = "wishItemId"
-        private const val ARG_WISH_ITEM_POSITION = "position"
         private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
         private const val ARG_ITEM_STATUS = "itemStatus"
     }
