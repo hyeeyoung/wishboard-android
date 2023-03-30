@@ -31,7 +31,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class WishItemDetailFragment : Fragment() {
     private lateinit var binding: FragmentWishItemDetailBinding
     private val viewModel: WishItemViewModel by viewModels()
-    private var position: Int? = null // TODO delete
     private var itemStatus: WishItemStatus? = null
     private var itemId: Long = 0L
 
@@ -39,7 +38,6 @@ class WishItemDetailFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         arguments?.let {
-            position = it.getInt(ARG_WISH_ITEM_POSITION)
             (it.getLong(ARG_WISH_ITEM_ID)).let { id ->
                 itemId = id
                 viewModel.fetchWishItemDetail(id)
@@ -126,7 +124,6 @@ class WishItemDetailFragment : Fragment() {
             ARG_WISH_ITEM_INFO, bundleOf(
                 ARG_ITEM_STATUS to itemStatus.name,
                 ARG_WISH_ITEM_THUMBNAIL to viewModel.wishItemThumbnail.value,
-                ARG_WISH_ITEM_POSITION to position
             )
         )
         navController.popBackStack()
@@ -184,7 +181,6 @@ class WishItemDetailFragment : Fragment() {
         private const val ARG_WISH_ITEM_THUMBNAIL = "wishItemThumbnail"
         private const val ARG_WISH_ITEM_DETAIL = "wishItemDetail"
         private const val ARG_WISH_ITEM_ID = "wishItemId"
-        private const val ARG_WISH_ITEM_POSITION = "position"
         private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
         private const val ARG_IS_EDIT_MODE = "isEditMode"
         private const val ARG_ITEM_STATUS = "itemStatus"

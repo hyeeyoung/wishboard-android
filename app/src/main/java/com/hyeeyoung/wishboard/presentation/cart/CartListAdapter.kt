@@ -77,18 +77,22 @@ class CartListAdapter : RecyclerView.Adapter<CartListAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    fun removeItem(position: Int) {
+    fun removeItem(itemId: Long) {
+        val cartItem = dataSet.find { it.wishItem.id == itemId}
+        val position = dataSet.indexOf(cartItem)
         dataSet.removeAt(position)
         notifyItemRemoved(position)
     }
 
-    //TODO 해당 코드 확인 필요
-    fun updateItem(position: Int, cartItem: CartItem) {
+    fun updateItem(cartItem: CartItem) {
+        val position = dataSet.indexOf(cartItem)
         dataSet[position] = cartItem
         notifyItemChanged(position)
     }
 
-    fun updateItem(position: Int, wishItem: WishItem) {
+    fun updateItem(wishItem: WishItem) {
+        val cartItem = dataSet.find { it.wishItem.id == wishItem.id }
+        val position = dataSet.indexOf(cartItem)
         dataSet[position].wishItem = wishItem.apply {
             // 상세뷰에서 아이템 수정 후 홈화면 썸네일 업데이트를 위해 WishItem을 전달
             if (wishItem.cartState == null) cartState = dataSet[position].wishItem.cartState
