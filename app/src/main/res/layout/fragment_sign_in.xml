@@ -55,38 +55,59 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/email_label"
+            style="@style/Widget.EditText.Label.Style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/email"
+            android:textAppearance="@style/Widget.EditText.Label.TextAppearance"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+
         <EditText
             android:id="@+id/email_input"
             style="@style/Widget.EditText.Basic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacingBase"
-            android:layout_marginBottom="@dimen/spacingSmall"
-            android:hint="@string/email"
+            android:layout_marginTop="@dimen/spacingSmall"
+            android:hint="@string/sign_email_hint"
             android:inputType="textEmailAddress"
             android:maxLines="1"
             android:onTextChanged="@{viewModel::onLoginEmailTextChanged}"
             android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            app:layout_constraintTop_toBottomOf="@id/email_label">
 
             <requestFocus />
         </EditText>
+
+        <TextView
+            android:id="@+id/password_label"
+            style="@style/Widget.EditText.Label.Style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:text="@string/password"
+            android:textAppearance="@style/Widget.EditText.Label.TextAppearance"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/email_input" />
 
         <EditText
             android:id="@+id/password_input"
             style="@style/Widget.EditText.Basic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing5"
-            android:hint="@string/password"
+            android:layout_marginTop="@dimen/spacingSmall"
+            android:hint="@string/sign_password_hint"
             android:inputType="textPassword"
             android:maxLines="1"
             android:onTextChanged="@{viewModel::onLoginPasswordTextChanged}"
             android:paddingVertical="@dimen/spacing12"
             android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
-            app:layout_constraintTop_toBottomOf="@id/email_input" />
+            app:layout_constraintTop_toBottomOf="@id/password_label" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -98,11 +119,12 @@
                 style="@style/Widget.Button.Full.Round.Activate.Green"
                 android:layout_width="match_parent"
                 android:layout_marginTop="@dimen/spacingBase"
+                android:layout_marginBottom="@dimen/spacingMicro"
                 android:enabled="@{viewModel.loginEmail.length() > 0 &amp;&amp; viewModel.loginPassword.length() > 0}"
                 android:onClick="@{() -> viewModel.requestSign(SignType.SIGN_IN)}"
                 android:text="@{viewModel.signProcessStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.sign_in)}"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="@string/sign_in"/>
+                app:layout_constraintBottom_toTopOf="@id/forgot_your_password"
+                tools:text="@string/sign_in" />
 
             <com.airbnb.lottie.LottieAnimationView
                 android:id="@+id/loading_lottie"
@@ -122,14 +144,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacingSmall"
+                android:layout_marginBottom="@dimen/spacingMicro"
                 android:fontFamily="@font/suit_m"
                 android:padding="@dimen/spacing12"
                 android:text="@string/sign_in_forgot_your_password"
-                android:textColor="@color/gray_300"
+                android:textColor="#606060"
                 android:textSize="@dimen/typographyDescription"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/sign_in" />
+                app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
