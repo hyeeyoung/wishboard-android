@@ -70,7 +70,7 @@
     <string name="sign_in_forgot_your_password"><u>비밀번호를 잊으셨나요?</u></string>
     <string name="sign_in_unregistered_user_detail">앗, 가입되지 않은 계정이에요! 가입하기부터 진행해 주세요.</string>
     <string name="sign_in_email_title">이메일로 로그인하기</string>
-    <string name="sign_in_email_verification_code_hint">인증 코드</string>
+    <string name="sign_in_email_verification_code_hint">인증코드를 입력해 주세요.</string>
     <string name="sign_in_email_send_email_button_text">인증메일 받기</string>
     <string name="sign_in_email_resend_email_button_text">재요청</string>
     <string name="sign_in_email_guide">가입하신 이메일을 입력해주세요!\n로그인을 위해 인증코드가 포함된 이메일을 보내드려요!</string>
