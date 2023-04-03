@@ -29,7 +29,8 @@ class MyViewModel @Inject constructor(
     private val localStorage: WishBoardPreference
 ) : ViewModel() {
     private var userEmail = MutableLiveData<String?>()
-    private var userNickname = MutableLiveData<String>()
+    private var _userNickname = MutableStateFlow("")
+    val userNickname get() = _userNickname.asStateFlow()
 
     val inputNickName = MutableStateFlow<String?>(null)
     private val isExistNickname = MutableLiveData<Boolean?>()
@@ -39,17 +40,13 @@ class MyViewModel @Inject constructor(
     val selectedProfileImageUri get() = _selectedProfileImageUri.asStateFlow()
     private val _userInfoUpdateState = MutableStateFlow<UiState<Boolean>>(UiState.Empty)
     val userInfoUpdateState get() = _userInfoUpdateState.asStateFlow()
-    val isValidNicknameFormat = inputNickName.map { nickname ->
-        inputNickName.value = nickname?.trim()
-        isExistNickname.value = null
-        nickname?.matches(NICKNAME_PATTERN.toRegex()) == true && nickname.isNotEmpty()
-    }.toStateFlow(viewModelScope, null)
+
     val isEnabledEditCompleteButton = combine(
         inputNickName,
-        isValidNicknameFormat,
+        _userNickname,
         selectedProfileImageUri
-    ) { nickname, isValidNickname, profileUri ->
-        isValidNickname != false && !(nickname == userNickname.value && profileUri == null)
+    ) { inputNickname, userNickname, profileUri ->
+        !inputNickname.isNullOrBlank() && !(inputNickname == userNickname && profileUri == null) // 닉네임이 공백문자로만 이루어져있지 않고, 닉네임과 프로필 이미지 모두 변경 사항이 없는 경우를 제외한 모든 경우에 완료 버튼을 활성화
     }.toStateFlow(viewModelScope, false)
 
     private var pushState = MutableLiveData<Boolean?>()
@@ -76,7 +73,7 @@ class MyViewModel @Inject constructor(
         viewModelScope.launch {
             userRepository.fetchUserInfo().let {
                 userEmail.value = it?.email ?: localStorage.userEmail
-                userNickname.value = it?.nickname ?: localStorage.userNickname
+                _userNickname.value = it?.nickname ?: localStorage.userNickname
                 _userProfileImage.value = it?.profileImage
                 pushState.value = convertIntToBooleanPushState(it?.pushState)
             }
@@ -86,8 +83,9 @@ class MyViewModel @Inject constructor(
     fun updateUserInfo() {
         viewModelScope.launch {
             _userInfoUpdateState.value = UiState.Loading
-            val nickname =
-                if (userNickname.value == inputNickName.value) null else inputNickName.value
+
+            inputNickName.value = inputNickName.value?.trim()
+            val nickname = if (userNickname.value == inputNickName.value) null else inputNickName.value
             val imageMultipartBody: MultipartBody.Part? =
                 selectedProfileImageUri.value?.let { imageUri ->
                     ContentUriRequestBody(
@@ -159,7 +157,7 @@ class MyViewModel @Inject constructor(
     }
 
     fun resetUserInfo() {
-        inputNickName.value = userNickname.value
+        inputNickName.value = _userNickname.value
         isExistNickname.value = null
         _selectedProfileImageUri.value = null
         _userInfoUpdateState.value = UiState.Empty
@@ -180,7 +178,6 @@ class MyViewModel @Inject constructor(
     }
 
     fun getUserEmail(): LiveData<String?> = userEmail
-    fun getUserNickname(): LiveData<String?> = userNickname
     fun getPushState(): LiveData<Boolean?> = pushState
 
     fun isExistNickname(): LiveData<Boolean?> = isExistNickname
@@ -191,6 +188,5 @@ class MyViewModel @Inject constructor(
     companion object {
         private const val PASSWORD_PATTERN =
             "^(?=.*[A-Za-z])(?=.*[0-9])(?=.*[{!\"#\$%&'()*+,-.:;<=>?@\\[\\]^_`{|}~/\\\\]).{7,15}.$"
-        private const val NICKNAME_PATTERN = "^[가-힣ㄱ-ㅎa-zA-Z0-9]+\$"
     }
 }

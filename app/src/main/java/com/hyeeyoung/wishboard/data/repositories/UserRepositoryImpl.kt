@@ -49,6 +49,10 @@ class UserRepositoryImpl @Inject constructor(
     ): Result<Pair<Boolean, Int>> = runCatching {
         val response = userService.updateUserInfo(nickname, profileImg)
         Pair(response.isSuccessful, response.code())
+    }.onSuccess {
+        Timber.d("사용자 프로필 수정 성공")
+    }.onFailure {
+        Timber.d("사용자 프로필 수정 실패 ${it.message}")
     }
 
     override suspend fun deleteUserAccount() = runCatching {
