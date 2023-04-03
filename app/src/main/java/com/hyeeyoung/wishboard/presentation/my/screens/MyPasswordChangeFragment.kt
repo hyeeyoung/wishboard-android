@@ -25,11 +25,6 @@ class MyPasswordChangeFragment : Fragment() {
     private lateinit var binding: FragmentPasswordChangeBinding
     private val viewModel: MyViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.resetUserInfo()
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         showKeyboard(requireContext(), binding.passwordInput, true)
