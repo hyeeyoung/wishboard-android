@@ -13,8 +13,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/gray_50"
-            app:layout_constraintTop_toTopOf="parent"
-            android:src="@drawable/backgound_folder_setting" />
+            android:src="@drawable/backgound_folder_setting"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -27,28 +27,28 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:fontFamily="@font/suit_b"
+                android:text="@string/how_to_use_folder_setting"
                 android:textColor="@color/gray_700"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:text="@string/folder_list_title" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/how_to_user_description"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing12"
                 android:layout_marginHorizontal="@dimen/spacingBase"
+                android:layout_marginTop="@dimen/spacing12"
                 android:fontFamily="@font/suit_r"
                 android:gravity="center"
                 android:lineSpacingExtra="5dp"
+                android:text="@string/how_to_use_folder_setting_description"
                 android:textColor="@color/gray_700"
                 android:textSize="@dimen/typographyBase"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/how_to_user_title"
-                android:text="@string/how_to_use_folder_setting_description" />
+                app:layout_constraintTop_toBottomOf="@id/how_to_user_title" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
