@@ -52,7 +52,7 @@
                 android:layout_marginTop="32dp"
                 android:text="@string/cancel"
                 android:textAppearance="@style/Widget.Button.Dialog.TextAppearance"
-                android:textColor="@color/green_500"
+                android:textColor="@color/green_700"
                 app:layout_constraintEnd_toStartOf="@id/yes"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/description" />
