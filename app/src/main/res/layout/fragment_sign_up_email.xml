@@ -101,7 +101,7 @@
                 style="@style/Widget.EditText.Basic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/email"
+                android:hint="@string/sign_email_hint"
                 android:inputType="textEmailAddress"
                 android:maxLines="1"
                 android:onTextChanged="@{viewModel::onRegistrationEmailTextChanged}"
