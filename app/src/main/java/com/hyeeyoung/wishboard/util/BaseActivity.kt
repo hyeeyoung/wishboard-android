@@ -10,13 +10,16 @@ import androidx.lifecycle.lifecycleScope
 import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import timber.log.Timber
 
 abstract class BaseActivity<B : ViewDataBinding>(@LayoutRes private val layoutRes: Int) :
     AppCompatActivity() {
     lateinit var binding: B
     private var snackbar: CustomSnackbar? = null
+    private val isConnected = MutableStateFlow(false)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +38,12 @@ abstract class BaseActivity<B : ViewDataBinding>(@LayoutRes private val layoutRe
             .onEach { isConnected ->
                 if (isConnected) snackbar?.dismiss()
                 else snackbar?.show()
+                this.isConnected.value = isConnected
             }.launchIn(lifecycleScope)
+    }
+
+    fun <R> safeUiUpdate(requestUiUpdate: () -> R) {
+        if (isConnected.value) requestUiUpdate()
+        else Timber.e("네트워크 연결 상태를 확인해 주세요.")
     }
 }
