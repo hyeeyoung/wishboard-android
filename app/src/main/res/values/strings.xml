@@ -77,6 +77,7 @@
     <string name="sign_in_email_verification_code_guide">인증코드가 전송되었어요!\n이메일을 확인해주세요.</string>
     <string name="sign_in_email_verification_code_detail">인증코드를 다시 확인해 주세요.</string>
     <string name="sign_term">가입 시 이용약관과 개인정보취급방침에 동의하는 것으로 간주됩니다.</string>
+    <string name="sign_auto_login_failure">자동 로그인이 만료되었습니다.</string>
 
     <!-- Home -->
     <string name="home_no_item_view">앗, 아이템이 없어요!\n갖고 싶은 아이템을 등록해보세요!</string>
