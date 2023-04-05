@@ -62,7 +62,7 @@ class AuthInterceptor @Inject constructor(
                                     packageManager.getLaunchIntentForPackage(packageName)?.component
                                 )
                             )
-                            // TODO 자동 로그인 만료 토스트 띄우기
+                            showToast(getString(R.string.sign_auto_login_failure))
                             localStorage.clear()
                             cancel()
                         }
