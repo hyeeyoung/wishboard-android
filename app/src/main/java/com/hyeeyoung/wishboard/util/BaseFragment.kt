@@ -27,4 +27,10 @@ abstract class BaseFragment<B : ViewDataBinding>(@LayoutRes private val layoutRe
         super.onDestroyView()
         _binding = null
     }
+
+    fun <R> safeUiUpdate(requestUiUpdate: () -> R) {
+        (requireActivity() as? BaseActivity<*>)?.safeUiUpdate {
+            requestUiUpdate()
+        }
+    }
 }
