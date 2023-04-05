@@ -4,14 +4,17 @@ import android.app.Application
 import android.content.Intent
 import com.google.gson.Gson
 import com.hyeeyoung.wishboard.BuildConfig
+import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.data.local.WishBoardPreference
 import com.hyeeyoung.wishboard.data.model.auth.ResponseRefresh
+import com.hyeeyoung.wishboard.util.extension.showToast
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import okhttp3.FormBody
 import okhttp3.Interceptor
+import okhttp3.Request
 import okhttp3.Response
 import timber.log.Timber
 import javax.inject.Inject
@@ -23,15 +26,11 @@ class AuthInterceptor @Inject constructor(
 ) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
-        val authRequest =
-            originalRequest.newBuilder()
-                .addHeader(AUTHORIZATION, "$TOKEN_PREF${localStorage.accessToken}").build()
+        val authRequest = originalRequest.newAuthBuilder().build()
         val response = chain.proceed(authRequest)
 
         when (response.code) {
             401 -> {
-                Timber.d(localStorage.accessToken)
-                Timber.d(localStorage.refreshToken)
                 val requestBody = FormBody.Builder()
                     .add(REFRESH_TOKEN, localStorage.refreshToken).build()
 
@@ -43,19 +42,16 @@ class AuthInterceptor @Inject constructor(
 
                 if (refreshTokenResponse.isSuccessful) {
                     Timber.d("토큰 리프레시 성공")
-                    gson.fromJson(
+                    val responseRefresh = gson.fromJson(
                         refreshTokenResponse.body?.string(),
                         ResponseRefresh::class.java
-                    ).also { responseRefresh ->
-                        responseRefresh.token.let {
-                            localStorage.updateToken(it.accessToken, it.refreshToken)
-                        }
+                    )
+
+                    responseRefresh.data?.token?.let {
+                        localStorage.updateToken(it.accessToken, it.refreshToken)
                     }
 
-                    val newRequest =
-                        originalRequest.newBuilder()
-                            .addHeader(AUTHORIZATION, "$TOKEN_PREF${localStorage.accessToken}")
-                            .build()
+                    val newRequest = originalRequest.newAuthBuilder().build()
                     return chain.proceed(newRequest)
                 } else {
                     Timber.e("토큰 리프레시 실패(${refreshTokenResponse.message})")
@@ -76,6 +72,10 @@ class AuthInterceptor @Inject constructor(
         }
         return response
     }
+
+    private fun Request.newAuthBuilder() =
+        this.newBuilder()
+            .addHeader(AUTHORIZATION, "$TOKEN_PREF${localStorage.accessToken}")
 
     companion object {
         private const val AUTHORIZATION = "Authorization"
