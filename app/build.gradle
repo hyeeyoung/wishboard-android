@@ -24,8 +24,8 @@ android {
 
     defaultConfig {
         applicationId "com.hyeeyoung.wishboard"
-        minSdkVersion 22
-        targetSdkVersion 32
+        minSdkVersion 24
+        targetSdkVersion 33
         versionCode 14
         versionName "1.1.2"
 
