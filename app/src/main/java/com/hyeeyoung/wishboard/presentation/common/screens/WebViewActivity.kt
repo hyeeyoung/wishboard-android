@@ -1,8 +1,8 @@
 package com.hyeeyoung.wishboard.presentation.common.screens
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.webkit.WebChromeClient
-import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -11,43 +11,42 @@ import com.hyeeyoung.wishboard.databinding.ActivityWebviewBinding
 
 class WebViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWebviewBinding
-    private lateinit var webView: WebView
-    private var link: String? = null
-    private var title: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_webview)
 
-        link = intent.getStringExtra(ARG_WEB_VIEW_LINK)
-        title = intent.getStringExtra(ARG_WEB_VIEW_TITLE)
-
         initializeView()
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private fun initializeView() {
-        binding.title.text = title
-        webView = binding.webview.apply {
-            // 새 창 띄우지 않기
+        binding.title.text = intent.getStringExtra(ARG_WEB_VIEW_TITLE)
+
+        binding.webview.apply {
             webViewClient = WebViewClient()
-            webChromeClient = WebChromeClient() // 크롬환경에 맞는 세팅을 해줌
+            webChromeClient = WebChromeClient()
 
-            settings.javaScriptEnabled = true
-            settings.javaScriptCanOpenWindowsAutomatically = true
-            settings.setSupportZoom(true)
-
-            // WebView 화면크기에 맞추도록 설정
-            settings.loadWithOverviewMode = true
-            settings.useWideViewPort = true
-
-            link?.let {
-                loadUrl(it)
+            settings.apply {
+                javaScriptEnabled = true
+                javaScriptCanOpenWindowsAutomatically = true
+                loadWithOverviewMode = true
+                useWideViewPort = true
+                domStorageEnabled = true
+                setSupportZoom(true)
             }
+
+            intent.getStringExtra(ARG_WEB_VIEW_LINK)?.let { loadUrl(it) }
         }
 
         binding.back.setOnClickListener {
             finish()
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        overridePendingTransition(0, 0)
     }
 
     companion object {
