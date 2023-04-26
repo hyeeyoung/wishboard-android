@@ -11,6 +11,7 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.BaseTransientBottomBar
 import com.google.android.material.snackbar.Snackbar
+import com.hyeeyoung.wishboard.BuildConfig
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentMyBinding
 import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
@@ -43,10 +44,15 @@ class MyFragment : Fragment() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        initializeView()
         addListeners()
         addObservers()
 
         return binding.root
+    }
+
+    private fun initializeView() {
+        binding.version.text = BuildConfig.VERSION_NAME
     }
 
     private fun addListeners() {
