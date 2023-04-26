@@ -1,7 +1,6 @@
 package com.hyeeyoung.wishboard.presentation.my.screens
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -69,7 +68,10 @@ class MyFragment : Fragment() {
             startActivity(email)
         }
         binding.howToUse.setOnClickListener {
-            moveWebViewActivity("https://hushed-bolt-fd4.notion.site/383c308f256f4f189b7c0b68a8f68d9f", R.string.my_section_sub_title_how_to_use)
+            moveWebViewActivity(
+                "https://hushed-bolt-fd4.notion.site/383c308f256f4f189b7c0b68a8f68d9f",
+                R.string.my_section_sub_title_how_to_use
+            )
         }
         binding.terms.setOnClickListener {
             moveWebViewActivity(
