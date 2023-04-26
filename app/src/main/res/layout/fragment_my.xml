@@ -233,11 +233,11 @@
                             android:textAppearance="@style/My.Menu.TextAppearance" />
 
                         <TextView
+                            android:id="@+id/version"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/spacingBase"
                             android:fontFamily="@font/montserrat_sb"
-                            android:text="@string/service_version"
                             android:textColor="@color/gray_200"
                             android:textSize="@dimen/typographyDescription" />
                     </LinearLayout>
