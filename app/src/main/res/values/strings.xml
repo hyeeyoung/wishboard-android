@@ -184,7 +184,6 @@
     <string name="my_section_sub_title_personal_info">개인정보 처리방침</string>
     <string name="my_section_sub_title_opensource_license">오픈소스 라이브러리</string>
     <string name="my_section_sub_title_version_info">버전정보</string>
-    <string name="service_version">1.1.2</string>
 
     <string name="my_section_title_account_management">계정 관리</string>
     <string name="my_section_sub_title_logout">로그아웃</string>
@@ -209,7 +208,7 @@
 
     <!-- How To Use -->
     <string name="how_to_use_yes_button_text">네! 알겠어요</string>
-    <string name="how_to_use_link_sharing_title">이템 저장</string>
+    <string name="how_to_use_link_sharing_title">아이템 저장</string>
     <string name="how_to_use_folder_setting">폴더 지정</string>
     <string name="how_to_use_link_sharing_description">웹 브라우저에서 사고 싶은 아이템을 발견했다면\n <b>공유하기</b>로 아이템을 위시보드에 저장해 보세요!</string>
     <string name="how_to_use_folder_setting_description">아이템에 폴더를 지정해보세요!\n원하는 폴더가 없다면 새 폴더를 추가할 수 있어요.</string>

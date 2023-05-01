@@ -36,6 +36,12 @@
                 tools:text="@string/my_section_sub_title_how_to_use" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/gray_100"
+            app:layout_constraintBottom_toBottomOf="@id/toolbar" />
+
         <WebView
             android:id="@+id/webview"
             android:layout_width="match_parent"
