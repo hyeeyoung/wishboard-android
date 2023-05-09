@@ -1,18 +1,27 @@
 package com.hyeeyoung.wishboard.presentation.cart
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.data.model.cart.CartItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.domain.repositories.CartRepository
+import com.hyeeyoung.wishboard.presentation.base.viewmodel.NetworkViewModel
 import com.hyeeyoung.wishboard.presentation.cart.types.CartItemButtonType
+import com.hyeeyoung.wishboard.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class CartViewModel @Inject constructor(
     private val cartRepository: CartRepository,
-) : ViewModel() {
+) : NetworkViewModel() {
+    private val _cartFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
+    val cartFetchState get() = _cartFetchState.asStateFlow()
     private val _cartList = MutableLiveData<List<CartItem>?>(listOf())
     val cartList: LiveData<List<CartItem>?> get() = _cartList
     val cartListAdapter = CartListAdapter()
@@ -20,18 +29,21 @@ class CartViewModel @Inject constructor(
     val totalPrice: LiveData<Int> get() = _totalPrice
 
     init {
-        fetchCartList()
         calculateTotalPrice()
     }
 
-    private fun fetchCartList() {
+    fun fetchCartList() {
         viewModelScope.launch {
             _cartList.value = cartRepository.fetchCartList()
+            _cartFetchState.value =
+                if (_cartList.value != null) UiState.Success(true)
+                else UiState.Error(null)
             cartListAdapter.setData(_cartList.value ?: return@launch)
         }
     }
 
     fun removeToCart(itemId: Long) {
+        if (!isConnected.value) return
         viewModelScope.launch {
             val isSuccessful = cartRepository.removeToCart(itemId)
             if (isSuccessful) removeToCartList(itemId)
@@ -56,6 +68,7 @@ class CartViewModel @Inject constructor(
     }
 
     private fun updateCartItemCount(item: CartItem) {
+        if (!isConnected.value) return
         viewModelScope.launch {
             val isSuccessful = cartRepository.updateCartItemCount(item)
             if (!isSuccessful) return@launch // TODO 장바구니 업데이트 실패 시 예외 처리 필요
