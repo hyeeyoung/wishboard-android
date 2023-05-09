@@ -4,12 +4,12 @@ import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.data.local.WishBoardPreference
 import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
 import com.hyeeyoung.wishboard.domain.repositories.SignRepository
 import com.hyeeyoung.wishboard.domain.repositories.UserRepository
+import com.hyeeyoung.wishboard.presentation.base.viewmodel.NetworkViewModel
 import com.hyeeyoung.wishboard.util.ContentUriRequestBody
 import com.hyeeyoung.wishboard.util.UiState
 import com.hyeeyoung.wishboard.util.extension.toPlainNullableRequestBody
@@ -27,7 +27,9 @@ class MyViewModel @Inject constructor(
     private val signRepository: SignRepository,
     private val userRepository: UserRepository,
     private val localStorage: WishBoardPreference
-) : ViewModel() {
+) : NetworkViewModel() {
+    private val _userInfoFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
+    val userInfoFetchState get() = _userInfoFetchState.asStateFlow()
     private var userEmail = MutableLiveData<String?>()
     private var _userNickname = MutableStateFlow("")
     val userNickname get() = _userNickname.asStateFlow()
@@ -72,6 +74,8 @@ class MyViewModel @Inject constructor(
     fun fetchUserInfo() {
         viewModelScope.launch {
             userRepository.fetchUserInfo().let {
+                _userInfoFetchState.value =
+                    if (it == null) UiState.Error(null) else UiState.Success(true)
                 userEmail.value = it?.email ?: localStorage.userEmail
                 _userNickname.value = it?.nickname ?: localStorage.userNickname
                 _userProfileImage.value = it?.profileImage
@@ -81,11 +85,13 @@ class MyViewModel @Inject constructor(
     }
 
     fun updateUserInfo() {
+        if (!isConnected.value) return
         viewModelScope.launch {
             _userInfoUpdateState.value = UiState.Loading
 
             inputNickName.value = inputNickName.value?.trim()
-            val nickname = if (userNickname.value == inputNickName.value) null else inputNickName.value
+            val nickname =
+                if (userNickname.value == inputNickName.value) null else inputNickName.value
             val imageMultipartBody: MultipartBody.Part? =
                 selectedProfileImageUri.value?.let { imageUri ->
                     ContentUriRequestBody(
@@ -111,6 +117,7 @@ class MyViewModel @Inject constructor(
     }
 
     fun updatePushState() {
+        if (!isConnected.value) return
         if (pushState.value == null) return
         pushState.value = !pushState.value!!
         viewModelScope.launch {
@@ -119,18 +126,21 @@ class MyViewModel @Inject constructor(
     }
 
     fun signOut() {
+        if (!isConnected.value) return
         viewModelScope.launch {
             _isCompleteLogout.value = signRepository.logout().getOrNull() == true
         }
     }
 
     fun deleteUserAccount() {
+        if (!isConnected.value) return
         viewModelScope.launch {
             isCompleteUserDelete.value = userRepository.deleteUserAccount().getOrNull() == true
         }
     }
 
     fun changePassword() {
+        if (!isConnected.value) return
         viewModelScope.launch {
             _passwordChangeState.value = UiState.Loading
             userRepository.changePassword(newPassword.value)
@@ -175,6 +185,10 @@ class MyViewModel @Inject constructor(
         val isCorrected = inputEmail.value == userEmail.value
         isCorrectedEmail.value = isCorrected
         return isCorrected
+    }
+
+    fun requestUserInfoFetchState() {
+        _userInfoFetchState.value = UiState.Loading
     }
 
     fun getUserEmail(): LiveData<String?> = userEmail

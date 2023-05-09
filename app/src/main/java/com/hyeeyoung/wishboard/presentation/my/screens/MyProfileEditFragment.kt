@@ -3,18 +3,16 @@ package com.hyeeyoung.wishboard.presentation.my.screens
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentProfileEditBinding
 import com.hyeeyoung.wishboard.presentation.my.MyViewModel
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
+import com.hyeeyoung.wishboard.util.BaseFragment
 import com.hyeeyoung.wishboard.util.UiState
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.collectFlow
@@ -23,8 +21,8 @@ import com.hyeeyoung.wishboard.util.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MyProfileEditFragment : Fragment() {
-    private lateinit var binding: FragmentProfileEditBinding
+class MyProfileEditFragment :
+    BaseFragment<FragmentProfileEditBinding>(R.layout.fragment_profile_edit) {
     private val viewModel: MyViewModel by hiltNavGraphViewModels(R.id.my_nav_graph)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,35 +30,29 @@ class MyProfileEditFragment : Fragment() {
         viewModel.resetUserInfo()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentProfileEditBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        // 갤러리에서 선택한 이미지 전달받기
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(
-            ARG_IMAGE_URI
-        )?.observe(viewLifecycleOwner) { uri ->
-            viewModel.setSelectedUserProfileImage(Uri.parse(uri))
-        }
-
         showKeyboard(requireContext(), binding.nicknameInput, true)
         addListeners()
+        addObserver()
         collectData()
     }
 
     private fun addListeners() {
         binding.profileImageContainer.setOnClickListener {
             requestStorage.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+    }
+
+    private fun addObserver() {
+        // 갤러리에서 선택한 이미지 전달받기
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(
+            ARG_IMAGE_URI
+        )?.observe(viewLifecycleOwner) { uri ->
+            viewModel.setSelectedUserProfileImage(Uri.parse(uri))
         }
     }
 
