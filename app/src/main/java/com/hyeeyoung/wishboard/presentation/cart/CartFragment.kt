@@ -1,44 +1,43 @@
 package com.hyeeyoung.wishboard.presentation.cart
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.data.model.cart.CartItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.databinding.FragmentCartBinding
+import com.hyeeyoung.wishboard.presentation.base.screen.NetworkFragment
 import com.hyeeyoung.wishboard.presentation.cart.types.CartItemButtonType
 import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
 import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
+import com.hyeeyoung.wishboard.util.BaseFragment
 import com.hyeeyoung.wishboard.util.DialogListener
+import com.hyeeyoung.wishboard.util.UiState
+import com.hyeeyoung.wishboard.util.extension.collectFlow
 import com.hyeeyoung.wishboard.util.extension.getParcelableValue
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.extension.safeValueOf
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.combine
 
 @AndroidEntryPoint
-class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
-    private lateinit var binding: FragmentCartBinding
-    private val viewModel: CartViewModel by viewModels()
+class CartFragment : NetworkFragment<FragmentCartBinding>(R.layout.fragment_cart),
+    CartListAdapter.OnItemClickListener {
+    override val viewModel: CartViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentCartBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addObservers()
-
-        return binding.root
+        collectData()
     }
 
     private fun initializeView() {
@@ -86,6 +85,15 @@ class CartFragment : Fragment(), CartListAdapter.OnItemClickListener {
             // 단순 화면 전환 시에도 해당 코드 실행 방지를 위해 전달받은 bundle 데이터를 clear()
             bundle.clear()
             return@observe
+        }
+    }
+
+    private fun collectData() {
+        collectFlow(
+            combine(viewModel.isConnected, viewModel.cartFetchState) { isConnected, isSuccessful ->
+                isConnected && isSuccessful !is UiState.Success
+            }) { shouldFetch ->
+            if (shouldFetch) viewModel.fetchCartList()
         }
     }
 
