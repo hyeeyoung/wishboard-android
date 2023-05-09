@@ -12,7 +12,7 @@ import androidx.fragment.app.Fragment
 abstract class BaseFragment<B : ViewDataBinding>(@LayoutRes private val layoutResId: Int) :
     Fragment() {
     private var _binding: B? = null
-    val binding get() = requireNotNull(_binding!!) { "${this::class.java.simpleName}에서 에러가 발생했습니다." }
+    val binding get() = requireNotNull(_binding) { "${this::class.java.simpleName}에서 에러가 발생했습니다." }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,11 +26,5 @@ abstract class BaseFragment<B : ViewDataBinding>(@LayoutRes private val layoutRe
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    fun <R> safeUiUpdate(requestUiUpdate: () -> R) {
-        (requireActivity() as? BaseActivity<*>)?.safeUiUpdate {
-            requestUiUpdate()
-        }
     }
 }
