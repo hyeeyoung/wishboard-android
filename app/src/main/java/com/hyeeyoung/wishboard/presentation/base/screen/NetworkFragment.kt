@@ -19,7 +19,7 @@ abstract class NetworkFragment<B : ViewDataBinding>(@LayoutRes private val layou
     }
 
     private fun collectData() {
-        val activity = requireActivity() as? BaseActivity<*> ?: return
+        val activity = requireActivity() as? NetworkActivity<*> ?: return
         collectFlow(activity.isConnected) {
             viewModel.setConnected(it)
         }

@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import coil.load
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -13,23 +12,24 @@ import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.databinding.ActivityWishLinkSharingBinding
+import com.hyeeyoung.wishboard.presentation.base.screen.NetworkActivity
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
 import com.hyeeyoung.wishboard.presentation.folder.screens.FolderUploadBottomDialogFragment
 import com.hyeeyoung.wishboard.presentation.noti.screens.NotiSettingBottomDialogFragment
 import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel
-import com.hyeeyoung.wishboard.util.BaseActivity
+import com.hyeeyoung.wishboard.util.UiState
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
+import com.hyeeyoung.wishboard.util.extension.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.combine
 
 @AndroidEntryPoint
 class WishLinkSharingActivity :
-    BaseActivity<ActivityWishLinkSharingBinding>(R.layout.activity_wish_link_sharing),
+    NetworkActivity<ActivityWishLinkSharingBinding>(R.layout.activity_wish_link_sharing),
     FolderListAdapter.OnItemClickListener,
     FolderListAdapter.OnNewFolderClickListener {
-    private val viewModel: WishItemRegistrationViewModel by viewModels()
+    override val viewModel: WishItemRegistrationViewModel by viewModels()
     private lateinit var notiSettingBottomDialog: BottomSheetDialogFragment
     private var folderAddDialog: FolderUploadBottomDialogFragment? = null
 
@@ -50,9 +50,6 @@ class WishLinkSharingActivity :
                 "text/plain" -> {
                     val url = intent.getStringExtra(Intent.EXTRA_TEXT) ?: return
                     viewModel.setItemUrl(url)
-                    lifecycleScope.launch(Dispatchers.IO) {
-                        viewModel.getWishItemInfo(url)
-                    }
                 }
             }
         }
@@ -60,6 +57,7 @@ class WishLinkSharingActivity :
         initializeView()
         addListeners()
         addObservers()
+        collectData()
     }
 
     private fun initializeView() {
@@ -76,9 +74,7 @@ class WishLinkSharingActivity :
 
     private fun addListeners() {
         binding.add.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.uploadWishItemByLinkSharing()
-            }
+            viewModel.uploadWishItemByLinkSharing()
         }
         binding.cancel.setOnClickListener {
             finish()
@@ -111,6 +107,20 @@ class WishLinkSharingActivity :
                 }
                 else -> {}
             }
+        }
+    }
+
+    private fun collectData() {
+        collectFlow(
+            combine(
+                viewModel.isConnected,
+                viewModel.wishItemFetchState,
+                viewModel.folderListFetchState
+            ) { isConnected, isSuccessfulWish, isSuccessfulFolder ->
+                isConnected && isSuccessfulWish !is UiState.Success && isSuccessfulFolder !is UiState.Success
+            }) { shouldFetch ->
+            if (shouldFetch)
+                viewModel.fetchViewDataForLinkSharing()
         }
     }
 
