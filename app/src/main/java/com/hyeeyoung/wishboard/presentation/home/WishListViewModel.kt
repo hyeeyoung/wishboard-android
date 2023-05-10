@@ -25,14 +25,19 @@ class WishListViewModel @Inject constructor(
 ) : NetworkViewModel() {
     private val _wishListFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
     val wishListFetchState get() = _wishListFetchState.asStateFlow()
+    private val _folderDetailListFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
+    val folderDetailListFetchState get() = _folderDetailListFetchState.asStateFlow()
     private val wishList = MutableLiveData<List<WishItem>?>(listOf())
     private val wishListAdapter = WishListAdapter()
     private var _folderItem: FolderItem? = null
     val folderItem get() = _folderItem
 
     fun fetchWishList() {
+        if (!isConnected.value) return
         viewModelScope.launch {
             wishRepository.fetchWishList().let {
+                _wishListFetchState.value =
+                    if (it == null) UiState.Error(null) else UiState.Success(true)
                 wishList.value = it
                 wishListAdapter.setData(it)
             }
@@ -49,7 +54,7 @@ class WishListViewModel @Inject constructor(
         if (folderId == null) return
         viewModelScope.launch {
             folderRepository.fetchItemsInFolder(folderId).let { folders ->
-                _wishListFetchState.value =
+                _folderDetailListFetchState.value =
                     if (folders == null) UiState.Error(null) else UiState.Success(true)
                 wishList.value = folders
                 wishListAdapter.setData(folders)

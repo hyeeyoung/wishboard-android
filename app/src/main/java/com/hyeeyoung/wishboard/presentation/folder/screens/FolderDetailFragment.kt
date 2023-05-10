@@ -85,7 +85,7 @@ class FolderDetailFragment :
         collectFlow(
             combine(
                 viewModel.isConnected,
-                viewModel.wishListFetchState
+                viewModel.folderDetailListFetchState
             ) { isConnected, isSuccessful ->
                 isConnected && isSuccessful !is UiState.Success
             }) { shouldFetch ->
