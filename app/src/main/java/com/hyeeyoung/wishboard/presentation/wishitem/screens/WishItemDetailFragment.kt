@@ -5,16 +5,14 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Patterns
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.databinding.FragmentWishItemDetailBinding
+import com.hyeeyoung.wishboard.presentation.base.screen.NetworkFragment
 import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
 import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
 import com.hyeeyoung.wishboard.presentation.folder.screens.FolderListBottomDialogFragment
@@ -22,15 +20,18 @@ import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemViewModel
 import com.hyeeyoung.wishboard.util.DialogListener
 import com.hyeeyoung.wishboard.util.FolderListDialogListener
+import com.hyeeyoung.wishboard.util.UiState
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
+import com.hyeeyoung.wishboard.util.extension.collectFlow
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.extension.safeValueOf
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.combine
 
 @AndroidEntryPoint
-class WishItemDetailFragment : Fragment() {
-    private lateinit var binding: FragmentWishItemDetailBinding
-    private val viewModel: WishItemViewModel by viewModels()
+class WishItemDetailFragment :
+    NetworkFragment<FragmentWishItemDetailBinding>(R.layout.fragment_wish_item_detail) {
+    override val viewModel: WishItemViewModel by viewModels()
     private var itemStatus: WishItemStatus? = null
     private var itemId: Long = 0L
 
@@ -40,28 +41,19 @@ class WishItemDetailFragment : Fragment() {
         arguments?.let {
             (it.getLong(ARG_WISH_ITEM_ID)).let { id ->
                 itemId = id
-                viewModel.fetchWishItemDetail(id)
             }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentWishItemDetailBinding.inflate(inflater, container, false)
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = viewLifecycleOwner
-
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addListeners()
         addObservers()
+        collectData()
     }
 
     private fun initializeView() {
@@ -112,9 +104,21 @@ class WishItemDetailFragment : Fragment() {
             val status =
                 safeValueOf<WishItemStatus>(bundle.getString(ARG_ITEM_STATUS)) ?: return@observe
             if (status == WishItemStatus.MODIFIED)
-                viewModel.fetchWishItemDetail(itemId)
+                viewModel.requestFetchWishDetail()
             itemStatus = status
             return@observe
+        }
+    }
+
+    private fun collectData() {
+        collectFlow(
+            combine(
+                viewModel.isConnected,
+                viewModel.wishDetailFetchState
+            ) { isConnected, isSuccessful ->
+                isConnected && isSuccessful !is UiState.Success
+            }) { shouldFetch ->
+            if (shouldFetch) viewModel.fetchWishItemDetail(itemId)
         }
     }
 
