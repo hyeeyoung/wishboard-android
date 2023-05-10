@@ -11,18 +11,19 @@ import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.domain.model.WishItemDetail
 import com.hyeeyoung.wishboard.domain.repositories.FolderRepository
 import com.hyeeyoung.wishboard.domain.repositories.WishRepository
+import com.hyeeyoung.wishboard.presentation.base.viewmodel.NetworkViewModel
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
 import com.hyeeyoung.wishboard.presentation.folder.types.FolderListViewType
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiType
-import com.hyeeyoung.wishboard.util.ContentUriRequestBody
+import com.hyeeyoung.wishboard.util.*
 import com.hyeeyoung.wishboard.util.extension.addSourceList
 import com.hyeeyoung.wishboard.util.extension.toPlainNullableRequestBody
 import com.hyeeyoung.wishboard.util.extension.toPlainRequestBody
-import com.hyeeyoung.wishboard.util.getBitmapFromURL
-import com.hyeeyoung.wishboard.util.getFileFromBitmap
-import com.hyeeyoung.wishboard.util.safeLet
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -38,7 +39,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private val wishRepository: WishRepository,
     private val folderRepository: FolderRepository,
     private val localStorage: WishBoardPreference
-) : ViewModel() {
+) : NetworkViewModel() {
     private var itemId: Long? = null
     private var itemName = MutableLiveData<String?>()
     private var itemPrice = MutableLiveData<String?>()
@@ -57,6 +58,11 @@ class WishItemRegistrationViewModel @Inject constructor(
     private var notiDateVal = MutableLiveData<Int>()
     private var notiHourVal = MutableLiveData<Int>()
     private var notiMinuteVal = MutableLiveData<Int>()
+
+    private val _wishItemFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
+    val wishItemFetchState get() = _wishItemFetchState.asStateFlow()
+    private val _folderListFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
+    val folderListFetchState get() = _folderListFetchState.asStateFlow()
 
     var wishItemDetail: WishItemDetail? = null
         set(value) {
@@ -97,10 +103,6 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     val isLogin: Boolean get() = localStorage.isLogin
 
-    init {
-        fetchFolderList()
-    }
-
     private fun combineEnabledSaveButton() =
         !(itemName.value.isNullOrBlank() || itemPrice.value.isNullOrBlank() || (itemImage.value.isNullOrBlank() && selectedGalleryImageUri.value == null))
 
@@ -108,62 +110,81 @@ class WishItemRegistrationViewModel @Inject constructor(
         return !(itemName.value.isNullOrBlank() || itemPrice.value.isNullOrBlank() || itemImage.value.isNullOrBlank())
     }
 
-    /** 오픈그래프 메타태그 파싱을 통해 아이템 정보 가져오기 */
-    fun getWishItemInfo(url: String) {
+    /** 링크 공유뷰에서 필요한 데이터(파싱된 아이템 정보 및 폴더 리스트)를 불러오는를 불러오는 함수 */
+    fun fetchViewDataForLinkSharing() {
         viewModelScope.launch {
-            val result = wishRepository.getItemParsingInfo(url)
-            itemName.value = result?.first?.name
-            itemPrice.value =
-                if (result?.first?.price == null || result.first?.price == "0") null else result.first?.price
-            itemImage.value = result?.first?.image
+            coroutineScope {
+                launch {
+                    fetchWishItemInfo(itemUrl.value ?: return@launch)
+                }
+                launch {
+                    fetchFolderList()
+                }
+            }
         }
     }
 
-    suspend fun uploadWishItemByLinkSharing() {
+    /** 오픈그래프 메타태그 파싱을 통해 아이템 정보 가져오기 */
+    private suspend fun fetchWishItemInfo(url: String) {
+        val result = wishRepository.getItemParsingInfo(url)
+        _wishItemFetchState.value =
+            if (result == null) UiState.Error(null) else UiState.Success(true)
+        itemName.value = result?.first?.name
+        itemPrice.value =
+            if (result?.first?.price == null || result.first?.price == "0") null else result.first?.price
+        itemImage.value = result?.first?.image
+    }
+
+    fun uploadWishItemByLinkSharing() {
+        if (!isConnected.value) return
         if (itemRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return
-        itemRegistrationStatus.postValue(ProcessStatus.IN_PROGRESS)
+        itemRegistrationStatus.value = ProcessStatus.IN_PROGRESS
 
-        safeLet(itemName.value?.trim(), getValidUrl(itemUrl.value)) { name, siteUrl ->
-            val folderId: RequestBody? =
-                folderItem.value?.id?.toString()?.toPlainNullableRequestBody()
-            val itemName: RequestBody = name.toPlainRequestBody()
-            val itemPrice: RequestBody? =
-                itemPrice.value?.replace(",", "")?.toIntOrNull()?.toString()
-                    ?.toPlainNullableRequestBody() // // TODO 가격 데이터에 천단위 구분자 ',' 있는 경우 문자열 처리 필요
-            val itemUrl: RequestBody = siteUrl.toPlainRequestBody()
-            val notiType: RequestBody? = notiType.value?.name?.toPlainNullableRequestBody()
-            val notiDate: RequestBody? = notiDate.value?.toPlainNullableRequestBody()
+        viewModelScope.launch {
+            safeLet(itemName.value?.trim(), getValidUrl(itemUrl.value)) { name, siteUrl ->
+                val folderId: RequestBody? =
+                    folderItem.value?.id?.toString()?.toPlainNullableRequestBody()
+                val itemName: RequestBody = name.toPlainRequestBody()
+                val itemPrice: RequestBody? =
+                    itemPrice.value?.replace(",", "")?.toIntOrNull()?.toString()
+                        ?.toPlainNullableRequestBody() // // TODO 가격 데이터에 천단위 구분자 ',' 있는 경우 문자열 처리 필요
+                val itemUrl: RequestBody = siteUrl.toPlainRequestBody()
+                val notiType: RequestBody? = notiType.value?.name?.toPlainNullableRequestBody()
+                val notiDate: RequestBody? = notiDate.value?.toPlainNullableRequestBody()
 
-            val imageMultipartBody: MultipartBody.Part? = itemImage.value?.let { imageUrl ->
-                val bitmap = requireNotNull(getBitmapFromURL(imageUrl)) { Timber.e("비트맵 변환 실패") }
-                imageFile = requireNotNull(
-                    getFileFromBitmap(
-                        bitmap,
-                        localStorage.accessToken,
-                        application.applicationContext
+                val imageMultipartBody: MultipartBody.Part? = itemImage.value?.let { imageUrl ->
+                    val bitmap =
+                        requireNotNull(getBitmapFromURL(imageUrl)) { Timber.e("비트맵 변환 실패") }
+                    imageFile = requireNotNull(
+                        getFileFromBitmap(
+                            bitmap,
+                            localStorage.accessToken,
+                            application.applicationContext
+                        )
+                    ) { Timber.e("파일 변환 실패") }
+
+                    MultipartBody.Part.createFormData(
+                        "item_img", imageFile?.name, imageFile!!.asRequestBody()
                     )
-                ) { Timber.e("파일 변환 실패") }
+                }
 
-                MultipartBody.Part.createFormData(
-                    "item_img", imageFile?.name, imageFile!!.asRequestBody()
+                val isComplete = wishRepository.uploadWishItem(
+                    folderId,
+                    itemName,
+                    itemPrice,
+                    itemUrl,
+                    notiType,
+                    notiDate,
+                    imageMultipartBody
                 )
+                isCompleteUpload.value = isComplete
             }
-
-            val isComplete = wishRepository.uploadWishItem(
-                folderId,
-                itemName,
-                itemPrice,
-                itemUrl,
-                notiType,
-                notiDate,
-                imageMultipartBody
-            )
-            isCompleteUpload.postValue(isComplete)
+            itemRegistrationStatus.value = ProcessStatus.IDLE
         }
-        itemRegistrationStatus.postValue(ProcessStatus.IDLE)
     }
 
     fun uploadWishItemByBasics(isEditMode: Boolean) {
+        if (!isConnected.value) return
         viewModelScope.launch {
             if (itemRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return@launch
             val itemName = itemName.value?.trim() ?: return@launch
@@ -279,6 +300,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     }
 
     fun createNewFolder() {
+        if (!isConnected.value) return
         val folderName = folderName.value?.trim() ?: return
         folderRegistrationStatus.value = ProcessStatus.IN_PROGRESS
         val folder = FolderItem(name = folderName)
@@ -290,15 +312,16 @@ class WishItemRegistrationViewModel @Inject constructor(
             result?.second?.let { folderId ->
                 folderListSquareAdapter.addData(FolderItem(folderId, folderName))
             }
-            folderRegistrationStatus.postValue(ProcessStatus.IDLE)
+            folderRegistrationStatus.value = ProcessStatus.IDLE
         }
     }
 
     // TODO need refactoring UseCase로 분리
-    private fun fetchFolderList() {
-        viewModelScope.launch {
-            folderListSquareAdapter.setData(folderRepository.fetchFolderListSummary())
-        }
+    private suspend fun fetchFolderList() {
+        val folders = folderRepository.fetchFolderListSummary()
+        _folderListFetchState.value =
+            if (folders == null) UiState.Error(null) else UiState.Success(true)
+        folderListSquareAdapter.setData(folders)
     }
 
     /** 입력한 쇼핑몰 링크의 포맷을 검증 후, 유효한 url일 때 아이템 정보 파싱 */
@@ -310,7 +333,9 @@ class WishItemRegistrationViewModel @Inject constructor(
         if (!isValid) return
 
         selectedGalleryImageUri.value = null // 파싱한 이미지를 적용할 것이기 때문에 기존에 선택된 이미지를 제거
-        getWishItemInfo(url!!)
+        viewModelScope.launch {
+            fetchWishItemInfo(url!!)
+        }
     }
 
     /** url 유효성 검증 */

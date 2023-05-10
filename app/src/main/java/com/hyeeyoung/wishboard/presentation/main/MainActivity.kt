@@ -10,16 +10,16 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ActivityMainBinding
+import com.hyeeyoung.wishboard.presentation.base.screen.NetworkActivity
 import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
 import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
 import com.hyeeyoung.wishboard.presentation.howtouse.screens.HowToUseActivity
-import com.hyeeyoung.wishboard.util.BaseActivity
 import com.hyeeyoung.wishboard.util.DialogListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
-    private val viewModel: MainViewModel by viewModels()
+class MainActivity : NetworkActivity<ActivityMainBinding>(R.layout.activity_main) {
+    override val viewModel: MainViewModel by viewModels()
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,9 +29,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(R.layout.activity_main) {
 
         // 회원가입 성공 시 알림 설정 다이얼로그 띄우기
         intent.getBooleanExtra(ARG_SUCCESS_SIGN_UP, false).let {
-            if (it) {
-                showHowToUseDialog()
-            }
+            if (it) showHowToUseDialog()
         }
 
         initializeView()
