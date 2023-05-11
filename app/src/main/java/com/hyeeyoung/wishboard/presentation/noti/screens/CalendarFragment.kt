@@ -1,19 +1,16 @@
 package com.hyeeyoung.wishboard.presentation.noti.screens
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentCalendarBinding
-import com.hyeeyoung.wishboard.util.CalendarUtils.Companion.getMonthList
 import com.hyeeyoung.wishboard.presentation.noti.NotiViewModel
+import com.hyeeyoung.wishboard.util.BaseFragment
+import com.hyeeyoung.wishboard.util.CalendarUtils.Companion.getMonthList
 import org.joda.time.DateTime
 
-class CalendarFragment : Fragment() {
-    private lateinit var binding: FragmentCalendarBinding
+class CalendarFragment : BaseFragment<FragmentCalendarBinding>(R.layout.fragment_calendar) {
     private val viewModel: NotiViewModel by hiltNavGraphViewModels(R.id.noti_calendar_nav_graph)
     private var millis: Long = 0L
 
@@ -24,23 +21,21 @@ class CalendarFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentCalendarBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addObservers()
-
-        return binding.root
     }
 
     private fun initializeView() {
-        binding.calendarView.initCalendar(DateTime(millis), getMonthList(DateTime(millis)), viewModel)
+        binding.calendarView.initCalendar(
+            DateTime(millis),
+            getMonthList(DateTime(millis)),
+            viewModel
+        )
     }
 
     private fun addObservers() {

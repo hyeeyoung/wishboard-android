@@ -1,40 +1,22 @@
 package com.hyeeyoung.wishboard.presentation.common.screens
 
 import android.os.Bundle
-import android.view.*
-import androidx.fragment.app.DialogFragment
+import android.view.View
+import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.DialogOneButtonBinding
+import com.hyeeyoung.wishboard.presentation.base.screen.BaseDialogFragment
 
 class OneButtonDialogFragment(
     private val title: String,
     private val description: String?
-) : DialogFragment() {
-    private lateinit var binding: DialogOneButtonBinding
+) : BaseDialogFragment<DialogOneButtonBinding>(R.layout.dialog_one_button) {
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        binding = DialogOneButtonBinding.inflate(inflater, container, false)
-        val dialog = dialog
-        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.title.text = title
         binding.description.text = description
 
         addListener()
-
-        return binding.root
-    }
-
-    override fun onStart() {
-        super.onStart()
-        dialog?.window?.setLayout(
-            WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.WRAP_CONTENT
-        )
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
 
     private fun addListener() {
