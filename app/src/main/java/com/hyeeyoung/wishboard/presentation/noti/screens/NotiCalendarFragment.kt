@@ -11,36 +11,30 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentNotiCalendarBinding
 import com.hyeeyoung.wishboard.domain.model.NotiItemInfo
+import com.hyeeyoung.wishboard.presentation.base.screen.NetworkFragment
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.presentation.noti.adapters.CalendarAdapter
 import com.hyeeyoung.wishboard.presentation.noti.adapters.NotiListAdapter
 import com.hyeeyoung.wishboard.presentation.noti.NotiViewModel
+import com.hyeeyoung.wishboard.util.UiState
+import com.hyeeyoung.wishboard.util.extension.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.combine
 import org.joda.time.LocalDate
 
 @AndroidEntryPoint
-class NotiCalendarFragment : Fragment(), NotiListAdapter.OnItemClickListener {
-    private lateinit var binding: FragmentNotiCalendarBinding
+class NotiCalendarFragment : NetworkFragment<FragmentNotiCalendarBinding>(R.layout.fragment_noti_calendar), NotiListAdapter.OnItemClickListener {
     private lateinit var calendarAdapter: CalendarAdapter
     private val viewModel: NotiViewModel by hiltNavGraphViewModels(R.id.noti_calendar_nav_graph)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.fetchAllNotiList()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentNotiCalendarBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addObservers()
-
-        return binding.root
+        collectData()
     }
 
     private fun initializeView() {
@@ -64,6 +58,14 @@ class NotiCalendarFragment : Fragment(), NotiListAdapter.OnItemClickListener {
     private fun addObservers() {
         viewModel.getNotiList().observe(viewLifecycleOwner) {
             viewModel.setSelectedNotiList(LocalDate.now().toString())
+        }
+    }
+
+    private fun collectData() {
+        collectFlow(combine(isConnected, viewModel.notiFetchState) { isConnected, isSuccessful ->
+            isConnected && isSuccessful !is UiState.Success
+        }) { shouldFetch ->
+            if (shouldFetch) viewModel.fetchAllNotiList()
         }
     }
 

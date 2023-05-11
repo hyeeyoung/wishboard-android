@@ -8,7 +8,10 @@ import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.domain.repositories.FolderRepository
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.presentation.folder.types.FolderListViewType
+import com.hyeeyoung.wishboard.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -16,6 +19,8 @@ import javax.inject.Inject
 class FolderViewModel @Inject constructor(
     private val folderRepository: FolderRepository,
 ) : ViewModel() {
+    private val _folderFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
+    val folderFetchState get() = _folderFetchState.asStateFlow()
     private val folderList = MutableLiveData<List<FolderItem>?>(listOf())
     private val folderListAdapter =
         FolderListAdapter(FolderListViewType.VERTICAL_VIEW_TYPE)
@@ -29,13 +34,11 @@ class FolderViewModel @Inject constructor(
 
     private var folderRegistrationStatus = MutableLiveData<ProcessStatus>()
 
-    init {
-        fetchFolderList()
-    }
-
     fun fetchFolderList() {
         viewModelScope.launch {
             folderRepository.fetchFolderList().let { folders ->
+                _folderFetchState.value =
+                    if (folders == null) UiState.Error(null) else UiState.Success(true)
                 folderList.value = folders
                 folderListAdapter.setData(folders)
             }
