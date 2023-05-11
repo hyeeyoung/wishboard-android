@@ -8,7 +8,10 @@ import com.hyeeyoung.wishboard.domain.model.NotiItemInfo
 import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
 import com.hyeeyoung.wishboard.presentation.noti.adapters.NotiListAdapter
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiListViewType
+import com.hyeeyoung.wishboard.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
 import java.util.*
@@ -18,6 +21,8 @@ import javax.inject.Inject
 class NotiViewModel @Inject constructor(
     private val notiRepository: NotiRepository,
 ) : ViewModel() {
+    private val _notiFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
+    val notiFetchState get() = _notiFetchState.asStateFlow()
     private var notiList = MutableLiveData<List<NotiItemInfo>?>(listOf())
     private var selectedNotiList = MutableLiveData<List<NotiItemInfo>?>(listOf())
     private var notiDateList = MutableLiveData<List<String>?>(listOf())
@@ -33,6 +38,7 @@ class NotiViewModel @Inject constructor(
     fun fetchPreviousNotiList() {
         viewModelScope.launch {
             val items = notiRepository.fetchPreviousNotiList()?.map { it.toNotiItemInfo() }
+            _notiFetchState.value = if (items == null) UiState.Error(null) else UiState.Success(true)
             notiList.value = items
             notiListAdapter.setData(items)
         }
@@ -41,6 +47,7 @@ class NotiViewModel @Inject constructor(
     fun fetchAllNotiList() {
         viewModelScope.launch {
             val items = notiRepository.fetchAllNotiList()?.map { it.toNotiItemInfo() }
+            _notiFetchState.value = if (items == null) UiState.Error(null) else UiState.Success(true)
             notiList.value = items
             setNotiDateList(items) // 캘린더 뷰 알림 날짜 표시를 위한 notiDateList 만들기
         }

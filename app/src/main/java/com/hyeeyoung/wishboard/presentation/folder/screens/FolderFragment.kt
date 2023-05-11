@@ -1,47 +1,44 @@
 package com.hyeeyoung.wishboard.presentation.folder.screens
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hyeeyoung.wishboard.R
-import com.hyeeyoung.wishboard.databinding.FragmentFolderBinding
-import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
-import com.hyeeyoung.wishboard.presentation.folder.types.FolderMoreDialogButtonReplyType
-import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
-import com.hyeeyoung.wishboard.util.extension.navigateSafe
-import com.hyeeyoung.wishboard.util.DialogListener
+import com.hyeeyoung.wishboard.databinding.FragmentFolderBinding
+import com.hyeeyoung.wishboard.presentation.base.screen.NetworkFragment
 import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
+import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
 import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
 import com.hyeeyoung.wishboard.presentation.folder.FolderViewModel
+import com.hyeeyoung.wishboard.presentation.folder.types.FolderMoreDialogButtonReplyType
+import com.hyeeyoung.wishboard.util.DialogListener
+import com.hyeeyoung.wishboard.util.UiState
+import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
+import com.hyeeyoung.wishboard.util.extension.collectFlow
+import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.combine
 
 @AndroidEntryPoint
-class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
+class FolderFragment : NetworkFragment<FragmentFolderBinding>(R.layout.fragment_folder),
+    FolderListAdapter.OnItemClickListener,
     FolderListAdapter.OnFolderMoreDialogListener {
-    private lateinit var binding: FragmentFolderBinding
     private val viewModel: FolderViewModel by activityViewModels()
     private var folderAddDialog: FolderAddDialogFragment? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentFolderBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addListeners()
         addObservers()
-
-        return binding.root
+        collectData()
     }
 
     private fun initializeView() {
@@ -70,7 +67,8 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
     private fun addObservers() {
         viewModel.getIsCompleteDeletion().observe(viewLifecycleOwner) { isDeleted ->
             if (isDeleted) {
-                CustomSnackbar.make(binding.layout, getString(R.string.folder_delete_snackbar_text)).show()
+                CustomSnackbar.make(binding.layout, getString(R.string.folder_delete_snackbar_text))
+                    .show()
                 viewModel.resetCompleteDeletion()
             }
         }
@@ -84,6 +82,18 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
                 CustomSnackbar.make(binding.layout, getString(toastMessageRes)).show()
             }
             return@observe
+        }
+    }
+
+    private fun collectData() {
+        collectFlow(
+            combine(
+                isConnected,
+                viewModel.folderFetchState
+            ) { isConnected, isSuccessful ->
+                isConnected && isSuccessful !is UiState.Success
+            }) { shouldFetch ->
+            if (shouldFetch) viewModel.fetchFolderList()
         }
     }
 
@@ -145,7 +155,7 @@ class FolderFragment : Fragment(), FolderListAdapter.OnItemClickListener,
             getString(R.string.delete),
             getString(R.string.cancel),
 
-        ).apply {
+            ).apply {
             setListener(object : DialogListener {
                 override fun onButtonClicked(clicked: String) {
                     if (clicked == DialogButtonReplyType.YES.name) {
