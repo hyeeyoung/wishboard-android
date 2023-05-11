@@ -29,7 +29,7 @@ class WishLinkSharingActivity :
     NetworkActivity<ActivityWishLinkSharingBinding>(R.layout.activity_wish_link_sharing),
     FolderListAdapter.OnItemClickListener,
     FolderListAdapter.OnNewFolderClickListener {
-    override val viewModel: WishItemRegistrationViewModel by viewModels()
+    private val viewModel: WishItemRegistrationViewModel by viewModels()
     private lateinit var notiSettingBottomDialog: BottomSheetDialogFragment
     private var folderAddDialog: FolderUploadBottomDialogFragment? = null
 
@@ -113,7 +113,7 @@ class WishLinkSharingActivity :
     private fun collectData() {
         collectFlow(
             combine(
-                viewModel.isConnected,
+                isConnected,
                 viewModel.wishItemFetchState,
                 viewModel.folderListFetchState
             ) { isConnected, isSuccessfulWish, isSuccessfulFolder ->

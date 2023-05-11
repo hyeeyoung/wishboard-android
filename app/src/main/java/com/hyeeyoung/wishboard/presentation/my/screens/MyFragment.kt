@@ -28,7 +28,7 @@ import kotlinx.coroutines.flow.combine
 
 @AndroidEntryPoint
 class MyFragment : NetworkFragment<FragmentMyBinding>(R.layout.fragment_my) {
-    override val viewModel: MyViewModel by hiltNavGraphViewModels(R.id.my_nav_graph)
+    private val viewModel: MyViewModel by hiltNavGraphViewModels(R.id.my_nav_graph)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -172,7 +172,7 @@ class MyFragment : NetworkFragment<FragmentMyBinding>(R.layout.fragment_my) {
     }
 
     private fun collectData() {
-        collectFlow(combine(viewModel.isConnected, viewModel.userInfoFetchState) { isConnected, isSuccessful ->
+        collectFlow(combine(isConnected, viewModel.userInfoFetchState) { isConnected, isSuccessful ->
             isConnected && isSuccessful !is UiState.Success
         }) { shouldFetch ->
             if (shouldFetch) viewModel.fetchUserInfo()

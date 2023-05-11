@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.combine
 class FolderDetailFragment :
     NetworkFragment<FragmentFolderDetailBinding>(R.layout.fragment_folder_detail),
     WishListAdapter.OnItemClickListener {
-    override val viewModel: WishListViewModel by viewModels()
+    private val viewModel: WishListViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -84,7 +84,7 @@ class FolderDetailFragment :
     private fun collectData() {
         collectFlow(
             combine(
-                viewModel.isConnected,
+                isConnected,
                 viewModel.folderDetailListFetchState
             ) { isConnected, isSuccessful ->
                 isConnected && isSuccessful !is UiState.Success

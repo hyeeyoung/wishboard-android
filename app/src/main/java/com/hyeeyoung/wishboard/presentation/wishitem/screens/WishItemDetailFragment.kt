@@ -31,7 +31,7 @@ import kotlinx.coroutines.flow.combine
 @AndroidEntryPoint
 class WishItemDetailFragment :
     NetworkFragment<FragmentWishItemDetailBinding>(R.layout.fragment_wish_item_detail) {
-    override val viewModel: WishItemViewModel by viewModels()
+    private val viewModel: WishItemViewModel by viewModels()
     private var itemStatus: WishItemStatus? = null
     private var itemId: Long = 0L
 
@@ -113,7 +113,7 @@ class WishItemDetailFragment :
     private fun collectData() {
         collectFlow(
             combine(
-                viewModel.isConnected,
+                isConnected,
                 viewModel.wishDetailFetchState
             ) { isConnected, isSuccessful ->
                 isConnected && isSuccessful !is UiState.Success

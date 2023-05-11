@@ -8,7 +8,6 @@ import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.domain.model.WishItemDetail
 import com.hyeeyoung.wishboard.domain.repositories.WishRepository
-import com.hyeeyoung.wishboard.presentation.base.viewmodel.NetworkViewModel
 import com.hyeeyoung.wishboard.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class WishItemViewModel @Inject constructor(
     private val wishRepository: WishRepository,
-) : NetworkViewModel() {
+) : ViewModel() {
     private val _wishDetailFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
     val wishDetailFetchState get() = _wishDetailFetchState.asStateFlow()
     private val _wishItemThumbnail = MutableLiveData<WishItem>()
@@ -43,7 +42,6 @@ class WishItemViewModel @Inject constructor(
     }
 
     fun deleteWishItem() {
-        if (!isConnected.value) return
         val itemId = itemDetail.value?.id ?: return
         viewModelScope.launch {
             isCompleteDeletion.value = wishRepository.deleteWishItem(itemId)
@@ -51,7 +49,6 @@ class WishItemViewModel @Inject constructor(
     }
 
     fun updateWishItemFolder(folder: FolderItem) {
-        if (!isConnected.value) return
         val item = itemDetail.value?.apply {
             folderId = folder.id
             folderName = folder.name

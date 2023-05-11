@@ -14,7 +14,6 @@ import com.hyeeyoung.wishboard.presentation.cart.types.CartItemButtonType
 import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
 import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
-import com.hyeeyoung.wishboard.util.BaseFragment
 import com.hyeeyoung.wishboard.util.DialogListener
 import com.hyeeyoung.wishboard.util.UiState
 import com.hyeeyoung.wishboard.util.extension.collectFlow
@@ -27,7 +26,7 @@ import kotlinx.coroutines.flow.combine
 @AndroidEntryPoint
 class CartFragment : NetworkFragment<FragmentCartBinding>(R.layout.fragment_cart),
     CartListAdapter.OnItemClickListener {
-    override val viewModel: CartViewModel by viewModels()
+    private val viewModel: CartViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -90,7 +89,7 @@ class CartFragment : NetworkFragment<FragmentCartBinding>(R.layout.fragment_cart
 
     private fun collectData() {
         collectFlow(
-            combine(viewModel.isConnected, viewModel.cartFetchState) { isConnected, isSuccessful ->
+            combine(isConnected, viewModel.cartFetchState) { isConnected, isSuccessful ->
                 isConnected && isSuccessful !is UiState.Success
             }) { shouldFetch ->
             if (shouldFetch) viewModel.fetchCartList()

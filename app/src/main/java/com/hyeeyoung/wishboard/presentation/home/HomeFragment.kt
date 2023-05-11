@@ -22,7 +22,7 @@ import kotlinx.coroutines.flow.combine
 @AndroidEntryPoint
 class HomeFragment : NetworkFragment<FragmentHomeBinding>(R.layout.fragment_home),
     WishListAdapter.OnItemClickListener {
-    override val viewModel: WishListViewModel by activityViewModels()
+    private val viewModel: WishListViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -88,7 +88,7 @@ class HomeFragment : NetworkFragment<FragmentHomeBinding>(R.layout.fragment_home
     private fun collectData() {
         collectFlow(
             combine(
-                viewModel.isConnected,
+                isConnected,
                 viewModel.wishListFetchState
             ) { isConnected, isSuccessful ->
                 isConnected && isSuccessful !is UiState.Success

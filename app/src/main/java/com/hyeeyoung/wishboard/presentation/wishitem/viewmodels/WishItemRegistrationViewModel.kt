@@ -11,7 +11,6 @@ import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.domain.model.WishItemDetail
 import com.hyeeyoung.wishboard.domain.repositories.FolderRepository
 import com.hyeeyoung.wishboard.domain.repositories.WishRepository
-import com.hyeeyoung.wishboard.presentation.base.viewmodel.NetworkViewModel
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
 import com.hyeeyoung.wishboard.presentation.folder.types.FolderListViewType
@@ -39,7 +38,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private val wishRepository: WishRepository,
     private val folderRepository: FolderRepository,
     private val localStorage: WishBoardPreference
-) : NetworkViewModel() {
+) : ViewModel() {
     private var itemId: Long? = null
     private var itemName = MutableLiveData<String?>()
     private var itemPrice = MutableLiveData<String?>()
@@ -136,7 +135,6 @@ class WishItemRegistrationViewModel @Inject constructor(
     }
 
     fun uploadWishItemByLinkSharing() {
-        if (!isConnected.value) return
         if (itemRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return
         itemRegistrationStatus.value = ProcessStatus.IN_PROGRESS
 
@@ -184,7 +182,6 @@ class WishItemRegistrationViewModel @Inject constructor(
     }
 
     fun uploadWishItemByBasics(isEditMode: Boolean) {
-        if (!isConnected.value) return
         viewModelScope.launch {
             if (itemRegistrationStatus.value == ProcessStatus.IN_PROGRESS) return@launch
             val itemName = itemName.value?.trim() ?: return@launch
@@ -300,7 +297,6 @@ class WishItemRegistrationViewModel @Inject constructor(
     }
 
     fun createNewFolder() {
-        if (!isConnected.value) return
         val folderName = folderName.value?.trim() ?: return
         folderRegistrationStatus.value = ProcessStatus.IN_PROGRESS
         val folder = FolderItem(name = folderName)

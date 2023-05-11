@@ -17,7 +17,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MyPasswordChangeFragment :
     NetworkFragment<FragmentPasswordChangeBinding>(R.layout.fragment_password_change) {
-    override val viewModel: MyViewModel by viewModels()
+    private val viewModel: MyViewModel by viewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

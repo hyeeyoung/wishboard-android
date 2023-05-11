@@ -4,12 +4,12 @@ import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.data.local.WishBoardPreference
 import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
 import com.hyeeyoung.wishboard.domain.repositories.SignRepository
 import com.hyeeyoung.wishboard.domain.repositories.UserRepository
-import com.hyeeyoung.wishboard.presentation.base.viewmodel.NetworkViewModel
 import com.hyeeyoung.wishboard.util.ContentUriRequestBody
 import com.hyeeyoung.wishboard.util.UiState
 import com.hyeeyoung.wishboard.util.extension.toPlainNullableRequestBody
@@ -27,7 +27,7 @@ class MyViewModel @Inject constructor(
     private val signRepository: SignRepository,
     private val userRepository: UserRepository,
     private val localStorage: WishBoardPreference
-) : NetworkViewModel() {
+) : ViewModel() {
     private val _userInfoFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
     val userInfoFetchState get() = _userInfoFetchState.asStateFlow()
     private var userEmail = MutableLiveData<String?>()
@@ -85,7 +85,6 @@ class MyViewModel @Inject constructor(
     }
 
     fun updateUserInfo() {
-        if (!isConnected.value) return
         viewModelScope.launch {
             _userInfoUpdateState.value = UiState.Loading
 
@@ -117,7 +116,6 @@ class MyViewModel @Inject constructor(
     }
 
     fun updatePushState() {
-        if (!isConnected.value) return
         if (pushState.value == null) return
         pushState.value = !pushState.value!!
         viewModelScope.launch {
@@ -126,21 +124,18 @@ class MyViewModel @Inject constructor(
     }
 
     fun signOut() {
-        if (!isConnected.value) return
         viewModelScope.launch {
             _isCompleteLogout.value = signRepository.logout().getOrNull() == true
         }
     }
 
     fun deleteUserAccount() {
-        if (!isConnected.value) return
         viewModelScope.launch {
             isCompleteUserDelete.value = userRepository.deleteUserAccount().getOrNull() == true
         }
     }
 
     fun changePassword() {
-        if (!isConnected.value) return
         viewModelScope.launch {
             _passwordChangeState.value = UiState.Loading
             userRepository.changePassword(newPassword.value)
