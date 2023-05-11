@@ -3,12 +3,9 @@ package com.hyeeyoung.wishboard.presentation.wishitem.screens
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import coil.load
@@ -23,6 +20,7 @@ import com.hyeeyoung.wishboard.presentation.folder.screens.FolderListBottomDialo
 import com.hyeeyoung.wishboard.presentation.noti.screens.NotiSettingBottomDialogFragment
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel
+import com.hyeeyoung.wishboard.util.BaseFragment
 import com.hyeeyoung.wishboard.util.FolderListDialogListener
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.getParcelableValue
@@ -30,8 +28,7 @@ import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class WishBasicFragment : Fragment() {
-    private lateinit var binding: FragmentWishBinding
+class WishBasicFragment : BaseFragment<FragmentWishBinding>(R.layout.fragment_wish) {
     private val viewModel: WishItemRegistrationViewModel by hiltNavGraphViewModels(R.id.wish_item_registration_nav_graph)
 
     /** 아이템 수정 여부에 따라 아이템을 update 또는 upload를 진행 (등록 및 수정 시 동일한 뷰를 사용하고 있기 때문) */
@@ -59,19 +56,14 @@ class WishBasicFragment : Fragment() {
         notiSettingBottomDialog = NotiSettingBottomDialogFragment(viewModel)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentWishBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addListeners()
         addObservers()
-
-        return binding.root
     }
 
     private fun initializeView() {

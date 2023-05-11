@@ -1,35 +1,27 @@
 package com.hyeeyoung.wishboard.presentation.noti.screens
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentNotiSettingBinding
-import com.hyeeyoung.wishboard.util.*
 import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel
+import com.hyeeyoung.wishboard.util.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NotiSettingFragment : Fragment() {
-    private lateinit var binding: FragmentNotiSettingBinding
+class NotiSettingFragment :
+    BaseFragment<FragmentNotiSettingBinding>(R.layout.fragment_noti_setting) {
     private val viewModel: WishItemRegistrationViewModel by hiltNavGraphViewModels(R.id.wish_item_registration_nav_graph)
     private var isCheckedNotiSwitch = true
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentNotiSettingBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
 
         initializeView()
         addListeners()
-
-        return binding.root
     }
 
     private fun initializeView() {

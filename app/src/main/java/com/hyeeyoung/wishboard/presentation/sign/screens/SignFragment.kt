@@ -1,29 +1,20 @@
 package com.hyeeyoung.wishboard.presentation.sign.screens
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentSignBinding
+import com.hyeeyoung.wishboard.util.BaseFragment
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignFragment : Fragment() {
-    private lateinit var binding: FragmentSignBinding
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentSignBinding.inflate(inflater, container, false)
+class SignFragment : BaseFragment<FragmentSignBinding>(R.layout.fragment_sign) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         addListeners()
-
-        return binding.root
     }
 
     private fun addListeners() {

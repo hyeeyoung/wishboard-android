@@ -6,25 +6,23 @@ import android.text.Spannable
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
-import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentSignUpPasswordBinding
-import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
-import com.hyeeyoung.wishboard.util.showKeyboard
-import com.hyeeyoung.wishboard.presentation.main.MainActivity
 import com.hyeeyoung.wishboard.presentation.common.screens.WebViewActivity
+import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
+import com.hyeeyoung.wishboard.presentation.main.MainActivity
 import com.hyeeyoung.wishboard.presentation.sign.SignViewModel
+import com.hyeeyoung.wishboard.util.BaseFragment
+import com.hyeeyoung.wishboard.util.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
 
 @AndroidEntryPoint
-class SignUpPasswordFragment : Fragment() {
-    private lateinit var binding: FragmentSignUpPasswordBinding
+class SignUpPasswordFragment :
+    BaseFragment<FragmentSignUpPasswordBinding>(R.layout.fragment_sign_up_password) {
     private val viewModel: SignViewModel by hiltNavGraphViewModels(R.id.sign_nav_graph)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,18 +30,14 @@ class SignUpPasswordFragment : Fragment() {
         viewModel.resetRegistrationPassword()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentSignUpPasswordBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
+        showKeyboard(requireContext(), binding.passwordInput, true)
         initializeView()
         addObservers()
-
-        return binding.root
     }
 
     private fun initializeView() {
@@ -72,11 +66,6 @@ class SignUpPasswordFragment : Fragment() {
             setSpan(clickableSpanPersonalInfo, 11, 19, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
             setSpan(ForegroundColorSpan(ResourcesCompat.getColor(resources, R.color.green_500, null)), 11, 19, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        showKeyboard(requireContext(), binding.passwordInput, true)
     }
 
     private fun addObservers() {

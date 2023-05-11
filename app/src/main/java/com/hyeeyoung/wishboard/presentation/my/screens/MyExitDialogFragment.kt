@@ -1,45 +1,27 @@
 package com.hyeeyoung.wishboard.presentation.my.screens
 
 import android.os.Bundle
-import android.view.*
-import androidx.fragment.app.DialogFragment
+import android.view.View
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.DialogMyExitBinding
+import com.hyeeyoung.wishboard.presentation.base.screen.BaseDialogFragment
 import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
-import com.hyeeyoung.wishboard.util.DialogListener
 import com.hyeeyoung.wishboard.presentation.my.MyViewModel
+import com.hyeeyoung.wishboard.util.DialogListener
 
-class MyExitDialogFragment() : DialogFragment() {
-    private lateinit var binding: DialogMyExitBinding
+class MyExitDialogFragment : BaseDialogFragment<DialogMyExitBinding>(R.layout.dialog_my_exit) {
     private lateinit var listener: DialogListener
     private val viewModel: MyViewModel by hiltNavGraphViewModels(R.id.my_nav_graph)
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        binding = DialogMyExitBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
         viewModel.resetCorrectedEmail()
 
-        val dialog = dialog
-        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
-
         addListener()
-
-        return binding.root
-    }
-
-    override fun onStart() {
-        super.onStart()
-        dialog?.window?.setLayout(
-            WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.WRAP_CONTENT)
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
 
     private fun addListener() {
