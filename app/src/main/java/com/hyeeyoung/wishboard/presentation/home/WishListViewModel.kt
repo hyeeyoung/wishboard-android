@@ -2,13 +2,13 @@ package com.hyeeyoung.wishboard.presentation.home
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.domain.repositories.CartRepository
 import com.hyeeyoung.wishboard.domain.repositories.FolderRepository
 import com.hyeeyoung.wishboard.domain.repositories.WishRepository
-import com.hyeeyoung.wishboard.presentation.base.viewmodel.NetworkViewModel
 import com.hyeeyoung.wishboard.presentation.cart.types.CartStateType
 import com.hyeeyoung.wishboard.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +22,7 @@ class WishListViewModel @Inject constructor(
     private val wishRepository: WishRepository,
     private val cartRepository: CartRepository,
     private val folderRepository: FolderRepository,
-) : NetworkViewModel() {
+) : ViewModel() {
     private val _wishListFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
     val wishListFetchState get() = _wishListFetchState.asStateFlow()
     private val _folderDetailListFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
@@ -33,7 +33,6 @@ class WishListViewModel @Inject constructor(
     val folderItem get() = _folderItem
 
     fun fetchWishList() {
-        if (!isConnected.value) return
         viewModelScope.launch {
             wishRepository.fetchWishList().let {
                 _wishListFetchState.value =
@@ -63,7 +62,6 @@ class WishListViewModel @Inject constructor(
     }
 
     fun toggleCartState(position: Int, item: WishItem) {
-        if (!isConnected.value) return
         viewModelScope.launch {
             val isInCart = item.cartState == CartStateType.IN_CART.numValue
             val isSuccessful =

@@ -1,13 +1,9 @@
 package com.hyeeyoung.wishboard.presentation.cart
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.hyeeyoung.wishboard.data.model.cart.CartItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.domain.repositories.CartRepository
-import com.hyeeyoung.wishboard.presentation.base.viewmodel.NetworkViewModel
 import com.hyeeyoung.wishboard.presentation.cart.types.CartItemButtonType
 import com.hyeeyoung.wishboard.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +15,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CartViewModel @Inject constructor(
     private val cartRepository: CartRepository,
-) : NetworkViewModel() {
+) : ViewModel() {
     private val _cartFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
     val cartFetchState get() = _cartFetchState.asStateFlow()
     private val _cartList = MutableLiveData<List<CartItem>?>(listOf())
@@ -43,7 +39,6 @@ class CartViewModel @Inject constructor(
     }
 
     fun removeToCart(itemId: Long) {
-        if (!isConnected.value) return
         viewModelScope.launch {
             val isSuccessful = cartRepository.removeToCart(itemId)
             if (isSuccessful) removeToCartList(itemId)
@@ -68,7 +63,6 @@ class CartViewModel @Inject constructor(
     }
 
     private fun updateCartItemCount(item: CartItem) {
-        if (!isConnected.value) return
         viewModelScope.launch {
             val isSuccessful = cartRepository.updateCartItemCount(item)
             if (!isSuccessful) return@launch // TODO 장바구니 업데이트 실패 시 예외 처리 필요
