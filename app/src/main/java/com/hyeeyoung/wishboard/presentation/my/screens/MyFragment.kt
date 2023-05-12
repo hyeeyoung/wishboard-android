@@ -79,7 +79,7 @@ class MyFragment : NetworkFragment<FragmentMyBinding>(R.layout.fragment_my) {
         }
         binding.opensourceLicense.setOnClickListener {
             moveWebViewActivity(
-                "https://www.wishboard.xyz/opensource.html",
+                "https://hushed-bolt-fd4.notion.site/8fb33b8b0d7e47ae951abcac9ee4df12",
                 R.string.my_section_sub_title_opensource_license
             )
         }
