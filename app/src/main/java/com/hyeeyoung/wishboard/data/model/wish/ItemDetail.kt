@@ -2,7 +2,7 @@ package com.hyeeyoung.wishboard.data.model.wish
 
 import com.google.gson.annotations.SerializedName
 import com.hyeeyoung.wishboard.domain.model.WishItemDetail
-import com.hyeeyoung.wishboard.presentation.noti.types.NotiType
+import com.hyeeyoung.wishboard.util.extension.toNotiType
 
 data class ItemDetail(
     @SerializedName("create_at")
@@ -22,7 +22,7 @@ data class ItemDetail(
     @SerializedName("item_notification_date")
     val notiDate: String?,
     @SerializedName("item_notification_type")
-    val notiType: NotiType?,
+    val notiType: String?,
     @SerializedName("item_price")
     val price: String,
     @SerializedName("item_url")
@@ -37,7 +37,7 @@ data class ItemDetail(
         if (memo.isNullOrBlank()) null else memo,
         name,
         notiDate,
-        notiType,
+        notiType?.toNotiType(),
         price,
         if (site.isNullOrBlank()) null else site
     )

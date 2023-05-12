@@ -233,7 +233,7 @@
                             android:layout_height="wrap_content"
                             android:clickable="false"
                             android:hint="@string/item_schedule_notification"
-                            android:text="@{viewModel.notiType == null ? `` : String.format(context.getString(R.string.item_notification_info), context.getString(viewModel.notiType.strRes), DateFormatUtilKt.convertYMDHMToYMDAHM(viewModel.notiDate))}"
+                            android:text="@{viewModel.notiType == null ? `` : String.format(context.getString(R.string.item_notification_info), viewModel.notiType.str, DateFormatUtilKt.convertYMDHMToYMDAHM(viewModel.notiDate))}"
                             android:textAppearance="@style/Item.Basic.Upload.EditText.TextAppearance"
                             android:textColorHint="@color/gray_700"
                             app:layout_constraintBottom_toBottomOf="parent"

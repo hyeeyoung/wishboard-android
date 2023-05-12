@@ -111,7 +111,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/suit_r"
                         android:paddingVertical="@dimen/spacing10"
-                        android:text="@{viewModel.notiType == null ? context.getString(R.string.item_registration_noti_setting_title) : String.format(context.getString(R.string.item_notification_info_short), DateFormatUtilKt.convertKoreanDate(viewModel.notiDate), context.getString(viewModel.notiType.strRes))}"
+                        android:text="@{viewModel.notiType == null ? context.getString(R.string.item_registration_noti_setting_title) : String.format(context.getString(R.string.item_notification_info_short), DateFormatUtilKt.convertKoreanDate(viewModel.notiDate), viewModel.notiType.str)}"
                         android:textColor="@color/black"
                         android:textSize="@dimen/typographyDescription"
                         tools:text="22년 3월 8일 10시 재입고" />
