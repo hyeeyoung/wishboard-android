@@ -68,7 +68,7 @@ fun setTypePicker(typePicker: NumberPicker) {
         value = 0
         maxValue = notiTypes.size - 1
         displayedValues =
-            notiTypes.map { this.context.resources.getString(it.strRes) }.toTypedArray()
+            notiTypes.map { it.str }.toTypedArray()
         descendantFocusability = NumberPicker.FOCUS_BLOCK_DESCENDANTS
     }
 }

@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hyeeyoung.wishboard.databinding.DialogBottomNotiSettingBinding
-import com.hyeeyoung.wishboard.util.*
 import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel
+import com.hyeeyoung.wishboard.util.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class NotiSettingBottomDialogFragment(private val viewModel: WishItemRegistrationViewModel) : BottomSheetDialogFragment() {
+class NotiSettingBottomDialogFragment(private val viewModel: WishItemRegistrationViewModel) :
+    BottomSheetDialogFragment() {
     private lateinit var binding: DialogBottomNotiSettingBinding
 
     override fun onCreateView(
@@ -51,9 +52,5 @@ class NotiSettingBottomDialogFragment(private val viewModel: WishItemRegistratio
         binding.back.setOnClickListener {
             dismiss()
         }
-    }
-
-    companion object {
-        const val TAG = "NotiSettingBottomDialogFragment"
     }
 }
