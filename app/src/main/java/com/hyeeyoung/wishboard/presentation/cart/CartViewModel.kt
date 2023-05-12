@@ -23,6 +23,8 @@ class CartViewModel @Inject constructor(
     val cartListAdapter = CartListAdapter()
     private val _totalPrice = MediatorLiveData<Int>()
     val totalPrice: LiveData<Int> get() = _totalPrice
+    private val _isSuccessfulRemove = MutableLiveData<Boolean>()
+    val isSuccessfulRemove: LiveData<Boolean> get() = _isSuccessfulRemove
 
     init {
         calculateTotalPrice()
@@ -40,8 +42,10 @@ class CartViewModel @Inject constructor(
 
     fun removeToCart(itemId: Long) {
         viewModelScope.launch {
-            val isSuccessful = cartRepository.removeToCart(itemId)
-            if (isSuccessful) removeToCartList(itemId)
+            cartRepository.removeToCart(itemId).let { isSuccessful ->
+                _isSuccessfulRemove.value = isSuccessful
+                if (isSuccessful) removeToCartList(itemId)
+            }
         }
     }
 

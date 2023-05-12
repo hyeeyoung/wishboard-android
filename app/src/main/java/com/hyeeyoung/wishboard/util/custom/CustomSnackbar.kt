@@ -1,6 +1,5 @@
 package com.hyeeyoung.wishboard.util.custom
 
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.LinearLayout
@@ -51,10 +50,12 @@ class CustomSnackbar(
         snackbar.animationMode = ANIMATION_MODE_FADE
         with(snackbarLayout) {
             removeAllViews()
-            if (isTop) {
-                this@CustomSnackbar.layoutParams.gravity = Gravity.TOP
-                layoutParams = this@CustomSnackbar.layoutParams
-            }
+
+            // 스낵바 상단에 띄우기
+//            if (isTop) {
+//                this@CustomSnackbar.layoutParams.gravity = Gravity.TOP
+//                layoutParams = this@CustomSnackbar.layoutParams
+//            }
             setBackgroundColor(ContextCompat.getColor(context, android.R.color.transparent))
             addView(snackbarBinding.root, 0)
         }

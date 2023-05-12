@@ -16,6 +16,7 @@ import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.util.DialogListener
 import com.hyeeyoung.wishboard.util.UiState
+import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.collectFlow
 import com.hyeeyoung.wishboard.util.extension.getParcelableValue
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
@@ -68,6 +69,15 @@ class CartFragment : NetworkFragment<FragmentCartBinding>(R.layout.fragment_cart
     }
 
     private fun addObservers() {
+        viewModel.isSuccessfulRemove.observe(viewLifecycleOwner) { isSuccessfulRemove ->
+            if (isSuccessfulRemove)
+                CustomSnackbar.make(
+                    binding.root,
+                    getString(R.string.cart_delete_snackbar_text),
+                    false
+                ).show()
+        }
+
         // 상세조회에서 아이템 수정 및 삭제 후 장바구니 복귀했을 때 해당 아이템 정보를 전달받고, ui를 업데이트
         findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<Bundle>(
             ARG_WISH_ITEM_INFO
