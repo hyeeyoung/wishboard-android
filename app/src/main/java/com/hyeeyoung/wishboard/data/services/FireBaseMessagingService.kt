@@ -19,8 +19,8 @@ class FireBaseMessagingService : FirebaseMessagingService() {
 
     /** 포그라운드 상태인 앱에서 알림 메시지 또는 데이터 메시지를 수신 */
     override fun onMessageReceived(msg: RemoteMessage) {
-        val title = msg.notification?.title
-        val body = msg.notification?.body
+        val title = msg.data["title"]
+        val body = msg.data["body"]
         if (!isTimeAutomatic(applicationContext)) {
             Timber.d("`Automatic Date and Time` is not enabled")
             return
