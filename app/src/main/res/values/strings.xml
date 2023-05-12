@@ -46,6 +46,7 @@
     <string name="item_detail_invalid_site_snackbar_text">앗, 사이트를 찾을 수 없어요!🥲</string>
     <string name="wish_basic_invalid_site_snackbar_text">쇼핑몰 링크를 다시 확인해 주세요!👀</string>
     <string name="wish_item_parsing_failure_snackbar_text">앗, 아이템 정보를 불러오지 못했어요🥲</string>
+    <string name="cart_delete_snackbar_text">장바구니에서 아이템을 삭제했어요!🗑</string>
 
     <!-- Onboarding -->
     <string name="onboarding_welcome_guide">흩어져있는 위시리스트를\n위시보드로 간편하게 통합 관리해 보세요!️</string>
