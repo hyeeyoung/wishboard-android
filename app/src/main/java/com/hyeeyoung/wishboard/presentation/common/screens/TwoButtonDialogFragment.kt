@@ -1,9 +1,10 @@
 package com.hyeeyoung.wishboard.presentation.common.screens
 
 import android.os.Bundle
-import android.view.*
-import androidx.fragment.app.DialogFragment
+import android.view.View
+import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.DialogTwoButtonBinding
+import com.hyeeyoung.wishboard.presentation.base.screen.BaseDialogFragment
 import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
 import com.hyeeyoung.wishboard.util.DialogListener
 
@@ -12,18 +13,11 @@ class TwoButtonDialogFragment(
     private val description: String?,
     private val yesValue: String,
     private val noValue: String,
-) : DialogFragment() {
-    private lateinit var binding: DialogTwoButtonBinding
+) : BaseDialogFragment<DialogTwoButtonBinding>(R.layout.dialog_two_button) {
     private lateinit var listener: DialogListener
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        binding = DialogTwoButtonBinding.inflate(inflater, container, false)
-        val dialog = dialog
-        dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.title.text = title
         binding.description.text = description
@@ -31,16 +25,6 @@ class TwoButtonDialogFragment(
         binding.no.text = noValue
 
         addListener()
-
-        return binding.root
-    }
-
-    override fun onStart() {
-        super.onStart()
-        dialog?.window?.setLayout(
-            WindowManager.LayoutParams.MATCH_PARENT,
-            WindowManager.LayoutParams.WRAP_CONTENT)
-        dialog?.window?.setBackgroundDrawableResource(android.R.color.transparent)
     }
 
     private fun addListener() {

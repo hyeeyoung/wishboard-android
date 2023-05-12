@@ -38,8 +38,11 @@ jobs:
       - name: Touch local properties
         run: touch local.properties
 
-      - name: Add EC2 url
-        run: echo "ec2.url=\"\"" >> local.properties
+      - name: Add dev base url
+        run: echo "DEV_BASE_URL=\"\"" >> local.properties
+
+      - name: Add prod base url
+        run: echo "PROD_BASE_URL=\"\"" >> local.properties
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew

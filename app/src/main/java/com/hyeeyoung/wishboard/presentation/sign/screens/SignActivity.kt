@@ -4,12 +4,12 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ActivitySignBinding
+import com.hyeeyoung.wishboard.presentation.base.screen.NetworkActivity
 import com.hyeeyoung.wishboard.presentation.sign.SignViewModel
-import com.hyeeyoung.wishboard.util.BaseActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignActivity : BaseActivity<ActivitySignBinding>(R.layout.activity_sign) {
+class SignActivity : NetworkActivity<ActivitySignBinding>(R.layout.activity_sign) {
     private val viewModel: SignViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {

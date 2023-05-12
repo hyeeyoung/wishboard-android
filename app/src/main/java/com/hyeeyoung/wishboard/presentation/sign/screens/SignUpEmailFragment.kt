@@ -1,23 +1,21 @@
 package com.hyeeyoung.wishboard.presentation.sign.screens
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentSignUpEmailBinding
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
+import com.hyeeyoung.wishboard.presentation.sign.SignViewModel
+import com.hyeeyoung.wishboard.util.BaseFragment
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.showKeyboard
-import com.hyeeyoung.wishboard.presentation.sign.SignViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SignUpEmailFragment : Fragment() {
-    private lateinit var binding: FragmentSignUpEmailBinding
+class SignUpEmailFragment :
+    BaseFragment<FragmentSignUpEmailBinding>(R.layout.fragment_sign_up_email) {
     private val viewModel: SignViewModel by hiltNavGraphViewModels(R.id.sign_nav_graph)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,22 +23,13 @@ class SignUpEmailFragment : Fragment() {
         viewModel.resetRegistrationEmail()
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentSignUpEmailBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
-        addObservers()
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         showKeyboard(requireContext(), binding.emailInput, true)
+        addObservers()
     }
 
     private fun addObservers() {

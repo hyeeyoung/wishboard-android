@@ -10,7 +10,10 @@ import com.hyeeyoung.wishboard.domain.repositories.CartRepository
 import com.hyeeyoung.wishboard.domain.repositories.FolderRepository
 import com.hyeeyoung.wishboard.domain.repositories.WishRepository
 import com.hyeeyoung.wishboard.presentation.cart.types.CartStateType
+import com.hyeeyoung.wishboard.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -20,14 +23,21 @@ class WishListViewModel @Inject constructor(
     private val cartRepository: CartRepository,
     private val folderRepository: FolderRepository,
 ) : ViewModel() {
+    private val _wishListFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
+    val wishListFetchState get() = _wishListFetchState.asStateFlow()
+    private val _folderDetailListFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
+    val folderDetailListFetchState get() = _folderDetailListFetchState.asStateFlow()
     private val wishList = MutableLiveData<List<WishItem>?>(listOf())
     private val wishListAdapter = WishListAdapter()
-    private var folderItem: FolderItem? = null
+    private var _folderItem: FolderItem? = null
+    val folderItem get() = _folderItem
 
     fun fetchWishList() {
         viewModelScope.launch {
             wishRepository.fetchWishList().let {
-                wishList.postValue(it)
+                _wishListFetchState.value =
+                    if (it == null) UiState.Error(null) else UiState.Success(true)
+                wishList.value = it
                 wishListAdapter.setData(it)
             }
         }
@@ -43,7 +53,9 @@ class WishListViewModel @Inject constructor(
         if (folderId == null) return
         viewModelScope.launch {
             folderRepository.fetchItemsInFolder(folderId).let { folders ->
-                wishList.postValue(folders)
+                _folderDetailListFetchState.value =
+                    if (folders == null) UiState.Error(null) else UiState.Success(true)
+                wishList.value = folders
                 wishListAdapter.setData(folders)
             }
         }
@@ -54,11 +66,11 @@ class WishListViewModel @Inject constructor(
             val isInCart = item.cartState == CartStateType.IN_CART.numValue
             val isSuccessful =
                 if (isInCart) {
-                    cartRepository.removeToCart( item.id ?: return@launch)
+                    cartRepository.removeToCart(item.id ?: return@launch)
                 } else {
                     cartRepository.addToCart(item.id ?: return@launch)
                 }
-            if (!isSuccessful) return@launch // TODO 네트워크 연결 실패, 그 외 나머지 예외 처리 -> 스낵바 띄우기
+            if (!isSuccessful) return@launch
 
             item.also { wishItem ->
                 wishItem.cartState = toggleCartState(wishItem.cartState)
@@ -90,10 +102,9 @@ class WishListViewModel @Inject constructor(
     }
 
     fun setFolderItem(folderItem: FolderItem) {
-        this.folderItem = folderItem
+        _folderItem = folderItem
     }
 
     fun getWishList(): LiveData<List<WishItem>?> = wishList
     fun getWishListAdapter(): WishListAdapter = wishListAdapter
-    fun getFolderItem(): FolderItem? = folderItem
 }

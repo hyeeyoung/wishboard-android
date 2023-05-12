@@ -1,30 +1,24 @@
 package com.hyeeyoung.wishboard.presentation.folder.screens
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.DialogBottomFolderUploadBinding
+import com.hyeeyoung.wishboard.presentation.base.screen.BaseBottomSheetDialogFragment
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FolderUploadBottomDialogFragment() : BottomSheetDialogFragment() { // TODO rename
-    private lateinit var binding: DialogBottomFolderUploadBinding
+class FolderUploadBottomDialogFragment :
+    BaseBottomSheetDialogFragment<DialogBottomFolderUploadBinding>(R.layout.dialog_bottom_folder_upload) { // TODO rename
     private val viewModel: WishItemRegistrationViewModel by activityViewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DialogBottomFolderUploadBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
@@ -43,8 +37,6 @@ class FolderUploadBottomDialogFragment() : BottomSheetDialogFragment() { // TODO
 
         addListeners()
         addObservers()
-
-        return binding.root
     }
 
     private fun addListeners() {
@@ -74,9 +66,5 @@ class FolderUploadBottomDialogFragment() : BottomSheetDialogFragment() { // TODO
                 dismiss()
             }
         }
-    }
-
-    companion object {
-        const val TAG = "FolderUploadBottomDialogFragment"
     }
 }

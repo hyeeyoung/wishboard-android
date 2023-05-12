@@ -1,46 +1,38 @@
 package com.hyeeyoung.wishboard.presentation.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.os.bundleOf
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.databinding.FragmentHomeBinding
+import com.hyeeyoung.wishboard.presentation.base.screen.NetworkFragment
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
+import com.hyeeyoung.wishboard.util.UiState
+import com.hyeeyoung.wishboard.util.extension.collectFlow
 import com.hyeeyoung.wishboard.util.extension.getParcelableValue
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.extension.safeValueOf
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.combine
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
-    private lateinit var binding: FragmentHomeBinding
+class HomeFragment : NetworkFragment<FragmentHomeBinding>(R.layout.fragment_home),
+    WishListAdapter.OnItemClickListener {
     private val viewModel: WishListViewModel by activityViewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.fetchWishList()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentHomeBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addListeners()
         addObservers()
-
-        return binding.root
+        collectData()
     }
 
     private fun initializeView() {
@@ -90,6 +82,18 @@ class HomeFragment : Fragment(), WishListAdapter.OnItemClickListener {
             // 단순 화면 전환 시에도 해당 코드 실행 방지를 위해 전달받은 bundle 데이터를 clear()
             bundle.clear()
             return@observe
+        }
+    }
+
+    private fun collectData() {
+        collectFlow(
+            combine(
+                isConnected,
+                viewModel.wishListFetchState
+            ) { isConnected, isSuccessful ->
+                isConnected && isSuccessful !is UiState.Success
+            }) { shouldFetch ->
+            if (shouldFetch) viewModel.fetchWishList()
         }
     }
 

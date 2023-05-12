@@ -8,6 +8,7 @@ import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.domain.model.WishItemDetail
 import com.hyeeyoung.wishboard.domain.repositories.WishRepository
+import com.hyeeyoung.wishboard.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -19,6 +20,8 @@ import javax.inject.Inject
 class WishItemViewModel @Inject constructor(
     private val wishRepository: WishRepository,
 ) : ViewModel() {
+    private val _wishDetailFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
+    val wishDetailFetchState get() = _wishDetailFetchState.asStateFlow()
     private val _wishItemThumbnail = MutableLiveData<WishItem>()
     val wishItemThumbnail: LiveData<WishItem> get() = _wishItemThumbnail
     private val _itemDetail = MutableLiveData<WishItemDetail>()
@@ -32,6 +35,7 @@ class WishItemViewModel @Inject constructor(
             _itemDetail.value =
                 wishRepository.fetchWishItemDetail(itemId)?.map { it.toWishItemDetail() }
                     ?.get(0)
+            _wishDetailFetchState.value = if (itemDetail.value == null) UiState.Error(null) else UiState.Success(true)
             _itemImage.value = itemDetail.value?.image
             generateWishItemThumbnail(itemDetail.value ?: return@launch)
         }
@@ -82,6 +86,10 @@ class WishItemViewModel @Inject constructor(
             _wishItemThumbnail.value =
                 WishItem(imageUrl = image, name = name, price = price.toIntOrNull(), id = id)
         }
+    }
+
+    fun requestFetchWishDetail() {
+        _wishDetailFetchState.value = UiState.Loading
     }
 
     fun getIsCompleteDeletion(): LiveData<Boolean> = isCompleteDeletion

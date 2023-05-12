@@ -24,18 +24,21 @@ android {
 
     defaultConfig {
         applicationId "com.hyeeyoung.wishboard"
-        minSdkVersion 22
-        targetSdkVersion 32
+        minSdkVersion 24
+        targetSdkVersion 33
         versionCode 14
         versionName "1.1.2"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "BASE_URL", properties["ec2.url"]
     }
 
     buildTypes {
+        debug {
+            buildConfigField "String", "BASE_URL", properties["DEV_BASE_URL"]
+        }
         release {
             minifyEnabled true
+            buildConfigField "String", "BASE_URL", properties["PROD_BASE_URL"]
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

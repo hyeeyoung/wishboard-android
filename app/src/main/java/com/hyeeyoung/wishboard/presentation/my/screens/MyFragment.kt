@@ -2,10 +2,7 @@ package com.hyeeyoung.wishboard.presentation.my.screens
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.snackbar.BaseTransientBottomBar
@@ -13,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.BuildConfig
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentMyBinding
+import com.hyeeyoung.wishboard.presentation.base.screen.NetworkFragment
 import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
 import com.hyeeyoung.wishboard.presentation.common.screens.WebViewActivity
 import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
@@ -20,34 +18,28 @@ import com.hyeeyoung.wishboard.presentation.my.MyViewModel
 import com.hyeeyoung.wishboard.presentation.sign.screens.SignActivity
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.util.DialogListener
+import com.hyeeyoung.wishboard.util.UiState
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
+import com.hyeeyoung.wishboard.util.extension.collectFlow
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.extension.safeValueOf
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.combine
 
 @AndroidEntryPoint
-class MyFragment : Fragment() {
-    private lateinit var binding: FragmentMyBinding
+class MyFragment : NetworkFragment<FragmentMyBinding>(R.layout.fragment_my) {
     private val viewModel: MyViewModel by hiltNavGraphViewModels(R.id.my_nav_graph)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.fetchUserInfo()
-    }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentMyBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
         addListeners()
         addObservers()
-
-        return binding.root
+        collectData()
     }
 
     private fun initializeView() {
@@ -130,8 +122,8 @@ class MyFragment : Fragment() {
             ARG_PROFILE_UPDATE_INFO
         )?.observe(viewLifecycleOwner) {
             val isModified = safeValueOf<WishItemStatus>(it.getString(ARG_PROFILE_UPDATE_STATUS))
-            if (isModified == WishItemStatus.MODIFIED)
-                viewModel.fetchUserInfo() // TODO 범용 status로 변경
+            if (isModified == WishItemStatus.MODIFIED) // TODO 범용 status로 변경
+                viewModel.requestUserInfoFetchState()
             it.clear()
         }
     }
@@ -177,6 +169,14 @@ class MyFragment : Fragment() {
             })
         }
         dialog.show(parentFragmentManager, "MembershipExitDialog")
+    }
+
+    private fun collectData() {
+        collectFlow(combine(isConnected, viewModel.userInfoFetchState) { isConnected, isSuccessful ->
+            isConnected && isSuccessful !is UiState.Success
+        }) { shouldFetch ->
+            if (shouldFetch) viewModel.fetchUserInfo()
+        }
     }
 
     companion object {

@@ -28,6 +28,8 @@ class MyViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val localStorage: WishBoardPreference
 ) : ViewModel() {
+    private val _userInfoFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
+    val userInfoFetchState get() = _userInfoFetchState.asStateFlow()
     private var userEmail = MutableLiveData<String?>()
     private var _userNickname = MutableStateFlow("")
     val userNickname get() = _userNickname.asStateFlow()
@@ -72,6 +74,8 @@ class MyViewModel @Inject constructor(
     fun fetchUserInfo() {
         viewModelScope.launch {
             userRepository.fetchUserInfo().let {
+                _userInfoFetchState.value =
+                    if (it == null) UiState.Error(null) else UiState.Success(true)
                 userEmail.value = it?.email ?: localStorage.userEmail
                 _userNickname.value = it?.nickname ?: localStorage.userNickname
                 _userProfileImage.value = it?.profileImage
@@ -85,7 +89,8 @@ class MyViewModel @Inject constructor(
             _userInfoUpdateState.value = UiState.Loading
 
             inputNickName.value = inputNickName.value?.trim()
-            val nickname = if (userNickname.value == inputNickName.value) null else inputNickName.value
+            val nickname =
+                if (userNickname.value == inputNickName.value) null else inputNickName.value
             val imageMultipartBody: MultipartBody.Part? =
                 selectedProfileImageUri.value?.let { imageUri ->
                     ContentUriRequestBody(
@@ -175,6 +180,10 @@ class MyViewModel @Inject constructor(
         val isCorrected = inputEmail.value == userEmail.value
         isCorrectedEmail.value = isCorrected
         return isCorrected
+    }
+
+    fun requestUserInfoFetchState() {
+        _userInfoFetchState.value = UiState.Loading
     }
 
     fun getUserEmail(): LiveData<String?> = userEmail

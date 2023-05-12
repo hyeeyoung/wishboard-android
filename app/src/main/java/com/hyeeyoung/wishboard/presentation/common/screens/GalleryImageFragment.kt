@@ -3,41 +3,35 @@ package com.hyeeyoung.wishboard.presentation.common.screens
 import android.Manifest
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.BuildConfig.APPLICATION_ID
+import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentGalleryImageBinding
 import com.hyeeyoung.wishboard.presentation.common.adapters.GalleryPagingAdapter
 import com.hyeeyoung.wishboard.presentation.common.viewmodels.GalleryViewModel
+import com.hyeeyoung.wishboard.util.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class GalleryImageFragment : Fragment() {
-    private lateinit var binding: FragmentGalleryImageBinding
+class GalleryImageFragment :
+    BaseFragment<FragmentGalleryImageBinding>(R.layout.fragment_gallery_image) {
     private lateinit var adapter: GalleryPagingAdapter
     private val viewModel: GalleryViewModel by viewModels()
     private var photoUri: Uri? = null
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentGalleryImageBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         initializeView()
         addListeners()
         addCollectors()
-
-        return binding.root
     }
 
     private fun initializeView() {

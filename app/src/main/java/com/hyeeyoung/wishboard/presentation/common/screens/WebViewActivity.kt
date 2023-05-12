@@ -4,17 +4,13 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.webkit.WebChromeClient
 import android.webkit.WebViewClient
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ActivityWebviewBinding
+import com.hyeeyoung.wishboard.util.BaseActivity
 
-class WebViewActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityWebviewBinding
-
+class WebViewActivity : BaseActivity<ActivityWebviewBinding>(R.layout.activity_webview) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_webview)
 
         initializeView()
     }

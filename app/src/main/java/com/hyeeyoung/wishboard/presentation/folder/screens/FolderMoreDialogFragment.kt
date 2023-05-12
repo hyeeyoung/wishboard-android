@@ -1,29 +1,23 @@
 package com.hyeeyoung.wishboard.presentation.folder.screens
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.DialogFolderMoreBinding
+import com.hyeeyoung.wishboard.presentation.base.screen.BaseBottomSheetDialogFragment
 import com.hyeeyoung.wishboard.presentation.folder.types.FolderMoreDialogButtonReplyType
 import com.hyeeyoung.wishboard.util.DialogListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FolderMoreDialogFragment : BottomSheetDialogFragment() {
-    private lateinit var binding: DialogFolderMoreBinding
+class FolderMoreDialogFragment :
+    BaseBottomSheetDialogFragment<DialogFolderMoreBinding>(R.layout.dialog_folder_more) {
     private lateinit var listener: DialogListener
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = DialogFolderMoreBinding.inflate(inflater, container, false)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         addListeners()
-
-        return binding.root
     }
 
     private fun addListeners() {
