@@ -33,7 +33,7 @@ interface WishRepository {
         itemImage: MultipartBody.Part?
     ): Pair<Boolean, Int>?
 
-    suspend fun updateFolderOfWishItem(folderId: Long, itemId: Long): Boolean
+    suspend fun updateFolderOfWishItem(itemId: Long, folderId: Long): Boolean
     suspend fun deleteWishItem(itemId: Long): Boolean
     suspend fun getItemParsingInfo(site: String): Pair<ItemInfo?, Int>?
 }
