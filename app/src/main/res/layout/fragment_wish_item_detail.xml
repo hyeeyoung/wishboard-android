@@ -106,7 +106,7 @@
                         android:fontFamily="@font/suit_sb"
                         android:paddingHorizontal="@dimen/spacingSmall"
                         android:paddingVertical="@dimen/spacingMicro"
-                        android:text="@{viewModel.itemDetail.notiType == null ? `` : context.getString(viewModel.itemDetail.notiType.strRes)}"
+                        android:text="@{viewModel.itemDetail.notiType == null ? `` : viewModel.itemDetail.notiType.str}"
                         android:textColor="@color/gray_700"
                         android:textSize="14sp"
                         android:visibility="@{viewModel.itemDetail.notiType == null ? View.INVISIBLE : View.VISIBLE}"

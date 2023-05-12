@@ -147,7 +147,7 @@ class WishItemRegistrationViewModel @Inject constructor(
                     itemPrice.value?.replace(",", "")?.toIntOrNull()?.toString()
                         ?.toPlainNullableRequestBody() // // TODO 가격 데이터에 천단위 구분자 ',' 있는 경우 문자열 처리 필요
                 val itemUrl: RequestBody = siteUrl.toPlainRequestBody()
-                val notiType: RequestBody? = notiType.value?.name?.toPlainNullableRequestBody()
+                val notiType: RequestBody? = notiType.value?.str?.toPlainNullableRequestBody()
                 val notiDate: RequestBody? = notiDate.value?.toPlainNullableRequestBody()
 
                 val imageMultipartBody: MultipartBody.Part? = itemImage.value?.let { imageUrl ->
@@ -201,7 +201,7 @@ class WishItemRegistrationViewModel @Inject constructor(
             ?.toPlainNullableRequestBody()
         val itemMemo: RequestBody? = getTrimmedMemo(itemMemo.value).toPlainNullableRequestBody()
         val itemUrl: RequestBody? = itemUrl.value.toPlainNullableRequestBody()
-        val notiType: RequestBody? = notiType.value?.name?.toPlainNullableRequestBody()
+        val notiType: RequestBody? = notiType.value?.str?.toPlainNullableRequestBody()
         val notiDate: RequestBody? = notiDate.value?.toPlainNullableRequestBody()
 
         val imageMultipartBody: MultipartBody.Part =
@@ -252,7 +252,7 @@ class WishItemRegistrationViewModel @Inject constructor(
             ?.toPlainNullableRequestBody()
         val itemMemo: RequestBody? = getTrimmedMemo(itemMemo.value).toPlainNullableRequestBody()
         val itemUrl: RequestBody? = itemUrl.value.toPlainNullableRequestBody()
-        val notiType: RequestBody? = notiType.value?.name?.toPlainNullableRequestBody()
+        val notiType: RequestBody? = notiType.value?.str?.toPlainNullableRequestBody()
         val notiDate: RequestBody? = notiDate.value?.toPlainNullableRequestBody()
 
         val imageMultipartBody: MultipartBody.Part? =
@@ -377,7 +377,8 @@ class WishItemRegistrationViewModel @Inject constructor(
             itemUrl.value = site
             itemUrlInput.value = site // 쇼핑몰 링크가 존재하는 아이템을 수정할 경우, 쇼핑몰 링크 EditText에 기존 링크를 보여주기 위함
             this@WishItemRegistrationViewModel.notiType.value = notiType
-            this@WishItemRegistrationViewModel.notiDate.value = notiDate
+            this@WishItemRegistrationViewModel.notiDate.value =
+                notiDate + ":00" // 초가 없으면 알림 수정 시 변경 사항 저장이 안됨.
         }
     }
 
