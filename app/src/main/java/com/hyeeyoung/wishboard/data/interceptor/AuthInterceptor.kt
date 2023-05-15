@@ -31,6 +31,7 @@ class AuthInterceptor @Inject constructor(
 
         when (response.code) {
             401 -> {
+                response.close()
                 val requestBody = FormBody.Builder()
                     .add(REFRESH_TOKEN, localStorage.refreshToken).build()
 
@@ -50,6 +51,7 @@ class AuthInterceptor @Inject constructor(
                     responseRefresh.data?.token?.let {
                         localStorage.updateToken(it.accessToken, it.refreshToken)
                     }
+                    refreshTokenResponse.close()
 
                     val newRequest = originalRequest.newAuthBuilder().build()
                     return chain.proceed(newRequest)
