@@ -23,6 +23,11 @@ class FolderListBottomDialogFragment(private val folderId: Long?) :
     private val folderListAdapter =
         FolderListAdapter(FolderListViewType.HORIZONTAL_VIEW_TYPE)
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.fetchFolderList()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
