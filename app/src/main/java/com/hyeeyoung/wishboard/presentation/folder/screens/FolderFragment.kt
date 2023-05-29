@@ -14,6 +14,7 @@ import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragme
 import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
 import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
 import com.hyeeyoung.wishboard.presentation.folder.FolderViewModel
+import com.hyeeyoung.wishboard.presentation.folder.types.FolderListViewType
 import com.hyeeyoung.wishboard.presentation.folder.types.FolderMoreDialogButtonReplyType
 import com.hyeeyoung.wishboard.util.DialogListener
 import com.hyeeyoung.wishboard.util.UiState
@@ -29,6 +30,7 @@ class FolderFragment : NetworkFragment<FragmentFolderBinding>(R.layout.fragment_
     FolderListAdapter.OnFolderMoreDialogListener {
     private val viewModel: FolderViewModel by activityViewModels()
     private var folderAddDialog: FolderAddDialogFragment? = null
+    private lateinit var folderListAdapter: FolderListAdapter
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -42,12 +44,13 @@ class FolderFragment : NetworkFragment<FragmentFolderBinding>(R.layout.fragment_
     }
 
     private fun initializeView() {
-        val adapter = viewModel.getFolderListAdapter()
-        adapter.setOnItemClickListener(this)
-        adapter.setOnFolderMoreDialogListener(this)
+        folderListAdapter = FolderListAdapter(FolderListViewType.VERTICAL_VIEW_TYPE).apply {
+            setOnItemClickListener(this@FolderFragment)
+            setOnFolderMoreDialogListener(this@FolderFragment)
+        }
 
         binding.folderList.apply {
-            this.adapter = adapter
+            this.adapter = folderListAdapter
             layoutManager = GridLayoutManager(requireContext(), 2)
             itemAnimator = null
             setItemViewCacheSize(20)
@@ -65,23 +68,46 @@ class FolderFragment : NetworkFragment<FragmentFolderBinding>(R.layout.fragment_
     }
 
     private fun addObservers() {
-        viewModel.getIsCompleteDeletion().observe(viewLifecycleOwner) { isDeleted ->
-            if (isDeleted) {
-                CustomSnackbar.make(binding.layout, getString(R.string.folder_delete_snackbar_text))
-                    .show()
-                viewModel.resetCompleteDeletion()
+        viewModel.folderDeleteState.observe(viewLifecycleOwner) { deleteState ->
+            when (deleteState) {
+                is UiState.Success -> {
+                    CustomSnackbar.make(
+                        binding.layout,
+                        getString(R.string.folder_delete_snackbar_text)
+                    ).show()
+                    folderListAdapter.deleteData(deleteState.data)
+                    viewModel.resetCompleteDeletion()
+                }
+                else -> {}
             }
         }
-        viewModel.getIsCompleteUpload().observe(viewLifecycleOwner) { isComplete ->
-            if (isComplete == true) {
-                folderAddDialog?.dismiss()
-                val toastMessageRes = when (viewModel.getEditMode()) {
-                    true -> R.string.folder_name_update_snackbar_text
-                    else -> R.string.folder_add_snackbar_text
+
+        viewModel.folderAddState.observe(viewLifecycleOwner) { addState ->
+            when (addState) {
+                is UiState.Success -> {
+                    folderAddDialog?.dismiss()
+                    CustomSnackbar.make(
+                        binding.layout,
+                        getString(R.string.folder_add_snackbar_text)
+                    ).show()
+                    addState.data?.let { folderListAdapter.addData(it) }
                 }
-                CustomSnackbar.make(binding.layout, getString(toastMessageRes)).show()
+                else -> {}
             }
-            return@observe
+        }
+
+        viewModel.folderUpdateState.observe(viewLifecycleOwner) { updateState ->
+            when (updateState) {
+                is UiState.Success -> {
+                    folderAddDialog?.dismiss()
+                    CustomSnackbar.make(
+                        binding.layout,
+                        getString(R.string.folder_name_update_snackbar_text)
+                    ).show()
+                    folderListAdapter.updateData(updateState.data.first, updateState.data.second)
+                }
+                else -> {}
+            }
         }
     }
 
@@ -94,6 +120,15 @@ class FolderFragment : NetworkFragment<FragmentFolderBinding>(R.layout.fragment_
                 isConnected && isSuccessful !is UiState.Success
             }) { shouldFetch ->
             if (shouldFetch) viewModel.fetchFolderList()
+        }
+
+        collectFlow(viewModel.folderFetchState) { fetchState ->
+            when (fetchState) {
+                is UiState.Success -> {
+                    folderListAdapter.setData(items = fetchState.data)
+                }
+                else -> {}
+            }
         }
     }
 
