@@ -213,9 +213,10 @@ class FolderListAdapter(
         notifyItemChanged(position)
     }
 
-    fun deleteData(folderItem: FolderItem) {
-        val position = dataSet.indexOf(folderItem)
-        dataSet.remove(folderItem)
+    fun deleteData(id: Long) {
+        val folder = dataSet.find { it.id ==  id }
+        val position = dataSet.indexOf(folder)
+        dataSet.remove(folder)
         notifyItemRemoved(position)
     }
 
@@ -224,7 +225,7 @@ class FolderListAdapter(
     }
 
     /** 링크 공유 전용 선택된 폴더 바꾸기 */
-    fun changeSelectedFolder(folder: FolderItem) {
+    private fun changeSelectedFolder(folder: FolderItem) {
         val unselectedFolder = selectedFolder
         selectedFolder = folder
         notifyItemChanged(dataSet.indexOf(unselectedFolder))
