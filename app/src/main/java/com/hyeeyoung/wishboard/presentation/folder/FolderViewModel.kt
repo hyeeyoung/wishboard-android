@@ -28,13 +28,13 @@ class FolderViewModel @Inject constructor(
         MutableLiveData<UiState<Pair<FolderItem, FolderItem>>>(UiState.Init)
     val folderUpdateState: LiveData<UiState<Pair<FolderItem, FolderItem>>> get() = _folderUpdateState
 
-    private var folderName = MutableLiveData<String?>() // TODO val로 변경
+    private val folderName = MutableLiveData<String?>()
     private var folderItem: FolderItem? = null
 
-    private var isExistFolderName = MutableLiveData<Boolean?>()
+    private val isExistFolderName = MutableLiveData<Boolean?>()
     private var isEditMode: Boolean = false
 
-    private var folderRegistrationStatus = MutableLiveData<ProcessStatus>()
+    private val folderRegistrationStatus = MutableLiveData<ProcessStatus>()
     private val _folderCount = MutableStateFlow(0)
     val folderCount get() = _folderCount.asStateFlow()
 
