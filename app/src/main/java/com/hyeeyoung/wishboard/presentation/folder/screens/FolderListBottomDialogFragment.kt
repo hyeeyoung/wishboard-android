@@ -11,6 +11,8 @@ import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
 import com.hyeeyoung.wishboard.presentation.folder.FolderViewModel
 import com.hyeeyoung.wishboard.presentation.folder.types.FolderListViewType
 import com.hyeeyoung.wishboard.util.FolderListDialogListener
+import com.hyeeyoung.wishboard.util.UiState
+import com.hyeeyoung.wishboard.util.extension.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,6 +24,11 @@ class FolderListBottomDialogFragment(private val folderId: Long?) :
     private lateinit var listener: FolderListDialogListener
     private val folderListAdapter =
         FolderListAdapter(FolderListViewType.HORIZONTAL_VIEW_TYPE)
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.fetchFolderList()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -50,11 +57,13 @@ class FolderListBottomDialogFragment(private val folderId: Long?) :
     }
 
     private fun addObservers() {
-        viewModel.getFolderList().observe(viewLifecycleOwner) {
-            it?.let {
-                if (it.isEmpty()) return@let
-                binding.noItemView.visibility = View.GONE
-                folderListAdapter.setData(it)
+        collectFlow(viewModel.folderFetchState) { fetchState ->
+            when (fetchState) {
+                is UiState.Success -> {
+                    binding.noItemView.visibility = View.GONE
+                    folderListAdapter.setData(items = fetchState.data)
+                }
+                else -> {}
             }
         }
     }
