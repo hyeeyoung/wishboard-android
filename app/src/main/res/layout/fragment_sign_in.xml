@@ -27,33 +27,10 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageButton
-                android:id="@+id/back"
-                style="@style/Widget.Button.Icon.Navigation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{(v) -> Navigation.findNavController(v).popBackStack()}"
-                android:src="@drawable/ic_back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                style="@style/Widget.Tab.Detail.TextAppearance.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sign_in"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <include
+            android:id="@+id/top_app_bar"
+            layout="@layout/view_top_app_bar"
+            app:title="@{@string/sign_in}"/>
 
         <TextView
             android:id="@+id/email_label"
@@ -62,9 +39,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="@string/email"
-            android:textAppearance="@style/Widget.EditText.Label.TextAppearance"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
+            app:layout_constraintTop_toBottomOf="@id/top_app_bar" />
 
         <EditText
             android:id="@+id/email_input"
@@ -76,7 +52,6 @@
             android:inputType="textEmailAddress"
             android:maxLines="1"
             android:onTextChanged="@{viewModel::onLoginEmailTextChanged}"
-            android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/email_label">
@@ -91,7 +66,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:text="@string/password"
-            android:textAppearance="@style/Widget.EditText.Label.TextAppearance"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/email_input" />
 
@@ -105,8 +79,6 @@
             android:inputType="textPassword"
             android:maxLines="1"
             android:onTextChanged="@{viewModel::onLoginPasswordTextChanged}"
-            android:paddingVertical="@dimen/spacing12"
-            android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
             app:layout_constraintTop_toBottomOf="@id/password_label" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
