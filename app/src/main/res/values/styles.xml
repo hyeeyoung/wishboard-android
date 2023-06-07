@@ -93,9 +93,10 @@
     </style>
 
     <style name="Widget.Button.Icon.Navigation" parent="Widget.Button">
-        <item name="android:padding">@dimen/spacingBase</item>
         <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">1dp</item>
+        <item name="android:padding">@dimen/spacing12</item>
     </style>
 
     <style name="Widget.Material.Button.Basic" parent="">
@@ -180,13 +181,6 @@
         <item name="android:textSize">@dimen/typographyBase</item>
     </style>
 
-    <style name="Widget.EditText.Divider.Full" parent="">
-        <item name="android:background">@color/gray_150</item>
-        <item name="android:layout_marginStart">@dimen/spacing20</item>
-        <item name="android:layout_marginEnd">@dimen/spacing20</item>
-        <item name="android:layout_height">1dp</item>
-    </style>
-
     <style name="Widget.Tab.TextAppearance.Title" parent="">
         <item name="android:textColor">@color/gray_700</item>
         <item name="android:textSize">20sp</item>
@@ -194,6 +188,7 @@
         <item name="android:layout_marginStart">@dimen/spacingBase</item>
     </style>
 
+    <!-- TODO delete -->
     <style name="Widget.Tab.Detail.TextAppearance.Title" parent="">
         <item name="android:textColor">@color/gray_700</item>
         <item name="android:textSize">@dimen/typographyBase</item>
@@ -217,9 +212,11 @@
 
     <style name="Widget.EditText.Label.Style" parent="">
         <item name="android:layout_marginStart">@dimen/spacingBase</item>
+        <item name="android:textAppearance">@style/TextAppearance.Suit.B3</item>
         <item name="android:textColor">@color/gray_700</item>
     </style>
 
+    <!-- TODO delete -->
     <style name="Widget.EditText.Label.TextAppearance" parent="">
         <item name="android:textSize">@dimen/typographyDescription</item>
         <item name="android:fontFamily">@font/suit_m</item>
@@ -237,13 +234,15 @@
 
     <style name="Widget.EditText.Basic" parent="Widget.EditText">
         <item name="android:background">@drawable/shape_border_radius_6</item>
-        <item name="android:backgroundTint">@color/gray_25</item>
+        <item name="android:backgroundTint">@color/gray_50</item>
         <item name="android:layout_marginStart">@dimen/spacingBase</item>
         <item name="android:layout_marginEnd">@dimen/spacingBase</item>
-        <item name="android:paddingTop">13dp</item>
-        <item name="android:paddingBottom">13dp</item>
+        <item name="android:paddingTop">@dimen/spacing12</item>
+        <item name="android:paddingBottom">@dimen/spacing12</item>
         <item name="android:paddingStart">@dimen/spacing10</item>
         <item name="android:paddingEnd">@dimen/spacing10</item>
+        <item name="android:textAppearance">@style/TextAppearance.Suit.D1</item>
+        <item name="android:textColor">@color/gray_300</item>
     </style>
 
     <style name="Widget.EditText.Basic.TextAppearance" parent="">

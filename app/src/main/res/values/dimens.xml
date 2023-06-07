@@ -10,6 +10,7 @@
     <dimen name="spacingBase">16dp</dimen>
 
     <!-- Widget -->
+    <dimen name="widgetAppBarHeight">56dp</dimen>
     <dimen name="widgetBottomDialogHeightBase">312dp</dimen>
     <dimen name="widgetBottomDialogContentHeightBase">264dp</dimen>
     <dimen name="widgetHeightBase">50dp</dimen>
@@ -26,6 +27,4 @@
     <dimen name="radiusBase">16dp</dimen>
     <dimen name="radiusLarge">32dp</dimen>
     <dimen name="spacing20">20dp</dimen>
-
-
 </resources>
