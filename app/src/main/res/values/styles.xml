@@ -110,15 +110,15 @@
     <style name="Widget.Button.Full.Basic" parent="Widget.Material.Button.Basic">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:paddingTop">@dimen/spacing14</item>
-        <item name="android:paddingBottom">@dimen/spacing14</item>
-        <item name="android:textAppearance">@style/TextAppearance.Button.Full.Basic</item>
+        <item name="android:paddingTop">15dp</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.Suit.H3</item>
     </style>
 
     <style name="Widget.Button.Full.Round" parent="Widget.Button.Full.Basic">
         <item name="android:layout_marginStart">@dimen/spacingBase</item>
         <item name="android:layout_marginEnd">@dimen/spacingBase</item>
-        <item name="cornerRadius">30dp</item>
+        <item name="cornerRadius">24dp</item>
     </style>
 
     <style name="Widget.Button.Small.Round" parent="Widget.Material.Button.Basic">
@@ -166,6 +166,7 @@
         <item name="android:textColor">@color/white</item>
     </style>
 
+    <!-- TODO delete -->
     <style name="TextAppearance.Button.Full.Basic" parent="">
         <item name="android:fontFamily">@font/suit_sb</item>
         <item name="android:textSize">@dimen/typographyBase</item>

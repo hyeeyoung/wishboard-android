@@ -30,7 +30,7 @@
         <include
             android:id="@+id/top_app_bar"
             layout="@layout/view_top_app_bar"
-            app:title="@{@string/sign_in}"/>
+            app:title="@{@string/sign_in}" />
 
         <TextView
             android:id="@+id/email_label"
@@ -90,7 +90,6 @@
                 android:id="@+id/sign_in"
                 style="@style/Widget.Button.Full.Round.Activate.Green"
                 android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/spacingBase"
                 android:layout_marginBottom="@dimen/spacingMicro"
                 android:enabled="@{viewModel.loginEmail.length() > 0 &amp;&amp; viewModel.loginPassword.length() > 0}"
                 android:onClick="@{() -> viewModel.requestSign(SignType.SIGN_IN)}"
@@ -115,13 +114,11 @@
                 android:id="@+id/forgot_your_password"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacingSmall"
                 android:layout_marginBottom="@dimen/spacingMicro"
-                android:fontFamily="@font/suit_m"
                 android:padding="@dimen/spacing12"
                 android:text="@string/sign_in_forgot_your_password"
-                android:textColor="#606060"
-                android:textSize="@dimen/typographyDescription"
+                android:textAppearance="@style/TextAppearance.Suit.B3"
+                android:textColor="@color/gray_300"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
