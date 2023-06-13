@@ -11,7 +11,8 @@
             style="@style/Widget.Snackbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/Widget.Snackbar.TextAppearance"
+            android:textAppearance="@style/TextAppearance.Suit.D2"
+            android:textColor="@color/white"
             tools:text="@string/wish_item_registration_snackbar_text" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
