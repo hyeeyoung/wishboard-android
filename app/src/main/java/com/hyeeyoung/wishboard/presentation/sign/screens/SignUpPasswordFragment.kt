@@ -62,9 +62,9 @@ class SignUpPasswordFragment :
 
         (binding.signTerm.text as? Spannable)?.apply {
             setSpan(clickableSpanTerms, 5, 9, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-            setSpan(ForegroundColorSpan(ResourcesCompat.getColor(resources, R.color.green_500, null)), 5, 9, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-            setSpan(clickableSpanPersonalInfo, 11, 19, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-            setSpan(ForegroundColorSpan(ResourcesCompat.getColor(resources, R.color.green_500, null)), 11, 19, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+            setSpan(ForegroundColorSpan(ResourcesCompat.getColor(resources, R.color.green_700, null)), 5, 9, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+            setSpan(clickableSpanPersonalInfo, 11, 20, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+            setSpan(ForegroundColorSpan(ResourcesCompat.getColor(resources, R.color.green_700, null)), 11, 20, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
         }
     }
 
