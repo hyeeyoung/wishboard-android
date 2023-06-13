@@ -8,8 +8,6 @@
         <variable
             name="title"
             type="String" />
-
-        <import type="androidx.navigation.Navigation" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -19,7 +17,6 @@
         <ImageView
             android:id="@+id/back"
             style="@style/Widget.Button.Icon.Navigation"
-            android:onClick="@{(v) -> Navigation.findNavController(v).popBackStack()}"
             android:src="@drawable/ic_back"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"

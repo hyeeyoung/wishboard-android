@@ -24,7 +24,14 @@ class SignInEmailFragment :
         binding.lifecycleOwner = viewLifecycleOwner
 
         showKeyboard(requireContext(), binding.emailInput, true)
+        addListeners()
         addObservers()
+    }
+
+    private fun addListeners() {
+        binding.topAppBar.back.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun addObservers() {
