@@ -12,6 +12,7 @@
 
     <dimen name="lineSpacing">4dp</dimen>
     <dimen name="detailTextSpacing">6dp</dimen>
+    <dimen name="itemListBottomSpacing">64dp</dimen>
 
     <!-- Widget -->
     <dimen name="widgetAppBarHeight">56dp</dimen>
