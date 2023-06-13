@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".presentation.sign.screens.SignInEmailFragment">
+    tools:context=".presentation.sign.screens.SignInVerificationFragment">
 
     <data>
 
@@ -10,15 +10,9 @@
             name="viewModel"
             type="com.hyeeyoung.wishboard.presentation.sign.SignViewModel" />
 
-        <import type="com.hyeeyoung.wishboard.R" />
-
         <import type="com.hyeeyoung.wishboard.presentation.sign.SignType" />
 
-        <import type="android.view.View" />
-
         <import type="com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus" />
-
-        <import type="androidx.navigation.Navigation" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -74,7 +68,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="32dp"
             android:hint="@string/sign_in_email_verification_code_hint"
-            android:inputType="textPassword"
             android:maxLines="1"
             android:onTextChanged="@{viewModel::onVerificationCodeTextChanged}"
             app:layout_constraintTop_toBottomOf="@id/verification_code_detail" />
@@ -98,9 +91,9 @@
             android:layout_marginStart="@dimen/spacingBase"
             android:layout_marginTop="@dimen/spacing5"
             android:text="@string/sign_in_email_verification_code_detail"
-            android:visibility="@{viewModel.isCorrectedVerificationCode() == false &amp;&amp; viewModel.isCorrectedVerificationCode() != null ? View.VISIBLE : View.GONE}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/verification_code_input" />
+            app:layout_constraintTop_toBottomOf="@id/verification_code_input"
+            app:visibility="@{viewModel.isCorrectedVerificationCode() == false &amp;&amp; viewModel.isCorrectedVerificationCode() != null}" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/login"
@@ -109,7 +102,7 @@
             android:layout_marginBottom="@dimen/spacingBase"
             android:enabled="@{viewModel.isEnabledVerificationCodeButton() == true}"
             android:onClick="@{() -> viewModel.requestSign(SignType.SIGN_IN_BY_EMAIL)}"
-            android:text="@{viewModel.signProcessStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.sign_in)}"
+            android:text="@{viewModel.signProcessStatus == ProcessStatus.IN_PROGRESS ? `` : @string/sign_in}"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:text="@string/sign_in" />
 
