@@ -9,6 +9,9 @@
     <dimen name="spacing14">14dp</dimen>
     <dimen name="spacingBase">16dp</dimen>
 
+    <dimen name="lineSpacing">4dp</dimen>
+    <dimen name="detailTextSpacing">6dp</dimen>
+
     <!-- Widget -->
     <dimen name="widgetAppBarHeight">56dp</dimen>
     <dimen name="widgetBottomDialogHeightBase">312dp</dimen>
