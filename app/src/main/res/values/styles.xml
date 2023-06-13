@@ -197,10 +197,9 @@
     </style>
 
     <style name="Widget.TextAppearance.Detail" parent="">
+        <item name="android:textAppearance">@style/TextAppearance.Suit.D3</item>
         <item name="android:textColor">@color/pink</item>
-        <item name="android:textSize">@dimen/typographyDescription</item>
-        <item name="fontFamily">@font/suit_r</item>
-        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:layout_marginTop">@dimen/detailTextSpacing</item>
     </style>
 
     <style name="Widget.TextAppearance.NoItemView.Detail" parent="">
@@ -243,7 +242,8 @@
         <item name="android:paddingStart">@dimen/spacing10</item>
         <item name="android:paddingEnd">@dimen/spacing10</item>
         <item name="android:textAppearance">@style/TextAppearance.Suit.D1</item>
-        <item name="android:textColor">@color/gray_300</item>
+        <item name="android:textColor">@color/gray_700</item>
+        <item name="hintTextColor">@color/gray_300</item>
     </style>
 
     <style name="Widget.EditText.Basic.TextAppearance" parent="">
