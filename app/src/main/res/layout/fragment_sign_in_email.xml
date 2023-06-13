@@ -9,6 +9,8 @@
         <variable
             name="viewModel"
             type="com.hyeeyoung.wishboard.presentation.sign.SignViewModel" />
+
+        <import type="com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -90,8 +92,9 @@
             android:layout_marginBottom="@dimen/spacingBase"
             android:enabled="@{viewModel.validEmailFormat == true}"
             android:onClick="@{() -> viewModel.requestVerificationMail()}"
-            android:text="@string/sign_in_email_send_email_button_text"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:text="@{viewModel.signProcessStatus == ProcessStatus.IN_PROGRESS ? `` : @string/sign_in_email_send_email_button_text}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="@string/sign_in_email_send_email_button_text" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading_lottie"

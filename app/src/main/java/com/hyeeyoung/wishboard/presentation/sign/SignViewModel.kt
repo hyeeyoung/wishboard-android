@@ -113,6 +113,7 @@ class SignViewModel @Inject constructor(
 
         verificationCode.value = null
         isCorrectedVerificationCode.value = null
+        signProcessStatus.value = ProcessStatus.IN_PROGRESS
 
         viewModelScope.launch {
             loginEmail.value?.let { email ->
@@ -121,6 +122,7 @@ class SignViewModel @Inject constructor(
                 isUnregisteredUser.value = result?.second == 404
                 isCompletedSendMail.value = result?.first?.first
                 result?.first?.second?.let { code -> verificationCode.value = code }
+                signProcessStatus.value = ProcessStatus.IDLE
             }
         }
     }
