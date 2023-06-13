@@ -9,10 +9,6 @@
             name="title"
             type="String" />
 
-        <variable
-            name="step"
-            type="kotlin.Pair&lt;Integer, Integer&gt;" />
-
         <import type="androidx.navigation.Navigation" />
     </data>
 
