@@ -26,6 +26,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            tools:clipToOutline="true"
             tools:src="@drawable/sample" />
 
         <ImageView
@@ -39,7 +40,7 @@
             android:id="@+id/check"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacingSmall"
+            android:layout_marginBottom="@dimen/spacing10"
             android:src="@drawable/ic_check_circle"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -50,13 +51,11 @@
             android:id="@+id/folder_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/spacing10"
-            android:layout_marginBottom="@dimen/spacing5"
-            android:fontFamily="@font/suit_b"
+            android:layout_marginBottom="6dp"
             android:gravity="center"
             android:text="@{item.name}"
+            android:textAppearance="@style/TextAppearance.Suit.H6"
             android:textColor="@color/white"
-            android:textSize="@dimen/typographyDescription"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
