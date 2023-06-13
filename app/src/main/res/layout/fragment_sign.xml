@@ -56,7 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacingBase"
                 android:gravity="center"
-                android:lineSpacingExtra="4dp"
+                android:lineSpacingExtra="@dimen/lineSpacing"
                 android:text="@string/onboarding_welcome_guide"
                 android:textAppearance="@style/TextAppearance.Suit.D2"
                 android:textColor="@color/gray_700"
