@@ -11,6 +11,7 @@
     <color name="transparent_700">#B3000000</color>
     <color name="ultra_semi_transparent">#10000000</color>
     <color name="black_transparent">#38000000</color>
+    <color name="black_alpha_5">#0D000000</color>
 
     <color name="green_700">#68EB72</color>
     <color name="green_600">#68EB72</color> <!-- TODO delete -->
