@@ -9,14 +9,6 @@
         <variable
             name="viewModel"
             type="com.hyeeyoung.wishboard.presentation.sign.SignViewModel" />
-
-        <import type="com.hyeeyoung.wishboard.R" />
-
-        <import type="android.view.View" />
-
-        <import type="com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus" />
-
-        <import type="androidx.navigation.Navigation" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -85,10 +77,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/spacingBase"
-            android:text="@{viewModel.validEmailFormat == false ? context.getString(R.string.sign_email_format_detail) : viewModel.isUnregisteredUser == true ? context.getString(R.string.sign_in_unregistered_user_detail) : ``}"
-            android:visibility="@{viewModel.loginEmail.length() > 0 &amp;&amp; (viewModel.validEmailFormat == false || viewModel.isUnregisteredUser() == true) ? View.VISIBLE : View.GONE}"
+            android:text="@{viewModel.validEmailFormat == false ? @string/sign_email_format_detail : viewModel.isUnregisteredUser == true ? @string/sign_in_unregistered_user_detail : ``}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/email_input"
+            app:visibility="@{viewModel.loginEmail.length() > 0 &amp;&amp; (viewModel.validEmailFormat == false || viewModel.isUnregisteredUser() == true)}"
             tools:text="@string/sign_in_unregistered_user_detail" />
 
         <com.google.android.material.button.MaterialButton
