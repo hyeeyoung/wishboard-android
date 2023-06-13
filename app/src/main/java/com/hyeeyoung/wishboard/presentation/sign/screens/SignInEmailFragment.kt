@@ -35,13 +35,6 @@ class SignInEmailFragment :
             }
         }
 
-//        viewModel.isCompletedSendMail().observe(viewLifecycleOwner) { isCompleted ->
-//            // 재요청 버튼 클릭 시 인증코드 EditText로 커서 이동
-//            if (isCompleted == true) {
-//                binding.verificationCodeInput.requestFocus()
-//            }
-//        }
-
         viewModel.getSignProcessStatus().observe(viewLifecycleOwner) {
             when (it) {
                 ProcessStatus.IDLE -> {
