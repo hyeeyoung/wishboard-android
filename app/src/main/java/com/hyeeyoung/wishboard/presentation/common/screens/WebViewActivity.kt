@@ -17,7 +17,7 @@ class WebViewActivity : BaseActivity<ActivityWebviewBinding>(R.layout.activity_w
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun initializeView() {
-        binding.title.text = intent.getStringExtra(ARG_WEB_VIEW_TITLE)
+        binding.topAppBar.title = intent.getStringExtra(ARG_WEB_VIEW_TITLE)
 
         binding.webview.apply {
             webViewClient = WebViewClient()
@@ -35,7 +35,7 @@ class WebViewActivity : BaseActivity<ActivityWebviewBinding>(R.layout.activity_w
             intent.getStringExtra(ARG_WEB_VIEW_LINK)?.let { loadUrl(it) }
         }
 
-        binding.back.setOnClickListener {
+        binding.topAppBar.back.setOnClickListener {
             finish()
         }
     }
