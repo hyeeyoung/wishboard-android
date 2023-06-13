@@ -50,6 +50,7 @@
         <item name="android:layout_marginTop">@dimen/spacingSmall</item>
     </style>
 
+    <!-- TODO delete -->
     <style name="Widget.Dialog.TextAppearance.Title" parent="">
         <item name="android:fontFamily">@font/suit_b</item>
         <item name="android:textColor">@color/black</item>
@@ -198,11 +199,10 @@
     </style>
 
     <style name="Widget.TextAppearance.NoItemView.Detail" parent="">
-        <item name="android:gravity">center</item>
-        <item name="android:lineSpacingExtra">@dimen/spacingMicro</item>
         <item name="android:textColor">@color/gray_200</item>
-        <item name="android:textSize">@dimen/typographyBase</item>
-        <item name="fontFamily">@font/suit_r</item>
+        <item name="android:textAppearance">@style/TextAppearance.Suit.D2</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:lineSpacingExtra">@dimen/lineSpacing</item>
     </style>
 
     <style name="Widget.EditText.Label.Style" parent="">

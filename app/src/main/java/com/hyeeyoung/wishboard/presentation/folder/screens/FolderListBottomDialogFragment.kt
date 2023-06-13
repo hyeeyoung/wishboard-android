@@ -51,7 +51,7 @@ class FolderListBottomDialogFragment(private val folderId: Long?) :
     }
 
     private fun addListeners() {
-        binding.close.setOnClickListener {
+        binding.topDialogBar.close.setOnClickListener {
             dismiss()
         }
     }
