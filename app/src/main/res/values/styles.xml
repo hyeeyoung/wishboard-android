@@ -290,6 +290,11 @@
         <item name="android:background">@color/gray_25</item>
     </style>
 
+    <style name="Widget.Divider" parent="">
+        <item name="android:layout_height">0.5dp</item>
+        <item name="android:background">@color/gray_100</item>
+    </style>
+
     <style name="Calendar" />
 
     <style name="Calendar.CalendarViewStyle">
