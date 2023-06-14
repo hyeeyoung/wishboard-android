@@ -147,7 +147,15 @@ class WishLinkSharingActivity :
 
     override fun onItemClick() {
         if (folderAddDialog?.isAdded == true) return
-        folderAddDialog = FolderUploadBottomDialogFragment()
+        folderAddDialog = FolderUploadBottomDialogFragment().apply {
+            setListener(object : FolderUploadBottomDialogFragment.OnFolderUploadListener {
+                override fun onSuccessUpload(newFolder: FolderItem, oldFolder: FolderItem?) {
+                    viewModel.getFolderListSquareAdapter().addData(newFolder)
+                }
+
+                override fun onFailureUpload() {}
+            })
+        }
         folderAddDialog?.show(supportFragmentManager, "NewFolderAddDialog")
     }
 }

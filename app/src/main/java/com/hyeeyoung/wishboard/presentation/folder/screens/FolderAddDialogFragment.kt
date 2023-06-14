@@ -15,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class FolderAddDialogFragment :
     BaseDialogFragment<DialogNewFolderAddBinding>(R.layout.dialog_new_folder_add) {
+    // 현재 사용하지 않는 화면이지만 추후 사용될 가능성이 있으므로 삭제하지 않음
     private val viewModel: FolderViewModel by activityViewModels()
     private lateinit var listener: DialogListener
 
