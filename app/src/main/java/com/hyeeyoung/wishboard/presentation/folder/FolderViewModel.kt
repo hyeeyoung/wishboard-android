@@ -18,8 +18,8 @@ import javax.inject.Inject
 class FolderViewModel @Inject constructor(
     private val folderRepository: FolderRepository,
 ) : ViewModel() {
-    private val _folderFetchState = MutableStateFlow<UiState<List<FolderItem>>>(UiState.Init)
-    val folderFetchState get() = _folderFetchState.asStateFlow()
+    private val _folderFetchState = MutableLiveData<UiState<List<FolderItem>>>(UiState.Init)
+    val folderFetchState: LiveData<UiState<List<FolderItem>>> get() = _folderFetchState
     private val _folderDeleteState = MutableLiveData<UiState<Long>>(UiState.Init)
     val folderDeleteState: LiveData<UiState<Long>> get() = _folderDeleteState
     private val _folderAddState = MutableLiveData<UiState<FolderItem?>>(UiState.Init)
