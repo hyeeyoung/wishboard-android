@@ -10,10 +10,6 @@
             name="viewModel"
             type="com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemViewModel" />
 
-        <import type="androidx.navigation.Navigation" />
-
-        <import type="com.hyeeyoung.wishboard.R" />
-
         <import type="com.hyeeyoung.wishboard.util.DateFormatUtilKt" />
 
         <import type="android.view.View" />
@@ -26,15 +22,16 @@
         android:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/toolbar"
+            android:id="@+id/top_app_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/widgetAppBarHeight"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
                 android:id="@+id/back"
                 style="@style/Widget.Button.Icon.Navigation"
                 android:src="@drawable/ic_back"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -68,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toTopOf="@id/go_to_shop_btn"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            app:layout_constraintTop_toBottomOf="@id/top_app_bar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -87,12 +84,13 @@
                         android:layout_height="0dp"
                         android:background="@drawable/shape_border_radius_32"
                         android:backgroundTint="@color/gray_150"
-                        android:foreground="@color/semi_transparent"
+                        android:foreground="@color/black_alpha_5"
                         android:scaleType="centerCrop"
                         app:imageUrl="@{viewModel.itemImage}"
                         app:layout_constraintDimensionRatio="3:3.5"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
+                        tools:clipToOutline="true"
                         tools:src="@drawable/sample" />
 
                     <TextView
@@ -103,12 +101,11 @@
                         android:layout_marginBottom="@dimen/spacingBase"
                         android:background="@drawable/shape_border_radius_16"
                         android:backgroundTint="@color/green_500"
-                        android:fontFamily="@font/suit_sb"
                         android:paddingHorizontal="@dimen/spacingSmall"
                         android:paddingVertical="@dimen/spacingMicro"
                         android:text="@{viewModel.itemDetail.notiType == null ? `` : viewModel.itemDetail.notiType.str}"
+                        android:textAppearance="@style/TextAppearance.Suit.B5"
                         android:textColor="@color/gray_700"
-                        android:textSize="14sp"
                         android:visibility="@{viewModel.itemDetail.notiType == null ? View.INVISIBLE : View.VISIBLE}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -121,12 +118,11 @@
                         android:layout_marginStart="@dimen/spacingSmall"
                         android:background="@drawable/shape_border_radius_16"
                         android:backgroundTint="@color/green_500"
-                        android:fontFamily="@font/suit_sb"
                         android:paddingHorizontal="@dimen/spacingSmall"
                         android:paddingVertical="@dimen/spacingMicro"
                         android:text="@{viewModel.itemDetail.notiType == null ? `` : DateFormatUtilKt.calculateDday(viewModel.itemDetail.notiDate)}"
+                        android:textAppearance="@style/TextAppearance.Suit.B5"
                         android:textColor="@color/gray_700"
-                        android:textSize="14sp"
                         android:visibility="@{viewModel.itemDetail.notiType == null ? View.INVISIBLE : View.VISIBLE}"
                         app:layout_constraintBottom_toBottomOf="@id/noti_type"
                         app:layout_constraintStart_toEndOf="@id/noti_type"
@@ -164,25 +160,23 @@
                         android:id="@+id/folder_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/suit_r"
                         android:paddingHorizontal="@dimen/spacingBase"
                         android:paddingVertical="@dimen/spacing10"
-                        android:text="@{@string/go_to_folder(viewModel.itemDetail.folderName == null ? context.getString(R.string.setting_folder) : viewModel.itemDetail.folderName)}"
+                        android:text="@{@string/go_to_folder(viewModel.itemDetail.folderName == null ? @string/setting_folder : viewModel.itemDetail.folderName)}"
+                        android:textAppearance="@style/TextAppearance.Suit.D3"
                         android:textColor="@color/gray_300"
-                        android:textSize="@dimen/typographyDescription"
                         app:layout_constraintBottom_toBottomOf="@id/create_at"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="@id/create_at"
-                        tools:text="상의>" />
+                        tools:text="상의 >" />
 
                     <TextView
                         android:id="@+id/create_at"
                         android:layout_width="wrap_content"
                         android:layout_height="0dp"
                         android:layout_marginEnd="20dp"
-                        android:fontFamily="@font/suit_r"
+                        android:textAppearance="@style/TextAppearance.Suit.D3"
                         android:textColor="@color/gray_300"
-                        android:textSize="@dimen/typographyDescription"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@id/guild_top"
                         app:timeFormat="@{DateFormatUtilKt.convertStrTimeToDate(viewModel.itemDetail.createAt)}"
@@ -192,10 +186,9 @@
                         android:id="@+id/item_name"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/suit_sb"
                         android:text="@{viewModel.itemDetail.name}"
+                        android:textAppearance="@style/TextAppearance.Suit.B1"
                         android:textColor="@color/gray_700"
-                        android:textSize="18sp"
                         app:layout_constraintEnd_toEndOf="@id/guild_end"
                         app:layout_constraintStart_toStartOf="@id/guild_start"
                         app:layout_constraintTop_toBottomOf="@id/folder_name"
@@ -206,9 +199,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="24dp"
-                        android:fontFamily="@font/montserrat_eb"
+                        android:textAppearance="@style/TextAppearance.Montserrat.H2"
                         android:textColor="@color/gray_700"
-                        android:textSize="20sp"
                         app:layout_constraintStart_toStartOf="@id/guild_start"
                         app:layout_constraintTop_toBottomOf="@id/item_name"
                         app:priceFormat="@{viewModel.itemDetail.price}"
@@ -218,10 +210,9 @@
                         android:id="@+id/won"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/suit_r"
                         android:text="@string/won"
+                        android:textAppearance="@style/TextAppearance.Suit.D2"
                         android:textColor="@color/gray_700"
-                        android:textSize="18sp"
                         app:layout_constraintBottom_toBottomOf="@id/item_price"
                         app:layout_constraintStart_toEndOf="@id/item_price"
                         app:layout_constraintTop_toTopOf="@id/item_price" />
@@ -243,9 +234,8 @@
                             app:layout_constraintTop_toBottomOf="@id/item_price">
 
                             <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.5dp"
-                                android:background="@color/gray_100" />
+                                style="@style/Widget.Divider"
+                                android:layout_width="match_parent" />
 
                             <TextView
                                 android:id="@+id/item_url"
@@ -253,13 +243,12 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginVertical="@dimen/spacingBase"
                                 android:layout_marginStart="@dimen/spacingBase"
-                                android:fontFamily="@font/suit_r"
                                 android:text="@{viewModel.itemDetail.site == null ? `` : viewModel.getDomainName(viewModel.itemDetail.site)}"
+                                android:textAppearance="@style/TextAppearance.Suit.D3"
                                 android:textColor="@color/gray_300"
-                                android:textSize="@dimen/typographyDescription"
-                                android:visibility="@{viewModel.itemDetail.site == null ? View.GONE : View.VISIBLE}"
                                 app:layout_constraintStart_toStartOf="@id/guild_start"
                                 app:layout_constraintTop_toBottomOf="@id/item_name"
+                                app:visibility="@{viewModel.itemDetail.site != null}"
                                 tools:text="grovestore.com" />
                         </LinearLayout>
 
@@ -268,13 +257,12 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
-                            android:visibility="@{viewModel.itemDetail.memo == null ? View.GONE : View.VISIBLE}"
-                            app:layout_constraintTop_toBottomOf="@id/url_container">
+                            app:layout_constraintTop_toBottomOf="@id/url_container"
+                            app:visibility="@{viewModel.itemDetail.memo != null}">
 
                             <View
-                                android:layout_width="match_parent"
-                                android:layout_height="0.5dp"
-                                android:background="@color/gray_100" />
+                                style="@style/Widget.Divider"
+                                android:layout_width="match_parent" />
 
                             <TextView
                                 android:id="@+id/memo_title"
@@ -282,21 +270,19 @@
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/spacingBase"
                                 android:layout_marginTop="@dimen/spacingBase"
-                                android:fontFamily="@font/suit_sb"
                                 android:text="@string/memo"
-                                android:textColor="@color/gray_700"
-                                android:textSize="@dimen/typographyDescription" />
+                                android:textAppearance="@style/TextAppearance.Suit.B2"
+                                android:textColor="@color/gray_700" />
 
                             <TextView
                                 android:id="@+id/item_memo"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/spacingBase"
-                                android:layout_marginTop="6dp"
-                                android:fontFamily="@font/suit_r"
+                                android:layout_marginTop="@dimen/spacing10"
                                 android:text="@{viewModel.itemDetail.memo}"
+                                android:textAppearance="@style/TextAppearance.Suit.D2"
                                 android:textColor="@color/gray_700"
-                                android:textSize="@dimen/typographyDescription"
                                 tools:text="S사이즈" />
                         </LinearLayout>
 
@@ -312,6 +298,8 @@
             android:layout_height="wrap_content"
             android:enabled="@{viewModel.itemDetail.site == null ? false : true}"
             android:text="@string/go_to_shop_button_text"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:textAppearance="@style/TextAppearance.Suit.B2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:enabled="true" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
