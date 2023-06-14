@@ -6,10 +6,6 @@
 
     <data>
 
-        <import type="android.view.View" />
-
-        <import type="androidx.navigation.Navigation" />
-
         <variable
             name="viewModel"
             type="com.hyeeyoung.wishboard.presentation.cart.CartViewModel" />
@@ -20,49 +16,27 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageButton
-                android:id="@+id/back"
-                style="@style/Widget.Button.Icon.Navigation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{(v) -> Navigation.findNavController(v).popBackStack()}"
-                android:src="@drawable/ic_back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                style="@style/Widget.Tab.Detail.TextAppearance.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cart_title"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <include
+            android:id="@+id/top_app_bar"
+            layout="@layout/view_top_app_bar"
+            app:title="@{@string/cart_title}" />
 
         <View
+            android:id="@+id/divider"
+            style="@style/Widget.Divider"
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/gray_100"
-            app:layout_constraintTop_toTopOf="@id/cart_list" />
+            app:layout_constraintTop_toBottomOf="@id/top_app_bar" />
 
         <TextView
             style="@style/Widget.TextAppearance.NoItemView.Detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cart_no_item_view"
-            android:visibility="@{viewModel.cartList.size > 0 ? View.GONE : View.VISIBLE}"
             app:layout_constraintBottom_toTopOf="@id/cart_total_container"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/cart_list"
+            app:visibility="@{viewModel.cartList.size &lt;= 0}"
             tools:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -74,7 +48,7 @@
             app:dividerPadding="@{0f}"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/cart_total_container"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintTop_toBottomOf="@id/divider"
             tools:listitem="@layout/item_cart" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -89,10 +63,9 @@
                 android:id="@+id/total_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/suit_r"
                 android:text="@string/all"
+                android:textAppearance="@style/TextAppearance.Suit.D2"
                 android:textColor="@color/gray_700"
-                android:textSize="@dimen/typographyBase"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -101,11 +74,10 @@
                 android:id="@+id/total_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="3dp"
-                android:fontFamily="@font/montserrat_b"
+                android:layout_marginStart="2dp"
                 android:text="@{Integer.toString(viewModel.cartList.size)}"
+                android:textAppearance="@style/TextAppearance.Montserrat.H2"
                 android:textColor="@color/gray_700"
-                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/total_text"
                 app:layout_constraintTop_toTopOf="parent"
@@ -114,10 +86,10 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/suit_r"
+                android:layout_marginStart="2dp"
                 android:text="@string/count"
+                android:textAppearance="@style/TextAppearance.Suit.D2"
                 android:textColor="@color/gray_700"
-                android:textSize="@dimen/typographyBase"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@id/total_count"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -126,9 +98,8 @@
                 android:id="@+id/total_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_b"
+                android:textAppearance="@style/TextAppearance.Montserrat.H2"
                 android:textColor="@color/gray_700"
-                android:textSize="18sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/won"
                 app:layout_constraintTop_toTopOf="parent"
@@ -139,10 +110,9 @@
                 android:id="@+id/won"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/suit_r"
                 android:text="@string/won"
+                android:textAppearance="@style/TextAppearance.Suit.D2"
                 android:textColor="@color/gray_700"
-                android:textSize="@dimen/typographyBase"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
