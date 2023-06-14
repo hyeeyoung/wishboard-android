@@ -39,27 +39,23 @@
         <item name="android:background">@drawable/shape_border_radius_16</item>
         <item name="android:backgroundTint">@color/white</item>
         <item name="android:paddingTop">24dp</item>
+        <item name="android:layout_marginStart">24dp</item>
+        <item name="android:layout_marginEnd">24dp</item>
     </style>
 
     <style name="Widget.Dialog.Description" parent="">
-        <item name="android:gravity">center</item>
-        <item name="android:lineSpacingExtra">@dimen/spacingMicro</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:lineSpacingExtra">@dimen/lineSpacing</item>
         <item name="android:paddingStart">24dp</item>
         <item name="android:paddingEnd">24dp</item>
         <item name="android:layout_marginTop">@dimen/spacingSmall</item>
-    </style>
-
-    <!-- TODO delete -->
-    <style name="Widget.Dialog.TextAppearance.Title" parent="">
-        <item name="android:fontFamily">@font/suit_b</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">@dimen/typographyBase</item>
-    </style>
-
-    <style name="Widget.Dialog.TextAppearance.Description" parent="">
-        <item name="android:fontFamily">@font/suit_r</item>
+        <item name="android:textAppearance">@style/TextAppearance.Suit.D2</item>
         <item name="android:textColor">@color/gray_300</item>
-        <item name="android:textSize">@dimen/typographyBase</item>
+    </style>
+
+    <style name="Widget.Dialog.TextAppearance.Title" parent="">
+        <item name="android:textAppearance">@style/TextAppearance.Suit.H3</item>
+        <item name="android:textColor">@color/gray_600</item>
     </style>
 
     <style name="Widget.BottomSheetDialog.Option.TextAppearance" parent="">
@@ -84,7 +80,8 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:outlineProvider">none</item>
         <item name="android:padding">@dimen/spacingBase</item>
-        <item name="android:textAppearance">@style/Widget.Button.Dialog.TextAppearance</item>
+        <item name="android:fontFamily">@font/suit_m</item>
+        <item name="android:textSize">16dp</item>
     </style>
 
     <style name="Widget.Button.Icon.Navigation" parent="Widget.Button">
@@ -171,11 +168,6 @@
     <style name="TextAppearance.Button.Small.Basic" parent="">
         <item name="android:fontFamily">@font/suit_sb</item>
         <item name="android:textSize">@dimen/typographyDescription</item>
-    </style>
-
-    <style name="Widget.Button.Dialog.TextAppearance" parent="">
-        <item name="android:fontFamily">@font/suit_m</item>
-        <item name="android:textSize">@dimen/typographyBase</item>
     </style>
 
     <style name="Widget.Tab.TextAppearance.Title" parent="">

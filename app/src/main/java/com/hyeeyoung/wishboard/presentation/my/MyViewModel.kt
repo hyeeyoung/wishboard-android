@@ -186,6 +186,10 @@ class MyViewModel @Inject constructor(
         _userInfoFetchState.value = UiState.Loading
     }
 
+    fun resetExitEmail() {
+        inputEmail.value = null
+    }
+
     fun getUserEmail(): LiveData<String?> = userEmail
     fun getPushState(): LiveData<Boolean?> = pushState
 
