@@ -19,10 +19,8 @@ import com.hyeeyoung.wishboard.presentation.folder.types.FolderMoreDialogButtonR
 import com.hyeeyoung.wishboard.util.DialogListener
 import com.hyeeyoung.wishboard.util.UiState
 import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
-import com.hyeeyoung.wishboard.util.extension.collectFlow
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.combine
 
 @AndroidEntryPoint
 class FolderFragment : NetworkFragment<FragmentFolderBinding>(R.layout.fragment_folder),
@@ -30,6 +28,12 @@ class FolderFragment : NetworkFragment<FragmentFolderBinding>(R.layout.fragment_
     FolderListAdapter.OnFolderMoreDialogListener {
     private val viewModel: FolderViewModel by activityViewModels()
     private lateinit var folderListAdapter: FolderListAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        viewModel.fetchFolderList()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -83,17 +87,7 @@ class FolderFragment : NetworkFragment<FragmentFolderBinding>(R.layout.fragment_
     }
 
     private fun collectData() {
-        collectFlow(
-            combine(
-                isConnected,
-                viewModel.folderFetchState
-            ) { isConnected, isSuccessful ->
-                isConnected && isSuccessful !is UiState.Success
-            }) { shouldFetch ->
-            if (shouldFetch) viewModel.fetchFolderList()
-        }
-
-        collectFlow(viewModel.folderFetchState) { fetchState ->
+        viewModel.folderFetchState.observe(viewLifecycleOwner) { fetchState ->
             when (fetchState) {
                 is UiState.Success -> {
                     folderListAdapter.setData(items = fetchState.data)
