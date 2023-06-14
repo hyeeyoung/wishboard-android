@@ -262,12 +262,8 @@
         <item name="android:paddingBottom">@dimen/spacingBase</item>
         <item name="android:paddingStart">@dimen/spacingBase</item>
         <item name="android:paddingEnd">@dimen/spacingBase</item>
-    </style>
-
-    <style name="My.Menu.TextAppearance" parent="">
         <item name="android:textColor">@color/gray_600</item>
-        <item name="android:textSize">@dimen/typographyBase</item>
-        <item name="android:fontFamily">@font/suit_r</item>
+        <item name="android:textAppearance">@style/TextAppearance.Suit.D1</item>
     </style>
 
     <style name="My.Menu.Divider" parent="">
