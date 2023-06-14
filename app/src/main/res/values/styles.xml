@@ -293,7 +293,7 @@
     </style>
 
     <style name="Calendar.DayOfTheWeek.TextAppearance" parent="">
-        <item name="android:textSize">@dimen/typographyBase</item>
+        <item name="android:textSize">14dp</item>
         <item name="android:fontFamily">@font/montserrat_m</item>
         <item name="android:textColor">@color/gray_700</item>
     </style>

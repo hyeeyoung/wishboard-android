@@ -20,7 +20,7 @@
         android:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/title_container"
+            android:id="@+id/top_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="@dimen/spacingBase"
@@ -39,10 +39,10 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <View
+            android:id="@+id/divider"
+            style="@style/Widget.Divider"
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:background="@color/gray_100"
-            app:layout_constraintTop_toTopOf="@id/swipe_refresh" />
+            app:layout_constraintTop_toBottomOf="@id/top_app_bar" />
 
         <TextView
             style="@style/Widget.TextAppearance.NoItemView.Detail"
@@ -61,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title_container">
+            app:layout_constraintTop_toBottomOf="@id/divider">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/noti_list"
@@ -70,7 +70,8 @@
                 app:dividerColor="@{@color/gray_100}"
                 app:dividerHeight="@{2f}"
                 app:dividerPadding="@{0f}"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_noti" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
