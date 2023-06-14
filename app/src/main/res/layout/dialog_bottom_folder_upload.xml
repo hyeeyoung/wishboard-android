@@ -92,7 +92,7 @@
                 android:id="@+id/add"
                 style="@style/Widget.Button.Full.Round.Activate.Green"
                 android:layout_width="match_parent"
-                android:layout_margin="@dimen/spacingBase"
+                android:layout_marginBottom="@dimen/spacingBase"
                 android:enabled="@{viewModel.folderName.trim().length() > 0}"
                 android:onClick="@{() -> viewModel.uploadFolder()}"
                 android:text="@{viewModel.registrationStatus == ProcessStatus.IN_PROGRESS ? `` : viewModel.editMode == true ? @string/edit : @string/add}"
