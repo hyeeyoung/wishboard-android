@@ -40,7 +40,6 @@ class HomeFragment : NetworkFragment<FragmentHomeBinding>(R.layout.fragment_home
         adapter.setOnItemClickListener(this)
         binding.wishList.run {
             this.adapter = adapter
-            layoutManager = GridLayoutManager(requireContext(), 2)
             itemAnimator = null
             setItemViewCacheSize(20)
         }
