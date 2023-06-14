@@ -189,11 +189,11 @@
     <string name="my_section_title_account_management">계정 관리</string>
     <string name="my_section_sub_title_logout">로그아웃</string>
     <string name="my_logout_dialog_description">정말 로그아웃 하시겠어요?</string>
-    <string name="my_section_sub_title_exit">탈퇴하기</string>
+    <string name="my_section_sub_title_exit">회원 탈퇴</string>
     <string name="my_membership_exit">탈퇴</string>
     <string name="my_membership_exit_email_hint">이메일을 입력해 주세요.</string>
     <string name="my_membership_exit_email_detail">이메일을 다시 확인해 주세요.</string>
-    <string name="my_membership_exit_dialog_description">탈퇴하시면 회원정보는 7일 후\n파기돠며 파기된 데이터는 복구 불가능합니다.</string>
+    <string name="my_membership_exit_dialog_description">정말 탈퇴하시겠습니까?\n탈퇴 시 앱 내 모든 데이터가 사라집니다.\n서비스를 탈퇴하시려면 이메일을 입력해 주세요.</string>
 
     <string name="my_profile_edit_title">프로필 수정</string>
     <string name="my_profile_nickname">닉네임</string>

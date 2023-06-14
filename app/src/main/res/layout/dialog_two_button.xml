@@ -12,7 +12,6 @@
             style="@style/Widget.Dialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -20,9 +19,9 @@
 
             <TextView
                 android:id="@+id/title"
+                style="@style/Widget.Dialog.TextAppearance.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/Widget.Dialog.TextAppearance.Title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -33,16 +32,14 @@
                 style="@style/Widget.Dialog.Description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/Widget.Dialog.TextAppearance.Description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title"
                 tools:text="정말 아이템을 삭제하시겠어요?\n삭제된 아이템은 다시 복구할 수 없어요!" />
 
             <View
+                style="@style/Widget.Divider"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/gray_100"
                 app:layout_constraintTop_toTopOf="@id/yes" />
 
             <Button
@@ -51,7 +48,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="@string/cancel"
-                android:textAppearance="@style/Widget.Button.Dialog.TextAppearance"
                 android:textColor="@color/green_700"
                 app:layout_constraintEnd_toStartOf="@id/yes"
                 app:layout_constraintStart_toStartOf="parent"
@@ -61,15 +57,14 @@
                 android:layout_width="0.5dp"
                 android:layout_height="0dp"
                 android:background="@color/gray_100"
-                app:layout_constraintStart_toStartOf="@id/yes"
                 app:layout_constraintBottom_toBottomOf="@id/yes"
+                app:layout_constraintStart_toStartOf="@id/yes"
                 app:layout_constraintTop_toTopOf="@id/yes" />
 
             <Button
                 android:id="@+id/yes"
                 style="@style/Widget.Button.Dialog"
                 android:layout_height="wrap_content"
-                android:textAppearance="@style/Widget.Button.Dialog.TextAppearance"
                 android:textColor="@color/gray_600"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/no"
