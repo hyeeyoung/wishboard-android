@@ -45,6 +45,9 @@ class MyProfileEditFragment :
         binding.profileImageContainer.setOnClickListener {
             requestStorage.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
+        binding.topAppBar.back.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun addObserver() {

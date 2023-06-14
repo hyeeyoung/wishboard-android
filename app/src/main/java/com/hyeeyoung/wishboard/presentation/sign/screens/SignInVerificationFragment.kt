@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentSignInVerificationCodeBinding
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
@@ -24,7 +25,14 @@ class SignInVerificationFragment :
         binding.lifecycleOwner = viewLifecycleOwner
 
         showKeyboard(requireContext(), binding.verificationCodeInput, true)
+        addListeners()
         addObservers()
+    }
+
+    private fun addListeners() {
+        binding.topAppBar.back.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun addObservers() {

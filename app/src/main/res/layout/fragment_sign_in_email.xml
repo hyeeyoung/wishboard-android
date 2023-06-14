@@ -10,13 +10,7 @@
             name="viewModel"
             type="com.hyeeyoung.wishboard.presentation.sign.SignViewModel" />
 
-        <import type="com.hyeeyoung.wishboard.R" />
-
-        <import type="android.view.View" />
-
         <import type="com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus" />
-
-        <import type="androidx.navigation.Navigation" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -24,113 +18,72 @@
         android:layout_height="match_parent"
         android:background="@color/white">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
+        <include
+            android:id="@+id/top_app_bar"
+            layout="@layout/view_top_app_bar"
+            app:title="@{@string/sign_in_email_title}" />
+
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_marginEnd="@dimen/spacingBase"
+            android:text="@{@string/step_format(1, 2)}"
+            android:textAppearance="@style/TextAppearance.Suit.D2"
+            android:textColor="@color/gray_700"
+            app:layout_constraintBottom_toBottomOf="@id/top_app_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/top_app_bar"
+            tools:text="1/2 단계" />
 
-            <ImageButton
-                android:id="@+id/back"
-                style="@style/Widget.Button.Icon.Navigation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="@{(v) -> Navigation.findNavController(v).popBackStack()}"
-                android:src="@drawable/ic_back"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                style="@style/Widget.Tab.Detail.TextAppearance.Title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/sign_in_email_title"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/spacingBase"
-                android:fontFamily="@font/suit_r"
-                android:text="@{String.format(context.getString(R.string.step_format), 1, 2)}"
-                android:textColor="@color/gray_700"
-                android:textSize="@dimen/typographyBase"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:text="1/2 단계" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:id="@+id/email_icon"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginTop="@dimen/spacingBase"
+            android:src="@drawable/ic_email"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            app:layout_constraintTop_toBottomOf="@id/top_app_bar" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/spacingBase"
-                android:gravity="center_horizontal"
-                android:orientation="vertical">
+        <TextView
+            android:id="@+id/email_detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing10"
+            android:gravity="center"
+            android:lineSpacingExtra="@dimen/lineSpacing"
+            android:text="@string/sign_in_email_guide"
+            android:textAppearance="@style/TextAppearance.Suit.D2"
+            android:textColor="@color/gray_700"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/email_icon" />
 
-                <ImageView
-                    android:id="@+id/email_icon"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/ic_email" />
+        <EditText
+            android:id="@+id/email_input"
+            style="@style/Widget.EditText.Basic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:hint="@string/sign_email_hint"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:onTextChanged="@{viewModel::onLoginEmailTextChanged}"
+            app:layout_constraintTop_toBottomOf="@id/email_detail">
 
-                <TextView
-                    android:id="@+id/password_detail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing10"
-                    android:fontFamily="@font/suit_r"
-                    android:gravity="center"
-                    android:lineSpacingExtra="@dimen/spacingMicro"
-                    android:text="@string/sign_in_email_guide"
-                    android:textColor="@color/gray_700"
-                    android:textSize="@dimen/typographyDescription" />
-            </LinearLayout>
+            <requestFocus />
+        </EditText>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacingBase">
-
-                <EditText
-                    android:id="@+id/email_input"
-                    style="@style/Widget.EditText.Basic"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/sign_email_hint"
-                    android:inputType="textEmailAddress"
-                    android:maxLines="1"
-                    android:onTextChanged="@{viewModel::onLoginEmailTextChanged}"
-                    android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <requestFocus />
-                </EditText>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacingBase"
-                android:layout_marginTop="@dimen/spacing5"
-                android:text="@{viewModel.validEmailFormat == false ? context.getString(R.string.sign_email_format_detail) : viewModel.isUnregisteredUser == true ? context.getString(R.string.sign_in_unregistered_user_detail) : ``}"
-                android:textAppearance="@style/Widget.TextAppearance.Detail"
-                android:visibility="@{viewModel.loginEmail.length() > 0 &amp;&amp; (viewModel.validEmailFormat == false || viewModel.isUnregisteredUser() == true) ? View.VISIBLE : View.GONE}"
-                tools:text="@string/sign_in_unregistered_user_detail" />
-        </LinearLayout>
+        <TextView
+            style="@style/Widget.TextAppearance.Detail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/spacingBase"
+            android:text="@{viewModel.validEmailFormat == false ? @string/sign_email_format_detail : viewModel.isUnregisteredUser == true ? @string/sign_in_unregistered_user_detail : ``}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/email_input"
+            app:visibility="@{viewModel.loginEmail.length() > 0 &amp;&amp; (viewModel.validEmailFormat == false || viewModel.isUnregisteredUser() == true)}"
+            tools:text="@string/sign_in_unregistered_user_detail" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/send_mail"
@@ -139,8 +92,9 @@
             android:layout_marginBottom="@dimen/spacingBase"
             android:enabled="@{viewModel.validEmailFormat == true}"
             android:onClick="@{() -> viewModel.requestVerificationMail()}"
-            android:text="@string/sign_in_email_send_email_button_text"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:text="@{viewModel.signProcessStatus == ProcessStatus.IN_PROGRESS ? `` : @string/sign_in_email_send_email_button_text}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:text="@string/sign_in_email_send_email_button_text" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/loading_lottie"

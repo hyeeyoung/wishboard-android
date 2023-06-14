@@ -77,7 +77,7 @@
     <string name="sign_in_email_guide">가입하신 이메일을 입력해주세요!\n로그인을 위해 인증코드가 포함된 이메일을 보내드려요!</string>
     <string name="sign_in_email_verification_code_guide">인증코드가 전송되었어요!\n이메일을 확인해주세요.</string>
     <string name="sign_in_email_verification_code_detail">인증코드를 다시 확인해 주세요.</string>
-    <string name="sign_term">가입 시 이용약관과 개인정보취급방침에 동의하는 것으로 간주됩니다.</string>
+    <string name="sign_term">가입 시 <b>이용약관</b>과 <b>개인정보 처리방침</b>에 동의하는 것으로 간주합니다.</string>
     <string name="sign_auto_login_failure">자동 로그인이 만료되었습니다.</string>
 
     <!-- Home -->
@@ -189,11 +189,11 @@
     <string name="my_section_title_account_management">계정 관리</string>
     <string name="my_section_sub_title_logout">로그아웃</string>
     <string name="my_logout_dialog_description">정말 로그아웃 하시겠어요?</string>
-    <string name="my_section_sub_title_exit">탈퇴하기</string>
+    <string name="my_section_sub_title_exit">회원 탈퇴</string>
     <string name="my_membership_exit">탈퇴</string>
     <string name="my_membership_exit_email_hint">이메일을 입력해 주세요.</string>
     <string name="my_membership_exit_email_detail">이메일을 다시 확인해 주세요.</string>
-    <string name="my_membership_exit_dialog_description">탈퇴하시면 회원정보는 7일 후\n파기돠며 파기된 데이터는 복구 불가능합니다.</string>
+    <string name="my_membership_exit_dialog_description">정말 탈퇴하시겠습니까?\n탈퇴 시 앱 내 모든 데이터가 사라집니다.\n서비스를 탈퇴하시려면 이메일을 입력해 주세요.</string>
 
     <string name="my_profile_edit_title">프로필 수정</string>
     <string name="my_profile_nickname">닉네임</string>
@@ -221,7 +221,7 @@
     <string name="navigation_menu_title_add">ADD</string>
     <string name="navigation_menu_title_notice">NOTICE</string>
     <string name="navigation_menu_title_my">MY</string>
-    <string name="add_folder">폴더 추가</string>
+
     <string name="wish_basic_get_item_info_button_text">아이템 불러오기</string>
 
 </resources>

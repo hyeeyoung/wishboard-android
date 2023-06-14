@@ -88,7 +88,7 @@ class WishLinkSharingActivity :
     private fun addObservers() {
         viewModel.getItemImage().observe(this) { image ->
             if (image == null) return@observe
-            binding.itemImage.load(image) { placeholder(R.mipmap.ic_main) }
+            binding.itemImage.load(image) { placeholder(R.drawable.ic_app_logo_black) }
         }
         viewModel.isCompleteUpload().observe(this) { isComplete ->
             if (isComplete == true) {
@@ -147,7 +147,15 @@ class WishLinkSharingActivity :
 
     override fun onItemClick() {
         if (folderAddDialog?.isAdded == true) return
-        folderAddDialog = FolderUploadBottomDialogFragment()
+        folderAddDialog = FolderUploadBottomDialogFragment().apply {
+            setListener(object : FolderUploadBottomDialogFragment.OnFolderUploadListener {
+                override fun onSuccessUpload(newFolder: FolderItem, oldFolder: FolderItem?) {
+                    viewModel.getFolderListSquareAdapter().addData(newFolder)
+                }
+
+                override fun onFailureUpload() {}
+            })
+        }
         folderAddDialog?.show(supportFragmentManager, "NewFolderAddDialog")
     }
 }

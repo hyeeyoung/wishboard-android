@@ -36,6 +36,7 @@ class CartFragment : NetworkFragment<FragmentCartBinding>(R.layout.fragment_cart
         binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
+        addListeners()
         addObservers()
         collectData()
     }
@@ -65,6 +66,12 @@ class CartFragment : NetworkFragment<FragmentCartBinding>(R.layout.fragment_cart
             CartItemButtonType.VIEW_TYPE_PLUS, CartItemButtonType.VIEW_TYPE_MINUS -> {
                 viewModel.controlItemCount(item, viewType)
             }
+        }
+    }
+
+    private fun addListeners() {
+        binding.topAppBar.back.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 

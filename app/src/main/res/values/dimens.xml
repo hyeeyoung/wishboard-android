@@ -8,10 +8,16 @@
     <dimen name="spacing12">12dp</dimen>
     <dimen name="spacing14">14dp</dimen>
     <dimen name="spacingBase">16dp</dimen>
+    <dimen name="spacing20">20dp</dimen>
+
+    <dimen name="lineSpacing">4dp</dimen>
+    <dimen name="detailTextSpacing">6dp</dimen>
+    <dimen name="itemListBottomSpacing">64dp</dimen>
 
     <!-- Widget -->
+    <dimen name="widgetAppBarHeight">56dp</dimen>
     <dimen name="widgetBottomDialogHeightBase">312dp</dimen>
-    <dimen name="widgetBottomDialogContentHeightBase">264dp</dimen>
+    <dimen name="widgetBottomDialogContentHeightBase">254dp</dimen>
     <dimen name="widgetHeightBase">50dp</dimen>
     <dimen name="widgetSquareFolder">80dp</dimen>
 
@@ -24,8 +30,7 @@
     <dimen name="radiusMicro">5dp</dimen>
     <dimen name="radiusSmall">10dp</dimen>
     <dimen name="radiusBase">16dp</dimen>
+    <dimen name="radiusMedium">20dp</dimen>
     <dimen name="radiusLarge">32dp</dimen>
-    <dimen name="spacing20">20dp</dimen>
-
 
 </resources>

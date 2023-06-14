@@ -9,6 +9,7 @@ import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
+import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentSignUpPasswordBinding
 import com.hyeeyoung.wishboard.presentation.common.screens.WebViewActivity
@@ -37,7 +38,14 @@ class SignUpPasswordFragment :
 
         showKeyboard(requireContext(), binding.passwordInput, true)
         initializeView()
+        addListeners()
         addObservers()
+    }
+
+    private fun addListeners() {
+        binding.topAppBar.back.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun initializeView() {
@@ -62,9 +70,9 @@ class SignUpPasswordFragment :
 
         (binding.signTerm.text as? Spannable)?.apply {
             setSpan(clickableSpanTerms, 5, 9, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-            setSpan(ForegroundColorSpan(ResourcesCompat.getColor(resources, R.color.green_500, null)), 5, 9, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-            setSpan(clickableSpanPersonalInfo, 11, 19, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-            setSpan(ForegroundColorSpan(ResourcesCompat.getColor(resources, R.color.green_500, null)), 11, 19, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+            setSpan(ForegroundColorSpan(ResourcesCompat.getColor(resources, R.color.green_700, null)), 5, 9, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+            setSpan(clickableSpanPersonalInfo, 11, 20, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+            setSpan(ForegroundColorSpan(ResourcesCompat.getColor(resources, R.color.green_700, null)), 11, 20, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
         }
     }
 

@@ -18,8 +18,8 @@ import javax.inject.Inject
 class FolderViewModel @Inject constructor(
     private val folderRepository: FolderRepository,
 ) : ViewModel() {
-    private val _folderFetchState = MutableStateFlow<UiState<List<FolderItem>>>(UiState.Init)
-    val folderFetchState get() = _folderFetchState.asStateFlow()
+    private val _folderFetchState = MutableLiveData<UiState<List<FolderItem>>>(UiState.Init)
+    val folderFetchState: LiveData<UiState<List<FolderItem>>> get() = _folderFetchState
     private val _folderDeleteState = MutableLiveData<UiState<Long>>(UiState.Init)
     val folderDeleteState: LiveData<UiState<Long>> get() = _folderDeleteState
     private val _folderAddState = MutableLiveData<UiState<FolderItem?>>(UiState.Init)
@@ -66,16 +66,16 @@ class FolderViewModel @Inject constructor(
         viewModelScope.launch {
             val result = folderRepository.createNewFolder(FolderItem(name = folderName))
             val isSuccessful = result?.first?.first
+            isExistFolderName.value = result?.first?.second == 409
+
             val folder = FolderItem(result?.second, folderName)
             _folderAddState.value =
                 if (isSuccessful == true) {
-                    _folderCount.value += 1
                     UiState.Success(folder)
                 } else {
                     UiState.Error(null)
                 }
 
-            isExistFolderName.value = result?.first?.second == 409
             folderRegistrationStatus.value = ProcessStatus.IDLE
         }
     }
@@ -140,6 +140,10 @@ class FolderViewModel @Inject constructor(
 
     fun setEditMode(isEditable: Boolean) {
         isEditMode = isEditable
+    }
+
+    fun increaseFolderCount() {
+        _folderCount.value += 1
     }
 
     fun getFolderName(): LiveData<String?> = folderName

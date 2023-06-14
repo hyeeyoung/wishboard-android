@@ -12,7 +12,7 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacingSmall"
+            android:layout_marginBottom="@dimen/spacing10"
             android:src="@drawable/ic_plus_circle_gray"
             app:layout_constraintBottom_toTopOf="@id/folder_add_title"
             app:layout_constraintEnd_toEndOf="parent"
@@ -22,11 +22,10 @@
             android:id="@+id/folder_add_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacing5"
-            android:fontFamily="@font/suit_b"
-            android:text="@string/add_folder"
+            android:layout_marginBottom="6dp"
+            android:text="@string/folder_add_dialog_title"
+            android:textAppearance="@style/TextAppearance.Suit.H6"
             android:textColor="@color/gray_300"
-            android:textSize="@dimen/typographyDescription"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />

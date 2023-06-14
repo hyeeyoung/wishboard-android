@@ -49,7 +49,6 @@ class WishItemRegistrationViewModel @Inject constructor(
     /** 유효하지 않은 url인 경우 또는 사이트 url 수정을 시도할 경우 원본 url을 보존하기위 위한 변수 */
     private var itemUrlInput = MutableLiveData<String?>()
     private var folderItem = MutableLiveData<FolderItem>()
-    private var folderName = MutableLiveData<String?>()
     private var notiType = MutableLiveData<NotiType?>()
     private var notiDate = MutableLiveData<String?>()
 
@@ -70,15 +69,13 @@ class WishItemRegistrationViewModel @Inject constructor(
         }
 
     private var isCompleteUpload = MutableLiveData<Boolean?>()
-    private var isCompleteFolderUpload = MutableLiveData<Boolean?>()
-    private var isExistFolderName = MutableLiveData<Boolean?>()
+
     private var isValidItemUrl = MutableLiveData<Boolean?>()
 
     private var _isShownItemNonUpdateDialog = MutableLiveData<Boolean?>()
     val isShownItemNonUpdateDialog: LiveData<Boolean?> get() = _isShownItemNonUpdateDialog
 
     private var itemRegistrationStatus = MutableLiveData<ProcessStatus>()
-    private var folderRegistrationStatus = MutableLiveData<ProcessStatus>()
 
     private var selectedGalleryImageUri = MutableLiveData<Uri?>()
     private var imageFile: File? = null
@@ -296,22 +293,6 @@ class WishItemRegistrationViewModel @Inject constructor(
         isCompleteUpload.value = result?.first
     }
 
-    fun createNewFolder() {
-        val folderName = folderName.value?.trim() ?: return
-        folderRegistrationStatus.value = ProcessStatus.IN_PROGRESS
-        val folder = FolderItem(name = folderName)
-
-        viewModelScope.launch {
-            val result = folderRepository.createNewFolder(folder)
-            isCompleteFolderUpload.value = result?.first?.first
-            isExistFolderName.value = result?.first?.second == 409
-            result?.second?.let { folderId ->
-                folderListSquareAdapter.addData(FolderItem(folderId, folderName))
-            }
-            folderRegistrationStatus.value = ProcessStatus.IDLE
-        }
-    }
-
     // TODO need refactoring UseCase로 분리
     private suspend fun fetchFolderList() {
         val folders = folderRepository.fetchFolderListSummary()
@@ -415,11 +396,6 @@ class WishItemRegistrationViewModel @Inject constructor(
         notiMinuteVal.value = newVal
     }
 
-    fun onFolderNameTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        folderName.value = s.toString()
-        isExistFolderName.value = false
-    }
-
     fun setFolderItem(folder: FolderItem) {
         folderItem.value = folder
     }
@@ -437,10 +413,6 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun resetNotiInfo() {
         this.notiType.value = null
         this.notiDate.value = null
-    }
-
-    fun resetFolderName() {
-        folderName.value = null
     }
 
     fun resetItemUrlInput() {
@@ -465,10 +437,6 @@ class WishItemRegistrationViewModel @Inject constructor(
         itemImage.value =
             null // TODO need refactoring, 아이템 정보 파싱 후 갤러리에서 이미지 선택 하지 않아도 이전에 갤러리에서 이미지를 선택한 적이 있는 경우, 갤러리 이미지가 보이는 버그를 방지하기 위함
         selectedGalleryImageUri.value = imageUri
-    }
-
-    fun resetCompleteFolderUpload() {
-        isCompleteFolderUpload.value = null
     }
 
     /** 입력된 메모에서 공백을 제거 */
@@ -523,14 +491,10 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun getNotiDateVal(): LiveData<Int?> = notiDateVal
     fun getNotiHourVal(): LiveData<Int?> = notiHourVal
     fun getNotiMinuteVal(): LiveData<Int?> = notiMinuteVal
-    fun getFolderName(): LiveData<String?> = folderName
 
     fun getFolderListSquareAdapter(): FolderListAdapter = folderListSquareAdapter
     fun isCompleteUpload(): LiveData<Boolean?> = isCompleteUpload
-    fun isCompleteFolderUpload(): LiveData<Boolean?> = isCompleteFolderUpload
 
-    fun getIsExistFolderName(): LiveData<Boolean?> = isExistFolderName
     fun getIsValidItemUrl(): LiveData<Boolean?> = isValidItemUrl
     fun getRegistrationStatus(): LiveData<ProcessStatus> = itemRegistrationStatus
-    fun getFolderRegistrationStatus(): LiveData<ProcessStatus> = folderRegistrationStatus
 }

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Suit -->
+    <style name="TextAppearance.Suit.H1" parent="">
+        <item name="android:fontFamily">@font/suit_b</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+    <style name="TextAppearance.Suit.H2" parent="">
+        <item name="android:fontFamily">@font/suit_b</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+    <style name="TextAppearance.Suit.H3" parent="">
+        <item name="android:fontFamily">@font/suit_b</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+    <style name="TextAppearance.Suit.H4" parent="">
+        <item name="android:fontFamily">@font/suit_b</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+    <style name="TextAppearance.Suit.H5" parent="">
+        <item name="android:fontFamily">@font/suit_b</item>
+        <item name="android:textSize">12dp</item>
+    </style>
+    <style name="TextAppearance.Suit.H6" parent="">
+        <item name="android:fontFamily">@font/suit_b</item>
+        <item name="android:textSize">10dp</item>
+    </style>
+
+    <style name="TextAppearance.Suit.B1" parent="">
+        <item name="android:fontFamily">@font/suit_sb</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+    <style name="TextAppearance.Suit.B2" parent="">
+        <item name="android:fontFamily">@font/suit_sb</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+    <style name="TextAppearance.Suit.B3" parent="">
+        <item name="android:fontFamily">@font/suit_m</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+    <style name="TextAppearance.Suit.B4" parent="">
+        <item name="android:fontFamily">@font/suit_sb</item>
+        <item name="android:textSize">12dp</item>
+    </style>
+    <style name="TextAppearance.Suit.B5" parent="">
+        <item name="android:fontFamily">@font/suit_m</item>
+        <item name="android:textSize">12dp</item>
+    </style>
+
+    <style name="TextAppearance.Suit.D1" parent="">
+        <item name="android:fontFamily">@font/suit_r</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+    <style name="TextAppearance.Suit.D2" parent="">
+        <item name="android:fontFamily">@font/suit_r</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+    <style name="TextAppearance.Suit.D3" parent="">
+        <item name="android:fontFamily">@font/suit_r</item>
+        <item name="android:textSize">12dp</item>
+    </style>
+
+    <!-- Montserrat -->
+    <style name="TextAppearance.Montserrat.H1" parent="">
+        <item name="android:fontFamily">@font/montserrat_b</item>
+        <item name="android:textSize">20dp</item>
+    </style>
+    <style name="TextAppearance.Montserrat.H2" parent="">
+        <item name="android:fontFamily">@font/montserrat_eb</item>
+        <item name="android:textSize">18dp</item>
+    </style>
+    <style name="TextAppearance.Montserrat.H3" parent="">
+        <item name="android:fontFamily">@font/montserrat_eb</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
+    <style name="TextAppearance.Montserrat.B1" parent="">
+        <item name="android:fontFamily">@font/montserrat_sb</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+    <style name="TextAppearance.Montserrat.B2" parent="">
+        <item name="android:fontFamily">@font/montserrat_m</item>
+        <item name="android:textSize">14dp</item>
+    </style>
+
+    <style name="TextAppearance.Montserrat.D1" parent="">
+        <item name="android:fontFamily">@font/montserrat_r</item>
+        <item name="android:textSize">9dp</item>
+    </style>
+</resources>

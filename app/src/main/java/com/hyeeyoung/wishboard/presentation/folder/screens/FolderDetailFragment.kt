@@ -44,6 +44,7 @@ class FolderDetailFragment :
         binding.lifecycleOwner = viewLifecycleOwner
 
         initializeView()
+        addListeners()
         addObservers()
         collectData()
     }
@@ -53,7 +54,12 @@ class FolderDetailFragment :
             setOnItemClickListener(this@FolderDetailFragment)
         }
         binding.wishList.adapter = adapter
-        binding.wishList.layoutManager = GridLayoutManager(requireContext(), 2)
+    }
+
+    private fun addListeners() {
+        binding.topAppBar.back.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun addObservers() {

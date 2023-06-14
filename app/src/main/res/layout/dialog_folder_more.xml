@@ -7,7 +7,9 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/spacingSmall">
+        android:paddingHorizontal="@dimen/spacingSmall"
+        android:paddingBottom="@dimen/spacingSmall"
+        tools:background="@color/transparent_700">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/options"
@@ -28,9 +30,8 @@
 
             <View
                 android:id="@+id/name_divider"
+                style="@style/Widget.Divider"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/gray_100"
                 app:layout_constraintTop_toBottomOf="@id/update" />
 
             <Button
@@ -40,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/folder_delete"
                 android:textColor="@color/pink"
-                app:layout_constraintTop_toBottomOf="@id/update" />
+                app:layout_constraintTop_toBottomOf="@id/name_divider" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.google.android.material.button.MaterialButton

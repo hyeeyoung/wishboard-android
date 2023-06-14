@@ -20,7 +20,7 @@
         android:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/toolbar"
+            android:id="@+id/top_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingVertical="@dimen/spacing14"
@@ -42,7 +42,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            app:layout_constraintTop_toBottomOf="@id/top_app_bar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -89,10 +89,9 @@
                         android:id="@+id/user_name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/suit_b"
                         android:text="@{viewModel.userNickname}"
+                        android:textAppearance="@style/TextAppearance.Suit.H2"
                         android:textColor="@color/gray_700"
-                        android:textSize="18sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         tools:text="새침한 진주" />
@@ -102,10 +101,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/spacingSmall"
-                        android:fontFamily="@font/suit_m"
                         android:text="@{viewModel.userEmail}"
+                        android:textAppearance="@style/TextAppearance.Suit.B3"
                         android:textColor="@color/gray_200"
-                        android:textSize="@dimen/typographyDescription"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/user_name"
                         tools:text="wishboard@gmail.com" />
@@ -117,12 +115,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/gray_50"
-                    android:fontFamily="@font/suit_m"
                     android:paddingHorizontal="@dimen/spacing10"
                     android:paddingVertical="@dimen/spacing5"
                     android:text="@string/my_profile_edit"
+                    android:textAppearance="@style/TextAppearance.Suit.B3"
                     android:textColor="@color/gray_600"
-                    android:textSize="@dimen/typographyDescription"
                     app:cornerRadius="@dimen/spacing12"
                     app:layout_constraintBottom_toBottomOf="@id/profile_image"
                     app:layout_constraintEnd_toEndOf="@id/gl_end"
@@ -151,8 +148,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:text="@string/noti_setting"
-                            android:textAppearance="@style/My.Menu.TextAppearance" />
+                            android:text="@string/noti_setting" />
 
                         <androidx.appcompat.widget.SwitchCompat
                             android:id="@+id/noti_switch"
@@ -170,8 +166,7 @@
                         style="@style/My.Menu.Style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/my_section_sub_title_edit_password"
-                        android:textAppearance="@style/My.Menu.TextAppearance" />
+                        android:text="@string/my_section_sub_title_edit_password" />
 
                     <View
                         style="@style/My.Menu.Divider"
@@ -182,40 +177,35 @@
                         style="@style/My.Menu.Style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/my_section_sub_title_contact_us"
-                        android:textAppearance="@style/My.Menu.TextAppearance" />
+                        android:text="@string/my_section_sub_title_contact_us" />
 
                     <TextView
                         android:id="@+id/how_to_use"
                         style="@style/My.Menu.Style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/my_section_sub_title_how_to_use"
-                        android:textAppearance="@style/My.Menu.TextAppearance" />
+                        android:text="@string/my_section_sub_title_how_to_use" />
 
                     <TextView
                         android:id="@+id/terms"
                         style="@style/My.Menu.Style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/my_section_sub_title_terms"
-                        android:textAppearance="@style/My.Menu.TextAppearance" />
+                        android:text="@string/my_section_sub_title_terms" />
 
                     <TextView
                         android:id="@+id/personal_info"
                         style="@style/My.Menu.Style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/my_section_sub_title_personal_info"
-                        android:textAppearance="@style/My.Menu.TextAppearance" />
+                        android:text="@string/my_section_sub_title_personal_info" />
 
                     <TextView
                         android:id="@+id/opensource_license"
                         style="@style/My.Menu.Style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/my_section_sub_title_opensource_license"
-                        android:textAppearance="@style/My.Menu.TextAppearance" />
+                        android:text="@string/my_section_sub_title_opensource_license" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -229,17 +219,16 @@
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:paddingVertical="@dimen/spacing12"
-                            android:text="@string/my_section_sub_title_version_info"
-                            android:textAppearance="@style/My.Menu.TextAppearance" />
+                            android:text="@string/my_section_sub_title_version_info" />
 
                         <TextView
                             android:id="@+id/version"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/spacingBase"
-                            android:fontFamily="@font/montserrat_sb"
-                            android:textColor="@color/gray_200"
-                            android:textSize="@dimen/typographyDescription" />
+                            android:textAppearance="@style/TextAppearance.Montserrat.B1"
+                            android:textColor="@color/gray_300"
+                            tools:text="1.1.0" />
                     </LinearLayout>
 
                     <View
@@ -251,16 +240,14 @@
                         style="@style/My.Menu.Style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/my_section_sub_title_logout"
-                        android:textAppearance="@style/My.Menu.TextAppearance" />
+                        android:text="@string/my_section_sub_title_logout" />
 
                     <TextView
                         android:id="@+id/exit"
                         style="@style/My.Menu.Style"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/my_section_sub_title_exit"
-                        android:textAppearance="@style/My.Menu.TextAppearance" />
+                        android:text="@string/my_section_sub_title_exit" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>

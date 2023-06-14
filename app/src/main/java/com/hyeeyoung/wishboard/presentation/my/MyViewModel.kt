@@ -53,7 +53,9 @@ class MyViewModel @Inject constructor(
 
     private var pushState = MutableLiveData<Boolean?>()
 
-    private val inputEmail = MutableLiveData<String?>()
+    private val _inputEmail = MutableLiveData<String?>()
+    val inputEmail: LiveData<String?> get() = _inputEmail
+
     private val isCorrectedEmail = MutableLiveData<Boolean?>()
     private val _isCompleteLogout = MutableLiveData<Boolean?>()
     val isCompleteLogout: LiveData<Boolean?> get() = _isCompleteLogout
@@ -157,7 +159,7 @@ class MyViewModel @Inject constructor(
     }
 
     fun onEmailTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-        inputEmail.value = s.toString().trim()
+        _inputEmail.value = s.toString().trim()
         isCorrectedEmail.value = null
     }
 
@@ -177,13 +179,17 @@ class MyViewModel @Inject constructor(
     }
 
     fun checkCorrectedEmail(): Boolean {
-        val isCorrected = inputEmail.value == userEmail.value
+        val isCorrected = _inputEmail.value == userEmail.value
         isCorrectedEmail.value = isCorrected
         return isCorrected
     }
 
     fun requestUserInfoFetchState() {
         _userInfoFetchState.value = UiState.Loading
+    }
+
+    fun resetExitEmail() {
+        _inputEmail.value = null
     }
 
     fun getUserEmail(): LiveData<String?> = userEmail

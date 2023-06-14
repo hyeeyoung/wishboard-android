@@ -12,7 +12,6 @@ import com.hyeeyoung.wishboard.presentation.folder.FolderViewModel
 import com.hyeeyoung.wishboard.presentation.folder.types.FolderListViewType
 import com.hyeeyoung.wishboard.util.FolderListDialogListener
 import com.hyeeyoung.wishboard.util.UiState
-import com.hyeeyoung.wishboard.util.extension.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -51,13 +50,13 @@ class FolderListBottomDialogFragment(private val folderId: Long?) :
     }
 
     private fun addListeners() {
-        binding.close.setOnClickListener {
+        binding.topDialogBar.close.setOnClickListener {
             dismiss()
         }
     }
 
     private fun addObservers() {
-        collectFlow(viewModel.folderFetchState) { fetchState ->
+        viewModel.folderFetchState.observe(viewLifecycleOwner) { fetchState ->
             when (fetchState) {
                 is UiState.Success -> {
                     binding.noItemView.visibility = View.GONE

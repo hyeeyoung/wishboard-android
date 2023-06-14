@@ -21,14 +21,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout"
-        android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/toolbar"
+            android:id="@+id/top_app_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/widgetAppBarHeight"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageButton
@@ -38,6 +38,7 @@
                 android:layout_height="wrap_content"
                 android:onClick="@{(v) -> Navigation.findNavController(v).popBackStack()}"
                 android:src="@drawable/ic_back"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -45,11 +46,10 @@
                 android:id="@+id/millis"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/montserrat_eb"
                 android:gravity="center"
                 android:text="@{viewModel.calendarMonthTitle}"
+                android:textAppearance="@style/TextAppearance.Montserrat.H1"
                 android:textColor="@color/gray_700"
-                android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -65,7 +65,7 @@
             android:layout_marginTop="@dimen/spacingSmall"
             android:columnCount="7"
             android:rowCount="1"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            app:layout_constraintTop_toBottomOf="@id/top_app_bar">
 
             <TextView
                 style="@style/Calendar.DayOfTheWeek"
@@ -133,12 +133,11 @@
                 android:id="@+id/noti_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/spacing12"
-                android:layout_marginTop="@dimen/spacing20"
-                android:fontFamily="@font/suit_b"
-                android:text="@{viewModel.selectedDate != null ? String.format(context.getString(R.string.noti_calendar_selected_date_title), DateFormatUtilKt.convertYMDHMToMD(viewModel.selectedDate)) : ``}"
+                android:layout_marginStart="@dimen/spacingBase"
+                android:layout_marginTop="32dp"
+                android:text="@{viewModel.selectedDate != null ? @string/noti_calendar_selected_date_title(DateFormatUtilKt.convertYMDHMToMD(viewModel.selectedDate)) : ``}"
+                android:textAppearance="@style/TextAppearance.Suit.H4"
                 android:textColor="@color/gray_700"
-                android:textSize="@dimen/typographyBase"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="3월 29일 일정" />

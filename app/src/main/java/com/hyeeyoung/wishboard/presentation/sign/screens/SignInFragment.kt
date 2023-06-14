@@ -34,6 +34,9 @@ class SignInFragment : BaseFragment<FragmentSignInBinding>(R.layout.fragment_sig
         binding.forgotYourPassword.setOnClickListener {
             findNavController().navigateSafe(R.id.action_sign_in_to_sign_in_email)
         }
+        binding.topAppBar.back.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun addObservers() {

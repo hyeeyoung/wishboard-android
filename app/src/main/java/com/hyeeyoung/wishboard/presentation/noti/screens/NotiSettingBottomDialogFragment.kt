@@ -49,7 +49,7 @@ class NotiSettingBottomDialogFragment(private val viewModel: WishItemRegistratio
             viewModel.setNotiInfo(true, type, date)
             dismiss()
         }
-        binding.back.setOnClickListener {
+        binding.topDialogBar.close.setOnClickListener {
             dismiss()
         }
     }

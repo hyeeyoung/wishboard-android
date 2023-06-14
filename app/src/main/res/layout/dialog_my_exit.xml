@@ -19,11 +19,10 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout"
+            style="@style/Widget.Dialog"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="24dp"
-            android:background="@drawable/shape_border_radius_16"
             android:backgroundTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -32,11 +31,10 @@
 
             <TextView
                 android:id="@+id/title"
+                style="@style/Widget.Dialog.TextAppearance.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacing20"
                 android:text="@string/my_section_sub_title_exit"
-                android:textAppearance="@style/Widget.Dialog.TextAppearance.Title"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -47,50 +45,51 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/my_membership_exit_dialog_description"
-                android:textAppearance="@style/Widget.Dialog.TextAppearance.Description"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/nickname_container"
+            <EditText
+                android:id="@+id/user_email"
+                style="@style/Widget.EditText.Basic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing20"
-                app:layout_constraintTop_toBottomOf="@id/description">
+                android:layout_marginEnd="@dimen/spacing12"
+                android:hint="@string/my_membership_exit_email_hint"
+                android:inputType="textEmailAddress"
+                android:maxLines="1"
+                android:onTextChanged="@{viewModel::onEmailTextChanged}"
+                android:text="@{viewModel.inputEmail}"
+                android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/description" />
 
-                <EditText
-                    android:id="@+id/user_email"
-                    style="@style/Widget.EditText.Basic"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/spacing12"
-                    android:hint="@string/my_membership_exit_email_hint"
-                    android:inputType="text"
-                    android:maxLines="1"
-                    android:onTextChanged="@{viewModel::onEmailTextChanged}"
-                    android:textAppearance="@style/Widget.EditText.Basic.TextAppearance"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+            <ImageButton
+                android:id="@+id/delete"
+                style="@style/Widget.Button"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:onClick="@{() -> viewModel.resetExitEmail()}"
+                android:padding="@dimen/spacing10"
+                android:src="@drawable/ic_delete_circle"
+                app:layout_constraintBottom_toBottomOf="@id/user_email"
+                app:layout_constraintEnd_toEndOf="@id/user_email"
+                app:layout_constraintTop_toTopOf="@id/user_email" />
 
-                <TextView
-                    android:id="@+id/nickname_detail_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/spacing5"
-                    android:text="@string/my_membership_exit_email_detail"
-                    android:textAppearance="@style/Widget.TextAppearance.Detail"
-                    android:visibility="@{viewModel.isCorrectedEmail() != null &amp;&amp; viewModel.isCorrectedEmail() == false ? View.VISIBLE : View.GONE}"
-                    app:layout_constraintStart_toStartOf="@id/user_email"
-                    app:layout_constraintTop_toBottomOf="@id/user_email"
-                    tools:visibility="gone" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/nickname_detail_text"
+                style="@style/Widget.TextAppearance.Detail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/my_membership_exit_email_detail"
+                android:visibility="@{viewModel.isCorrectedEmail() != null &amp;&amp; viewModel.isCorrectedEmail() == false ? View.VISIBLE : View.INVISIBLE}"
+                app:layout_constraintStart_toStartOf="@id/user_email"
+                app:layout_constraintTop_toBottomOf="@id/user_email" />
 
             <View
+                style="@style/Widget.Divider"
                 android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/gray_100"
                 app:layout_constraintTop_toTopOf="@id/yes" />
 
             <Button
@@ -102,7 +101,7 @@
                 android:textColor="@color/green_500"
                 app:layout_constraintEnd_toStartOf="@id/yes"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/nickname_container" />
+                app:layout_constraintTop_toBottomOf="@id/nickname_detail_text" />
 
             <View
                 android:layout_width="0.5dp"

@@ -24,7 +24,14 @@ class SignInEmailFragment :
         binding.lifecycleOwner = viewLifecycleOwner
 
         showKeyboard(requireContext(), binding.emailInput, true)
+        addListeners()
         addObservers()
+    }
+
+    private fun addListeners() {
+        binding.topAppBar.back.setOnClickListener {
+            findNavController().popBackStack()
+        }
     }
 
     private fun addObservers() {
@@ -34,13 +41,6 @@ class SignInEmailFragment :
                 viewModel.setCompletedSendMail(false)
             }
         }
-
-//        viewModel.isCompletedSendMail().observe(viewLifecycleOwner) { isCompleted ->
-//            // 재요청 버튼 클릭 시 인증코드 EditText로 커서 이동
-//            if (isCompleted == true) {
-//                binding.verificationCodeInput.requestFocus()
-//            }
-//        }
 
         viewModel.getSignProcessStatus().observe(viewLifecycleOwner) {
             when (it) {
