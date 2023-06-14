@@ -39,7 +39,7 @@ class ShopLinkInputBottomDialogFragment :
         binding.getItem.setOnClickListener {
             viewModel.loadWishItemInfo()
         }
-        binding.back.setOnClickListener {
+        binding.topDialogBar.close.setOnClickListener {
             dismiss()
         }
     }
