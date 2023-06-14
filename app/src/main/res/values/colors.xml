@@ -6,25 +6,20 @@
 
     <!-- TODO rename -->
     <color name="transparent">#00000000</color>
-    <color name="semi_transparent">#0D626056</color> <!-- TODO delete -->
+    <color name="semi_transparent">#0D626056</color>
     <color name="transparent_300">#4D000000</color>
     <color name="transparent_700">#B3000000</color>
-    <color name="ultra_semi_transparent">#10000000</color>
     <color name="black_transparent">#38000000</color>
     <color name="black_alpha_5">#0D000000</color>
 
     <color name="green_700">#68EB72</color>
-    <color name="green_600">#68EB72</color> <!-- TODO delete -->
     <color name="green_500">#95FB9D</color>
     <color name="green_200">#E5FEE7</color>
-    <color name="green_100">#EEFEEF</color> <!-- TODO delete -->
 
-    <color name="gray_25">#F8F8F8</color> <!-- TODO delete -->
     <color name="gray_50">#F8F8F8</color>
     <color name="gray_100">#EBEBEB</color>
     <color name="gray_150">#CACACA</color>
     <color name="gray_200">#AAAAAA</color>
-    <color name="gray_250">#979797</color> <!-- TODO delete -->
     <color name="gray_300">#858585</color>
     <color name="gray_600">#474747</color>
     <color name="gray_700">#292929</color>

@@ -38,7 +38,7 @@
         <com.google.android.material.imageview.ShapeableImageView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:src="@color/ultra_semi_transparent"
+            android:src="@color/black_alpha_5"
             app:layout_constraintBottom_toBottomOf="@id/item_image"
             app:layout_constraintEnd_toEndOf="@id/item_image"
             app:layout_constraintStart_toStartOf="@id/item_image"
