@@ -67,13 +67,13 @@ class MyFragment : NetworkFragment<FragmentMyBinding>(R.layout.fragment_my) {
         }
         binding.terms.setOnClickListener {
             moveWebViewActivity(
-                "https://www.wishboard.xyz/terms.html",
+                "${BuildConfig.BASE_URL}terms.html",
                 R.string.my_section_sub_title_terms
             )
         }
         binding.personalInfo.setOnClickListener {
             moveWebViewActivity(
-                "https://www.wishboard.xyz/privacy-policy.html",
+                "${BuildConfig.BASE_URL}privacy-policy.html",
                 R.string.my_section_sub_title_personal_info
             )
         }
