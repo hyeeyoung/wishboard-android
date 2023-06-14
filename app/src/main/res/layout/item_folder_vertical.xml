@@ -8,15 +8,12 @@
         <variable
             name="item"
             type="com.hyeeyoung.wishboard.data.model.folder.FolderItem" />
-
-        <import type="com.hyeeyoung.wishboard.R" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/spacing10">
+        android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/thumbnail"
@@ -30,14 +27,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:src="@drawable/sample"
-            tools:clipToOutline="true"/>
+            tools:clipToOutline="true"
+            tools:src="@drawable/sample" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/spacing10"
-            android:paddingBottom="@dimen/spacing10"
+            android:paddingBottom="@dimen/spacingBase"
             app:layout_constraintTop_toBottomOf="@id/thumbnail">
 
             <TextView
@@ -45,10 +42,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing10"
-                android:fontFamily="@font/suit_b"
                 android:text="@{item.name}"
+                android:textAppearance="@style/TextAppearance.Suit.B2"
                 android:textColor="@color/gray_700"
-                android:textSize="@dimen/typographyDescription"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="폴더명" />
@@ -57,11 +53,10 @@
                 android:id="@+id/item_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/spacingMicro"
-                android:fontFamily="@font/suit_r"
-                android:text="@{String.format(context.getString(R.string.folder_item_count_format), item.itemCount != null ? item.itemCount : 0)}"
-                android:textColor="@color/gray_250"
-                android:textSize="@dimen/typographyBaseDetail"
+                android:layout_marginTop="6dp"
+                android:text="@{@string/folder_item_count_format(item.itemCount != null ? item.itemCount : 0)}"
+                android:textAppearance="@style/TextAppearance.Suit.D3"
+                android:textColor="@color/gray_300"
                 app:layout_constraintStart_toStartOf="@id/folder_name"
                 app:layout_constraintTop_toBottomOf="@id/folder_name"
                 tools:text="10 아이템" />
