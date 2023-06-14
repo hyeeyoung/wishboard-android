@@ -6,13 +6,11 @@
 
     <data>
 
-        <import type="com.hyeeyoung.wishboard.R" />
-
-        <import type="com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus" />
-
         <variable
             name="viewModel"
             type="com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel" />
+
+        <import type="com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus" />
     </data>
 
 
@@ -23,39 +21,15 @@
         android:background="@drawable/background_dialog_top_corner"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/suit_b"
-                android:text="@string/item_schedule_notification_setting_title"
-                android:textColor="@color/gray_700"
-                android:textSize="@dimen/typographyBase"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageButton
-                android:id="@+id/back"
-                style="@style/Widget.Button.Icon.Navigation"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_close"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        <include
+            android:id="@+id/top_dialog_bar"
+            layout="@layout/view_top_dialog_bar"
+            app:title="@{@string/item_schedule_notification_setting_title}" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/widgetBottomDialogContentHeightBase"
-            app:layout_constraintTop_toBottomOf="@id/toolbar">
+            app:layout_constraintTop_toBottomOf="@id/top_dialog_bar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/noti_container"
@@ -72,7 +46,7 @@
                     android:layout_width="0dp"
                     android:layout_height="34dp"
                     android:background="@drawable/shape_border_radius_5"
-                    android:backgroundTint="@color/gray_50"
+                    android:backgroundTint="@color/gray_100"
                     app:layout_constraintBottom_toBottomOf="@id/noti_content_container"
                     app:layout_constraintEnd_toEndOf="@id/noti_content_container"
                     app:layout_constraintStart_toStartOf="@id/noti_content_container"
@@ -121,10 +95,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:fontFamily="@font/suit_b"
                         android:text="@string/colon"
-                        android:textColor="@color/gray_700"
-                        android:textSize="@dimen/typographyBase"
+                        android:textAppearance="@style/TextAppearance.Suit.D2"
+                        android:textColor="@color/gray_600"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toStartOf="@id/minute_picker"
                         app:layout_constraintStart_toEndOf="@id/hour_picker"
@@ -147,20 +120,20 @@
                 android:id="@+id/noti_setting_guide"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/spacingBase"
-                android:fontFamily="@font/suit_r"
+                android:layout_marginBottom="6dp"
                 android:text="@string/item_registration_noti_setting_guide"
+                android:textAppearance="@style/TextAppearance.Suit.D3"
                 android:textColor="@color/gray_300"
-                android:textSize="@dimen/typographyBaseDetail"
                 app:layout_constraintBottom_toTopOf="@id/complete"
-                app:layout_constraintStart_toStartOf="@id/complete" />
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/complete"
                 style="@style/Widget.Button.Full.Round.Activate.Green"
                 android:layout_width="match_parent"
-                android:layout_margin="@dimen/spacingBase"
-                android:text="@{viewModel.registrationStatus == ProcessStatus.IN_PROGRESS ? `` : context.getString(R.string.complete)}"
+                android:layout_marginBottom="@dimen/spacingBase"
+                android:text="@{viewModel.registrationStatus == ProcessStatus.IN_PROGRESS ? `` : @string/complete}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 tools:text="@string/complete" />
 
