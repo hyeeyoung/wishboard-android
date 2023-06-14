@@ -29,6 +29,8 @@ class WebViewActivity : BaseActivity<ActivityWebviewBinding>(R.layout.activity_w
                 loadWithOverviewMode = true
                 useWideViewPort = true
                 domStorageEnabled = true
+                builtInZoomControls= true
+                displayZoomControls = false
                 setSupportZoom(true)
             }
 
