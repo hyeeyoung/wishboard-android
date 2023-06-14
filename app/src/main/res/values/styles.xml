@@ -265,7 +265,7 @@
 
     <style name="My.Menu.Divider" parent="">
         <item name="android:layout_height">6dp</item>
-        <item name="android:background">@color/gray_25</item>
+        <item name="android:background">@color/gray_50</item>
     </style>
 
     <style name="Widget.Divider" parent="">
