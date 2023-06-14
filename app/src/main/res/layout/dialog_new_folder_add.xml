@@ -92,7 +92,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{String.format(@string/length_format, viewModel.folderName.trim().length(), 10)}"
-                android:textAppearance="@style/Widget.TextAppearance.Detail"
+                android:textAppearance="@style/TextAppearance.Suit.D3"
                 android:textColor="@color/gray_200"
                 app:layout_constraintEnd_toEndOf="@id/folder_name"
                 app:layout_constraintTop_toTopOf="@id/folder_name_detail_text"
@@ -100,11 +100,11 @@
 
             <TextView
                 android:id="@+id/folder_name_detail_text"
+                style="@style/Widget.TextAppearance.Detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/spacing5"
                 android:text="@string/folder_upload_name_already_exist_detail"
-                android:textAppearance="@style/Widget.TextAppearance.Detail"
                 android:visibility="@{viewModel.isExistFolderName == true ? View.VISIBLE : View.INVISIBLE}"
                 app:layout_constraintStart_toStartOf="@id/folder_name"
                 app:layout_constraintTop_toBottomOf="@id/folder_name" />
