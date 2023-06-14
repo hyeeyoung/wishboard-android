@@ -14,16 +14,17 @@
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp">
+        android:layout_marginBottom="@dimen/spacing20">
 
         <ImageView
             android:id="@+id/item_image"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:foreground="@color/semi_transparent"
+            android:foreground="@color/black_alpha_5"
             android:scaleType="centerCrop"
             app:layout_constraintDimensionRatio="1:1"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/sample" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -34,14 +35,14 @@
 
             <TextView
                 android:id="@+id/item_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:fontFamily="@font/suit_r"
                 android:maxLines="2"
                 android:text="@{item.name}"
+                android:textAppearance="@style/TextAppearance.Suit.D3"
                 android:textColor="@color/gray_700"
-                android:textSize="@dimen/typographyDescription"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="21SS KEILY JACHKT" />
@@ -50,10 +51,9 @@
                 android:id="@+id/item_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:fontFamily="@font/montserrat_b"
+                android:layout_marginTop="@dimen/spacingSmall"
+                android:textAppearance="@style/TextAppearance.Montserrat.H3"
                 android:textColor="@color/gray_700"
-                android:textSize="@dimen/typographyBase"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/item_name"
                 app:priceFormat="@{item.price}"
@@ -63,13 +63,13 @@
                 android:id="@+id/won"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="1dp"
-                android:fontFamily="@font/suit_r"
+                android:layout_marginStart="1dp"
                 android:text="@string/won"
+                android:textAppearance="@style/TextAppearance.Suit.D3"
                 android:textColor="@color/gray_700"
-                android:textSize="@dimen/typographyDescription"
                 app:layout_constraintBottom_toBottomOf="@id/item_price"
-                app:layout_constraintStart_toEndOf="@id/item_price" />
+                app:layout_constraintStart_toEndOf="@id/item_price"
+                app:layout_constraintTop_toTopOf="@id/item_price" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -79,7 +79,6 @@
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_margin="@dimen/spacing5"
-            android:fontFamily="@font/suit_r"
             android:insetLeft="@dimen/spacing5"
             android:insetTop="@dimen/spacing5"
             android:insetRight="@dimen/spacing5"
@@ -87,8 +86,8 @@
             android:paddingHorizontal="0dp"
             android:text="@string/cart"
             android:textAllCaps="false"
+            android:textAppearance="@style/TextAppearance.Suit.D3"
             android:textColor="@color/gray_700"
-            android:textSize="@dimen/typographyBaseDetail"
             app:backgroundTint="@color/selector_cart_button_background_color"
             app:cornerRadius="19dp"
             app:layout_constraintBottom_toBottomOf="@id/item_image"
