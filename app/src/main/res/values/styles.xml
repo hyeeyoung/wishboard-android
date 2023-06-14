@@ -80,8 +80,7 @@
         <item name="android:layout_width">0dp</item>
         <item name="android:outlineProvider">none</item>
         <item name="android:padding">@dimen/spacingBase</item>
-        <item name="android:fontFamily">@font/suit_m</item>
-        <item name="android:textSize">16dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.Suit.B3</item>
     </style>
 
     <style name="Widget.Button.Icon.Navigation" parent="Widget.Button">
