@@ -5,7 +5,6 @@ import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.databinding.FragmentFolderBinding
@@ -54,7 +53,6 @@ class FolderFragment : NetworkFragment<FragmentFolderBinding>(R.layout.fragment_
 
         binding.folderList.apply {
             this.adapter = folderListAdapter
-            layoutManager = GridLayoutManager(requireContext(), 2)
             itemAnimator = null
             setItemViewCacheSize(20)
         }

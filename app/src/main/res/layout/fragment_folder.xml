@@ -20,7 +20,7 @@
         android:background="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/toolbar"
+            android:id="@+id/top_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent">
@@ -38,6 +38,8 @@
             <ImageButton
                 android:id="@+id/new_folder"
                 style="@style/Widget.Button.Icon.Navigation"
+                android:layout_marginVertical="1dp"
+                android:layout_marginEnd="@dimen/spacingMicro"
                 android:src="@drawable/ic_plus"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -49,11 +51,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/folder_no_item_view"
-            app:visibility="@{viewModel.folderCount &lt;= 0}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar"
+            app:layout_constraintTop_toBottomOf="@id/top_app_bar"
+            app:visibility="@{viewModel.folderCount &lt;= 0}"
             tools:visibility="gone" />
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -61,7 +63,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" >
+            app:layout_constraintTop_toBottomOf="@id/top_app_bar">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/folder_list"
@@ -71,7 +73,10 @@
                 android:scrollbarFadeDuration="0"
                 android:scrollbarSize="5dp"
                 android:scrollbarThumbVertical="@android:color/darker_gray"
-                android:scrollbars="vertical" />
+                android:scrollbars="vertical"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
+                tools:listitem="@layout/item_folder_vertical" />
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
