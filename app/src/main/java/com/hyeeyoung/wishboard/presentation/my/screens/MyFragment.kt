@@ -61,25 +61,25 @@ class MyFragment : NetworkFragment<FragmentMyBinding>(R.layout.fragment_my) {
         }
         binding.howToUse.setOnClickListener {
             moveWebViewActivity(
-                "https://hushed-bolt-fd4.notion.site/383c308f256f4f189b7c0b68a8f68d9f",
+                "https://youngjinc.notion.site/1fb5fba5448941c7bac0dd72b1a51871?pvs=4",
                 R.string.my_section_sub_title_how_to_use
             )
         }
         binding.terms.setOnClickListener {
             moveWebViewActivity(
-                "${BuildConfig.BASE_URL}terms.html",
+                "https://youngjinc.notion.site/f0e9dae6172b47659a9e01e55db8e2e3?pvs=4",
                 R.string.my_section_sub_title_terms
             )
         }
         binding.personalInfo.setOnClickListener {
             moveWebViewActivity(
-                "${BuildConfig.BASE_URL}privacy-policy.html",
+                "https://youngjinc.notion.site/5c3da8efa7744e08a94d06fca2eecfc6?pvs=4",
                 R.string.my_section_sub_title_personal_info
             )
         }
         binding.opensourceLicense.setOnClickListener {
             moveWebViewActivity(
-                "https://hushed-bolt-fd4.notion.site/8fb33b8b0d7e47ae951abcac9ee4df12",
+                "https://youngjinc.notion.site/48d95a3554074db8af829bf5af28c842?pvs=4",
                 R.string.my_section_sub_title_opensource_license
             )
         }
