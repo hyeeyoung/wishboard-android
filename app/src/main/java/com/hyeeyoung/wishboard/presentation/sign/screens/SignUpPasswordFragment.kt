@@ -54,7 +54,7 @@ class SignUpPasswordFragment :
         val clickableSpanTerms = object : ClickableSpan() {
             override fun onClick(widget: View) {
                 moveWebViewActivity(
-                    "https://www.wishboard.xyz/terms.html",
+                    "https://youngjinc.notion.site/f0e9dae6172b47659a9e01e55db8e2e3?pvs=4",
                     R.string.my_section_sub_title_terms
                 )
             }
@@ -62,7 +62,7 @@ class SignUpPasswordFragment :
         val clickableSpanPersonalInfo = object : ClickableSpan() {
             override fun onClick(widget: View) {
                 moveWebViewActivity(
-                    "https://www.wishboard.xyz/privacy-policy.html",
+                    "https://youngjinc.notion.site/5c3da8efa7744e08a94d06fca2eecfc6?pvs=4",
                     R.string.my_section_sub_title_personal_info
                 )
             }
