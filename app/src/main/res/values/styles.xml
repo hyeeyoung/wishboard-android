@@ -19,7 +19,8 @@
     </style>
 
     <style name="AppTheme.NumberPicker">
-        <item name="android:textAppearance">@style/TextAppearance.Suit.D1</item>
+        <item name="android:fontFamily">@font/suit_m</item>
+        <item name="android:textSize">15dp</item>
         <item name="android:textColor">@color/gray_600</item>
         <item name="android:colorControlNormal">@color/transparent</item>
     </style>
