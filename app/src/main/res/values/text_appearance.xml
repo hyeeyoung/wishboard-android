@@ -66,12 +66,12 @@
         <item name="android:textSize">20dp</item>
     </style>
     <style name="TextAppearance.Montserrat.H2" parent="">
-        <item name="android:fontFamily">@font/montserrat_eb</item>
+        <item name="android:fontFamily">@font/montserrat_b</item>
         <item name="android:textSize">18dp</item>
     </style>
     <style name="TextAppearance.Montserrat.H3" parent="">
-        <item name="android:fontFamily">@font/montserrat_eb</item>
-        <item name="android:textSize">14dp</item>
+        <item name="android:fontFamily">@font/montserrat_b</item>
+        <item name="android:textSize">16dp</item>
     </style>
 
     <style name="TextAppearance.Montserrat.B1" parent="">
