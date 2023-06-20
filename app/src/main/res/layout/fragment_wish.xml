@@ -147,8 +147,8 @@
                         app:layout_constraintTop_toTopOf="@id/guide_top" />
 
                     <View
-                        style="@style/Widget.Divider"
                         android:id="@+id/name_divider"
+                        style="@style/Widget.Divider"
                         android:layout_width="match_parent"
                         app:layout_constraintTop_toBottomOf="@id/item_name" />
 
