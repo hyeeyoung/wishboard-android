@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.domain.di
+package com.hyeeyoung.wishboard.di
 
 import com.hyeeyoung.wishboard.data.repositories.*
 import com.hyeeyoung.wishboard.domain.repositories.*
