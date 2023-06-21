@@ -147,8 +147,8 @@
                         app:layout_constraintTop_toTopOf="@id/guide_top" />
 
                     <View
-                        style="@style/Widget.Divider"
                         android:id="@+id/name_divider"
+                        style="@style/Widget.Divider"
                         android:layout_width="match_parent"
                         app:layout_constraintTop_toBottomOf="@id/item_name" />
 
@@ -276,10 +276,9 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="-16dp"
                             android:clickable="false"
-                            android:fontFamily="@font/suit_r"
                             android:text="@string/shop_link_guide"
+                            android:textAppearance="@style/TextAppearance.Suit.D3"
                             android:textColor="@color/green_700"
-                            android:textSize="@dimen/typographyBaseDetail"
                             app:layout_constraintBottom_toBottomOf="@id/item_url_detail"
                             app:layout_constraintEnd_toStartOf="@id/item_url_detail"
                             app:layout_constraintTop_toTopOf="@id/item_url_detail" />
