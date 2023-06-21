@@ -144,7 +144,7 @@
     <string name="new_folder_dialog_hint">폴더명을 입력해 주세요.</string>
 
     <!-- Detail -->
-    <string name="go_to_folder"><u>%s</u></string>
+    <string name="go_to_folder">%s ></string>
     <string name="setting_folder">폴더를 지정해 보세요!</string>
     <string name="go_to_shop_button_text">쇼핑몰로 이동하기</string>
     <string name="item_detail_item_delete_dialog_title">아이템 삭제</string>
