@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.domain.di
+package com.hyeeyoung.wishboard.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder

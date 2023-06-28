@@ -2,12 +2,13 @@ package com.hyeeyoung.wishboard.presentation.sign.screens
 
 import android.content.Intent
 import android.os.Bundle
-import android.text.Spannable
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.text.set
+import androidx.core.text.toSpannable
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
@@ -49,8 +50,6 @@ class SignUpPasswordFragment :
     }
 
     private fun initializeView() {
-        binding.signTerm.movementMethod = LinkMovementMethod.getInstance()
-
         val clickableSpanTerms = object : ClickableSpan() {
             override fun onClick(widget: View) {
                 moveWebViewActivity(
@@ -68,11 +67,15 @@ class SignUpPasswordFragment :
             }
         }
 
-        (binding.signTerm.text as? Spannable)?.apply {
-            setSpan(clickableSpanTerms, 5, 9, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-            setSpan(ForegroundColorSpan(ResourcesCompat.getColor(resources, R.color.green_700, null)), 5, 9, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-            setSpan(clickableSpanPersonalInfo, 11, 20, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
-            setSpan(ForegroundColorSpan(ResourcesCompat.getColor(resources, R.color.green_700, null)), 11, 20, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+        with(binding.signTerm) {
+            movementMethod = LinkMovementMethod.getInstance()
+            val spannable = text.toSpannable()
+            spannable[5..9] = clickableSpanTerms
+            spannable[5..9] =
+                ForegroundColorSpan(ResourcesCompat.getColor(resources, R.color.green_700, null))
+            spannable[11..20] = clickableSpanPersonalInfo
+            spannable[11..20] =
+                ForegroundColorSpan(ResourcesCompat.getColor(resources, R.color.green_700, null))
         }
     }
 
