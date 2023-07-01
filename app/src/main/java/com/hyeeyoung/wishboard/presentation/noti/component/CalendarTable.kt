@@ -1,9 +1,10 @@
 package com.hyeeyoung.wishboard.presentation.noti.component
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -32,13 +33,14 @@ fun CalendarTable(localDate: LocalDate, width: Dp) {
 
 /** 해당 월의 날짜 테이블 */
 @Composable
-fun DateTable(width: Dp, selectedDate: LocalDate) {
+fun DateTable(width: Dp, date: LocalDate) {
     var day = 1
-    val firstIdx = selectedDate.withDayOfMonth(1).dayOfWeek.value % 7
-    val lastDay = YearMonth.from(selectedDate).atEndOfMonth().dayOfMonth
+    val firstIdx = date.withDayOfMonth(1).dayOfWeek.value % 7
+    val lastDay = YearMonth.from(date).atEndOfMonth().dayOfMonth
     val rowSize = ceil((firstIdx + lastDay) / 7.0).toInt()
     val cellSize = width / COL_SIZE
     val dateCellModifier = Modifier.size(cellSize)
+    var selectedDate by remember { mutableStateOf(date) }
 
     Column() {
         repeat(rowSize) { r ->
@@ -47,12 +49,17 @@ fun DateTable(width: Dp, selectedDate: LocalDate) {
                     if (day > lastDay) return
                     val dateOrNull =
                         if (r != 0 || c >= firstIdx) LocalDate.of(
-                            selectedDate.year,
-                            selectedDate.monthValue,
+                            date.year,
+                            date.monthValue,
                             day
                         )
                         else null
-                    DateCell(modifier = dateCellModifier, date = dateOrNull)
+                    DateCell(
+                        modifier = dateCellModifier,
+                        date = dateOrNull,
+                        selected = dateOrNull == selectedDate,
+                        onSelect = { selectedDate = it }
+                    )
                     if (dateOrNull != null) day++
                 }
             }
@@ -66,12 +73,12 @@ fun DateCell(
     modifier: Modifier,
     date: LocalDate?,
     selected: Boolean = false,
-    isExistNoti: Boolean = false
+    onSelect: (LocalDate) -> Unit,
+    isExistNoti: Boolean = false // TODO 알림 존재 여부에 따른 ui 업데이트 처리
 ) {
     if (date != null) {
         val isToday = LocalDate.now() == date
-        // TODO 알림 존재 여부, 클릭 여부에 따른 ui 업데이트 처리
-        Box(modifier = modifier) {
+        Box(modifier = modifier.then(Modifier.clickable { onSelect(date) })) {
             if (isToday) {
                 Canvas(
                     modifier = Modifier
