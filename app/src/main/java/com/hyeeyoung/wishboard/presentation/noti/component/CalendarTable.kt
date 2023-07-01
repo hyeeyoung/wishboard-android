@@ -1,33 +1,25 @@
 package com.hyeeyoung.wishboard.presentation.noti.component
 
-import androidx.compose.foundation.background
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.hyeeyoung.wishboard.R
+import com.hyeeyoung.wishboard.presentation.common.component.WishboardDivider
+import com.hyeeyoung.wishboard.presentation.theme.Gray700
+import com.hyeeyoung.wishboard.presentation.theme.Green500
 import com.hyeeyoung.wishboard.presentation.theme.WishBoardTheme
 import java.time.LocalDate
 import java.time.YearMonth
 import kotlin.math.ceil
 
 private const val WEEK = 7
-
-// TODO 공용으로 분리
-@Composable
-fun WishboardDivider() = Divider(
-    modifier = Modifier.fillMaxWidth(),
-    thickness = 1.dp,
-    color = colorResource(id = R.color.gray_100)
-)
 
 @Composable
 fun CalendarTable(localDate: LocalDate, width: Dp) {
@@ -78,15 +70,20 @@ fun DateCell(
 ) {
     if (date != null) {
         val isToday = LocalDate.now() == date
-        // TODO 코드 정리
-        val boxModifier =
-            if (!isToday) modifier else modifier.then(Modifier.background(colorResource(id = R.color.green_500)))
-
         // TODO 알림 존재 여부, 오늘 여부, 클릭 여부에 따른 ui 업데이트 처리
-        Box(modifier = boxModifier, contentAlignment = Alignment.Center) {
+        Box(modifier = modifier) {
+            if (isToday) {
+                Column(modifier = Modifier.align(Alignment.TopCenter)) {
+                    Spacer(modifier = Modifier.size(6.dp))
+                    Canvas(modifier = Modifier.size(10.dp)) {
+                        drawCircle(color = Green500)
+                    }
+                }
+            }
             Text(
+                modifier = Modifier.align(Alignment.Center),
                 text = date.dayOfMonth.toString(),
-                color = colorResource(id = R.color.gray_700),
+                color = Gray700,
                 textAlign = TextAlign.Center,
                 style = WishBoardTheme.typography.suitD1,
                 fontWeight = if (selected) FontWeight.ExtraBold else FontWeight.Normal

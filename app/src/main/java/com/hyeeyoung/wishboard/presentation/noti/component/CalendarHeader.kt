@@ -7,12 +7,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hyeeyoung.wishboard.R
+import com.hyeeyoung.wishboard.presentation.theme.Gray700
 import com.hyeeyoung.wishboard.presentation.theme.WishBoardTheme
 import java.time.LocalDate
 import java.time.Month
@@ -46,7 +46,7 @@ fun CalendarTopAppBar(month: Month, year: Int, onClick: () -> Unit = {}) {
                 .align(Alignment.Center)
                 .padding(vertical = 10.dp),
             text = "${month.getDisplayName(TextStyle.FULL, Locale.US)} $year",
-            color = colorResource(id = R.color.gray_700),
+            color = Gray700,
             style = WishBoardTheme.typography.montserratH1
         )
     }
@@ -62,7 +62,7 @@ fun DayOfTheWeekLabel() {
             Text(
                 modifier = Modifier.weight(1.0f),
                 text = day,
-                color = colorResource(id = R.color.gray_700),
+                color = Gray700,
                 textAlign = TextAlign.Center,
                 style = WishBoardTheme.typography.montserratB2
             )
