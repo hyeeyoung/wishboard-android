@@ -1,8 +1,10 @@
 package com.hyeeyoung.wishboard.presentation.noti.component
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -14,6 +16,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.hyeeyoung.wishboard.presentation.common.component.WishboardDivider
 import com.hyeeyoung.wishboard.presentation.theme.Gray700
+import com.hyeeyoung.wishboard.presentation.theme.Green200
 import com.hyeeyoung.wishboard.presentation.theme.Green500
 import com.hyeeyoung.wishboard.presentation.theme.WishBoardTheme
 import java.time.LocalDate
@@ -58,7 +61,8 @@ fun DateTable(width: Dp, date: LocalDate) {
                         modifier = dateCellModifier,
                         date = dateOrNull,
                         selected = dateOrNull == selectedDate,
-                        onSelect = { selectedDate = it }
+                        onSelect = { selectedDate = it },
+                        isExistNoti = day in listOf(18, 19, 30) // TODO db 데이터 연동
                     )
                     if (dateOrNull != null) day++
                 }
@@ -74,11 +78,21 @@ fun DateCell(
     date: LocalDate?,
     selected: Boolean = false,
     onSelect: (LocalDate) -> Unit,
-    isExistNoti: Boolean = false // TODO 알림 존재 여부에 따른 ui 업데이트 처리
+    isExistNoti: Boolean = false
 ) {
     if (date != null) {
         val isToday = LocalDate.now() == date
-        Box(modifier = modifier.then(Modifier.clickable { onSelect(date) })) {
+        val boxModifier = modifier.then(Modifier.clickable { onSelect(date) }).let {
+            if (isExistNoti) it.then(
+                Modifier
+                    .padding(10.dp)
+                    .background(color = Green200, shape = CircleShape)
+            ) else it
+        }
+
+        Box(
+            modifier = boxModifier
+        ) {
             if (isToday) {
                 Canvas(
                     modifier = Modifier
