@@ -19,7 +19,7 @@ import java.time.LocalDate
 import java.time.YearMonth
 import kotlin.math.ceil
 
-private const val WEEK = 7
+private const val COL_SIZE = 7
 
 @Composable
 fun CalendarTable(localDate: LocalDate, width: Dp) {
@@ -37,13 +37,13 @@ fun DateTable(width: Dp, selectedDate: LocalDate) {
     val firstIdx = selectedDate.withDayOfMonth(1).dayOfWeek.value % 7
     val lastDay = YearMonth.from(selectedDate).atEndOfMonth().dayOfMonth
     val rowSize = ceil((firstIdx + lastDay) / 7.0).toInt()
-    val cellSize = width / WEEK
+    val cellSize = width / COL_SIZE
+    val dateCellModifier = Modifier.size(cellSize)
 
     Column() {
         repeat(rowSize) { r ->
             Row() {
-                val modifier = Modifier.size(cellSize)
-                repeat(WEEK) { c ->
+                repeat(COL_SIZE) { c ->
                     if (day > lastDay) return
                     val dateOrNull =
                         if (r != 0 || c >= firstIdx) LocalDate.of(
@@ -52,7 +52,7 @@ fun DateTable(width: Dp, selectedDate: LocalDate) {
                             day
                         )
                         else null
-                    DateCell(modifier = modifier, date = dateOrNull)
+                    DateCell(modifier = dateCellModifier, date = dateOrNull)
                     if (dateOrNull != null) day++
                 }
             }
@@ -70,14 +70,16 @@ fun DateCell(
 ) {
     if (date != null) {
         val isToday = LocalDate.now() == date
-        // TODO 알림 존재 여부, 오늘 여부, 클릭 여부에 따른 ui 업데이트 처리
+        // TODO 알림 존재 여부, 클릭 여부에 따른 ui 업데이트 처리
         Box(modifier = modifier) {
             if (isToday) {
-                Column(modifier = Modifier.align(Alignment.TopCenter)) {
-                    Spacer(modifier = Modifier.size(6.dp))
-                    Canvas(modifier = Modifier.size(10.dp)) {
-                        drawCircle(color = Green500)
-                    }
+                Canvas(
+                    modifier = Modifier
+                        .padding(top = 6.dp)
+                        .size(10.dp)
+                        .align(Alignment.TopCenter)
+                ) {
+                    drawCircle(color = Green500)
                 }
             }
             Text(
