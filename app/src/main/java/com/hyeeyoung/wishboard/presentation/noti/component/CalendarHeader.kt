@@ -14,13 +14,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.presentation.theme.WishBoardTheme
-import java.time.LocalDateTime
+import java.time.LocalDate
 import java.time.Month
 import java.time.format.TextStyle
 import java.util.*
 
 @Composable
-fun CalendarHeader(localDate: LocalDateTime) {
+fun CalendarHeader(localDate: LocalDate) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         CalendarTopAppBar(month = localDate.month, year = localDate.year)
         Spacer(modifier = Modifier.height(2.dp))
@@ -73,5 +73,5 @@ fun DayOfTheWeekLabel() {
 @Preview(showBackground = true)
 @Composable
 fun CalendarHeaderPreview() {
-    CalendarHeader(LocalDateTime.now())
+    CalendarHeader(LocalDate.now())
 }
