@@ -30,10 +30,10 @@ fun WishboardDivider() = Divider(
 )
 
 @Composable
-fun CalendarTable() {
+fun CalendarTable(localDate: LocalDate, width: Dp) {
     Column() {
         WishboardDivider()
-        DateTable(375.dp, LocalDate.now())
+        DateTable(width, localDate)
         WishboardDivider()
     }
 }
@@ -97,8 +97,8 @@ fun DateCell(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 375)
 @Composable
 fun CalendarTablePreview() {
-    CalendarTable()
+    CalendarTable(LocalDate.now(), 375.dp)
 }
