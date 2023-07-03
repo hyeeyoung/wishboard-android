@@ -18,7 +18,8 @@ private const val INITIAL_PAGE = PAGE_COUNT / 2
 fun Calendar(notiList: List<NotiItem>) {
     var selectedDate by remember { mutableStateOf(LocalDate.now()) }
     var prevPage by remember { mutableStateOf(INITIAL_PAGE) }
-    val curMonthNoti = notiList.filter { it.notiDate.month == selectedDate.month }
+    val curMonthNoti =
+        notiList.filter { it.notiDate.year == selectedDate.year && it.notiDate.month == selectedDate.month }
     val curDateNoti = curMonthNoti.filter { it.notiDate.dayOfMonth == selectedDate.dayOfMonth }
     val pagerState = rememberPagerState(initialPage = INITIAL_PAGE)
 
@@ -45,15 +46,6 @@ fun Calendar(notiList: List<NotiItem>) {
 fun CalendarPreview() {
     Calendar(
         listOf(
-            NotiItem(
-                1,
-                "https://image.msscdn.net/images/goods_img/20220222/2377269/2377269_16777177260753_500.jpg",
-                "W CLASSIC LOGO TEE white",
-                "https://www.musinsa.com/app/goods/2377269",
-                0,
-                NotiType.RESTOCK,
-                LocalDateTime.of(2023, 5, 18, 20, 0)
-            ),
             NotiItem(
                 1,
                 "https://image.msscdn.net/images/goods_img/20220222/2377269/2377269_16777177260753_500.jpg",
@@ -116,6 +108,15 @@ fun CalendarPreview() {
                 0,
                 NotiType.PREORDER,
                 LocalDateTime.of(2023, 8, 22, 19, 0)
+            ),
+            NotiItem(
+                1,
+                "https://image.msscdn.net/images/goods_img/20220222/2377269/2377269_16777177260753_500.jpg",
+                "W CLASSIC LOGO TEE white",
+                "https://www.musinsa.com/app/goods/2377269",
+                0,
+                NotiType.RESTOCK,
+                LocalDateTime.of(2024, 5, 18, 20, 0)
             )
         )
     )
