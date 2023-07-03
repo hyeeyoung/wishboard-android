@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.sp
 import com.hyeeyoung.wishboard.R
 
 val SuitFamily = FontFamily(
+    Font(R.font.suit_eb, FontWeight.ExtraBold, FontStyle.Normal),
     Font(R.font.suit_b, FontWeight.Bold, FontStyle.Normal),
     Font(R.font.suit_sb, FontWeight.SemiBold, FontStyle.Normal),
     Font(R.font.suit_m, FontWeight.Medium, FontStyle.Normal),
