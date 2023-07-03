@@ -9,10 +9,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.hyeeyoung.wishboard.presentation.common.component.WishboardDivider
 import com.hyeeyoung.wishboard.presentation.theme.Gray700
@@ -26,22 +26,23 @@ import kotlin.math.ceil
 private const val COL_SIZE = 7
 
 @Composable
-fun CalendarTable(localDate: LocalDate, width: Dp) {
+fun CalendarTable(localDate: LocalDate) {
     Column() {
         WishboardDivider()
-        DateTable(width, localDate)
+        DateTable(localDate)
         WishboardDivider()
     }
 }
 
 /** 해당 월의 날짜 테이블 */
 @Composable
-fun DateTable(width: Dp, date: LocalDate) {
+fun DateTable(date: LocalDate) {
     var day = 1
     val firstIdx = date.withDayOfMonth(1).dayOfWeek.value % 7
     val lastDay = YearMonth.from(date).atEndOfMonth().dayOfMonth
     val rowSize = ceil((firstIdx + lastDay) / 7.0).toInt()
-    val cellSize = width / COL_SIZE
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val cellSize = screenWidth / COL_SIZE
     val dateCellModifier = Modifier.size(cellSize)
     var selectedDate by remember { mutableStateOf(date) }
 
@@ -120,5 +121,5 @@ fun DateCell(
 @Preview(showBackground = true, widthDp = 375)
 @Composable
 fun CalendarTablePreview() {
-    CalendarTable(LocalDate.now(), 375.dp)
+    CalendarTable(LocalDate.now())
 }

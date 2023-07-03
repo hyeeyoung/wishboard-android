@@ -40,12 +40,15 @@ fun CalendarSchedule(selectedDate: LocalDate, notiItems: List<NotiItemInfo>) {
         if (notiItems.isEmpty()) {
             EmptySchedule(
                 modifier = Modifier
+                    .fillMaxWidth()
                     .align(Alignment.CenterHorizontally)
                     .weight(1.0f)
             )
         } else {
             Spacer(modifier = Modifier.size(16.dp)) // TODO dimensionResource 사용
             LazyColumn(
+                modifier = Modifier
+                    .weight(1.0f),
                 contentPadding = PaddingValues(bottom = 64.dp),
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
@@ -127,7 +130,7 @@ fun ScheduleItem(noti: NotiItemInfo) {
     }
 }
 
-@Preview(showBackground = true, widthDp = 375, heightDp = 400)
+@Preview(showBackground = true, heightDp = 400)
 @Composable
 fun CalendarEmptySchedulePreview() {
     CalendarSchedule(
@@ -136,7 +139,7 @@ fun CalendarEmptySchedulePreview() {
     )
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, heightDp = 400)
 @Composable
 fun CalendarSchedulePreview() {
     CalendarSchedule(
