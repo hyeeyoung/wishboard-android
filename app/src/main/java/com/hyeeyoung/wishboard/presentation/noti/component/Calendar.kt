@@ -15,7 +15,7 @@ private const val INITIAL_PAGE = PAGE_COUNT / 2
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Calendar(notiList: List<NotiItem>) {
+fun Calendar(notiList: List<NotiItem>, onClickBack: () -> Unit, moveToShop: (String) -> Unit) {
     var selectedDate by remember { mutableStateOf(LocalDate.now()) }
     var prevPage by remember { mutableStateOf(INITIAL_PAGE) }
     val curMonthNoti =
@@ -24,11 +24,11 @@ fun Calendar(notiList: List<NotiItem>) {
     val pagerState = rememberPagerState(initialPage = INITIAL_PAGE)
 
     Column {
-        CalendarHeader(selectedDate = selectedDate)
+        CalendarHeader(selectedDate = selectedDate, onClickBack = onClickBack)
         CalendarTable(
             selectedDate = selectedDate,
             onSelect = { selectedDate = it },
-            notiDateList = curMonthNoti.map { it.notiDate.toLocalDate() },
+            notiDateList = curMonthNoti.map { it.notiDate.toLocalDate() }, // TODO LocalDateTime으로 통일
             pagerState = pagerState,
             pageCount = PAGE_COUNT,
             onChangePage = { page ->
@@ -37,7 +37,7 @@ fun Calendar(notiList: List<NotiItem>) {
                 else if (diff > 0) selectedDate = selectedDate.plusMonths(1)
                 prevPage = page
             })
-        CalendarSchedule(selectedDate = selectedDate, notiItems = curDateNoti)
+        CalendarSchedule(selectedDate = selectedDate, notiItems = curDateNoti, moveToShop = moveToShop)
     }
 }
 
@@ -118,6 +118,8 @@ fun CalendarPreview() {
                 NotiType.RESTOCK,
                 LocalDateTime.of(2024, 5, 18, 20, 0)
             )
-        )
+        ),
+        {},
+        {}
     )
 }

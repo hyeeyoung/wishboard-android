@@ -20,9 +20,9 @@ import java.time.format.TextStyle
 import java.util.*
 
 @Composable
-fun CalendarHeader(selectedDate: LocalDate) {
+fun CalendarHeader(selectedDate: LocalDate, onClickBack: () -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        CalendarTopAppBar(month = selectedDate.month, year = selectedDate.year)
+        CalendarTopAppBar(month = selectedDate.month, year = selectedDate.year, onClickBack)
         Spacer(modifier = Modifier.height(2.dp))
         DayOfTheWeekLabel()
         Spacer(modifier = Modifier.height(12.dp))
@@ -31,12 +31,12 @@ fun CalendarHeader(selectedDate: LocalDate) {
 
 /** 월, 년도 정보, 백버튼을 포함하는 캘린더 타이틀 라벨 */
 @Composable
-fun CalendarTopAppBar(month: Month, year: Int, onClick: () -> Unit = {}) {
+fun CalendarTopAppBar(month: Month, year: Int, onClickBack: () -> Unit) {
     Box(modifier = Modifier.fillMaxWidth()) {
         Row(modifier = Modifier.align(Alignment.CenterStart)) {
             Spacer(modifier = Modifier.width(4.dp))
             Icon(modifier = Modifier
-                .clickable { onClick() }
+                .clickable { onClickBack() }
                 .padding(9.dp),
                 painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = null)
@@ -73,5 +73,5 @@ fun DayOfTheWeekLabel() {
 @Preview(showBackground = true)
 @Composable
 fun CalendarHeaderPreview() {
-    CalendarHeader(LocalDate.now())
+    CalendarHeader(LocalDate.now(), {})
 }

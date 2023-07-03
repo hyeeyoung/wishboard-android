@@ -2,6 +2,7 @@ package com.hyeeyoung.wishboard.presentation.noti.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -29,7 +30,11 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoField
 
 @Composable
-fun CalendarSchedule(selectedDate: LocalDate, notiItems: List<NotiItem>) {
+fun CalendarSchedule(
+    selectedDate: LocalDate,
+    notiItems: List<NotiItem>,
+    moveToShop: (String) -> Unit
+) {
     Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 32.dp)) {
         Text(
             text = stringResource(
@@ -55,7 +60,7 @@ fun CalendarSchedule(selectedDate: LocalDate, notiItems: List<NotiItem>) {
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 items(notiItems) { noti ->
-                    ScheduleItem(noti = noti)
+                    ScheduleItem(noti = noti, moveToShop = moveToShop)
                 }
             }
         }
@@ -85,10 +90,11 @@ fun EmptySchedule(modifier: Modifier) {
 }
 
 @Composable
-fun ScheduleItem(noti: NotiItem) {
+fun ScheduleItem(noti: NotiItem, moveToShop: (String) -> Unit) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
+            .clickable { noti.itemUrl?.let { moveToShop(it) } }
             .background(color = Gray50, RoundedCornerShape(24.dp))
             .padding(16.dp)
     ) {
@@ -146,7 +152,8 @@ fun getScheduleTimeFormat(dateTime: LocalDateTime): String {
 fun CalendarEmptySchedulePreview() {
     CalendarSchedule(
         LocalDate.now(),
-        listOf()
+        emptyList(),
+        {}
     )
 }
 
@@ -174,6 +181,7 @@ fun CalendarSchedulePreview() {
                 NotiType.PREORDER,
                 LocalDateTime.of(2023, 7, 20, 0, 0)
             )
-        )
+        ),
+        {}
     )
 }
