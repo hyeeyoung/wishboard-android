@@ -1,10 +1,16 @@
 package com.hyeeyoung.wishboard.presentation.noti.component
 
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
@@ -23,15 +29,27 @@ import kotlin.math.ceil
 
 private const val COL_SIZE = 7
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CalendarTable(
     selectedDate: LocalDate,
     onSelect: (LocalDate) -> Unit,
-    notiDateList: List<LocalDate>
+    notiDateList: List<LocalDate>,
+    pagerState: PagerState,
+    pageCount: Int,
+    onChangePage: (Int) -> Unit
 ) {
+    LaunchedEffect(pagerState) {
+        snapshotFlow { pagerState.currentPage }.collect { page ->
+            onChangePage(page)
+        }
+    }
+
     Column() {
         WishboardDivider()
-        DateTable(selectedDate, onSelect, notiDateList)
+        HorizontalPager(pageCount = pageCount, state = pagerState) {
+            DateTable(selectedDate, onSelect, notiDateList)
+        }
         WishboardDivider()
     }
 }
@@ -134,12 +152,16 @@ fun DateCell(
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Preview(showBackground = true, widthDp = 375)
 @Composable
 fun CalendarTablePreview() {
     CalendarTable(
         LocalDate.now(),
         {},
-        listOf(LocalDate.of(2023, 7, 3), LocalDate.of(2023, 7, 20))
+        listOf(LocalDate.of(2023, 7, 3), LocalDate.of(2023, 7, 20)),
+        pagerState = rememberPagerState(),
+        pageCount = 1,
+        onChangePage = {}
     )
 }
