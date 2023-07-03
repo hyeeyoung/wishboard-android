@@ -159,6 +159,7 @@
     <string name="noti_title">알림</string>
     <string name="noti_item_type">%s 알림</string>
     <string name="noti_calendar_selected_date_title">%s 일정</string>
+    <string name="noti_calendar_schedule_title">%d월 %d일 일정</string>
     <string name="item_schedule_notification_setting_title">상품 알림 설정</string>
     <string name="default_notification_channel_id">fcm_default_channel</string>
     <string name="noti_no_item_view">앗, 알림이 없어요!\n상품 일정을 지정하고 알림을 받아보세요!</string>
