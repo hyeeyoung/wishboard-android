@@ -1,7 +1,9 @@
 package com.hyeeyoung.wishboard.data.model.noti
 
 import com.google.gson.annotations.SerializedName
+import com.hyeeyoung.wishboard.domain.model.NotiItem
 import com.hyeeyoung.wishboard.domain.model.NotiItemInfo
+import com.hyeeyoung.wishboard.util.convertStrDateToLocalDate
 import com.hyeeyoung.wishboard.util.extension.toNotiType
 
 data class NotiItem(
@@ -29,5 +31,15 @@ data class NotiItem(
         readState,
         notiType.toNotiType(),
         notiDate,
+    )
+
+    fun toNotiItem() =  NotiItem(
+        itemId,
+        itemImg,
+        itemName,
+        if (itemUrl.isNullOrBlank()) null else itemUrl,
+        readState,
+        notiType.toNotiType(),
+        convertStrDateToLocalDate(notiDate),
     )
 }

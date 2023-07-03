@@ -20,14 +20,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.hyeeyoung.wishboard.R
-import com.hyeeyoung.wishboard.domain.model.NotiItemInfo
+import com.hyeeyoung.wishboard.domain.model.NotiItem
 import com.hyeeyoung.wishboard.presentation.common.component.ColoredImage
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiType
 import com.hyeeyoung.wishboard.presentation.theme.*
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.temporal.ChronoField
 
 @Composable
-fun CalendarSchedule(selectedDate: LocalDate, notiItems: List<NotiItemInfo>) {
+fun CalendarSchedule(selectedDate: LocalDate, notiItems: List<NotiItem>) {
     Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 32.dp)) {
         Text(
             text = stringResource(
@@ -83,7 +85,7 @@ fun EmptySchedule(modifier: Modifier) {
 }
 
 @Composable
-fun ScheduleItem(noti: NotiItemInfo) {
+fun ScheduleItem(noti: NotiItem) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -123,11 +125,20 @@ fun ScheduleItem(noti: NotiItemInfo) {
                 bottom.linkTo(parent.bottom)
                 start.linkTo(notiType.start)
             },
-            text = noti.notiDate,
+            text = getScheduleTimeFormat(noti.notiDate),
             color = Gray300,
             style = WishBoardTheme.typography.suitD3
         )
     }
+}
+
+// TODO 스트링 리소스 사용하기
+fun getScheduleTimeFormat(dateTime: LocalDateTime): String {
+    val ampm = if (dateTime.get(ChronoField.AMPM_OF_DAY) == 0) "오전" else "오후"
+    val hour = "${dateTime.get(ChronoField.CLOCK_HOUR_OF_AMPM)}시"
+    val minute = if (dateTime.minute == 0) "" else "${dateTime.minute}분"
+
+    return "$ampm $hour $minute"
 }
 
 @Preview(showBackground = true, heightDp = 400)
@@ -145,23 +156,23 @@ fun CalendarSchedulePreview() {
     CalendarSchedule(
         LocalDate.now(),
         listOf(
-            NotiItemInfo(
+            NotiItem(
                 1,
                 "https://image.msscdn.net/images/goods_img/20220222/2377269/2377269_16777177260753_500.jpg",
                 "W CLASSIC LOGO TEE white",
                 "https://www.musinsa.com/app/goods/2377269",
                 0,
                 NotiType.RESTOCK,
-                "오전 10시"
+                LocalDateTime.of(2023, 7, 3, 13, 30)
             ),
-            NotiItemInfo(
+            NotiItem(
                 2,
                 "https://image.msscdn.net/images/goods_img/20230427/3267246/3267246_16825933559850_500.jpg",
                 "체리 자카드 패턴 숏 슬리브 가디건 [핑크]",
                 "https://www.musinsa.com/app/goods/3267246/0",
                 0,
                 NotiType.PREORDER,
-                "오후 1시"
+                LocalDateTime.of(2023, 7, 20, 0, 0)
             )
         )
     )

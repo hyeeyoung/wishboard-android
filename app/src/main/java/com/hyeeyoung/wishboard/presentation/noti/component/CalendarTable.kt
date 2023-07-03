@@ -1,17 +1,15 @@
 package com.hyeeyoung.wishboard.presentation.noti.component
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hyeeyoung.wishboard.presentation.common.component.WishboardDivider
@@ -26,25 +24,32 @@ import kotlin.math.ceil
 private const val COL_SIZE = 7
 
 @Composable
-fun CalendarTable(selectedDate: LocalDate) {
+fun CalendarTable(
+    selectedDate: LocalDate,
+    onSelect: (LocalDate) -> Unit,
+    notiDateList: List<LocalDate>
+) {
     Column() {
         WishboardDivider()
-        DateTable(selectedDate)
+        DateTable(selectedDate, onSelect, notiDateList)
         WishboardDivider()
     }
 }
 
 /** 해당 월의 날짜 테이블 */
 @Composable
-fun DateTable(date: LocalDate) {
+fun DateTable(
+    selectedDate: LocalDate,
+    onSelect: (LocalDate) -> Unit,
+    notiDateList: List<LocalDate>
+) {
     var day = 1
-    val firstIdx = date.withDayOfMonth(1).dayOfWeek.value % 7
-    val lastDay = YearMonth.from(date).atEndOfMonth().dayOfMonth
+    val firstIdx = selectedDate.withDayOfMonth(1).dayOfWeek.value % 7
+    val lastDay = YearMonth.from(selectedDate).atEndOfMonth().dayOfMonth
     val rowSize = ceil((firstIdx + lastDay) / 7.0).toInt()
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val cellSize = screenWidth / COL_SIZE
     val dateCellModifier = Modifier.size(cellSize)
-    var selectedDate by remember { mutableStateOf(date) }
 
     Column() {
         repeat(rowSize) { r ->
@@ -53,8 +58,8 @@ fun DateTable(date: LocalDate) {
                     if (day > lastDay) return
                     val dateOrNull =
                         if (r != 0 || c >= firstIdx) LocalDate.of(
-                            date.year,
-                            date.monthValue,
+                            selectedDate.year,
+                            selectedDate.monthValue,
                             day
                         )
                         else null
@@ -62,8 +67,8 @@ fun DateTable(date: LocalDate) {
                         modifier = dateCellModifier,
                         date = dateOrNull,
                         selected = dateOrNull == selectedDate,
-                        onSelect = { selectedDate = it },
-                        isExistNoti = day in listOf(18, 19, 30) // TODO db 데이터 연동
+                        onSelect = onSelect,
+                        isExistNoti = dateOrNull in notiDateList
                     )
                     if (dateOrNull != null) day++
                 }
@@ -82,18 +87,20 @@ fun DateCell(
     isExistNoti: Boolean = false
 ) {
     if (date != null) {
-        val isToday = LocalDate.now() == date
-        val boxModifier = modifier.then(Modifier.clickable { onSelect(date) }).let {
-            if (isExistNoti) it.then(
-                Modifier
-                    .padding(10.dp)
-                    .background(color = Green200, shape = CircleShape)
-            ) else it
-        }
-
         Box(
-            modifier = boxModifier
+            modifier = modifier.clickable { onSelect(date) }
         ) {
+            if (isExistNoti) {
+                Canvas(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(9.dp)
+                ) {
+                    drawCircle(color = Green200)
+                }
+            }
+
+            val isToday = LocalDate.now() == date
             if (isToday) {
                 Canvas(
                     modifier = Modifier
@@ -104,13 +111,22 @@ fun DateCell(
                     drawCircle(color = Green500)
                 }
             }
+
+            val textStyle = WishBoardTheme.typography.suitD1.run {
+                TextStyle(
+                    fontFamily = fontFamily,
+                    fontWeight = if (selected) FontWeight.ExtraBold else FontWeight.Normal,
+                    fontSize = fontSize
+                )
+            }
+
             Text(
-                modifier = Modifier.align(Alignment.Center),
+                modifier = Modifier
+                    .padding(9.dp)
+                    .align(Alignment.Center),
                 text = date.dayOfMonth.toString(),
                 color = Gray700,
-                textAlign = TextAlign.Center,
-                style = WishBoardTheme.typography.suitD1,
-                fontWeight = if (selected) FontWeight.ExtraBold else FontWeight.Normal
+                style = textStyle
             )
         }
     } else {
@@ -121,5 +137,9 @@ fun DateCell(
 @Preview(showBackground = true, widthDp = 375)
 @Composable
 fun CalendarTablePreview() {
-    CalendarTable(LocalDate.now())
+    CalendarTable(
+        LocalDate.now(),
+        {},
+        listOf(LocalDate.of(2023, 7, 3), LocalDate.of(2023, 7, 20))
+    )
 }

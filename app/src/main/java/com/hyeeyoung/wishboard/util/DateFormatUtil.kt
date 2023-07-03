@@ -2,7 +2,14 @@ package com.hyeeyoung.wishboard.util
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
+
+fun convertStrDateToLocalDate(strDate: String?): LocalDateTime {
+    val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+    return LocalDateTime.parse(strDate, dateFormat)
+}
 
 /** 시간 포맷 지정 */
 fun convertStrTimeToDate(strDate: String?): Long? {
