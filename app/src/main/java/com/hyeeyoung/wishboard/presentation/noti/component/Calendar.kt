@@ -1,21 +1,23 @@
 package com.hyeeyoung.wishboard.presentation.noti.component
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 import java.time.LocalDate
 
 @Composable
-fun CalendarScreen() {
+fun Calendar() {
+    var selectedDate by remember { mutableStateOf(LocalDate.now()) }
+
     Column {
-        CalendarHeader(localDate = LocalDate.now())
-        CalendarTable(localDate = LocalDate.now())
-        CalendarSchedule(selectedDate = LocalDate.now(), notiItems = listOf())
+        CalendarHeader(selectedDate = selectedDate)
+        CalendarTable(selectedDate = selectedDate)
+        CalendarSchedule(selectedDate = selectedDate, notiItems = listOf())
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun CalendarPreview() {
-    CalendarScreen()
+    Calendar()
 }

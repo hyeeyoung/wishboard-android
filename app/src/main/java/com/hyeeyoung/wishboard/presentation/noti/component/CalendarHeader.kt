@@ -20,9 +20,9 @@ import java.time.format.TextStyle
 import java.util.*
 
 @Composable
-fun CalendarHeader(localDate: LocalDate) {
+fun CalendarHeader(selectedDate: LocalDate) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        CalendarTopAppBar(month = localDate.month, year = localDate.year)
+        CalendarTopAppBar(month = selectedDate.month, year = selectedDate.year)
         Spacer(modifier = Modifier.height(2.dp))
         DayOfTheWeekLabel()
         Spacer(modifier = Modifier.height(12.dp))

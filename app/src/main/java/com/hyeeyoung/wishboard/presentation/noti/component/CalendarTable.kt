@@ -26,10 +26,10 @@ import kotlin.math.ceil
 private const val COL_SIZE = 7
 
 @Composable
-fun CalendarTable(localDate: LocalDate) {
+fun CalendarTable(selectedDate: LocalDate) {
     Column() {
         WishboardDivider()
-        DateTable(localDate)
+        DateTable(selectedDate)
         WishboardDivider()
     }
 }
