@@ -6,6 +6,9 @@
         <item name="colorAccent">@color/gray_100</item>
         <item name="android:includeFontPadding">false</item>
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialogStyle</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="AppThemePopup" parent="AppTheme">
