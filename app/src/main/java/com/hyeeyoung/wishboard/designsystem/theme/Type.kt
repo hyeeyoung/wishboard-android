@@ -128,6 +128,7 @@ data class WishBoardTypography(
         fontSize = 9.sp
     ),
     val suitB3M: TextStyle = suitB3.copy(lineHeight = 20.sp),
+    val suitD2M: TextStyle = suitD2.copy(lineHeight = 20.sp)
 )
 
 val LocalTypography = staticCompositionLocalOf { WishBoardTypography() }

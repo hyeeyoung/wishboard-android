@@ -25,7 +25,7 @@ class CalendarActivity : ComponentActivity() {
             CalendarScreen(
                 notiList = notiList,
                 onClickBack = { finish() },
-                moveToShop = { shopUrl ->
+                onClickNotiWithLink = { shopUrl ->
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(shopUrl)))
                 }
             )

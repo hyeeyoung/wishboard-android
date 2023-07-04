@@ -3,8 +3,14 @@ package com.hyeeyoung.wishboard.presentation.calendar.screen
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import com.hyeeyoung.wishboard.R
+import com.hyeeyoung.wishboard.designsystem.component.WishboardSnackbarHost
+import com.hyeeyoung.wishboard.designsystem.component.showSnackbar
 import com.hyeeyoung.wishboard.designsystem.theme.WishboardTheme
 import com.hyeeyoung.wishboard.domain.model.NotiItem
 import com.hyeeyoung.wishboard.presentation.calendar.component.CalendarHeader
@@ -22,7 +28,7 @@ private const val INITIAL_PAGE = PAGE_COUNT / 2
 fun CalendarScreen(
     notiList: List<NotiItem>?,
     onClickBack: () -> Unit,
-    moveToShop: (String) -> Unit
+    onClickNotiWithLink: (String) -> Unit
 ) {
     if (notiList == null) return
     WishboardTheme {
@@ -33,25 +39,37 @@ fun CalendarScreen(
         val curDateNoti = curMonthNoti.filter { it.notiDate.dayOfMonth == selectedDate.dayOfMonth }
         val pagerState = rememberPagerState(initialPage = INITIAL_PAGE)
 
-        Column {
-            CalendarHeader(selectedDate = selectedDate, onClickBack = onClickBack)
-            CalendarTable(
-                selectedDate = selectedDate,
-                onSelect = { selectedDate = it },
-                notiDateList = curMonthNoti.map { it.notiDate.toLocalDate() }, // TODO LocalDateTime으로 통일
-                pagerState = pagerState,
-                pageCount = PAGE_COUNT,
-                onChangePage = { page ->
-                    val diff = page - prevPage
-                    if (diff < 0) selectedDate = selectedDate.minusMonths(1)
-                    else if (diff > 0) selectedDate = selectedDate.plusMonths(1)
-                    prevPage = page
-                })
-            CalendarSchedule(
-                selectedDate = selectedDate,
-                notiItems = curDateNoti,
-                moveToShop = moveToShop
-            )
+        val snackbarHostState = remember { SnackbarHostState() }
+        val coroutineScope = rememberCoroutineScope()
+        val snackbarMsgForNotiLink = stringResource(id = R.string.noti_item_url_snackbar_text)
+
+        Scaffold(snackbarHost = { WishboardSnackbarHost(hostState = snackbarHostState) }) {
+            Column {
+                CalendarHeader(selectedDate = selectedDate, onClickBack = onClickBack)
+                CalendarTable(
+                    selectedDate = selectedDate,
+                    onSelect = { selectedDate = it },
+                    notiDateList = curMonthNoti.map { it.notiDate.toLocalDate() }, // TODO LocalDateTime으로 통일
+                    pagerState = pagerState,
+                    pageCount = PAGE_COUNT,
+                    onChangePage = { page ->
+                        val diff = page - prevPage
+                        if (diff < 0) selectedDate = selectedDate.minusMonths(1)
+                        else if (diff > 0) selectedDate = selectedDate.plusMonths(1)
+                        prevPage = page
+                    })
+                CalendarSchedule(
+                    selectedDate = selectedDate,
+                    notiItems = curDateNoti,
+                    onClickNotiWithLink = onClickNotiWithLink,
+                    onClickNotiWithoutLink = {
+                        snackbarHostState.showSnackbar(
+                            snackbarMsgForNotiLink,
+                            coroutineScope
+                        )
+                    }
+                )
+            }
         }
     }
 }

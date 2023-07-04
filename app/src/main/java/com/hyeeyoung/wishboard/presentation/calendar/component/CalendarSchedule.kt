@@ -37,7 +37,8 @@ import java.time.temporal.ChronoField
 fun CalendarSchedule(
     selectedDate: LocalDate,
     notiItems: List<NotiItem>,
-    moveToShop: (String) -> Unit
+    onClickNotiWithLink: (String) -> Unit,
+    onClickNotiWithoutLink: () -> Unit
 ) {
     Column(Modifier.padding(start = 16.dp, end = 16.dp, top = 32.dp)) {
         Text(
@@ -64,7 +65,7 @@ fun CalendarSchedule(
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 items(notiItems) { noti ->
-                    ScheduleItem(noti = noti, moveToShop = moveToShop)
+                    ScheduleItem(noti = noti, onClickNotiWithLink = onClickNotiWithLink, onClickNotiWithoutLink)
                 }
             }
         }
@@ -94,11 +95,14 @@ fun EmptySchedule(modifier: Modifier) {
 }
 
 @Composable
-fun ScheduleItem(noti: NotiItem, moveToShop: (String) -> Unit) {
+fun ScheduleItem(noti: NotiItem, onClickNotiWithLink: (String) -> Unit, onClickNotiWithoutLink: () -> Unit) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
-            .noRippleClickable { noti.itemUrl?.let { moveToShop(it) } }
+            .noRippleClickable {
+                if (noti.itemUrl.isNullOrEmpty()) onClickNotiWithoutLink()
+                else onClickNotiWithLink(noti.itemUrl)
+            }
             .background(color = Gray50, RoundedCornerShape(24.dp))
             .padding(16.dp)
     ) {
@@ -160,6 +164,7 @@ fun CalendarEmptySchedulePreview() {
     CalendarSchedule(
         LocalDate.now(),
         emptyList(),
+        {},
         {}
     )
 }
@@ -189,6 +194,7 @@ fun CalendarSchedulePreview() {
                 LocalDateTime.of(2023, 7, 20, 0, 0)
             )
         ),
+        {},
         {}
     )
 }
