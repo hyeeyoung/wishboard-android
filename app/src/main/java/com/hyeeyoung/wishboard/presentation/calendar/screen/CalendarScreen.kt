@@ -78,7 +78,7 @@ fun CalendarScreen(
 @Composable
 fun CalendarPreview() {
     CalendarScreen(
-        listOf(
+        notiList = listOf(
             NotiItem(
                 1,
                 "https://image.msscdn.net/images/goods_img/20220222/2377269/2377269_16777177260753_500.jpg",
@@ -152,7 +152,7 @@ fun CalendarPreview() {
                 LocalDateTime.of(2024, 5, 18, 20, 0)
             )
         ),
-        {},
-        {}
+        onClickBack = {},
+        onClickNotiWithLink = {}
     )
 }

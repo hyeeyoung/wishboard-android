@@ -162,10 +162,10 @@ fun getScheduleTimeFormat(dateTime: LocalDateTime): String {
 @Composable
 fun CalendarEmptySchedulePreview() {
     CalendarSchedule(
-        LocalDate.now(),
-        emptyList(),
-        {},
-        {}
+        selectedDate = LocalDate.now(),
+        notiItems = emptyList(),
+        onClickNotiWithLink = {},
+        onClickNotiWithoutLink = {}
     )
 }
 
@@ -173,8 +173,8 @@ fun CalendarEmptySchedulePreview() {
 @Composable
 fun CalendarSchedulePreview() {
     CalendarSchedule(
-        LocalDate.now(),
-        listOf(
+        selectedDate = LocalDate.now(),
+        notiItems = listOf(
             NotiItem(
                 1,
                 "https://image.msscdn.net/images/goods_img/20220222/2377269/2377269_16777177260753_500.jpg",
@@ -194,7 +194,7 @@ fun CalendarSchedulePreview() {
                 LocalDateTime.of(2023, 7, 20, 0, 0)
             )
         ),
-        {},
-        {}
+        onClickNotiWithLink = {},
+        onClickNotiWithoutLink = {}
     )
 }

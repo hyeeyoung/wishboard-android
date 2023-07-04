@@ -22,7 +22,7 @@ import java.util.*
 @Composable
 fun CalendarHeader(selectedDate: LocalDate, onClickBack: () -> Unit) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        CalendarTopAppBar(month = selectedDate.month, year = selectedDate.year, onClickBack)
+        CalendarTopAppBar(month = selectedDate.month, year = selectedDate.year, onClickBack = onClickBack)
         Spacer(modifier = Modifier.height(2.dp))
         DayOfTheWeekLabel()
         Spacer(modifier = Modifier.height(12.dp))
@@ -73,5 +73,5 @@ fun DayOfTheWeekLabel() {
 @Preview(showBackground = true)
 @Composable
 fun CalendarHeaderPreview() {
-    CalendarHeader(LocalDate.now(), {})
+    CalendarHeader(selectedDate = LocalDate.now(), onClickBack = {})
 }

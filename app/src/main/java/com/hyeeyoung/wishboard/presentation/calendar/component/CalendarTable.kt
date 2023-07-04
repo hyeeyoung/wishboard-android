@@ -157,9 +157,9 @@ fun DateCell(
 @Composable
 fun CalendarTablePreview() {
     CalendarTable(
-        LocalDate.now(),
-        {},
-        listOf(LocalDate.of(2023, 7, 3), LocalDate.of(2023, 7, 20)),
+        selectedDate = LocalDate.now(),
+        onSelect = {},
+        notiDateList = listOf(LocalDate.of(2023, 7, 3), LocalDate.of(2023, 7, 20)),
         pagerState = rememberPagerState(),
         pageCount = 1,
         onChangePage = {}
