@@ -44,7 +44,7 @@ fun CalendarSchedule(
                 selectedDate.monthValue, selectedDate.dayOfMonth
             ),
             color = Gray700,
-            style = WishBoardTheme.typography.suitH4
+            style = WishBoardTheme.typography.suitH3
         )
         if (notiItems.isEmpty()) {
             EmptySchedule(
@@ -121,7 +121,7 @@ fun ScheduleItem(noti: NotiItem, moveToShop: (String) -> Unit) {
             modifier = Modifier
                 .constrainAs(itemName) {
                     width = Dimension.fillToConstraints
-                    top.linkTo(notiType.bottom, margin = 8.dp)
+                    top.linkTo(notiType.bottom, margin = 6.dp)
                     start.linkTo(notiType.start)
                     end.linkTo(parent.end, margin = 16.dp)
                 },
@@ -137,7 +137,7 @@ fun ScheduleItem(noti: NotiItem, moveToShop: (String) -> Unit) {
                 start.linkTo(notiType.start)
             },
             text = getScheduleTimeFormat(noti.notiDate),
-            color = Gray300,
+            color = Gray200,
             style = WishBoardTheme.typography.suitD3
         )
     }
