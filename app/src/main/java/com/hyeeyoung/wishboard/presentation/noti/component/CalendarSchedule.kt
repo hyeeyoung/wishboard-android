@@ -26,6 +26,7 @@ import com.hyeeyoung.wishboard.domain.model.NotiItem
 import com.hyeeyoung.wishboard.presentation.common.component.ColoredImage
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiType
 import com.hyeeyoung.wishboard.presentation.theme.*
+import com.hyeeyoung.wishboard.util.extension.noRippleClickable
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.temporal.ChronoField
@@ -95,7 +96,7 @@ fun ScheduleItem(noti: NotiItem, moveToShop: (String) -> Unit) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { noti.itemUrl?.let { moveToShop(it) } }
+            .noRippleClickable { noti.itemUrl?.let { moveToShop(it) } }
             .background(color = Gray50, RoundedCornerShape(24.dp))
             .padding(16.dp)
     ) {

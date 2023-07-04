@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.presentation.theme.Gray700
 import com.hyeeyoung.wishboard.presentation.theme.WishBoardTheme
+import com.hyeeyoung.wishboard.util.extension.noRippleClickable
 import java.time.LocalDate
 import java.time.Month
 import java.time.format.TextStyle
@@ -36,7 +37,7 @@ fun CalendarTopAppBar(month: Month, year: Int, onClickBack: () -> Unit) {
         Row(modifier = Modifier.align(Alignment.CenterStart)) {
             Spacer(modifier = Modifier.width(4.dp))
             Icon(modifier = Modifier
-                .clickable { onClickBack() }
+                .noRippleClickable { onClickBack() }
                 .padding(9.dp),
                 painter = painterResource(id = R.drawable.ic_back),
                 contentDescription = null)

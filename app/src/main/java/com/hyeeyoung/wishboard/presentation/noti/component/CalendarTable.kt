@@ -23,6 +23,7 @@ import com.hyeeyoung.wishboard.presentation.theme.Gray700
 import com.hyeeyoung.wishboard.presentation.theme.Green200
 import com.hyeeyoung.wishboard.presentation.theme.Green500
 import com.hyeeyoung.wishboard.presentation.theme.WishBoardTheme
+import com.hyeeyoung.wishboard.util.extension.noRippleClickable
 import java.time.LocalDate
 import java.time.YearMonth
 import kotlin.math.ceil
@@ -106,7 +107,7 @@ fun DateCell(
 ) {
     if (date != null) {
         Box(
-            modifier = modifier.clickable { onSelect(date) }
+            modifier = modifier.noRippleClickable { onSelect(date) }
         ) {
             if (isExistNoti) {
                 Canvas(
