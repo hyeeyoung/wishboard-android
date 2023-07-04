@@ -29,9 +29,9 @@ import com.hyeeyoung.wishboard.designsystem.theme.WishBoardTheme
 import com.hyeeyoung.wishboard.domain.model.NotiItem
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiType
 import com.hyeeyoung.wishboard.util.extension.noRippleClickable
+import com.hyeeyoung.wishboard.util.getScheduleTimeFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.temporal.ChronoField
 
 @Composable
 fun CalendarSchedule(
@@ -65,7 +65,11 @@ fun CalendarSchedule(
                 verticalArrangement = Arrangement.spacedBy(6.dp)
             ) {
                 items(notiItems) { noti ->
-                    ScheduleItem(noti = noti, onClickNotiWithLink = onClickNotiWithLink, onClickNotiWithoutLink)
+                    ScheduleItem(
+                        noti = noti,
+                        onClickNotiWithLink = onClickNotiWithLink,
+                        onClickNotiWithoutLink
+                    )
                 }
             }
         }
@@ -95,7 +99,11 @@ fun EmptySchedule(modifier: Modifier) {
 }
 
 @Composable
-fun ScheduleItem(noti: NotiItem, onClickNotiWithLink: (String) -> Unit, onClickNotiWithoutLink: () -> Unit) {
+fun ScheduleItem(
+    noti: NotiItem,
+    onClickNotiWithLink: (String) -> Unit,
+    onClickNotiWithoutLink: () -> Unit
+) {
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
@@ -147,15 +155,6 @@ fun ScheduleItem(noti: NotiItem, onClickNotiWithLink: (String) -> Unit, onClickN
             style = WishBoardTheme.typography.suitD3
         )
     }
-}
-
-// TODO 스트링 리소스 사용하기
-fun getScheduleTimeFormat(dateTime: LocalDateTime): String {
-    val ampm = if (dateTime.get(ChronoField.AMPM_OF_DAY) == 0) "오전" else "오후"
-    val hour = "${dateTime.get(ChronoField.CLOCK_HOUR_OF_AMPM)}시"
-    val minute = if (dateTime.minute == 0) "" else "${dateTime.minute}분"
-
-    return "$ampm $hour $minute"
 }
 
 @Preview(showBackground = true, heightDp = 400)
