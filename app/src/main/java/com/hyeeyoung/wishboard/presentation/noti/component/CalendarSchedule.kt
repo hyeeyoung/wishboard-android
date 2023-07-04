@@ -20,6 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.Dimension
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.domain.model.NotiItem
 import com.hyeeyoung.wishboard.presentation.common.component.ColoredImage
@@ -116,10 +117,13 @@ fun ScheduleItem(noti: NotiItem, moveToShop: (String) -> Unit) {
             style = WishBoardTheme.typography.suitH5
         )
         Text(
-            modifier = Modifier.constrainAs(itemName) {
-                top.linkTo(notiType.bottom, margin = 8.dp)
-                start.linkTo(notiType.start)
-            },
+            modifier = Modifier
+                .constrainAs(itemName) {
+                    width = Dimension.fillToConstraints
+                    top.linkTo(notiType.bottom, margin = 8.dp)
+                    start.linkTo(notiType.start)
+                    end.linkTo(parent.end, margin = 16.dp)
+                },
             text = noti.itemName,
             color = Gray700,
             style = WishBoardTheme.typography.suitD3,
