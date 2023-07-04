@@ -7,7 +7,7 @@ import java.time.format.DateTimeFormatter
 import java.util.*
 
 fun convertStrDateToLocalDate(strDate: String?): LocalDateTime {
-    val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")
+    val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
     return LocalDateTime.parse(strDate, dateFormat)
 }
 
