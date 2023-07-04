@@ -86,7 +86,7 @@ fun EmptySchedule(modifier: Modifier) {
             text = stringResource(id = R.string.noti_no_item_view),
             textAlign = TextAlign.Center,
             color = Gray200,
-            style = WishBoardTheme.typography.suitB3
+            style = WishBoardTheme.typography.suitB3M
         )
     }
 }

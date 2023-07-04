@@ -126,7 +126,8 @@ data class WishBoardTypography(
         fontFamily = MontserratFamily,
         fontWeight = FontWeight.Normal,
         fontSize = 9.sp
-    )
+    ),
+    val suitB3M: TextStyle = suitB3.copy(lineHeight = 20.sp),
 )
 
 val LocalTypography = staticCompositionLocalOf { WishBoardTypography() }
