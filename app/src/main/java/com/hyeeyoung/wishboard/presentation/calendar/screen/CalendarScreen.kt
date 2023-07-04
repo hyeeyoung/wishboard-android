@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
+import com.hyeeyoung.wishboard.designsystem.theme.WishboardTheme
 import com.hyeeyoung.wishboard.domain.model.NotiItem
 import com.hyeeyoung.wishboard.presentation.calendar.component.CalendarHeader
 import com.hyeeyoung.wishboard.presentation.calendar.component.CalendarSchedule
@@ -18,33 +19,40 @@ private const val INITIAL_PAGE = PAGE_COUNT / 2
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CalendarScreen(notiList: List<NotiItem>, onClickBack: () -> Unit, moveToShop: (String) -> Unit) {
-    var selectedDate by remember { mutableStateOf(LocalDate.now()) }
-    var prevPage by remember { mutableStateOf(INITIAL_PAGE) }
-    val curMonthNoti =
-        notiList.filter { it.notiDate.year == selectedDate.year && it.notiDate.month == selectedDate.month }
-    val curDateNoti = curMonthNoti.filter { it.notiDate.dayOfMonth == selectedDate.dayOfMonth }
-    val pagerState = rememberPagerState(initialPage = INITIAL_PAGE)
+fun CalendarScreen(
+    notiList: List<NotiItem>?,
+    onClickBack: () -> Unit,
+    moveToShop: (String) -> Unit
+) {
+    if (notiList == null) return
+    WishboardTheme {
+        var selectedDate by remember { mutableStateOf(LocalDate.now()) }
+        var prevPage by remember { mutableStateOf(INITIAL_PAGE) }
+        val curMonthNoti =
+            notiList.filter { it.notiDate.year == selectedDate.year && it.notiDate.month == selectedDate.month }
+        val curDateNoti = curMonthNoti.filter { it.notiDate.dayOfMonth == selectedDate.dayOfMonth }
+        val pagerState = rememberPagerState(initialPage = INITIAL_PAGE)
 
-    Column {
-        CalendarHeader(selectedDate = selectedDate, onClickBack = onClickBack)
-        CalendarTable(
-            selectedDate = selectedDate,
-            onSelect = { selectedDate = it },
-            notiDateList = curMonthNoti.map { it.notiDate.toLocalDate() }, // TODO LocalDateTime으로 통일
-            pagerState = pagerState,
-            pageCount = PAGE_COUNT,
-            onChangePage = { page ->
-                val diff = page - prevPage
-                if (diff < 0) selectedDate = selectedDate.minusMonths(1)
-                else if (diff > 0) selectedDate = selectedDate.plusMonths(1)
-                prevPage = page
-            })
-        CalendarSchedule(
-            selectedDate = selectedDate,
-            notiItems = curDateNoti,
-            moveToShop = moveToShop
-        )
+        Column {
+            CalendarHeader(selectedDate = selectedDate, onClickBack = onClickBack)
+            CalendarTable(
+                selectedDate = selectedDate,
+                onSelect = { selectedDate = it },
+                notiDateList = curMonthNoti.map { it.notiDate.toLocalDate() }, // TODO LocalDateTime으로 통일
+                pagerState = pagerState,
+                pageCount = PAGE_COUNT,
+                onChangePage = { page ->
+                    val diff = page - prevPage
+                    if (diff < 0) selectedDate = selectedDate.minusMonths(1)
+                    else if (diff > 0) selectedDate = selectedDate.plusMonths(1)
+                    prevPage = page
+                })
+            CalendarSchedule(
+                selectedDate = selectedDate,
+                notiItems = curDateNoti,
+                moveToShop = moveToShop
+            )
+        }
     }
 }
 

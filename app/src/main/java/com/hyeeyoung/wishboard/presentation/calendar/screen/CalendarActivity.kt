@@ -8,7 +8,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import com.hyeeyoung.wishboard.designsystem.theme.WishboardTheme
 import com.hyeeyoung.wishboard.presentation.noti.NotiViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,16 +22,13 @@ class CalendarActivity : ComponentActivity() {
         setContent {
             val notiList by viewModel.calendarNotiList.collectAsState()
 
-            WishboardTheme {
-                notiList?.let {
-                    CalendarScreen(
-                        notiList = it,
-                        onClickBack = { finish() },
-                        moveToShop = { shopUrl ->
-                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(shopUrl)))
-                        })
+            CalendarScreen(
+                notiList = notiList,
+                onClickBack = { finish() },
+                moveToShop = { shopUrl ->
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(shopUrl)))
                 }
-            }
+            )
         }
     }
 }
