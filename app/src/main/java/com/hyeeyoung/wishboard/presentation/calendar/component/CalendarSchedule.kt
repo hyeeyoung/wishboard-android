@@ -1,8 +1,7 @@
-package com.hyeeyoung.wishboard.presentation.noti.component
+package com.hyeeyoung.wishboard.presentation.calendar.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -22,10 +21,13 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import com.hyeeyoung.wishboard.R
+import com.hyeeyoung.wishboard.designsystem.component.ColoredImage
+import com.hyeeyoung.wishboard.designsystem.theme.Gray200
+import com.hyeeyoung.wishboard.designsystem.theme.Gray50
+import com.hyeeyoung.wishboard.designsystem.theme.Gray700
+import com.hyeeyoung.wishboard.designsystem.theme.WishBoardTheme
 import com.hyeeyoung.wishboard.domain.model.NotiItem
-import com.hyeeyoung.wishboard.presentation.common.component.ColoredImage
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiType
-import com.hyeeyoung.wishboard.presentation.theme.*
 import com.hyeeyoung.wishboard.util.extension.noRippleClickable
 import java.time.LocalDate
 import java.time.LocalDateTime

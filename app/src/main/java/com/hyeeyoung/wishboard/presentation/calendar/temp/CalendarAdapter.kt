@@ -1,8 +1,7 @@
-package com.hyeeyoung.wishboard.presentation.noti.adapters
+package com.hyeeyoung.wishboard.presentation.calendar.temp
 
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.hyeeyoung.wishboard.presentation.noti.screens.CalendarFragment
 import org.joda.time.DateTime
 
 class CalendarAdapter(fm: FragmentActivity) : FragmentStateAdapter(fm) {

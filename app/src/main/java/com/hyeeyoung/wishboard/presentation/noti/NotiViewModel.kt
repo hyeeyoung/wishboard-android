@@ -7,7 +7,6 @@ import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.domain.model.NotiItem
 import com.hyeeyoung.wishboard.domain.model.NotiItemInfo
 import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
-import com.hyeeyoung.wishboard.presentation.noti.adapters.NotiListAdapter
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiListViewType
 import com.hyeeyoung.wishboard.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel

@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.presentation.noti.screens
+package com.hyeeyoung.wishboard.presentation.calendar.screen
 
 import android.content.Intent
 import android.net.Uri
@@ -8,9 +8,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import com.hyeeyoung.wishboard.designsystem.theme.WishboardTheme
 import com.hyeeyoung.wishboard.presentation.noti.NotiViewModel
-import com.hyeeyoung.wishboard.presentation.noti.component.Calendar
-import com.hyeeyoung.wishboard.presentation.theme.WishboardTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

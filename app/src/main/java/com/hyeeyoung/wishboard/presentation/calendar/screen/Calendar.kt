@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.presentation.noti.component
+package com.hyeeyoung.wishboard.presentation.calendar.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
@@ -6,6 +6,9 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 import com.hyeeyoung.wishboard.domain.model.NotiItem
+import com.hyeeyoung.wishboard.presentation.calendar.component.CalendarHeader
+import com.hyeeyoung.wishboard.presentation.calendar.component.CalendarSchedule
+import com.hyeeyoung.wishboard.presentation.calendar.component.CalendarTable
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiType
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -37,7 +40,11 @@ fun Calendar(notiList: List<NotiItem>, onClickBack: () -> Unit, moveToShop: (Str
                 else if (diff > 0) selectedDate = selectedDate.plusMonths(1)
                 prevPage = page
             })
-        CalendarSchedule(selectedDate = selectedDate, notiItems = curDateNoti, moveToShop = moveToShop)
+        CalendarSchedule(
+            selectedDate = selectedDate,
+            notiItems = curDateNoti,
+            moveToShop = moveToShop
+        )
     }
 }
 

@@ -12,7 +12,7 @@ import coil.load
 import com.airbnb.lottie.LottieAnimationView
 import com.google.android.material.button.MaterialButton
 import com.hyeeyoung.wishboard.R
-import com.hyeeyoung.wishboard.util.custom.CustomDecoration
+import com.hyeeyoung.wishboard.designsystem.component.CustomDecoration
 import java.text.DecimalFormat
 
 @BindingAdapter("visibility")

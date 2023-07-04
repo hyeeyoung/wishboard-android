@@ -17,7 +17,7 @@ import com.hyeeyoung.wishboard.presentation.folder.types.FolderListViewType
 import com.hyeeyoung.wishboard.presentation.folder.types.FolderMoreDialogButtonReplyType
 import com.hyeeyoung.wishboard.util.DialogListener
 import com.hyeeyoung.wishboard.util.UiState
-import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
+import com.hyeeyoung.wishboard.designsystem.component.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import dagger.hilt.android.AndroidEntryPoint
 

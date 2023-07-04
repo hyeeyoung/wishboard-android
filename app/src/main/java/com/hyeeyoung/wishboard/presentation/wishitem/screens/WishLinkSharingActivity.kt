@@ -19,7 +19,7 @@ import com.hyeeyoung.wishboard.presentation.folder.screens.FolderUploadBottomDia
 import com.hyeeyoung.wishboard.presentation.noti.screens.NotiSettingBottomDialogFragment
 import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel
 import com.hyeeyoung.wishboard.util.UiState
-import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
+import com.hyeeyoung.wishboard.designsystem.component.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combine

@@ -22,7 +22,7 @@ import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel
 import com.hyeeyoung.wishboard.util.BaseFragment
 import com.hyeeyoung.wishboard.util.FolderListDialogListener
-import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
+import com.hyeeyoung.wishboard.designsystem.component.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.getParcelableValue
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import dagger.hilt.android.AndroidEntryPoint

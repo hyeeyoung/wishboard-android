@@ -1,8 +1,7 @@
-package com.hyeeyoung.wishboard.presentation.noti.component
+package com.hyeeyoung.wishboard.presentation.calendar.component
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -18,11 +17,11 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.hyeeyoung.wishboard.presentation.common.component.WishboardDivider
-import com.hyeeyoung.wishboard.presentation.theme.Gray700
-import com.hyeeyoung.wishboard.presentation.theme.Green200
-import com.hyeeyoung.wishboard.presentation.theme.Green500
-import com.hyeeyoung.wishboard.presentation.theme.WishBoardTheme
+import com.hyeeyoung.wishboard.designsystem.component.WishboardDivider
+import com.hyeeyoung.wishboard.designsystem.theme.Gray700
+import com.hyeeyoung.wishboard.designsystem.theme.Green200
+import com.hyeeyoung.wishboard.designsystem.theme.Green500
+import com.hyeeyoung.wishboard.designsystem.theme.WishBoardTheme
 import com.hyeeyoung.wishboard.util.extension.noRippleClickable
 import java.time.LocalDate
 import java.time.YearMonth

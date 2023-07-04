@@ -73,7 +73,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".presentation.noti.screens.CalendarActivity"
+            android:name=".presentation.calendar.screen.CalendarActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

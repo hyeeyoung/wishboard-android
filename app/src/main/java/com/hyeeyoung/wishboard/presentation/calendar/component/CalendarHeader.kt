@@ -1,6 +1,5 @@
-package com.hyeeyoung.wishboard.presentation.noti.component
+package com.hyeeyoung.wishboard.presentation.calendar.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -12,8 +11,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.hyeeyoung.wishboard.R
-import com.hyeeyoung.wishboard.presentation.theme.Gray700
-import com.hyeeyoung.wishboard.presentation.theme.WishBoardTheme
+import com.hyeeyoung.wishboard.designsystem.theme.Gray700
+import com.hyeeyoung.wishboard.designsystem.theme.WishBoardTheme
 import com.hyeeyoung.wishboard.util.extension.noRippleClickable
 import java.time.LocalDate
 import java.time.Month

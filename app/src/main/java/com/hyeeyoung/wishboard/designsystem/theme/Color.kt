@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.presentation.theme
+package com.hyeeyoung.wishboard.designsystem.theme
 
 import androidx.compose.ui.graphics.Color
 

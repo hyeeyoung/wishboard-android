@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.presentation.noti.screens
+package com.hyeeyoung.wishboard.presentation.calendar.temp
 
 import android.os.Bundle
 import android.view.View

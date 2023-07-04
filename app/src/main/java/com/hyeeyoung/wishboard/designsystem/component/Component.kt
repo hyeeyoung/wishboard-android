@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.presentation.common.component
+package com.hyeeyoung.wishboard.designsystem.component
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Divider

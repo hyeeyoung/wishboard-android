@@ -10,7 +10,7 @@ import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.databinding.FragmentHomeBinding
 import com.hyeeyoung.wishboard.presentation.base.screen.NetworkFragment
-import com.hyeeyoung.wishboard.presentation.noti.screens.CalendarActivity
+import com.hyeeyoung.wishboard.presentation.calendar.screen.CalendarActivity
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.util.UiState
 import com.hyeeyoung.wishboard.util.extension.collectFlow

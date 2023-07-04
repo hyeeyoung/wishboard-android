@@ -11,7 +11,7 @@ import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.presentation.main.MainActivity
 import com.hyeeyoung.wishboard.presentation.sign.SignViewModel
 import com.hyeeyoung.wishboard.util.BaseFragment
-import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
+import com.hyeeyoung.wishboard.designsystem.component.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint

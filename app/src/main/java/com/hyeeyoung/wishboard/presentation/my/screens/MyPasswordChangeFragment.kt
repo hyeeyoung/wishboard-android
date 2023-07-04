@@ -9,7 +9,7 @@ import com.hyeeyoung.wishboard.databinding.FragmentPasswordChangeBinding
 import com.hyeeyoung.wishboard.presentation.base.screen.NetworkFragment
 import com.hyeeyoung.wishboard.presentation.my.MyViewModel
 import com.hyeeyoung.wishboard.util.UiState
-import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
+import com.hyeeyoung.wishboard.designsystem.component.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.collectFlow
 import com.hyeeyoung.wishboard.util.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint

@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.presentation.theme
+package com.hyeeyoung.wishboard.designsystem.theme
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
