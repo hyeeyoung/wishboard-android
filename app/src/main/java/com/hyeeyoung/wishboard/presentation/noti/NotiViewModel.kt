@@ -34,10 +34,6 @@ class NotiViewModel @Inject constructor(
     private val calendarMonthTitle = MutableLiveData<String>()
     private val selectedDate = MutableLiveData<String>()
 
-    init {
-        fetchAllNotiList()
-    }
-
     fun fetchPreviousNotiList() {
         viewModelScope.launch {
             val items = notiRepository.fetchPreviousNotiList()?.map { it.toNotiItemInfo() }
