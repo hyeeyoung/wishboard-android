@@ -1,10 +1,11 @@
-package com.hyeeyoung.wishboard.util.custom
+package com.hyeeyoung.wishboard.designsystem.component
 
 import android.graphics.Canvas
 import android.graphics.Paint
 import androidx.annotation.ColorInt
 import androidx.recyclerview.widget.RecyclerView
 
+// TODO rename WishboardDecoration
 class CustomDecoration(
     private val height: Float,
     private val padding: Float,

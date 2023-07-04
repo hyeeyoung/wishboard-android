@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/noti_calendar_fragment"
-        android:name="com.hyeeyoung.wishboard.presentation.noti.screens.NotiCalendarFragment"
+        android:name="com.hyeeyoung.wishboard.presentation.calendar.temp.NotiCalendarFragment"
         android:label="notiCalendarFragment"
         tools:layout="@layout/fragment_noti_calendar">
     </fragment>

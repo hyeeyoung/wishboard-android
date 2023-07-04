@@ -75,7 +75,7 @@
                     android:inputType="number"
                     android:onTextChanged="@{viewModel::onItemPriceTextChanged}"
                     android:text="@{viewModel.itemPrice}"
-                    android:selection="@{viewModel.itemPrice.length()}"
+                    android:selection="@{viewModel.itemPrice != null ? viewModel.itemPrice.length() : 0}"
                     android:textAlignment="center"
                     android:textColor="@color/gray_700"
                     android:textColorHint="@color/gray_300"

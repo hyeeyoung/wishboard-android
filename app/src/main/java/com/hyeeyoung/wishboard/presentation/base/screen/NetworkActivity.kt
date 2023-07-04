@@ -8,7 +8,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.util.BaseActivity
 import com.hyeeyoung.wishboard.util.NetworkMonitor
-import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
+import com.hyeeyoung.wishboard.designsystem.component.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.collectFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 

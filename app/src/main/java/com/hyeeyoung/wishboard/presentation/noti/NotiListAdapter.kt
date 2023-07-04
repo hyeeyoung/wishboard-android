@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.presentation.noti.adapters
+package com.hyeeyoung.wishboard.presentation.noti
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
