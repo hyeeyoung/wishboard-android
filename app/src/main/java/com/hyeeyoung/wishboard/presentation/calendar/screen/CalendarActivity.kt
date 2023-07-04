@@ -25,7 +25,7 @@ class CalendarActivity : ComponentActivity() {
 
             WishboardTheme {
                 notiList?.let {
-                    Calendar(
+                    CalendarScreen(
                         notiList = it,
                         onClickBack = { finish() },
                         moveToShop = { shopUrl ->

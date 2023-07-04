@@ -18,7 +18,7 @@ private const val INITIAL_PAGE = PAGE_COUNT / 2
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun Calendar(notiList: List<NotiItem>, onClickBack: () -> Unit, moveToShop: (String) -> Unit) {
+fun CalendarScreen(notiList: List<NotiItem>, onClickBack: () -> Unit, moveToShop: (String) -> Unit) {
     var selectedDate by remember { mutableStateOf(LocalDate.now()) }
     var prevPage by remember { mutableStateOf(INITIAL_PAGE) }
     val curMonthNoti =
@@ -51,7 +51,7 @@ fun Calendar(notiList: List<NotiItem>, onClickBack: () -> Unit, moveToShop: (Str
 @Preview(showBackground = true)
 @Composable
 fun CalendarPreview() {
-    Calendar(
+    CalendarScreen(
         listOf(
             NotiItem(
                 1,
