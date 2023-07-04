@@ -12,7 +12,6 @@ import coil.compose.AsyncImage
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.util.extension.coloredForeground
 
-
 @Composable
 fun WishboardDivider() = Divider(
     modifier = Modifier.fillMaxWidth(),
