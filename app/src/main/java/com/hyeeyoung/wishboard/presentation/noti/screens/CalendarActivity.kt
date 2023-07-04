@@ -11,7 +11,9 @@ import androidx.compose.runtime.getValue
 import com.hyeeyoung.wishboard.presentation.noti.NotiViewModel
 import com.hyeeyoung.wishboard.presentation.noti.component.Calendar
 import com.hyeeyoung.wishboard.presentation.theme.WishboardTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class CalendarActivity : ComponentActivity() {
     private val viewModel: NotiViewModel by viewModels()
 
