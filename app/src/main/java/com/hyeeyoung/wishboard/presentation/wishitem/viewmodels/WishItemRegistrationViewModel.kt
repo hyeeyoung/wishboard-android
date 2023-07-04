@@ -475,12 +475,9 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun getItemName(): LiveData<String?> = itemName
     fun getItemImage(): LiveData<String?> = itemImage
     fun getSelectedGalleryUri(): LiveData<Uri?> = selectedGalleryImageUri
-    fun getItemPrice(): LiveData<String> = Transformations.map(itemPrice) { price ->
-        price?.let {
-            applyPriceFormat(price)
-        }
+    fun getItemPrice(): LiveData<String?> = itemPrice.map { price ->
+        price?.let { applyPriceFormat(it) }
     }
-
     fun getItemUrlInput(): LiveData<String?> = itemUrlInput
     fun getItemMemo(): LiveData<String?> = itemMemo
     fun getFolderItem(): LiveData<FolderItem?> = folderItem
