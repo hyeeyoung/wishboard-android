@@ -16,8 +16,8 @@ import androidx.compose.ui.unit.dp
 import com.hyeeyoung.wishboard.designsystem.theme.Gray700
 import com.hyeeyoung.wishboard.designsystem.theme.WishBoardTheme
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeout
 
 @Composable
 fun WishboardSnackbarHost(hostState: SnackbarHostState) =
@@ -46,13 +46,12 @@ fun WishboardSnackbar(message: String) {
     }
 }
 
-fun SnackbarHostState.showSnackbar(message: String, coroutineScope: CoroutineScope) = coroutineScope.launch {
-    val job = coroutineScope.launch {
-        showSnackbar(message)
+fun SnackbarHostState.showSnackbar(message: String, coroutineScope: CoroutineScope) =
+    coroutineScope.launch {
+        withTimeout(2000) {
+            showSnackbar(message)
+        }
     }
-    delay(2000)
-    job.cancel()
-}
 
 @Preview(showSystemUi = true)
 @Composable
