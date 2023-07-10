@@ -5,5 +5,6 @@ enum class NotiType(val str: String) {
     OPEN("오픈"),
     PREORDER("프리오더"),
     SALE_START("세일 시작"),
-    SALE_CLOSE("세일 마감")
+    SALE_CLOSE("세일 마감"),
+    REMIND("리마인드")
 }
