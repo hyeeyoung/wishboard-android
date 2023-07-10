@@ -17,5 +17,7 @@ fun String.toNotiType() =
         NotiType.OPEN.str -> NotiType.OPEN
         NotiType.PREORDER.str -> NotiType.PREORDER
         NotiType.SALE_CLOSE.str -> NotiType.SALE_CLOSE
-        else -> NotiType.SALE_START
+        NotiType.SALE_START.str -> NotiType.SALE_START
+        NotiType.REMIND.str -> NotiType.REMIND
+        else -> throw IllegalArgumentException("유효하지 않은 알림 유형입니다.")
     }
