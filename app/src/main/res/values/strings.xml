@@ -131,6 +131,7 @@
     <string name="memo_short_hint">메모를 입력해 보세요.</string>
     <string name="memo_hint">브랜드, 사이즈, 컬러 등 아이템 정보를 메모로 남겨보세요!😉</string>
     <string name="wish_basic_invalid_shop_link_detail">쇼핑몰 링크를 다시 확인해 주세요.</string>
+    <string name="wish_basic_get_item_info_button_text">아이템 불러오기</string>
 
     <string name="item_registration_noti_setting_guide">30분 전에 상품 일정을 알려드려요! 시간은 30분 단위로 설정할 수 있어요.</string>
     <string name="wish_list_registration_button_text">위시리스트에 추가</string>
@@ -223,6 +224,10 @@
     <string name="navigation_menu_title_notice">NOTICE</string>
     <string name="navigation_menu_title_my">MY</string>
 
-    <string name="wish_basic_get_item_info_button_text">아이템 불러오기</string>
+    <!-- App Update -->
+    <string name="app_update_dialog_title">업데이트 안내</string>
+    <string name="app_update_dialog_description">위시보드가 유저분들에게 더 나은 경험을\n제공하기 위해 사용성을 개선했어요!\n더 새로워진 위시보드를 만나보세요 😆</string>
+    <string name="app_update_dialog_yes_button_text">업데이트</string>
+    <string name="play_store_detail_url">market://details?id=</string>
 
 </resources>
