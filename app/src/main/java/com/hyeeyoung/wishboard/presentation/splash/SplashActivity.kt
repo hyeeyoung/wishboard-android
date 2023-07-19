@@ -53,6 +53,8 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
                 && appUpdateInfo.availableVersionCode() != BuildConfig.VERSION_CODE
             ) {
                 showUpdateDialog()
+            } else {
+                moveToNext()
             }
         }.addOnFailureListener {
             moveToNext()
