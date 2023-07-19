@@ -10,6 +10,7 @@ import com.hyeeyoung.wishboard.data.local.WishBoardPreference
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.domain.model.WishItemDetail
 import com.hyeeyoung.wishboard.domain.repositories.FolderRepository
+import com.hyeeyoung.wishboard.domain.repositories.PhotoRepository
 import com.hyeeyoung.wishboard.domain.repositories.WishRepository
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
@@ -37,6 +38,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     private val application: Application,
     private val wishRepository: WishRepository,
     private val folderRepository: FolderRepository,
+    private val photoRepository: PhotoRepository,
     private val localStorage: WishBoardPreference
 ) : ViewModel() {
     private var itemId: Long? = null
@@ -343,7 +345,7 @@ class WishItemRegistrationViewModel @Inject constructor(
 
     fun removeWishItemImage() {
         wishItemDetail?.apply {
-            this.image = null
+            if (this.image != null) this.image = null
         }
     }
 
@@ -472,9 +474,10 @@ class WishItemRegistrationViewModel @Inject constructor(
         }
     }
 
+    fun createCameraImageUri() = photoRepository.createCameraImageUri()
+
     fun getItemName(): LiveData<String?> = itemName
     fun getItemImage(): LiveData<String?> = itemImage
-    fun getSelectedGalleryUri(): LiveData<Uri?> = selectedGalleryImageUri
     fun getItemPrice(): LiveData<String?> = itemPrice.map { price ->
         price?.let { applyPriceFormat(it) }
     }

@@ -230,4 +230,8 @@
     <string name="app_update_dialog_yes_button_text">업데이트</string>
     <string name="play_store_detail_url">market://details?id=</string>
 
+    <!-- Image Picker -->
+    <string name="take_picture">사진 찍기</string>
+    <string name="select_picture">사진 선택</string>
+
 </resources>
