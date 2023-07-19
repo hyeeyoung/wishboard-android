@@ -1,6 +1,5 @@
 package com.hyeeyoung.wishboard.presentation.my.screens
 
-import android.Manifest
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -10,13 +9,13 @@ import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentProfileEditBinding
+import com.hyeeyoung.wishboard.designsystem.component.CustomSnackbar
 import com.hyeeyoung.wishboard.presentation.my.MyViewModel
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.util.BaseFragment
 import com.hyeeyoung.wishboard.util.UiState
-import com.hyeeyoung.wishboard.designsystem.component.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.collectFlow
-import com.hyeeyoung.wishboard.util.extension.navigateSafe
+import com.hyeeyoung.wishboard.util.extension.showPhotoDialog
 import com.hyeeyoung.wishboard.util.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -24,6 +23,25 @@ import dagger.hilt.android.AndroidEntryPoint
 class MyProfileEditFragment :
     BaseFragment<FragmentProfileEditBinding>(R.layout.fragment_profile_edit) {
     private val viewModel: MyViewModel by hiltNavGraphViewModels(R.id.my_nav_graph)
+    private var photoUri: Uri? = null
+
+    private val requestSelectPicture =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) viewModel.setSelectedUserProfileImage(uri)
+        }
+
+    private val requestCamera =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                photoUri = viewModel.createCameraImageUri()
+                takePicture.launch(photoUri)
+            }
+        }
+
+    private val takePicture =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success && (photoUri != null)) viewModel.setSelectedUserProfileImage(photoUri!!)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,25 +55,15 @@ class MyProfileEditFragment :
 
         showKeyboard(requireContext(), binding.nicknameInput, true)
         addListeners()
-        addObserver()
         collectData()
     }
 
     private fun addListeners() {
         binding.profileImageContainer.setOnClickListener {
-            requestStorage.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            showPhotoDialog(requestCamera, requestSelectPicture)
         }
         binding.topAppBar.back.setOnClickListener {
             findNavController().popBackStack()
-        }
-    }
-
-    private fun addObserver() {
-        // 갤러리에서 선택한 이미지 전달받기
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(
-            ARG_IMAGE_URI
-        )?.observe(viewLifecycleOwner) { uri ->
-            viewModel.setSelectedUserProfileImage(Uri.parse(uri))
         }
     }
 
@@ -85,16 +93,7 @@ class MyProfileEditFragment :
         navController.popBackStack()
     }
 
-    private val requestStorage =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            if (it) {
-                // TODO 갤러리 프래그먼트와 네비게이션 그래프 불일치, 통일 필요
-                findNavController().navigateSafe(R.id.action_my_profile_edit_to_gallery_image)
-            }
-        }
-
     companion object {
-        private const val ARG_IMAGE_URI = "imageUri"
         private const val ARG_PROFILE_UPDATE_INFO = "profileUpdateInfo"
         private const val ARG_PROFILE_UPDATE_STATUS = "profileUpdateStatus"
     }
