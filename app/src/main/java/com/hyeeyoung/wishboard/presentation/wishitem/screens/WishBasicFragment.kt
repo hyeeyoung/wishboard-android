@@ -1,6 +1,5 @@
 package com.hyeeyoung.wishboard.presentation.wishitem.screens
 
-import android.Manifest
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -13,6 +12,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.databinding.FragmentWishBinding
+import com.hyeeyoung.wishboard.designsystem.component.CustomSnackbar
 import com.hyeeyoung.wishboard.domain.model.WishItemDetail
 import com.hyeeyoung.wishboard.presentation.common.screens.OneButtonDialogFragment
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
@@ -22,9 +22,9 @@ import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel
 import com.hyeeyoung.wishboard.util.BaseFragment
 import com.hyeeyoung.wishboard.util.FolderListDialogListener
-import com.hyeeyoung.wishboard.designsystem.component.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.getParcelableValue
-import com.hyeeyoung.wishboard.util.extension.navigateSafe
+import com.hyeeyoung.wishboard.util.extension.showPhotoDialog
+import com.hyeeyoung.wishboard.util.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -37,6 +37,25 @@ class WishBasicFragment : BaseFragment<FragmentWishBinding>(R.layout.fragment_wi
 
     private lateinit var notiSettingBottomDialog: BottomSheetDialogFragment
     private val shopLinkInputDialog = ShopLinkInputBottomDialogFragment()
+    private var photoUri: Uri? = null
+
+    private val requestSelectPicture =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) selectAndLoadImage(uri)
+        }
+
+    private val requestCamera =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                photoUri = viewModel.createCameraImageUri()
+                takePicture.launch(photoUri)
+            }
+        }
+
+    private val takePicture =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+            if (success && (photoUri != null)) selectAndLoadImage(photoUri!!)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +72,7 @@ class WishBasicFragment : BaseFragment<FragmentWishBinding>(R.layout.fragment_wi
             }
         }
 
-        notiSettingBottomDialog = NotiSettingBottomDialogFragment(viewModel)
+        notiSettingBottomDialog = NotiSettingBottomDialogFragment(viewModel) // TODO refactoring
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -86,8 +105,8 @@ class WishBasicFragment : BaseFragment<FragmentWishBinding>(R.layout.fragment_wi
         binding.save.setOnClickListener {
             viewModel.uploadWishItemByBasics(isEditMode)
         }
-        binding.addPhoto.setOnClickListener {
-            requestStorage.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+        binding.addPhoto.setOnSingleClickListener {
+            showPhotoDialog(requestCamera, requestSelectPicture)
         }
         binding.folderContainer.setOnClickListener {
             showFolderListDialog()
@@ -145,21 +164,6 @@ class WishBasicFragment : BaseFragment<FragmentWishBinding>(R.layout.fragment_wi
             }
         }
 
-        // 갤러리에서 가져온 이미지
-        viewModel.getSelectedGalleryUri().observe(viewLifecycleOwner) {
-            it?.let {
-                viewModel.removeWishItemImage()
-                binding.itemImage.load(it)
-            }
-        }
-
-        // 갤러리에서 선택한 이미지 전달받기
-        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<String>(
-            ARG_IMAGE_URI
-        )?.observe(viewLifecycleOwner) { imageUri ->
-            viewModel.setSelectedGalleryImage(Uri.parse(imageUri))
-        }
-
         viewModel.isShownItemNonUpdateDialog.observe(viewLifecycleOwner) { isShown ->
             if (isShown == true) showItemNonUpdateDialog()
         }
@@ -196,16 +200,14 @@ class WishBasicFragment : BaseFragment<FragmentWishBinding>(R.layout.fragment_wi
         navController.popBackStack()
     }
 
-    private val requestStorage =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) {
-            if (it) {
-                findNavController().navigateSafe(R.id.action_wish_to_gallery_image)
-            }
-        }
+    private fun selectAndLoadImage(uri: Uri) {
+        viewModel.setSelectedGalleryImage(uri)
+        viewModel.removeWishItemImage()
+        binding.itemImage.load(uri)
+    }
 
     companion object {
         private const val ARG_IS_EDIT_MODE = "isEditMode"
-        private const val ARG_IMAGE_URI = "imageUri"
         private const val ARG_ITEM_STATUS = "itemStatus"
         private const val ARG_WISH_ITEM_INFO = "wishItemInfo"
         private const val ARG_WISH_ITEM_DETAIL = "wishItemDetail"
