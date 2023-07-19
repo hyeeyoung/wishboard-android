@@ -33,7 +33,7 @@ class WishItemViewModel @Inject constructor(
     fun fetchWishItemDetail(itemId: Long) {
         viewModelScope.launch {
             _itemDetail.value =
-                wishRepository.fetchWishItemDetail(itemId)?.map { it.toWishItemDetail(it) }
+                wishRepository.fetchWishItemDetail(itemId)?.map { it.toWishItemDetail() }
                     ?.get(0)
             _wishDetailFetchState.value = if (itemDetail.value == null) UiState.Error(null) else UiState.Success(true)
             _itemImage.value = itemDetail.value?.image

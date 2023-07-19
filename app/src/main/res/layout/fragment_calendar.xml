@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".presentation.noti.screens.CalendarFragment">
+    tools:context=".presentation.calendar.temp.CalendarFragment">
 
     <data>
 
@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.hyeeyoung.wishboard.util.custom.CalendarView
+        <com.hyeeyoung.wishboard.presentation.calendar.temp.CalendarView
             android:id="@+id/calendar_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

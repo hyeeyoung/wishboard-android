@@ -10,9 +10,9 @@ import com.hyeeyoung.wishboard.databinding.FragmentNotiBinding
 import com.hyeeyoung.wishboard.domain.model.NotiItemInfo
 import com.hyeeyoung.wishboard.presentation.base.screen.NetworkFragment
 import com.hyeeyoung.wishboard.presentation.noti.NotiViewModel
-import com.hyeeyoung.wishboard.presentation.noti.adapters.NotiListAdapter
+import com.hyeeyoung.wishboard.presentation.noti.NotiListAdapter
 import com.hyeeyoung.wishboard.util.UiState
-import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
+import com.hyeeyoung.wishboard.designsystem.component.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combine

@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hyeeyoung.wishboard.domain.model.NotiItem
 import com.hyeeyoung.wishboard.domain.model.NotiItemInfo
 import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
-import com.hyeeyoung.wishboard.presentation.noti.adapters.NotiListAdapter
 import com.hyeeyoung.wishboard.presentation.noti.types.NotiListViewType
 import com.hyeeyoung.wishboard.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +21,8 @@ import javax.inject.Inject
 class NotiViewModel @Inject constructor(
     private val notiRepository: NotiRepository,
 ) : ViewModel() {
+    private val _calendarNotiList = MutableStateFlow<List<NotiItem>?>(listOf())
+    val calendarNotiList get() = _calendarNotiList.asStateFlow()
     private val _notiFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
     val notiFetchState get() = _notiFetchState.asStateFlow()
     private var notiList = MutableLiveData<List<NotiItemInfo>?>(listOf())
@@ -30,10 +32,6 @@ class NotiViewModel @Inject constructor(
     private val calendarNotiListAdapter = NotiListAdapter(NotiListViewType.CALENDAR_VIEW_TYPE)
     private val calendarMonthTitle = MutableLiveData<String>()
     private val selectedDate = MutableLiveData<String>()
-
-    init {
-        fetchAllNotiList()
-    }
 
     fun fetchPreviousNotiList() {
         viewModelScope.launch {
@@ -50,6 +48,14 @@ class NotiViewModel @Inject constructor(
             _notiFetchState.value = if (items == null) UiState.Error(null) else UiState.Success(true)
             notiList.value = items
             setNotiDateList(items) // 캘린더 뷰 알림 날짜 표시를 위한 notiDateList 만들기
+        }
+    }
+
+    fun fetchCalendarNotiList() {
+        viewModelScope.launch {
+            val items = notiRepository.fetchAllNotiList()?.map { it.toNotiItem() }
+            _notiFetchState.value = if (items == null) UiState.Error(null) else UiState.Success(true)
+            _calendarNotiList.value = items
         }
     }
 

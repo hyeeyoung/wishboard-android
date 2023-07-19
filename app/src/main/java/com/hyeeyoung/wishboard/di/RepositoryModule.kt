@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.domain.di
+package com.hyeeyoung.wishboard.di
 
 import com.hyeeyoung.wishboard.data.repositories.*
 import com.hyeeyoung.wishboard.domain.repositories.*
@@ -30,4 +30,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindUserRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository
+
+    @Binds
+    abstract fun bindPhotoRepository(photoRepositoryImpl: PhotoRepositoryImpl): PhotoRepository
 }

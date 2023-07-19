@@ -6,6 +6,9 @@
         <item name="colorAccent">@color/gray_100</item>
         <item name="android:includeFontPadding">false</item>
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialogStyle</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="AppThemePopup" parent="AppTheme">
@@ -19,7 +22,8 @@
     </style>
 
     <style name="AppTheme.NumberPicker">
-        <item name="android:textAppearance">@style/TextAppearance.Suit.D1</item>
+        <item name="android:fontFamily">@font/suit_m</item>
+        <item name="android:textSize">15dp</item>
         <item name="android:textColor">@color/gray_600</item>
         <item name="android:colorControlNormal">@color/transparent</item>
     </style>
@@ -245,13 +249,13 @@
         <item name="android:backgroundTint">@color/gray_700</item>
         <item name="android:gravity">center</item>
         <item name="android:lineSpacingExtra">@dimen/lineSpacing</item>
-        <item name="android:paddingStart">28dp</item>
-        <item name="android:paddingEnd">28dp</item>
+        <item name="android:paddingStart">32dp</item>
+        <item name="android:paddingEnd">32dp</item>
         <item name="android:paddingTop">@dimen/spacingBase</item>
         <item name="android:paddingBottom">@dimen/spacingBase</item>
         <item name="android:layout_marginStart">@dimen/spacingBase</item>
         <item name="android:layout_marginEnd">@dimen/spacingBase</item>
-        <item name="android:layout_marginBottom">@dimen/spacingBase</item>
+        <item name="android:layout_marginBottom">32dp</item>
     </style>
 
     <style name="My.Menu.Style" parent="">

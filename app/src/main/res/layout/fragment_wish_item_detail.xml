@@ -298,7 +298,6 @@
             android:layout_height="wrap_content"
             android:enabled="@{viewModel.itemDetail.site == null ? false : true}"
             android:text="@string/go_to_shop_button_text"
-            android:textAppearance="@style/TextAppearance.Suit.B2"
             app:layout_constraintBottom_toBottomOf="parent"
             tools:enabled="true" />
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hyeeyoung.wishboard.data.local.WishBoardPreference
 import com.hyeeyoung.wishboard.domain.repositories.NotiRepository
+import com.hyeeyoung.wishboard.domain.repositories.PhotoRepository
 import com.hyeeyoung.wishboard.domain.repositories.SignRepository
 import com.hyeeyoung.wishboard.domain.repositories.UserRepository
 import com.hyeeyoung.wishboard.util.ContentUriRequestBody
@@ -26,6 +27,7 @@ class MyViewModel @Inject constructor(
     private val notiRepository: NotiRepository,
     private val signRepository: SignRepository,
     private val userRepository: UserRepository,
+    private val photoRepository: PhotoRepository,
     private val localStorage: WishBoardPreference
 ) : ViewModel() {
     private val _userInfoFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
@@ -191,6 +193,8 @@ class MyViewModel @Inject constructor(
     fun resetExitEmail() {
         _inputEmail.value = null
     }
+
+    fun createCameraImageUri() = photoRepository.createCameraImageUri()
 
     fun getUserEmail(): LiveData<String?> = userEmail
     fun getPushState(): LiveData<Boolean?> = pushState

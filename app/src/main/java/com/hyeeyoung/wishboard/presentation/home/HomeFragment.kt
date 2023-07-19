@@ -1,15 +1,16 @@
 package com.hyeeyoung.wishboard.presentation.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.databinding.FragmentHomeBinding
 import com.hyeeyoung.wishboard.presentation.base.screen.NetworkFragment
+import com.hyeeyoung.wishboard.presentation.calendar.screen.CalendarActivity
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.util.UiState
 import com.hyeeyoung.wishboard.util.extension.collectFlow
@@ -50,7 +51,7 @@ class HomeFragment : NetworkFragment<FragmentHomeBinding>(R.layout.fragment_home
             findNavController().navigateSafe(R.id.action_home_to_cart)
         }
         binding.calendar.setOnClickListener {
-            findNavController().navigateSafe(R.id.action_home_to_calendar)
+            startActivity(Intent(requireContext(), CalendarActivity::class.java))
         }
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.fetchWishList()

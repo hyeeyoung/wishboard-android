@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.util.custom
+package com.hyeeyoung.wishboard.designsystem.component
 
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.SnackbarItemBinding
 
+// TODO rename WishboardSnackbar
 class CustomSnackbar(
     view: View,
     private val message: String,

@@ -127,10 +127,11 @@
     <string name="price_for_basic_hint">가격(필수)</string>
     <string name="item_name_hint">상품명을 입력해 주세요.</string>
     <string name="price_hint">가격을 입력해 주세요.</string>
-    <string name="shop_link_guide">복사한 링크로 아이템 정보를 불러올 수 있어요!</string>
+    <string name="shop_link_guide">복사한 링크로 아이템을 불러올 수 있어요!</string>
     <string name="memo_short_hint">메모를 입력해 보세요.</string>
     <string name="memo_hint">브랜드, 사이즈, 컬러 등 아이템 정보를 메모로 남겨보세요!😉</string>
     <string name="wish_basic_invalid_shop_link_detail">쇼핑몰 링크를 다시 확인해 주세요.</string>
+    <string name="wish_basic_get_item_info_button_text">아이템 불러오기</string>
 
     <string name="item_registration_noti_setting_guide">30분 전에 상품 일정을 알려드려요! 시간은 30분 단위로 설정할 수 있어요.</string>
     <string name="wish_list_registration_button_text">위시리스트에 추가</string>
@@ -159,9 +160,10 @@
     <string name="noti_title">알림</string>
     <string name="noti_item_type">%s 알림</string>
     <string name="noti_calendar_selected_date_title">%s 일정</string>
+    <string name="noti_calendar_schedule_title">%d월 %d일 일정</string>
     <string name="item_schedule_notification_setting_title">상품 알림 설정</string>
     <string name="default_notification_channel_id">fcm_default_channel</string>
-    <string name="noti_no_item_view">앗, 알림이 없어요!\n상품 일정을 지정하고 알림을 받아보세요!</string>
+    <string name="noti_no_item_view">앗, 일정이 없어요!\n상품 일정을 지정하고 알림을 받아보세요!</string>
     <string name="noti_push_state_setting_dialog_description">알림을 받아보시겠어요?\n직접 등록하신 아이템의 재입고 날짜 등의\n상품 일정 알림을 받으실 거에요.</string>
 
     <string name="restock">재입고</string>
@@ -222,6 +224,14 @@
     <string name="navigation_menu_title_notice">NOTICE</string>
     <string name="navigation_menu_title_my">MY</string>
 
-    <string name="wish_basic_get_item_info_button_text">아이템 불러오기</string>
+    <!-- App Update -->
+    <string name="app_update_dialog_title">업데이트 안내</string>
+    <string name="app_update_dialog_description">위시보드가 유저분들에게 더 나은 경험을\n제공하기 위해 사용성을 개선했어요!\n더 새로워진 위시보드를 만나보세요 😆</string>
+    <string name="app_update_dialog_yes_button_text">업데이트</string>
+    <string name="play_store_detail_url">market://details?id=</string>
+
+    <!-- Image Picker -->
+    <string name="take_picture">사진 찍기</string>
+    <string name="select_picture">사진 선택</string>
 
 </resources>

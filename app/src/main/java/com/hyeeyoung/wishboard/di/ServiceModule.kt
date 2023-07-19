@@ -1,4 +1,4 @@
-package com.hyeeyoung.wishboard.domain.di
+package com.hyeeyoung.wishboard.di
 
 import com.hyeeyoung.wishboard.data.services.retrofit.*
 import dagger.Module

@@ -8,16 +8,16 @@ import androidx.navigation.fragment.findNavController
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.databinding.FragmentFolderBinding
+import com.hyeeyoung.wishboard.designsystem.component.CustomSnackbar
 import com.hyeeyoung.wishboard.presentation.base.screen.NetworkFragment
 import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
 import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
 import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
 import com.hyeeyoung.wishboard.presentation.folder.FolderViewModel
 import com.hyeeyoung.wishboard.presentation.folder.types.FolderListViewType
-import com.hyeeyoung.wishboard.presentation.folder.types.FolderMoreDialogButtonReplyType
+import com.hyeeyoung.wishboard.presentation.folder.types.TwoOptionDialogReplyType
 import com.hyeeyoung.wishboard.util.DialogListener
 import com.hyeeyoung.wishboard.util.UiState
-import com.hyeeyoung.wishboard.util.custom.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -109,14 +109,17 @@ class FolderFragment : NetworkFragment<FragmentFolderBinding>(R.layout.fragment_
 
     /** 폴더 더보기 다이얼로그 */
     private fun showFolderMoreDialog(folderItem: FolderItem) {
-        val dialog = FolderMoreDialogFragment().apply {
+        val dialog = TwoOptionDialogFragment.newInstance(
+            topOption = getString(R.string.folder_name_edit),
+            bottomOption = getString(R.string.folder_delete)
+        ).apply {
             setListener(object : DialogListener {
                 override fun onButtonClicked(clicked: String) {
                     when (clicked) {
-                        FolderMoreDialogButtonReplyType.UPDATE.name -> {
+                        TwoOptionDialogReplyType.TOP_OPTION.name -> {
                             showFolderUploadDialog(folderItem)
                         }
-                        FolderMoreDialogButtonReplyType.DELETE.name -> {
+                        TwoOptionDialogReplyType.BOTTOM_OPTION.name -> {
                             showFolderDeleteDialog(folderItem)
                         }
                     }

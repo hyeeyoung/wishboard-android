@@ -2,7 +2,15 @@ package com.hyeeyoung.wishboard.util
 
 import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.temporal.ChronoField
 import java.util.*
+
+fun convertStrDateToLocalDate(strDate: String?): LocalDateTime {
+    val dateFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+    return LocalDateTime.parse(strDate, dateFormat)
+}
 
 /** 시간 포맷 지정 */
 fun convertStrTimeToDate(strDate: String?): Long? {
@@ -129,6 +137,15 @@ fun convertYMDHMToAHM(date: String?): String {
     } else {
         outputDate
     }
+}
+
+/** 날짜를 "a h시 mm분" 포맷으로 변경 */
+fun getScheduleTimeFormat(dateTime: LocalDateTime): String {
+    val ampm = if (dateTime.get(ChronoField.AMPM_OF_DAY) == 0) "오전" else "오후"
+    val hour = "${dateTime.get(ChronoField.CLOCK_HOUR_OF_AMPM)}시"
+    val minute = if (dateTime.minute == 0) "" else "${dateTime.minute}분"
+
+    return "$ampm $hour $minute"
 }
 
 /** 날짜를 "yy년 M월 d일 H시 m분" 포맷으로 변경 */
