@@ -28,7 +28,7 @@ android {
         applicationId "com.hyeeyoung.wishboard"
         minSdkVersion 24
         targetSdkVersion 33
-        versionCode 29
+        versionCode 30
         versionName "1.2.1"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
