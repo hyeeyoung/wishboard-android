@@ -1,11 +1,14 @@
 package com.hyeeyoung.wishboard.presentation.calendar.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.hyeeyoung.wishboard.R
@@ -44,7 +47,7 @@ fun CalendarScreen(
         val snackbarMsgForNotiLink = stringResource(id = R.string.noti_item_url_snackbar_text)
 
         Scaffold(snackbarHost = { WishboardSnackbarHost(hostState = snackbarHostState) }) {
-            Column {
+            Column(modifier = Modifier.background(Color.White)) {
                 CalendarHeader(selectedDate = selectedDate, onClickBack = onClickBack)
                 CalendarTable(
                     selectedDate = selectedDate,
