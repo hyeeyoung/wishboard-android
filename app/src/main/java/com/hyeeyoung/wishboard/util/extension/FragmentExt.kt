@@ -1,6 +1,7 @@
 package com.hyeeyoung.wishboard.util.extension
 
 import android.Manifest
+import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -36,3 +37,18 @@ fun Fragment.showPhotoDialog(
         })
     }.show(parentFragmentManager, "PhotoDialog")
 }
+
+fun Fragment.requestSelectPicture(block: (Uri) -> Unit) =
+    registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        block(uri ?: return@registerForActivityResult)
+    }
+
+fun Fragment.requestCamera(block: () -> Unit) =
+    registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted) block()
+    }
+
+fun Fragment.takePicture(block: () -> Unit) =
+    registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+        if (success) block()
+    }

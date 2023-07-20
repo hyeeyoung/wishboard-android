@@ -3,7 +3,6 @@ package com.hyeeyoung.wishboard.presentation.my.screens
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
@@ -14,8 +13,7 @@ import com.hyeeyoung.wishboard.presentation.my.MyViewModel
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.util.BaseFragment
 import com.hyeeyoung.wishboard.util.UiState
-import com.hyeeyoung.wishboard.util.extension.collectFlow
-import com.hyeeyoung.wishboard.util.extension.showPhotoDialog
+import com.hyeeyoung.wishboard.util.extension.*
 import com.hyeeyoung.wishboard.util.showKeyboard
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -25,23 +23,14 @@ class MyProfileEditFragment :
     private val viewModel: MyViewModel by hiltNavGraphViewModels(R.id.my_nav_graph)
     private var photoUri: Uri? = null
 
-    private val requestSelectPicture =
-        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri != null) viewModel.setSelectedUserProfileImage(uri)
-        }
-
-    private val requestCamera =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                photoUri = viewModel.createCameraImageUri()
-                takePicture.launch(photoUri)
-            }
-        }
-
-    private val takePicture =
-        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-            if (success && (photoUri != null)) viewModel.setSelectedUserProfileImage(photoUri!!)
-        }
+    private val requestSelectPicture = requestSelectPicture { uri -> viewModel.setSelectedUserProfileImage(uri) }
+    private val requestCamera = requestCamera {
+        photoUri = viewModel.createCameraImageUri()
+        takePicture.launch(photoUri)
+    }
+    private val takePicture = takePicture {
+        viewModel.setSelectedUserProfileImage(photoUri ?: return@takePicture)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
