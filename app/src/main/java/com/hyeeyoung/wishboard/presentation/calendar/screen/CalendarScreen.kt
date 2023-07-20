@@ -29,11 +29,10 @@ private const val INITIAL_PAGE = PAGE_COUNT / 2
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CalendarScreen(
-    notiList: List<NotiItem>?,
+    notiList: List<NotiItem>,
     onClickBack: () -> Unit,
     onClickNotiWithLink: (String) -> Unit
 ) {
-    if (notiList == null) return
     WishboardTheme {
         var selectedDate by remember { mutableStateOf(LocalDate.now()) }
         var prevPage by remember { mutableStateOf(INITIAL_PAGE) }
@@ -155,6 +154,16 @@ fun CalendarPreview() {
                 LocalDateTime.of(2024, 5, 18, 20, 0)
             )
         ),
+        onClickBack = {},
+        onClickNotiWithLink = {}
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun EmmptyCalendarPreview() {
+    CalendarScreen(
+        notiList = emptyList(),
         onClickBack = {},
         onClickNotiWithLink = {}
     )

@@ -23,7 +23,7 @@ class CalendarActivity : ComponentActivity() {
             val notiList by viewModel.calendarNotiList.collectAsState()
 
             CalendarScreen(
-                notiList = notiList,
+                notiList = notiList ?: emptyList(),
                 onClickBack = { finish() },
                 onClickNotiWithLink = { shopUrl ->
                     startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(shopUrl)))
