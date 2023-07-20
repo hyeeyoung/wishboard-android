@@ -111,11 +111,6 @@ dependencies {
     kapt "com.google.dagger:hilt-compiler:$hilt_version"
     implementation "androidx.hilt:hilt-navigation-fragment:1.0.0"
 
-    // AWS S3
-    implementation 'com.amplifyframework:aws-storage-s3:1.31.1'
-    implementation 'com.amplifyframework:aws-auth-cognito:1.31.1'
-    implementation 'com.amplifyframework:core-kotlin:0.15.1'
-
     // Firebase FCM
     implementation 'com.google.firebase:firebase-messaging-ktx'
     implementation 'com.google.firebase:firebase-analytics-ktx'

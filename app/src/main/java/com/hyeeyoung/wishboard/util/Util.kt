@@ -6,13 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.ImageView
-import androidx.lifecycle.LifecycleCoroutineScope
-import com.bumptech.glide.Glide
-import com.hyeeyoung.wishboard.R
-import com.hyeeyoung.wishboard.data.services.AWSS3Service
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.io.File
@@ -55,20 +49,6 @@ fun getTimestamp(): String {
     val dateFormat = SimpleDateFormat(pattern, Locale.getDefault())
     dateFormat.timeZone = timeZone
     return dateFormat.format(Date())
-}
-
-/** S3에서 다운로드 받은 이미지를 ImageView에 디스플레이 */
-fun loadProfileImage( // TODO need refactoring
-    lifecycleScope: LifecycleCoroutineScope,
-    imageUrl: String,
-    imageView: ImageView
-) {
-    lifecycleScope.launch {
-        AWSS3Service().getImageUrl(imageUrl)?.let { imageUrl ->
-            Glide.with(imageView.context).load(imageUrl)
-                .placeholder(R.drawable.ic_background_user_profile).into(imageView)
-        }
-    }
 }
 
 fun getNotiDateServerFormat(date: String, hour: String, minute: String) =
