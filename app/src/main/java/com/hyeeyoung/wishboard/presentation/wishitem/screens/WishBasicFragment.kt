@@ -3,7 +3,6 @@ package com.hyeeyoung.wishboard.presentation.wishitem.screens
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.os.bundleOf
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
@@ -22,8 +21,7 @@ import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel
 import com.hyeeyoung.wishboard.util.BaseFragment
 import com.hyeeyoung.wishboard.util.FolderListDialogListener
-import com.hyeeyoung.wishboard.util.extension.getParcelableValue
-import com.hyeeyoung.wishboard.util.extension.showPhotoDialog
+import com.hyeeyoung.wishboard.util.extension.*
 import com.hyeeyoung.wishboard.util.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -39,23 +37,14 @@ class WishBasicFragment : BaseFragment<FragmentWishBinding>(R.layout.fragment_wi
     private val shopLinkInputDialog = ShopLinkInputBottomDialogFragment()
     private var photoUri: Uri? = null
 
-    private val requestSelectPicture =
-        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-            if (uri != null) selectAndLoadImage(uri)
-        }
-
-    private val requestCamera =
-        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-            if (isGranted) {
-                photoUri = viewModel.createCameraImageUri()
-                takePicture.launch(photoUri)
-            }
-        }
-
-    private val takePicture =
-        registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-            if (success && (photoUri != null)) selectAndLoadImage(photoUri!!)
-        }
+    private val requestSelectPicture = requestSelectPicture { uri -> selectAndLoadImage(uri) }
+    private val requestCamera = requestCamera {
+        photoUri = viewModel.createCameraImageUri()
+        takePicture.launch(photoUri)
+    }
+    private val takePicture = takePicture {
+        selectAndLoadImage(photoUri ?: return@takePicture)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

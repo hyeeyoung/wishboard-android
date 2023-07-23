@@ -20,7 +20,7 @@ import timber.log.Timber
 import javax.inject.Inject
 
 class AuthInterceptor @Inject constructor(
-    private val gson: Gson,
+    private val gson: Gson, // TODO json으로 변경
     private val context: Application,
     private val localStorage: WishBoardPreference,
 ) : Interceptor {

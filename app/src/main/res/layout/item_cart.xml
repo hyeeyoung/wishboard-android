@@ -45,8 +45,8 @@
 
         <ImageView
             android:id="@+id/item_image"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="84dp"
+            android:layout_height="84dp"
             android:background="@drawable/shape_border_radius_10"
             android:foreground="@color/black_alpha_5"
             android:scaleType="centerCrop"
@@ -61,6 +61,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacing10"
             android:ellipsize="end"
+            android:lineSpacingExtra="@dimen/lineSpacing"
             android:maxLines="2"
             android:text="@{item.wishItem.name}"
             android:textAppearance="@style/TextAppearance.Suit.D2"
