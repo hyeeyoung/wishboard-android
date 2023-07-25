@@ -127,10 +127,13 @@ class WishItemRegistrationViewModel @Inject constructor(
         val result = wishRepository.getItemParsingInfo(url)
         _wishItemFetchState.value =
             if (result == null) UiState.Error(null) else UiState.Success(true)
-        itemName.value = result?.first?.name
-        itemPrice.value =
-            if (result?.first?.price == null || result.first?.price == "0") null else result.first?.price
-        itemImage.value = result?.first?.image
+
+        result?.first?.let { itemInfo ->
+            if (!itemInfo.name.isNullOrBlank()) itemName.value = itemInfo.name
+            if (!itemInfo.price.isNullOrBlank() && itemInfo.price != "0") itemPrice.value =
+                itemInfo.price
+            if (!itemInfo.image.isNullOrBlank()) itemImage.value = itemInfo.image
+        }
     }
 
     fun uploadWishItemByLinkSharing() {
@@ -481,6 +484,7 @@ class WishItemRegistrationViewModel @Inject constructor(
     fun getItemPrice(): LiveData<String?> = itemPrice.map { price ->
         price?.let { applyPriceFormat(it) }
     }
+
     fun getItemUrlInput(): LiveData<String?> = itemUrlInput
     fun getItemMemo(): LiveData<String?> = itemMemo
     fun getFolderItem(): LiveData<FolderItem?> = folderItem
