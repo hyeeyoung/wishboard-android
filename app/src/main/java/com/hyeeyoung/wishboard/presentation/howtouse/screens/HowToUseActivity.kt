@@ -20,7 +20,6 @@ class HowToUseActivity : BaseActivity<ActivityHowToUseBinding>(R.layout.activity
     private fun initializeView() {
         binding.howToUse.adapter = HowToUseAdapter(this@HowToUseActivity)
 
-
         TabLayoutMediator(binding.indicator, binding.howToUse) { tab, position ->
             binding.howToUse.setCurrentItem(tab.position, false)
         }.attach()
