@@ -18,8 +18,8 @@ class HowToUseActivity : BaseActivity<ActivityHowToUseBinding>(R.layout.activity
     }
 
     private fun initializeView() {
+        binding.howToUseContainer.clipToOutline = true
         binding.howToUse.adapter = HowToUseAdapter(this@HowToUseActivity)
-
 
         TabLayoutMediator(binding.indicator, binding.howToUse) { tab, position ->
             binding.howToUse.setCurrentItem(tab.position, false)
@@ -31,5 +31,10 @@ class HowToUseActivity : BaseActivity<ActivityHowToUseBinding>(R.layout.activity
             setResult(RESULT_OK, intent)
             finish()
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        overridePendingTransition(0, 0)
     }
 }

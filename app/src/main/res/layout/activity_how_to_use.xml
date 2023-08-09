@@ -7,37 +7,45 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white">
+        android:background="@color/black_transparent">
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/how_to_use"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/how_to_use_container"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@id/indicator"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/indicator"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/spacingSmall"
-            app:layout_constraintBottom_toTopOf="@id/yes"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:tabBackground="@drawable/selector_indicator"
-            app:tabGravity="center"
-            app:tabIndicator="@null"
-            app:tabIndicatorHeight="0dp"
-            app:tabPaddingEnd="@dimen/spacingSmall"
-            app:tabPaddingTop="@dimen/spacingSmall" />
+            android:background="@drawable/background_dialog_top_corner"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/yes"
-            style="@style/Widget.Button.Full.Round.Black"
-            android:layout_width="match_parent"
-            android:layout_marginBottom="@dimen/spacingBase"
-            android:text="@string/how_to_use_yes_button_text"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            <androidx.viewpager2.widget.ViewPager2
+                android:id="@+id/how_to_use"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacing20"
+                app:layout_constraintBottom_toTopOf="@id/indicator" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/indicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/spacingSmall"
+                app:layout_constraintBottom_toTopOf="@id/yes"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:tabBackground="@drawable/selector_indicator"
+                app:tabGravity="center"
+                app:tabIndicator="@null"
+                app:tabIndicatorHeight="0dp"
+                app:tabPaddingEnd="4dp"
+                app:tabPaddingTop="@dimen/spacingSmall" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/yes"
+                style="@style/Widget.Button.Full.Round.Black"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="@dimen/spacingBase"
+                android:text="@string/how_to_use_yes_button_text"
+                app:layout_constraintBottom_toBottomOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

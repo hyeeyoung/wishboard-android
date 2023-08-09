@@ -213,8 +213,8 @@
     <string name="how_to_use_yes_button_text">네! 알겠어요</string>
     <string name="how_to_use_link_sharing_title">아이템 저장</string>
     <string name="how_to_use_folder_setting">폴더 지정</string>
-    <string name="how_to_use_link_sharing_description">웹 브라우저에서 사고 싶은 아이템을 발견했다면\n <b>공유하기</b>로 아이템을 위시보드에 저장해 보세요!</string>
-    <string name="how_to_use_folder_setting_description">아이템에 폴더를 지정해보세요!\n원하는 폴더가 없다면 새 폴더를 추가할 수 있어요.</string>
+    <string name="how_to_use_link_sharing_description">웹 브라우저에서 사고 싶은 아이템을 발견했다면\n \"공유하기\"로 아이템을 위시보드에 저장해 보세요!</string>
+    <string name="how_to_use_folder_setting_description">아이템에 폴더를 지정해 보세요!\n원하는 폴더가 없다면 새 폴더를 추가할 수 있어요.</string>
     <string name="how_to_use_noti_setting_description">아이템의 재입고, 오픈일정 등을 알림 설정해 보세요.\n설정한 시간 30분 전에 알림 보내드려요!</string>
 
     <!-- Navigation Menu -->
