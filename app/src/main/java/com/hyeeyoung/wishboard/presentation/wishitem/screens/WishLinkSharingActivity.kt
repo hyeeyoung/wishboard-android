@@ -45,7 +45,8 @@ class WishLinkSharingActivity :
             if (Intent.ACTION_SEND == action && type != null) {
                 when (type) {
                     "text/plain" -> {
-                        val url = getStringExtra(Intent.EXTRA_TEXT) ?: return
+                        val url = getStringExtra(Intent.EXTRA_TEXT)
+                            ?: throw NullPointerException("Url is null")
                         viewModel.setItemUrl(url)
                     }
                 }
