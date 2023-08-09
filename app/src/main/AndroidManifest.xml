@@ -58,7 +58,8 @@
         <activity
             android:name=".presentation.howtouse.screens.HowToUseActivity"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemePopup" />
 
         <activity
             android:name=".presentation.wishitem.screens.WishLinkSharingActivity"
