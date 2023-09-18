@@ -50,14 +50,12 @@ class HomeFragment : NetworkFragment<FragmentHomeBinding>(R.layout.fragment_home
 
     private fun addListeners() {
         binding.eventView.setOnClickListener {
-            Intent(requireContext(), WebViewActivity::class.java).apply {
-                putExtra(
-                    ARG_WEB_VIEW_LINK,
-                    "https://docs.google.com/forms/d/e/1FAIpQLSenh6xOvlDa61iw1UKBSM6SixdrgF17_i91Brb2osZcxB7MOQ/viewform"
-                )
-            }.let {
-                startActivity(it)
-            }
+            val intent = Intent(requireContext(), WebViewActivity::class.java)
+            intent.putExtra(
+                ARG_WEB_VIEW_LINK,
+                "https://docs.google.com/forms/d/e/1FAIpQLSenh6xOvlDa61iw1UKBSM6SixdrgF17_i91Brb2osZcxB7MOQ/viewform"
+            )
+            startActivity(intent)
         }
         binding.eventClose.setOnClickListener {
             viewModel.updateEventXBtnClickTime()
