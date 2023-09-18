@@ -11,6 +11,8 @@ import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.databinding.FragmentHomeBinding
 import com.hyeeyoung.wishboard.presentation.base.screen.NetworkFragment
 import com.hyeeyoung.wishboard.presentation.calendar.screen.CalendarActivity
+import com.hyeeyoung.wishboard.presentation.common.screens.WebViewActivity
+import com.hyeeyoung.wishboard.presentation.common.screens.WebViewActivity.Companion.ARG_WEB_VIEW_LINK
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.util.UiState
 import com.hyeeyoung.wishboard.util.extension.collectFlow
@@ -47,6 +49,16 @@ class HomeFragment : NetworkFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun addListeners() {
+        binding.eventView.setOnClickListener {
+            Intent(requireContext(), WebViewActivity::class.java).apply {
+                putExtra(
+                    ARG_WEB_VIEW_LINK,
+                    "https://docs.google.com/forms/d/e/1FAIpQLSenh6xOvlDa61iw1UKBSM6SixdrgF17_i91Brb2osZcxB7MOQ/viewform"
+                )
+            }.let {
+                startActivity(it)
+            }
+        }
         binding.cart.setOnClickListener {
             findNavController().navigateSafe(R.id.action_home_to_cart)
         }
@@ -72,9 +84,11 @@ class HomeFragment : NetworkFragment<FragmentHomeBinding>(R.layout.fragment_home
                 WishItemStatus.MODIFIED -> {
                     viewModel.updateWishItem(position, item ?: return@observe)
                 }
+
                 WishItemStatus.DELETED -> {
                     viewModel.deleteWishItem(position, item ?: return@observe)
                 }
+
                 WishItemStatus.ADDED -> {
                     viewModel.fetchLatestItem()
                 }
