@@ -21,7 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/gray_700"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:visibility="@{viewModel.visibleEventView}">
 
             <TextView
                 android:layout_width="0dp"

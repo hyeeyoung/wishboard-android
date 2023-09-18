@@ -59,6 +59,9 @@ class HomeFragment : NetworkFragment<FragmentHomeBinding>(R.layout.fragment_home
                 startActivity(it)
             }
         }
+        binding.eventClose.setOnClickListener {
+            viewModel.updateEventXBtnClickTime()
+        }
         binding.cart.setOnClickListener {
             findNavController().navigateSafe(R.id.action_home_to_cart)
         }
