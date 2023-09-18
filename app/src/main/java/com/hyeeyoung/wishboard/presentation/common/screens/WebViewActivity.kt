@@ -43,7 +43,7 @@ class WebViewActivity : BaseActivity<ActivityWebviewBinding>(R.layout.activity_w
     }
 
     companion object {
-        private const val ARG_WEB_VIEW_LINK = "link"
-        private const val ARG_WEB_VIEW_TITLE = "title"
+        const val ARG_WEB_VIEW_LINK = "link"
+        const val ARG_WEB_VIEW_TITLE = "title"
     }
 }

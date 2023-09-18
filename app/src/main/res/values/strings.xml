@@ -82,6 +82,7 @@
 
     <!-- Home -->
     <string name="home_no_item_view">앗, 아이템이 없어요!\n갖고 싶은 아이템을 등록해보세요!</string>
+    <string name="home_event_view_title">위시보드 설문조사 참여하고 기프티콘 받으세요! 🤍</string>
 
     <!-- Cart -->
     <string name="won">원</string>
