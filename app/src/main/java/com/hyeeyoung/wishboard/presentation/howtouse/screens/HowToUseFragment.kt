@@ -4,9 +4,12 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
+import coil.load
+import coil.transform.RoundedCornersTransformation
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentHowToUseBinding
 import com.hyeeyoung.wishboard.util.BaseFragment
+import com.hyeeyoung.wishboard.util.extension.px
 
 class HowToUseFragment :
     BaseFragment<FragmentHowToUseBinding>(R.layout.fragment_how_to_use) {
@@ -14,9 +17,11 @@ class HowToUseFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.run {
-            binding.title = getInt(ARG_TITLE)
-            binding.description = getInt(ARG_DESCRIPTION)
-            binding.drawableRes = getInt(ARG_IMAGE)
+            binding.howToUserTitle.text = requireContext().getString(getInt(ARG_TITLE))
+            binding.howToUserDescription.text = requireContext().getString(getInt(ARG_DESCRIPTION))
+            binding.howToUseImage.load(getInt(ARG_IMAGE)) {
+                transformations(RoundedCornersTransformation(20.px, 20.px))
+            }
         }
     }
 

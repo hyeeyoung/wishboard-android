@@ -4,21 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".presentation.howtouse.screens.HowToUseFragment">
 
-    <data>
-
-        <variable
-            name="title"
-            type="Integer" />
-
-        <variable
-            name="description"
-            type="Integer" />
-
-        <variable
-            name="drawableRes"
-            type="Integer" />
-    </data>
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -28,7 +13,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/gray_50"
-            app:image="@{context.getDrawable(drawableRes)}"
             app:layout_constraintTop_toTopOf="parent"
             tools:src="@drawable/backgound_folder_setting" />
 
@@ -37,7 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="@{context.getString(title)}"
             android:textAppearance="@style/TextAppearance.Suit.H1"
             android:textColor="@color/gray_700"
             app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +35,6 @@
             android:layout_marginHorizontal="@dimen/spacingBase"
             android:layout_marginTop="@dimen/spacing12"
             android:lineSpacingExtra="@dimen/lineSpacing"
-            android:text="@{context.getString(description)}"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.Suit.D2"
             android:textColor="@color/gray_300"

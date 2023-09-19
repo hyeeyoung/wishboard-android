@@ -36,10 +36,10 @@ class WishListViewModel @Inject constructor(
     private val wishListAdapter = WishListAdapter()
     private var _folderItem: FolderItem? = null
     val folderItem get() = _folderItem
-    private val _isVisibleEventView = MutableStateFlow(isVisibleEventView())
+    private val _isVisibleEventView = MutableStateFlow(checkVisibleEventView())
     val isVisibleEventView: StateFlow<Boolean> get() = _isVisibleEventView.asStateFlow()
 
-    private fun isVisibleEventView(): Boolean {
+    private fun checkVisibleEventView(): Boolean {
         val now = LocalDateTime.now()
         val lastXBtnClickTime = localStorage.eventCloseBtnClickTime ?: return true
         val secondDiff = Duration.between(lastXBtnClickTime, now).seconds

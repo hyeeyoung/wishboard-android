@@ -10,6 +10,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.BuildConfig
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.FragmentMyBinding
+import com.hyeeyoung.wishboard.designsystem.component.CustomSnackbar
 import com.hyeeyoung.wishboard.presentation.base.screen.NetworkFragment
 import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
 import com.hyeeyoung.wishboard.presentation.common.screens.WebViewActivity
@@ -19,7 +20,6 @@ import com.hyeeyoung.wishboard.presentation.sign.screens.SignActivity
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.util.DialogListener
 import com.hyeeyoung.wishboard.util.UiState
-import com.hyeeyoung.wishboard.designsystem.component.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.collectFlow
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.extension.safeValueOf
@@ -138,11 +138,11 @@ class MyFragment : NetworkFragment<FragmentMyBinding>(R.layout.fragment_my) {
     }
 
     private fun showLogoutDialog() {
-        val dialog = TwoButtonDialogFragment(
-            getString(R.string.my_section_sub_title_logout),
-            getString(R.string.my_logout_dialog_description),
-            getString(R.string.my_section_sub_title_logout),
-            getString(R.string.cancel)
+        val dialog = TwoButtonDialogFragment.newInstance(
+            title = getString(R.string.my_section_sub_title_logout),
+            description = getString(R.string.my_logout_dialog_description),
+            yesValue = getString(R.string.my_section_sub_title_logout),
+            noValue = getString(R.string.cancel)
         ).apply {
             setListener(object : DialogListener {
                 override fun onButtonClicked(clicked: String) {
@@ -172,9 +172,13 @@ class MyFragment : NetworkFragment<FragmentMyBinding>(R.layout.fragment_my) {
     }
 
     private fun collectData() {
-        collectFlow(combine(isConnected, viewModel.userInfoFetchState) { isConnected, isSuccessful ->
-            isConnected && isSuccessful !is UiState.Success
-        }) { shouldFetch ->
+        collectFlow(
+            combine(
+                isConnected,
+                viewModel.userInfoFetchState
+            ) { isConnected, isSuccessful ->
+                isConnected && isSuccessful !is UiState.Success
+            }) { shouldFetch ->
             if (shouldFetch) viewModel.fetchUserInfo()
         }
     }
