@@ -114,12 +114,10 @@ class CartFragment : NetworkFragment<FragmentCartBinding>(R.layout.fragment_cart
     }
 
     private fun showCartDeleteDialog(cartItem: CartItem) {
-        TwoButtonDialogFragment(
-            getString(R.string.cart_delete_dialog_title),
-            getString(R.string.cart_delete_dialog_description),
-            getString(R.string.delete),
-            getString(R.string.cancel)
-        ).apply {
+        TwoButtonDialogFragment.newInstance(title = getString(R.string.cart_delete_dialog_title),
+            description = getString(R.string.cart_delete_dialog_description),
+            yesValue = getString(R.string.delete),
+            noValue = getString(R.string.cancel)).apply {
             setListener(object : DialogListener {
                 override fun onButtonClicked(clicked: String) {
                     if (clicked == DialogButtonReplyType.YES.name)

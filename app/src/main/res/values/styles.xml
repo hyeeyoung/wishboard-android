@@ -6,7 +6,7 @@
         <item name="colorAccent">@color/gray_100</item>
         <item name="android:includeFontPadding">false</item>
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialogStyle</item>
-        <!-- Status bar color. -->
+        <!-- System bar color. -->
         <item name="android:statusBarColor">@color/white</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowSplashScreenAnimatedIcon" tools:targetApi="s">
@@ -23,7 +23,7 @@
         <item name="android:windowAnimationStyle">@null</item>
         <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
 
-        <!-- Status bar color. -->
+        <!-- System bar color. -->
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
     </style>
@@ -87,11 +87,11 @@
         <item name="android:background">@color/transparent</item>
     </style>
 
-    <style name="Widget.Button.Dialog" parent="Widget.Button">
+    <style name="Widget.Button.Dialog" parent="">
         <item name="android:layout_width">0dp</item>
-        <item name="android:outlineProvider">none</item>
         <item name="android:padding">@dimen/spacingBase</item>
         <item name="android:textAppearance">@style/TextAppearance.Suit.B3</item>
+        <item name="android:textAlignment">center</item>
     </style>
 
     <style name="Widget.Button.Icon.Navigation" parent="Widget.Button">
@@ -145,6 +145,11 @@
     <style name="Widget.Button.Full.Round.Activate.Green" parent="Widget.Button.Full.Round">
         <item name="backgroundTint">@color/selector_button_background_main_color</item>
         <item name="android:textColor">@color/selector_button_text_main_color</item>
+    </style>
+
+    <style name="Widget.Button.Full.Round.Activate.Black" parent="Widget.Button.Full.Round">
+        <item name="backgroundTint">@color/selector_button_background_sub_color</item>
+        <item name="android:textColor">@color/selector_button_text_sub_color</item>
     </style>
 
     <style name="Widget.Button.Full.Activate.Black" parent="Widget.Button.Full.Basic">
@@ -280,7 +285,7 @@
     </style>
 
     <style name="Widget.Divider" parent="">
-        <item name="android:layout_height">0.5dp</item>
+        <item name="android:layout_height">1dp</item>
         <item name="android:background">@color/gray_100</item>
     </style>
 
