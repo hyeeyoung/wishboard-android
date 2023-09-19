@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:text="@string/cancel"
-                android:textColor="@color/green_700"
+                android:textColor="@color/gray_600"
                 app:layout_constraintEnd_toStartOf="@id/yes"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/description" />
@@ -65,11 +65,11 @@
                 android:id="@+id/yes"
                 style="@style/Widget.Button.Dialog"
                 android:layout_height="wrap_content"
-                android:textColor="@color/gray_600"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/no"
                 app:layout_constraintTop_toTopOf="@id/no"
-                tools:text="삭제" />
+                tools:text="삭제"
+                tools:textColor="@color/green_700" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
