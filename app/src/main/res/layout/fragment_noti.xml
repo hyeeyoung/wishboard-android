@@ -23,7 +23,7 @@
             android:id="@+id/top_app_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingVertical="@dimen/spacingBase"
+            android:paddingVertical="@dimen/spacing14"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -37,12 +37,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <View
-            android:id="@+id/divider"
-            style="@style/Widget.Divider"
-            android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/top_app_bar" />
 
         <TextView
             style="@style/Widget.TextAppearance.NoItemView.Detail"
@@ -61,7 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/divider">
+            app:layout_constraintTop_toBottomOf="@id/top_app_bar">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/noti_list"

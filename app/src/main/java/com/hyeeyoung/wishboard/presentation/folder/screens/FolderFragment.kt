@@ -79,6 +79,7 @@ class FolderFragment : NetworkFragment<FragmentFolderBinding>(R.layout.fragment_
                     folderListAdapter.deleteData(deleteState.data)
                     viewModel.resetCompleteDeletion()
                 }
+
                 else -> {}
             }
         }
@@ -90,6 +91,7 @@ class FolderFragment : NetworkFragment<FragmentFolderBinding>(R.layout.fragment_
                 is UiState.Success -> {
                     folderListAdapter.setData(items = fetchState.data)
                 }
+
                 else -> {}
             }
         }
@@ -119,6 +121,7 @@ class FolderFragment : NetworkFragment<FragmentFolderBinding>(R.layout.fragment_
                         TwoOptionDialogReplyType.TOP_OPTION.name -> {
                             showFolderUploadDialog(folderItem)
                         }
+
                         TwoOptionDialogReplyType.BOTTOM_OPTION.name -> {
                             showFolderDeleteDialog(folderItem)
                         }
@@ -158,13 +161,12 @@ class FolderFragment : NetworkFragment<FragmentFolderBinding>(R.layout.fragment_
 
     /** 폴더 삭제 다이얼로그 */
     private fun showFolderDeleteDialog(folderItem: FolderItem) {
-        val dialog = TwoButtonDialogFragment(
-            getString(R.string.folder_delete),
-            getString(R.string.folder_delete_dialog_detail),
-            getString(R.string.delete),
-            getString(R.string.cancel),
-
-            ).apply {
+        val dialog = TwoButtonDialogFragment.newInstance(
+            title = getString(R.string.folder_delete),
+            description = getString(R.string.folder_delete_dialog_detail),
+            yesValue = getString(R.string.delete),
+            noValue = getString(R.string.cancel)
+        ).apply {
             setListener(object : DialogListener {
                 override fun onButtonClicked(clicked: String) {
                     if (clicked == DialogButtonReplyType.YES.name) {

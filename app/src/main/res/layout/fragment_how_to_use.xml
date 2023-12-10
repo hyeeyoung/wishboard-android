@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".presentation.howtouse.screens.HowToLinkSharingFragment">
+    tools:context=".presentation.howtouse.screens.HowToUseFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -13,34 +13,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/gray_50"
-            android:src="@drawable/background_link_sharing"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@drawable/backgound_folder_setting" />
 
         <TextView
             android:id="@+id/how_to_user_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:text="@string/how_to_use_link_sharing_title"
             android:textAppearance="@style/TextAppearance.Suit.H1"
             android:textColor="@color/gray_700"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/how_to_use_image" />
+            app:layout_constraintTop_toBottomOf="@id/how_to_use_image"
+            tools:text="@string/how_to_use_folder_setting" />
 
         <TextView
             android:id="@+id/how_to_user_description"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/spacingBase"
             android:layout_marginTop="@dimen/spacing12"
-            android:gravity="center"
             android:lineSpacingExtra="@dimen/lineSpacing"
-            android:text="@string/how_to_use_link_sharing_description"
+            android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.Suit.D2"
-            android:textColor="@color/gray_700"
+            android:textColor="@color/gray_300"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/how_to_user_title" />
+            app:layout_constraintTop_toBottomOf="@id/how_to_user_title"
+            tools:text="@string/how_to_use_folder_setting_description" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -60,11 +60,12 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
     }
 
     private fun showUpdateDialog() {
-        TwoButtonDialogFragment(
-            getString(R.string.app_update_dialog_title),
-            getString(R.string.app_update_dialog_description),
-            getString(R.string.app_update_dialog_yes_button_text),
-            getString(R.string.later)
+        TwoButtonDialogFragment.newInstance(
+            title = getString(R.string.app_update_dialog_title),
+            description = getString(R.string.app_update_dialog_description),
+            yesValue = getString(R.string.app_update_dialog_yes_button_text),
+            noValue = getString(R.string.later),
+            isWarningDialog = false
         ).apply {
             setListener(object : DialogListener {
                 override fun onButtonClicked(clicked: String) {

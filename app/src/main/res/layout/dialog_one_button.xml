@@ -42,7 +42,7 @@
                 android:layout_width="match_parent"
                 app:layout_constraintTop_toTopOf="@id/yes" />
 
-            <Button
+            <TextView
                 android:id="@+id/yes"
                 style="@style/Widget.Button.Dialog"
                 android:layout_width="match_parent"

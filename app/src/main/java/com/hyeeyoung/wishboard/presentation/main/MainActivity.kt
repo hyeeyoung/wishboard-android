@@ -58,11 +58,12 @@ class MainActivity : NetworkActivity<ActivityMainBinding>(R.layout.activity_main
 
     /** 푸시 알림 설정 다이얼로그 */
     private fun showPushStateSettingDialog() {
-        val dialog = TwoButtonDialogFragment(
-            getString(R.string.noti_push_state_allow),
-            getString(R.string.noti_push_state_setting_dialog_description),
-            getString(R.string.allow),
-            getString(R.string.later)
+        val dialog = TwoButtonDialogFragment.newInstance(
+            title = getString(R.string.noti_push_state_allow),
+            description = getString(R.string.noti_push_state_setting_dialog_description),
+            yesValue = getString(R.string.allow),
+            noValue = getString(R.string.later),
+            isWarningDialog = false
         ).apply {
             setListener(object : DialogListener {
                 override fun onButtonClicked(clicked: String) {

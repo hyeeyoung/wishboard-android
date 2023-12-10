@@ -134,11 +134,11 @@ class WishItemDetailFragment :
     }
 
     private fun showItemDeleteDialog() {
-        val dialog = TwoButtonDialogFragment(
-            getString(R.string.item_detail_item_delete_dialog_title),
-            getString(R.string.item_detail_item_delete_dialog_description),
-            getString(R.string.delete),
-            getString(R.string.cancel)
+        val dialog = TwoButtonDialogFragment.newInstance(
+            title = getString(R.string.item_detail_item_delete_dialog_title),
+            description = getString(R.string.item_detail_item_delete_dialog_description),
+            yesValue = getString(R.string.delete),
+            noValue = getString(R.string.cancel)
         ).apply {
             setListener(object : DialogListener {
                 override fun onButtonClicked(clicked: String) {

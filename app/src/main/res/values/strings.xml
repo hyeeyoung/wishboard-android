@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">WishBoard</string>
     <string name="logo_text">Wish Board</string>
+    <string name="wishboard_email">wishboard2022@gmail.com</string>
 
     <!-- Global -->
     <string name="confirm">확인</string>
@@ -82,6 +83,7 @@
 
     <!-- Home -->
     <string name="home_no_item_view">앗, 아이템이 없어요!\n갖고 싶은 아이템을 등록해보세요!</string>
+    <string name="home_event_view_title">위시보드 설문조사 참여하고 기프티콘 받으세요! 🤍</string>
 
     <!-- Cart -->
     <string name="won">원</string>
@@ -208,13 +210,15 @@
     <string name="my_new_password_re_write">새 비밀번호 재입력</string>
     <string name="my_new_password_re_write_hint">새 비밀번호를 다시 입력해 주세요.</string>
     <string name="my_password_mismatch_detail">비밀번호가 일치하지 않아요!</string>
+    <string name="my_contact_us_email_title">위시보드에게 문의하기</string>
+    <string name="my_contact_us_email_content">안녕하세요. 위시보드 입니다. 🔫\n문의 내용을 하단에 작성해 주세요.\n답변은 전송주신 메일로 회신드리겠습니다. 💌\n감사합니다. 😉\n-------------\n\n\n\n\n\n-------------\nDevice: %s %s\nApp version: %s\nOS Version: %d</string>
 
     <!-- How To Use -->
     <string name="how_to_use_yes_button_text">네! 알겠어요</string>
     <string name="how_to_use_link_sharing_title">아이템 저장</string>
     <string name="how_to_use_folder_setting">폴더 지정</string>
-    <string name="how_to_use_link_sharing_description">웹 브라우저에서 사고 싶은 아이템을 발견했다면\n <b>공유하기</b>로 아이템을 위시보드에 저장해 보세요!</string>
-    <string name="how_to_use_folder_setting_description">아이템에 폴더를 지정해보세요!\n원하는 폴더가 없다면 새 폴더를 추가할 수 있어요.</string>
+    <string name="how_to_use_link_sharing_description">웹 브라우저에서 사고 싶은 아이템을 발견했다면\n \"공유하기\"로 아이템을 위시보드에 저장해 보세요!</string>
+    <string name="how_to_use_folder_setting_description">아이템에 폴더를 지정해 보세요!\n원하는 폴더가 없다면 새 폴더를 추가할 수 있어요.</string>
     <string name="how_to_use_noti_setting_description">아이템의 재입고, 오픈일정 등을 알림 설정해 보세요.\n설정한 시간 30분 전에 알림 보내드려요!</string>
 
     <!-- Navigation Menu -->

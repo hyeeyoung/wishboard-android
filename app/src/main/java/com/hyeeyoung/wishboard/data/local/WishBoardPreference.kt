@@ -7,6 +7,10 @@ import androidx.databinding.ktx.BuildConfig
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import dagger.hilt.android.qualifiers.ApplicationContext
+import timber.log.Timber
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeParseException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -59,6 +63,19 @@ class WishBoardPreference @Inject constructor(@ApplicationContext context: Conte
             null
         ) ?: ""
 
+    var eventCloseBtnClickTime: LocalDateTime?
+        set(value) = dataStore.edit { putString(EVENT_X_BTN_CLICK_TIME, value.toString()) }
+        get() = dataStore.getString(
+            EVENT_X_BTN_CLICK_TIME, null
+        )?.let {
+            try {
+                LocalDateTime.parse(it, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+            } catch (e: DateTimeParseException) {
+                Timber.e(e.message)
+                null
+            }
+        }
+
     fun setUserInfo(email: String, nickname: String?, accessToken: String, refreshToken: String) {
         isLogin = true
         userEmail = email
@@ -86,5 +103,6 @@ class WishBoardPreference @Inject constructor(@ApplicationContext context: Conte
         const val IS_LOGIN = "isLogin"
         const val USER_EMAIL = "userEmail"
         const val USER_NICKNAME = "userNickname"
+        const val EVENT_X_BTN_CLICK_TIME = "eventXBtnClickTime"
     }
 }
