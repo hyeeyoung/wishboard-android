@@ -28,8 +28,8 @@ android {
         applicationId "com.hyeeyoung.wishboard"
         minSdkVersion 24
         targetSdkVersion 33
-        versionCode 34
-        versionName "1.2.3"
+        versionCode 35
+        versionName "1.2.4"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -40,6 +40,7 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "BASE_URL", properties["DEV_BASE_URL"]
+            versionNameSuffix = "-dev"
         }
         release {
             minifyEnabled true

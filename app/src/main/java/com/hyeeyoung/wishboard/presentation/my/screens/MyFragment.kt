@@ -1,6 +1,7 @@
 package com.hyeeyoung.wishboard.presentation.my.screens
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
@@ -23,6 +24,7 @@ import com.hyeeyoung.wishboard.util.UiState
 import com.hyeeyoung.wishboard.util.extension.collectFlow
 import com.hyeeyoung.wishboard.util.extension.navigateSafe
 import com.hyeeyoung.wishboard.util.extension.safeValueOf
+import com.hyeeyoung.wishboard.util.extension.sendMail
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combine
 
@@ -54,10 +56,16 @@ class MyFragment : NetworkFragment<FragmentMyBinding>(R.layout.fragment_my) {
             findNavController().navigateSafe(R.id.action_my_to_password_change)
         }
         binding.contactUs.setOnClickListener {
-            val email = Intent(Intent.ACTION_SEND)
-            email.type = "plain/text"
-            email.putExtra(Intent.EXTRA_EMAIL, arrayOf("wishboard2022@gmail.com"))
-            startActivity(email)
+            requireContext().sendMail(
+                getString(R.string.my_contact_us_email_title),
+                String.format(
+                    getString(R.string.my_contact_us_email_content),
+                    Build.BRAND,
+                    Build.MODEL,
+                    BuildConfig.VERSION_NAME,
+                    Build.VERSION.SDK_INT,
+                ),
+            )
         }
         binding.howToUse.setOnClickListener {
             moveWebViewActivity(

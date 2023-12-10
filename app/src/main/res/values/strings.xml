@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">WishBoard</string>
     <string name="logo_text">Wish Board</string>
+    <string name="wishboard_email">wishboard2022@gmail.com</string>
 
     <!-- Global -->
     <string name="confirm">확인</string>
@@ -209,6 +210,8 @@
     <string name="my_new_password_re_write">새 비밀번호 재입력</string>
     <string name="my_new_password_re_write_hint">새 비밀번호를 다시 입력해 주세요.</string>
     <string name="my_password_mismatch_detail">비밀번호가 일치하지 않아요!</string>
+    <string name="my_contact_us_email_title">위시보드에게 문의하기</string>
+    <string name="my_contact_us_email_content">안녕하세요. 위시보드 입니다. 🔫\n문의 내용을 하단에 작성해 주세요.\n답변은 전송주신 메일로 회신드리겠습니다. 💌\n감사합니다. 😉\n-------------\n\n\n\n\n\n-------------\nDevice: %s %s\nApp version: %s\nOS Version: %d</string>
 
     <!-- How To Use -->
     <string name="how_to_use_yes_button_text">네! 알겠어요</string>
