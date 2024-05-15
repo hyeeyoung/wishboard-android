@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.hyeeyoung.wishboard.data.local.WishBoardPreference
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.data.model.wish.WishItem
 import com.hyeeyoung.wishboard.domain.repositories.CartRepository
@@ -13,8 +14,11 @@ import com.hyeeyoung.wishboard.presentation.cart.types.CartStateType
 import com.hyeeyoung.wishboard.util.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.time.Duration
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -22,6 +26,7 @@ class WishListViewModel @Inject constructor(
     private val wishRepository: WishRepository,
     private val cartRepository: CartRepository,
     private val folderRepository: FolderRepository,
+    private val localStorage: WishBoardPreference
 ) : ViewModel() {
     private val _wishListFetchState = MutableStateFlow<UiState<Boolean>>(UiState.Loading)
     val wishListFetchState get() = _wishListFetchState.asStateFlow()
@@ -31,6 +36,20 @@ class WishListViewModel @Inject constructor(
     private val wishListAdapter = WishListAdapter()
     private var _folderItem: FolderItem? = null
     val folderItem get() = _folderItem
+    private val _isVisibleEventView = MutableStateFlow(checkVisibleEventView())
+    val isVisibleEventView: StateFlow<Boolean> get() = _isVisibleEventView.asStateFlow()
+
+    private fun checkVisibleEventView(): Boolean {
+        val now = LocalDateTime.now()
+        val lastXBtnClickTime = localStorage.eventCloseBtnClickTime ?: return true
+        val secondDiff = Duration.between(lastXBtnClickTime, now).seconds
+        return secondDiff >= 86400
+    }
+
+    fun updateEventXBtnClickTime() {
+        _isVisibleEventView.value = false
+        localStorage.eventCloseBtnClickTime = LocalDateTime.now()
+    }
 
     fun fetchWishList() {
         viewModelScope.launch {

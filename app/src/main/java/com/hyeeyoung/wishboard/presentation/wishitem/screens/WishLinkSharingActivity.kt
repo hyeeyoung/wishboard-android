@@ -12,6 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.data.model.folder.FolderItem
 import com.hyeeyoung.wishboard.databinding.ActivityWishLinkSharingBinding
+import com.hyeeyoung.wishboard.designsystem.component.CustomSnackbar
 import com.hyeeyoung.wishboard.presentation.base.screen.NetworkActivity
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.presentation.folder.FolderListAdapter
@@ -19,7 +20,6 @@ import com.hyeeyoung.wishboard.presentation.folder.screens.FolderUploadBottomDia
 import com.hyeeyoung.wishboard.presentation.noti.screens.NotiSettingBottomDialogFragment
 import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel
 import com.hyeeyoung.wishboard.util.UiState
-import com.hyeeyoung.wishboard.designsystem.component.CustomSnackbar
 import com.hyeeyoung.wishboard.util.extension.collectFlow
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.combine
@@ -41,15 +41,14 @@ class WishLinkSharingActivity :
         notiSettingBottomDialog = NotiSettingBottomDialogFragment(viewModel)
 
         // 링크 공유로 데이터 받기
-        val intent = intent
-        val action = intent.action
-        val type = intent.type
-
-        if (Intent.ACTION_SEND == action && type != null) {
-            when (type) {
-                "text/plain" -> {
-                    val url = intent.getStringExtra(Intent.EXTRA_TEXT) ?: return
-                    viewModel.setItemUrl(url)
+        with(intent) {
+            if (Intent.ACTION_SEND == action && type != null) {
+                when (type) {
+                    "text/plain" -> {
+                        val url = getStringExtra(Intent.EXTRA_TEXT)
+                            ?: throw NullPointerException("Url is null")
+                        viewModel.setItemUrl(url)
+                    }
                 }
             }
         }
@@ -101,10 +100,12 @@ class WishLinkSharingActivity :
                 ProcessStatus.IDLE -> {
                     binding.loadingLottie.visibility = View.GONE
                 }
+
                 ProcessStatus.IN_PROGRESS -> {
                     binding.loadingLottie.visibility = View.VISIBLE
                     binding.loadingLottie.playAnimation()
                 }
+
                 else -> {}
             }
         }

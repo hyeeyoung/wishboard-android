@@ -47,6 +47,17 @@ class HomeFragment : NetworkFragment<FragmentHomeBinding>(R.layout.fragment_home
     }
 
     private fun addListeners() {
+//        binding.eventView.setOnClickListener {
+//            val intent = Intent(requireContext(), WebViewActivity::class.java)
+//            intent.putExtra(
+//                ARG_WEB_VIEW_LINK,
+//                "https://docs.google.com/forms/d/e/1FAIpQLSenh6xOvlDa61iw1UKBSM6SixdrgF17_i91Brb2osZcxB7MOQ/viewform"
+//            )
+//            startActivity(intent)
+//        }
+//        binding.eventClose.setOnClickListener {
+//            viewModel.updateEventXBtnClickTime()
+//        }
         binding.cart.setOnClickListener {
             findNavController().navigateSafe(R.id.action_home_to_cart)
         }
@@ -72,9 +83,11 @@ class HomeFragment : NetworkFragment<FragmentHomeBinding>(R.layout.fragment_home
                 WishItemStatus.MODIFIED -> {
                     viewModel.updateWishItem(position, item ?: return@observe)
                 }
+
                 WishItemStatus.DELETED -> {
                     viewModel.deleteWishItem(position, item ?: return@observe)
                 }
+
                 WishItemStatus.ADDED -> {
                     viewModel.fetchLatestItem()
                 }
