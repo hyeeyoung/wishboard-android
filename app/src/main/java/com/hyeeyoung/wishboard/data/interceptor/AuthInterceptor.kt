@@ -77,10 +77,13 @@ class AuthInterceptor @Inject constructor(
 
     private fun Request.newAuthBuilder() =
         this.newBuilder()
-            .addHeader(AUTHORIZATION, "$TOKEN_PREF${localStorage.accessToken}")
+            .addHeader(HEADER_KEY_AUTHORIZATION, "$TOKEN_PREF${localStorage.accessToken}")
+            .addHeader(HEADER_KEY_USER_AGENT, "$HEADER_VALUE_USER_AGENT_PREF${if (BuildConfig.DEBUG) "dev" else "prod"}")
 
     companion object {
-        private const val AUTHORIZATION = "Authorization"
+        private const val HEADER_KEY_AUTHORIZATION = "Authorization"
+        private const val HEADER_KEY_USER_AGENT = "User-Agent"
+        private const val HEADER_VALUE_USER_AGENT_PREF = "wishboard-android/"
         private const val TOKEN_PREF = "Bearer "
         private const val REFRESH_TOKEN = "refreshToken"
     }
