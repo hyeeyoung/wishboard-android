@@ -57,9 +57,8 @@ class DayItemView @JvmOverloads constructor(
         }
     }
 
-    override fun onDraw(canvas: Canvas?) {
+    override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        if (canvas == null) return
 
         val date = date.dayOfMonth.toString()
         paint.getTextBounds(date, 0, date.length, bounds)
