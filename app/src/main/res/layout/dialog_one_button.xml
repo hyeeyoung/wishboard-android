@@ -18,8 +18,8 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                style="@style/Widget.Dialog.TextAppearance.Title"
                 android:id="@+id/title"
+                style="@style/Widget.Dialog.TextAppearance.Title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -48,9 +48,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
-                android:text="@string/confirm"
                 android:textColor="@color/green_700"
-                app:layout_constraintTop_toBottomOf="@id/description" />
+                app:layout_constraintTop_toBottomOf="@id/description"
+                tools:text="@string/confirm" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

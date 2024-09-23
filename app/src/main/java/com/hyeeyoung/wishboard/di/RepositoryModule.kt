@@ -33,4 +33,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindPhotoRepository(photoRepositoryImpl: PhotoRepositoryImpl): PhotoRepository
+
+    @Binds
+    abstract fun bindSystemRepository(systemRepositoryImpl: SystemRepositoryImpl): SystemRepository
 }
