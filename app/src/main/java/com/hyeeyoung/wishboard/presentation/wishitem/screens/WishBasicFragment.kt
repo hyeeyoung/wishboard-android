@@ -14,14 +14,20 @@ import com.hyeeyoung.wishboard.databinding.FragmentWishBinding
 import com.hyeeyoung.wishboard.designsystem.component.CustomSnackbar
 import com.hyeeyoung.wishboard.domain.model.WishItemDetail
 import com.hyeeyoung.wishboard.presentation.common.screens.OneButtonDialogFragment
+import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
 import com.hyeeyoung.wishboard.presentation.common.types.ProcessStatus
 import com.hyeeyoung.wishboard.presentation.folder.screens.FolderListBottomDialogFragment
 import com.hyeeyoung.wishboard.presentation.noti.screens.NotiSettingBottomDialogFragment
 import com.hyeeyoung.wishboard.presentation.wishitem.WishItemStatus
 import com.hyeeyoung.wishboard.presentation.wishitem.viewmodels.WishItemRegistrationViewModel
 import com.hyeeyoung.wishboard.util.BaseFragment
+import com.hyeeyoung.wishboard.util.DialogListener
 import com.hyeeyoung.wishboard.util.FolderListDialogListener
-import com.hyeeyoung.wishboard.util.extension.*
+import com.hyeeyoung.wishboard.util.extension.getParcelableValue
+import com.hyeeyoung.wishboard.util.extension.requestCamera
+import com.hyeeyoung.wishboard.util.extension.requestSelectPicture
+import com.hyeeyoung.wishboard.util.extension.showPhotoDialog
+import com.hyeeyoung.wishboard.util.extension.takePicture
 import com.hyeeyoung.wishboard.util.setOnSingleClickListener
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -128,6 +134,7 @@ class WishBasicFragment : BaseFragment<FragmentWishBinding>(R.layout.fragment_wi
                         moveToPrevious(WishItemStatus.ADDED)
                     }
                 }
+
                 else -> {}
             }
         }
@@ -137,10 +144,12 @@ class WishBasicFragment : BaseFragment<FragmentWishBinding>(R.layout.fragment_wi
                 ProcessStatus.IDLE -> {
                     binding.loadingLottie.visibility = View.GONE
                 }
+
                 ProcessStatus.IN_PROGRESS -> {
                     binding.loadingLottie.visibility = View.VISIBLE
                     binding.loadingLottie.playAnimation()
                 }
+
                 else -> {}
             }
         }
@@ -159,11 +168,18 @@ class WishBasicFragment : BaseFragment<FragmentWishBinding>(R.layout.fragment_wi
     }
 
     private fun showItemNonUpdateDialog() {
-        val dialog = OneButtonDialogFragment(
-            getString(R.string.item_non_update_dialog_title),
-            getString(R.string.item_non_update_dialog_description)
-        )
-        dialog.show(parentFragmentManager, "ItemNonUpdateDialog")
+        OneButtonDialogFragment.newInstance(
+            title = getString(R.string.item_non_update_dialog_title),
+            description = getString(R.string.item_non_update_dialog_description)
+        ).apply {
+            setListener(object : DialogListener {
+                override fun onButtonClicked(clicked: String) {
+                    if (clicked == DialogButtonReplyType.YES.name) {
+                        dismiss()
+                    }
+                }
+            })
+        }.show(parentFragmentManager, "ItemNonUpdateDialog")
     }
 
     private fun showFolderListDialog() {

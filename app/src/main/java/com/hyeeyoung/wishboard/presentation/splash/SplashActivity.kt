@@ -11,6 +11,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.hyeeyoung.wishboard.BuildConfig
 import com.hyeeyoung.wishboard.R
 import com.hyeeyoung.wishboard.databinding.ActivitySplashBinding
+import com.hyeeyoung.wishboard.presentation.common.screens.OneButtonDialogFragment
 import com.hyeeyoung.wishboard.presentation.common.screens.TwoButtonDialogFragment
 import com.hyeeyoung.wishboard.presentation.common.types.DialogButtonReplyType
 import com.hyeeyoung.wishboard.presentation.main.MainActivity
@@ -28,7 +29,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        lifecycleScope.launch() {
+        lifecycleScope.launch {
             delay(2000)
             checkForNewVersionUpdate()
         }
@@ -50,7 +51,17 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
                 && appUpdateInfo.isUpdateTypeAllowed(AppUpdateType.IMMEDIATE)
                 && appUpdateInfo.availableVersionCode() != BuildConfig.VERSION_CODE
             ) {
-                showUpdateDialog()
+                showOptionalUpdateDialog()
+                viewModel.checkForAppUpdate(
+                    playStoreVersionCode = appUpdateInfo.availableVersionCode(),
+                    moveToNext = { moveToNext() },
+                    showUpdateDialog = { isForceUpdate ->
+                        when (isForceUpdate) {
+                            true -> showForceUpdateDialog()
+                            false -> showOptionalUpdateDialog()
+                        }
+                    }
+                )
             } else {
                 moveToNext()
             }
@@ -59,7 +70,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
         }
     }
 
-    private fun showUpdateDialog() {
+    private fun showOptionalUpdateDialog() {
         TwoButtonDialogFragment.newInstance(
             title = getString(R.string.app_update_dialog_title),
             description = getString(R.string.app_update_dialog_description),
@@ -74,6 +85,22 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>(R.layout.activity_spl
                 }
             })
         }.show(supportFragmentManager, "UpdateDialog")
+    }
+
+    private fun showForceUpdateDialog() {
+        OneButtonDialogFragment.newInstance(
+            title = getString(R.string.app_update_dialog_title),
+            description = getString(R.string.app_update_dialog_description),
+            buttonText = getString(R.string.app_update_dialog_yes_button_text),
+        ).apply {
+            setListener(object : DialogListener {
+                override fun onButtonClicked(clicked: String) {
+                    if (clicked == DialogButtonReplyType.YES.name) {
+                        moveToPlayStore()
+                    }
+                }
+            })
+        }.show(supportFragmentManager, "ForceUpdateDialog")
     }
 
     private fun moveToPlayStore() {
